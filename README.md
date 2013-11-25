@@ -10,6 +10,6 @@ Ths time, it is a GPL-V3. If you love to start a project based on my thoughts, f
 Sections And Ideas
 ------------------
 
-* web
-    * blog
+* [web]((https://github.com/stevleibelt/incubator/web/)
+    * [blog]((https://github.com/stevleibelt/incubator/web/blog/)
         * [static page generator](https://github.com/stevleibelt/incubator/web/blog/static_page_generator/idea.md)
