@@ -2,7 +2,7 @@ Static Page Generator
 =====================
 
 Tired of blog systems because they are for the web browser users?
-Currently, i am. I don't want to blame the guys who are throwing there time on great open source projects to build a blog system with used by webbrowser. But thinking about myself, all i want is to write something in markdown or similar and upload this entry.
+Currently, i am. I do not want to blame the guys who are throwing there time on great open source projects to build a blog system with used by webbrowser. But thinking about myself, all i want is to write something in markdown or similar and upload this entry.
 
 Core Functionalities
 --------------------
@@ -57,3 +57,9 @@ Existing Projects
 * [StaticBlogGenerator](https://github.com/genintho/StaticBlogGenerator)
 * [acrylamid](https://github.com/posativ/acrylamid)
 * [tempo](https://github.com/catnapgames/Tempo)
+
+Components
+----------
+
+* rest web service to verifiy validity of id/passphrase combination (identity)
+* cli component that implements general logic to communicate with upper rest service
