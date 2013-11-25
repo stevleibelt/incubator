@@ -49,6 +49,7 @@ Implementation
 Existing Projects
 -----------------
 
+* [hakyll](http://jaspervdj.be/hakyll)
 * [Miblo](https://github.com/rafalp/Miblo)
 * [bogl-me](https://github.com/turanct/bogl-me)
 * [augustus](https://github.com/xles/augustus)
