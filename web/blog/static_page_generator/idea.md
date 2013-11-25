@@ -12,16 +12,22 @@ Core Functionalities
 * supports tags
 * supports markdown
 * a cronjob/or manually triggerd generation of parts possible (to fetch rss entries by other sites)
+* a cronjob/or manually triggerd generation of articles
 * cli generator
     * hook or event based for easy up extension 
     * generate file/entry/parts based content
     * generate all (reset of old content)
 * rss and atom feed generation
 * internal linking
+* pure php array configuration
 
 Nice To Have
 ------------
 
+* rest api to simple
+    * add an entry (generation done on the server)
+    * add media
+    * trigger cronjobs
 * supports restructured text
 * search
 * comments
@@ -39,3 +45,14 @@ Implementation
 * each entry generats a unique identifier 
     * easy up human readable url renaming
     * easy up internal and external linking
+
+Existing Projects
+-----------------
+
+* [Miblo](https://github.com/rafalp/Miblo)
+* [bogl-me](https://github.com/turanct/bogl-me)
+* [augustus](https://github.com/xles/augustus)
+* [Astroid](https://github.com/cesarparent/Asteroid)
+* [StaticBlogGenerator](https://github.com/genintho/StaticBlogGenerator)
+* [acrylamid](https://github.com/posativ/acrylamid)
+* [tempo](https://github.com/catnapgames/Tempo)
