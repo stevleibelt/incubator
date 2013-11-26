@@ -29,6 +29,9 @@ Nice To Have
     * add media
     * trigger cronjobs
 * supports restructured text
+* caching for converted markdown to html snippets
+* meta data for each entry (default by section and tags)
+* teaser for each entry
 * search
 * comments
 * picture upload
@@ -63,3 +66,12 @@ Components
 
 * rest web service to verifiy validity of id/passphrase combination (identity)
 * cli component that implements general logic to communicate with upper rest service
+
+Configurable Values
+-------------------
+
+* base url
+* archive url
+* section url
+* tag url
+* page title 
