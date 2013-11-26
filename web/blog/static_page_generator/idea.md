@@ -76,6 +76,7 @@ Configurable Values
 * tag url
 * page title 
 * default author
+* entries per page per month
 
 Workflow
 --------
@@ -97,3 +98,11 @@ Workflow
     * update used tag pages (add link to entry, newest first)
     * update archive (current month section)
     * update main page
+
+Structure Of Content
+--------------------
+
+* one main page of current month with link to previous[/next] month (link to archive)
+* one section page of current month with link to previous[/next] month (link to archive)
+* one tags page with link to each tag page, ordered by usage
+* one tag page with links to each article, ordered by date
