@@ -52,6 +52,7 @@ Implementation
 Existing Projects
 -----------------
 
+* [pelican](http://docs.getpelican.com/en/3.3.0/)
 * [hakyll](http://jaspervdj.be/hakyll)
 * [Miblo](https://github.com/rafalp/Miblo)
 * [bogl-me](https://github.com/turanct/bogl-me)
