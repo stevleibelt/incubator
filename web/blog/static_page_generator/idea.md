@@ -52,6 +52,7 @@ Implementation
 Existing Projects
 -----------------
 
+* [NanoBlogger](http://nanoblogger.sourceforge.net/)
 * [pelican](http://docs.getpelican.com/en/3.3.0/)
 * [hakyll](http://jaspervdj.be/hakyll)
 * [Miblo](https://github.com/rafalp/Miblo)
