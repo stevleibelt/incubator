@@ -29,6 +29,9 @@ Nice To Have
     * add media
     * trigger cronjobs
 * supports restructured text
+* caching for converted markdown to html snippets
+* meta data for each entry (default by section and tags)
+* teaser for each entry
 * search
 * comments
 * picture upload
@@ -49,6 +52,8 @@ Implementation
 Existing Projects
 -----------------
 
+* [NanoBlogger](http://nanoblogger.sourceforge.net/)
+* [pelican](http://docs.getpelican.com/en/3.3.0/)
 * [hakyll](http://jaspervdj.be/hakyll)
 * [Miblo](https://github.com/rafalp/Miblo)
 * [bogl-me](https://github.com/turanct/bogl-me)
@@ -63,3 +68,43 @@ Components
 
 * rest web service to verifiy validity of id/passphrase combination (identity)
 * cli component that implements general logic to communicate with upper rest service
+
+Configurable Values
+-------------------
+
+* base url
+* archive url
+* section url
+* tag url
+* page title 
+* default author
+* entries per page per month
+
+Workflow
+--------
+
+* write entry in my_file.md
+    * contains
+        * header
+            * section
+            * tag
+            * [meta data]
+            * [author]
+        * body
+            * content
+* validate via cli
+* upload file
+* trigger page generation
+    * convert markdown to html snippet
+    * update tag page (if new exists, recalculate usage of tags)
+    * update used tag pages (add link to entry, newest first)
+    * update archive (current month section)
+    * update main page
+
+Structure Of Content
+--------------------
+
+* one main page of current month with link to previous[/next] month (link to archive)
+* one section page of current month with link to previous[/next] month (link to archive)
+* one tags page with link to each tag page, ordered by usage
+* one tag page with links to each article, ordered by date
