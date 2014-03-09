@@ -91,11 +91,13 @@ Workflow
             * [meta data]
             * [author]
         * body
+            * use pre compile statement like ##TEASER_START## to special informations
             * content
 * validate via cli
 * upload file
-* trigger page generation
+* trigger page generation (pages are collections of unique html dom ids, generate contet of dom id and replace content of old id in files)
     * convert markdown to html snippet
+    * generate content if dom element 
     * update tag page (if new exists, recalculate usage of tags)
     * update used tag pages (add link to entry, newest first)
     * update archive (current month section)
