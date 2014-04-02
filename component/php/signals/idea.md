@@ -18,6 +18,23 @@ The signals are influenced by the posix signals. Since the web/php process world
 * reload    -   reload configuration files
 * start     -   starts a process
 
+## Implementation
+
+```php
+interface SignalInterface
+{
+    /**
+     * @throws SignalException
+     */
+    public function acquire();
+
+    /**
+     * @throws SignalException
+     */
+    public function release();
+}
+```
+
 ## Links
 
 * http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_12_01.html
