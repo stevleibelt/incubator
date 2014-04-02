@@ -33,6 +33,86 @@ interface SignalInterface
      */
     public function release();
 }
+
+interface AbortInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function isAborted();
+}
+
+interface AlarmInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function isAlarmed();
+}
+
+interface ContinueInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function canBeContinued();
+}
+
+interface InterruptInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function isInterrupted();
+}
+
+interface KillInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function isKilled();
+}
+
+interface LockInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function isLocked();
+}
+
+interface QuitInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function shouldBeQuitted();
+}
+
+interface PollInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function hasBeenPolled();
+}
+
+interface ReloadInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function shouldBeReloaded();
+}
+
+interface StartInterface extends SignalInterface
+{
+    /**
+     * @return boolean
+     */
+    public function canBeStarted();
+}
 ```
 
 ## Links
