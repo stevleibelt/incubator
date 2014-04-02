@@ -18,7 +18,30 @@ The signals are influenced by the posix signals. Since the web/php process world
 * reload    -   reload configuration files
 * start     -   starts a process
 
-## Implementation
+
+# Implementation
+
+```php
+interface SignalInterface
+{
+    /**
+     * @throws SignalException
+     */
+    public function acquire();
+
+    /**
+     * @return boolean
+     */
+    public function hasBeenSent();
+
+    /**
+     * @throws SignalException
+     */
+    public function release();
+}
+```
+
+or
 
 ```php
 interface SignalInterface
@@ -39,7 +62,7 @@ interface AbortInterface extends SignalInterface
     /**
      * @return boolean
      */
-    public function isAborted();
+    public function hasBeenAborted();
 }
 
 interface AlarmInterface extends SignalInterface
@@ -47,7 +70,7 @@ interface AlarmInterface extends SignalInterface
     /**
      * @return boolean
      */
-    public function isAlarmed();
+    public function hasBeenAlarmed();
 }
 
 interface ContinueInterface extends SignalInterface
@@ -63,7 +86,7 @@ interface InterruptInterface extends SignalInterface
     /**
      * @return boolean
      */
-    public function isInterrupted();
+    public function hasBeenInterrupted();
 }
 
 interface KillInterface extends SignalInterface
@@ -71,7 +94,7 @@ interface KillInterface extends SignalInterface
     /**
      * @return boolean
      */
-    public function isKilled();
+    public function hasBeenKilled();
 }
 
 interface LockInterface extends SignalInterface
@@ -79,7 +102,7 @@ interface LockInterface extends SignalInterface
     /**
      * @return boolean
      */
-    public function isLocked();
+    public function hasBeenLocked();
 }
 
 interface QuitInterface extends SignalInterface
@@ -111,7 +134,7 @@ interface StartInterface extends SignalInterface
     /**
      * @return boolean
      */
-    public function canBeStarted();
+    public function shouldBeStarted();
 }
 ```
 
