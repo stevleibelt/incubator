@@ -40,46 +40,52 @@ interface SignalInterface
      * @throws SignalException
      */
     public function intercept();
-}
 
-interface InjectAdapterInterface
-{
-    public function inject(AdapterInterface $adapter);
-}
-
-interface AdapterInterface extends SignalInterface 
-{
     /**
      * @return string
      */
     public function getIdentifier();
-}
-
-abstract class AbstractAdapter implements AdapterInterface
-{
-    /**
-     * @var string
-     */
-    private $identifier;
 
     /**
      * @param string $identifier
      */
-    public function __construct($identifier)
-    {
-        $this->identifier = (string) $identifier;
-    }
+    public function setIdentifier($identifer);
+}
+
+interface SignalFactory
+{
+    /**
+     * @param string $identifier
+     * @return SignalInterface
+     */
+    public function create($identifier)
+}
+
+abstract class AbstractSignal implements SignalInterface
+{
+    /**
+     * @var SignalInterface
+     */
+    protected $identifier;
 
     /**
      * @return string
      */
     public function getIdentifier()
     {
-        return $this->identifier;
+        return $this->signal->identifier;
+    }
+
+    /**
+     * @param string $identifier
+     */
+    public function setIdentifier($identifer)
+    {
+        $this->identifier = (string) $identifier;
     }
 }
 
-class FileAdapterInterface implements AdapterInterface
+class FileSignal extends AbstractSignal
 {
     /**
      * @throws SignalException
@@ -111,6 +117,96 @@ class FileAdapterInterface implements AdapterInterface
         }
 
         touch($this->getIdentifier());
+    }
+}
+
+class IdenfitierFactory
+{
+    /**
+     * @return string
+     */
+    createAbortIdentifier()
+    {
+        return 'abort';
+    }
+
+    /**
+     * @return string
+     */
+    createAlarmIdentifier()
+    {
+        return 'alarm';
+    }
+
+    /**
+     * @return string
+     */
+    createInterruptIdentifier()
+    {
+        return 'interrupt';
+    }
+
+    /**
+     * @return string
+     */
+    createKillIdentifier()
+    {
+        return 'kill';
+    }
+
+    /**
+     * @return string
+     */
+    createLockIdentifier()
+    {
+        return 'lock';
+    }
+
+    /**
+     * @return string
+     */
+    createQuitIdentifier()
+    {
+        return 'quit';
+    }
+
+    /**
+     * @return string
+     */
+    createPollIdentifier()
+    {
+        return 'poll';
+    }
+
+    /**
+     * @return string
+     */
+    createReloadIdentifier()
+    {
+        return 'reload';
+    }
+
+    /**
+     * @return string
+     */
+    createStartIdentifier()
+    {
+        return 'start';
+    }
+}
+
+class SignalFileFactory implements FactoryInterface
+{
+    /**
+     * @param string $identifier
+     * @return SignalInterface
+     */
+    public function create($identifier)
+    {
+        $signal = new FileSignal();
+        $signal->setIdentifier($identifier);
+
+        return $signal;
     }
 }
 ```
