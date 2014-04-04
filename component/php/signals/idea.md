@@ -27,7 +27,7 @@ interface SignalInterface
     /**
      * @throws SignalException
      */
-    public function acquire();
+    public function send();
 
     /**
      * @return boolean
@@ -37,7 +37,79 @@ interface SignalInterface
     /**
      * @throws SignalException
      */
-    public function release();
+    public function intercept();
+}
+
+interface InjectAdapterInterface
+{
+    public function inject(AdapterInterface $adapter);
+}
+
+interface AdapterInterface extends SignalInterface 
+{
+    /**
+     * @return string
+     */
+    public function getIdentifier();
+}
+
+abstract class AbstractAdapter implements AdapterInterface
+{
+    /**
+     * @var string
+     */
+    private $identifier;
+
+    /**
+     * @param string $identifier
+     */
+    public function __construct($identifier)
+    {
+        $this->identifier = (string) $identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+}
+
+class FileAdapterInterface implements AdapterInterface
+{
+    /**
+     * @throws SignalException
+     */
+    public function send()
+    {
+        if ($this->hasBeenSent()) {
+            throw new SignalException($this->getIdentifier() . ' has been sent already');
+        }
+
+        touch($this->getIdentifier());
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasBeenSent()
+    {
+        return (file_exists($this->getIdentifier()));
+    }
+
+    /**
+     * @throws SignalException
+     */
+    public function intercept()
+    {
+        if (!$this->hasBeenSent()) {
+            throw new SignalException($this->getIdentifier() . ' has not been sent');
+        }
+
+        touch($this->getIdentifier());
+    }
 }
 ```
 
@@ -49,12 +121,12 @@ interface SignalInterface
     /**
      * @throws SignalException
      */
-    public function acquire();
+    public function send();
 
     /**
      * @throws SignalException
      */
-    public function release();
+    public function intercept();
 }
 
 interface AbortInterface extends SignalInterface
