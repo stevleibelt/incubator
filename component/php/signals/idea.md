@@ -21,6 +21,8 @@ The signals are influenced by the posix signals. Since the web/php process world
 
 # Implementation
 
+## Interface
+
 ```php
 interface SignalInterface
 {
@@ -208,6 +210,57 @@ interface StartInterface extends SignalInterface
      */
     public function shouldBeStarted();
 }
+```
+## Runtime Implementation
+
+```php
+class RuntimeSignal implements SignalInterface
+{
+    /**
+     * @type boolean
+     */
+    private $hasBeenSent;
+
+    public function __construct()
+    {
+        $this->release();
+    }
+
+    /**
+     * @throws SignalException
+     */
+    public function acquire()
+    {
+        if ($this->hasBeenSent) {
+            throw new SignalException('signal has been sent already');
+        }
+
+        $this->hasBeenSent = true;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasBeenSent()
+    {
+        return $this->hasBeenSent;
+    }
+
+    /**
+     * @throws SignalException
+     */
+    public function release()
+    {
+        $this->hasBeenSent = false;
+    }
+
+}
+```
+
+## File Implementation
+
+```php
+//@TODO
 ```
 
 ## Links
