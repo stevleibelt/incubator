@@ -29,7 +29,7 @@ interface SignalInterface
     /**
      * @throws SignalException
      */
-    public function acquire();
+    public function send();
 
     /**
      * @return boolean
@@ -39,7 +39,175 @@ interface SignalInterface
     /**
      * @throws SignalException
      */
-    public function release();
+    public function intercept();
+
+    /**
+     * @return string
+     */
+    public function getIdentifier();
+
+    /**
+     * @param string $identifier
+     */
+    public function setIdentifier($identifer);
+}
+
+interface SignalFactory
+{
+    /**
+     * @param string $identifier
+     * @return SignalInterface
+     */
+    public function create($identifier)
+}
+
+abstract class AbstractSignal implements SignalInterface
+{
+    /**
+     * @var SignalInterface
+     */
+    protected $identifier;
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->signal->identifier;
+    }
+
+    /**
+     * @param string $identifier
+     */
+    public function setIdentifier($identifer)
+    {
+        $this->identifier = (string) $identifier;
+    }
+}
+
+class FileSignal extends AbstractSignal
+{
+    /**
+     * @throws SignalException
+     */
+    public function send()
+    {
+        if ($this->hasBeenSent()) {
+            throw new SignalException($this->getIdentifier() . ' has been sent already');
+        }
+
+        touch($this->getIdentifier());
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasBeenSent()
+    {
+        return (file_exists($this->getIdentifier()));
+    }
+
+    /**
+     * @throws SignalException
+     */
+    public function intercept()
+    {
+        if (!$this->hasBeenSent()) {
+            throw new SignalException($this->getIdentifier() . ' has not been sent');
+        }
+
+        touch($this->getIdentifier());
+    }
+}
+
+class IdenfitierFactory
+{
+    /**
+     * @return string
+     */
+    createAbortIdentifier()
+    {
+        return 'abort';
+    }
+
+    /**
+     * @return string
+     */
+    createAlarmIdentifier()
+    {
+        return 'alarm';
+    }
+
+    /**
+     * @return string
+     */
+    createInterruptIdentifier()
+    {
+        return 'interrupt';
+    }
+
+    /**
+     * @return string
+     */
+    createKillIdentifier()
+    {
+        return 'kill';
+    }
+
+    /**
+     * @return string
+     */
+    createLockIdentifier()
+    {
+        return 'lock';
+    }
+
+    /**
+     * @return string
+     */
+    createQuitIdentifier()
+    {
+        return 'quit';
+    }
+
+    /**
+     * @return string
+     */
+    createPollIdentifier()
+    {
+        return 'poll';
+    }
+
+    /**
+     * @return string
+     */
+    createReloadIdentifier()
+    {
+        return 'reload';
+    }
+
+    /**
+     * @return string
+     */
+    createStartIdentifier()
+    {
+        return 'start';
+    }
+}
+
+class SignalFileFactory implements FactoryInterface
+{
+    /**
+     * @param string $identifier
+     * @return SignalInterface
+     */
+    public function create($identifier)
+    {
+        $signal = new FileSignal();
+        $signal->setIdentifier($identifier);
+
+        return $signal;
+    }
 }
 ```
 
@@ -51,12 +219,12 @@ interface SignalInterface
     /**
      * @throws SignalException
      */
-    public function acquire();
+    public function send();
 
     /**
      * @throws SignalException
      */
-    public function release();
+    public function intercept();
 }
 
 interface AbortInterface extends SignalInterface
