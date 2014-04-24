@@ -1,0 +1,28 @@
+{
+    "description": "Generates configuration based hard coded locator",
+    "keywords": ["php", "locator", "configuration", "generator"],
+    "license": "LGPLv3",
+    "name": "stevleibelt/php_component_locator",
+    "type": "library",
+    "authors": [
+        {
+            "email": "artodeto@bazzline.net",
+            "homepage": "https://artodeto.bazzline.et",
+            "name": "Stev Leibelt",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Net\\Bazzline\\Component\\Locator": "source/",
+            "Test\\Net\\Bazzline\\Component\\Locator": "test/"
+        }
+    }
+}
