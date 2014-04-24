@@ -37,27 +37,40 @@ class PhpDocTemplate extends AbstractTemplate
     }
 
     /**
-     * @param string $parameter
+     * @param string $name
+     * @param array $types
+     * @param string $comment
      */
-    public function addParameter($parameter)
+    public function addParameter($name, $types = array(), $comment = '')
     {
-        $this->addProperty('parameters', (string) $parameter);
+        $parameter = array(
+            'comment'   => (string) $comment,
+            'name'      => (string) $name,
+            'types'     => (array) $types
+        );
+
+        $this->addProperty('parameters', $parameter);
     }
 
     /**
-     * @param string $return
+     * @param array $types
+     * @param string $comment
      */
-    public function setReturn($return)
+    public function setReturn($types, $comment = '')
     {
-        $this->addProperty('return', (string) $return, false);
+        $return = array(
+            'comment'   => (string) $comment,
+            'types'     => (array) $types
+        );
+        $this->addProperty('return', $return, false);
     }
 
     /**
-     * @param string $throws
+     * @param string $exception
      */
-    public function addThrows($throws)
+    public function addThrows($exception)
     {
-        $this->addProperty('throws', (string) $throws);
+        $this->addProperty('throws', (string) $exception);
     }
 
     /**
@@ -73,7 +86,7 @@ class PhpDocTemplate extends AbstractTemplate
             $this->generateParameters(),
             $this->generateReturn(),
             $this->generateThrows(),
-            $this->generateLine('*/'),
+            $this->generateLine(' */'),
         );
         $this->clearProperties();
     }
@@ -121,11 +134,11 @@ class PhpDocTemplate extends AbstractTemplate
         $array = array();
 
         foreach ($this->getProperty('parameters', array()) as $property) {
-            $line = ' * @param ';
+            $line = ' * @param';
             if (!empty($property['types'])) {
                 $line .= ' ' . implode('|', $property['types']);
             }
-            $line .= ' \$' . $property['name'];
+            $line .= ' $' . $property['name'];
             if (strlen($property['comment']) > 0) {
                 $line .= ' ' . $property['comment'];
             }
@@ -144,7 +157,7 @@ class PhpDocTemplate extends AbstractTemplate
         $line = '';
 
         if (is_array($property)) {
-            $line = ' * @return ';
+            $line = ' * @return';
             if (!empty($property['types'])) {
                 $line .= ' ' . implode('|', $property['types']);
             }
@@ -161,11 +174,11 @@ class PhpDocTemplate extends AbstractTemplate
      */
     private function generateThrows()
     {
-        $property = $this->getProperty('throws', array());
+        $exceptions = $this->getProperty('throws', array());
         $line = '';
 
-        if (!empty($property)) {
-            $line .= ' * @throws ' . implode('|', $property);
+        if (!empty($exceptions)) {
+            $line .= ' * @throws ' . implode('|', $exceptions);
         }
 
         return $line;

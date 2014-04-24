@@ -65,9 +65,7 @@ class MethodTemplate extends AbstractTemplate
     {
         $this->generatedContent = array(
             $this->generateSignature(),
-            $this->generateLine('{'),
             $this->generateBody(),
-            $this->generateLine('}')
         );
         $this->clearProperties();
     }
@@ -77,7 +75,18 @@ class MethodTemplate extends AbstractTemplate
      */
     private function generateBody()
     {
-        return $this->getProperty('body', array('//@TODO to implement'));
+        $isAbstract = $this->getProperty('abstract', false);
+        $array = array();
+
+        if ($isAbstract) {
+            $array[] = ';';
+        } else {
+            $array[] = '{';
+            $array[] = $this->getProperty('body', array('//@TODO to implement'));
+            $array[] = '}';
+        }
+
+        return $array;
     }
 
     /**
@@ -120,7 +129,7 @@ class MethodTemplate extends AbstractTemplate
             if (strlen($parameter['type']) > 0) {
                 $string .= $parameter['type'] . ' ';
             }
-            $string .= $parameter['name'];
+            $string .= '$' . $parameter['name'];
             if (strlen((string) $parameter['default']) > 0) {
                 $string .= ' = ' . (string) $parameter['default'];
             }

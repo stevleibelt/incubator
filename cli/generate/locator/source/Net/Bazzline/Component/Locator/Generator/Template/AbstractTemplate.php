@@ -16,7 +16,7 @@ abstract class AbstractTemplate implements TemplateInterface
     protected $generatedContent = array();
 
     /** @var array */
-    protected $properties = array();
+    private $properties = array();
 
     /**
      * @param string $name
@@ -60,7 +60,22 @@ abstract class AbstractTemplate implements TemplateInterface
      */
     public function toArray()
     {
-        return $this->generatedContent;
+        $array = array();
+
+        foreach ($this->generatedContent as $content) {
+            if (is_array($content)) {
+                if (!empty($content)) {
+                    $array[] = $content;
+                }
+            } else {
+                $string = (string) $content;
+                if (strlen($string) > 0) {
+                    $array[] = $string;
+                }
+            }
+        }
+
+        return $array;
     }
 
     /**
@@ -84,15 +99,17 @@ abstract class AbstractTemplate implements TemplateInterface
      */
     protected function arrayToString(array $array, $prefix)
     {
-        $string = '';
+        $lines = array();
 
         foreach ($array as $value) {
             $line = (is_array($value)) ? $this->arrayToString($value, $prefix) : (string) $value;
 
             if (strlen($line) > 0) {
-                $string .= $prefix . $line;
+                $lines[] = $prefix . $line;
             }
         }
+
+        $string = implode(PHP_EOL, $lines);
 
         return $string;
     }
