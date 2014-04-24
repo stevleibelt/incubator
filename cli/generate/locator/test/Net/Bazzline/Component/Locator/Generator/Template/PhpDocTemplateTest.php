@@ -168,7 +168,6 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithAll()
     {
-
         $template = $this->getNewPhpDocTemplate();
         $template->addComment('Foo');
         $template->addComment('Bar');
