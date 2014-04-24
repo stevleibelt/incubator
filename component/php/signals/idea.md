@@ -364,3 +364,4 @@ class RuntimeSignal implements SignalInterface
 * http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_12_01.html
 * http://linux.jgfs.net/man/man7/signal.7.html
 * https://en.wikipedia.org/wiki/Signal_(computing)
+* https://github.com/Yuav/gearmanadmin/blob/master/src/GearmanAdmin.php
