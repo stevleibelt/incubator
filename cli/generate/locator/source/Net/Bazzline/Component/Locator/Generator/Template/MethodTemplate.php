@@ -82,7 +82,7 @@ class MethodTemplate extends AbstractTemplate
             $array[] = ';';
         } else {
             $array[] = '{';
-            $array[] = $this->getProperty('body', array('//@TODO to implement'));
+            $array[] = $this->getProperty('body', array('//@todo to implement'));
             $array[] = '}';
         }
 

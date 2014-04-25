@@ -166,6 +166,51 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedString, $template->toString());
     }
 
+    public function testWithToDos()
+    {
+        $template = $this->getNewPhpDocTemplate();
+        $template->addTodoS('implement bar exception');
+        $template->addTodoS('implement foo exception');
+        $template->generate();
+
+        $expectedArray = array(
+            '/**',
+            array (
+                ' * @todo implement bar exception',
+                ' * @todo implement foo exception',
+            ),
+            ' */'
+        );
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @todo implement bar exception' . PHP_EOL .
+            ' * @todo implement foo exception' . PHP_EOL .
+            ' */';
+
+        $this->assertEquals($expectedArray, $template->toArray());
+        $this->assertEquals($expectedString, $template->toString());
+    }
+
+    public function testWithVariable()
+    {
+        $template = $this->getNewPhpDocTemplate();
+        $template->setVariable('foobar', array('Bar', 'Foo'));
+        $template->generate();
+
+        $expectedArray = array(
+            '/**',
+            ' * @var Bar|Foo foobar',
+            ' */'
+        );
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @var Bar|Foo foobar' . PHP_EOL .
+            ' */';
+
+        $this->assertEquals($expectedArray, $template->toArray());
+        $this->assertEquals($expectedString, $template->toString());
+    }
+
     public function testWithAll()
     {
         $template = $this->getNewPhpDocTemplate();
@@ -179,6 +224,9 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template->setReturn(array('Foo', 'Bar'), 'there is no foo without a bar');
         $template->addThrows('BarException');
         $template->addThrows('FooException');
+        $template->addTodoS('implement bar exception');
+        $template->addTodoS('implement foo exception');
+        $template->setVariable('foobar', array('Bar', 'Foo'));
         $template->generate();
 
         $expectedArray = array(
@@ -189,6 +237,10 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
             ),
             ' * Class UnitTest',
             ' * @package Unit\Test',
+            array (
+                ' * @todo implement bar exception',
+                ' * @todo implement foo exception',
+            ),
             array(
                 ' * @param Bar $bar',
                 ' * @param Foo $foo',
@@ -196,6 +248,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
             ),
             ' * @return Foo|Bar there is no foo without a bar',
             ' * @throws BarException|FooException',
+            ' * @var Bar|Foo foobar',
             ' */'
         );
         $expectedString =
@@ -204,11 +257,14 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
             ' * Bar' . PHP_EOL .
             ' * Class UnitTest' .  PHP_EOL .
             ' * @package Unit\Test' .  PHP_EOL .
+            ' * @todo implement bar exception' . PHP_EOL .
+            ' * @todo implement foo exception' . PHP_EOL .
             ' * @param Bar $bar' . PHP_EOL .
             ' * @param Foo $foo' . PHP_EOL .
             ' * @param Foo|Bar $fooBar there is no foo without a bar' . PHP_EOL .
             ' * @return Foo|Bar there is no foo without a bar' . PHP_EOL .
             ' * @throws BarException|FooException' . PHP_EOL .
+            ' * @var Bar|Foo foobar' . PHP_EOL .
             ' */';
 
         $this->assertEquals($expectedArray, $template->toArray());

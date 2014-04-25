@@ -74,6 +74,29 @@ class PhpDocTemplate extends AbstractTemplate
     }
 
     /**
+     * @param string $toDo
+     */
+    public function addTodoS($toDo)
+    {
+        $this->addProperty('todos', (string) $toDo);
+    }
+
+
+
+    /**
+     * @param string $name
+     * @param array $types
+     */
+    public function setVariable($name, $types = array())
+    {
+        $variable = array(
+            'name'  => $name,
+            'types' => $types
+        );
+        $this->addProperty('variable', $variable, false);
+    }
+
+    /**
      * @throws InvalidArgumentException|RuntimeException
      */
     public function generate()
@@ -83,9 +106,11 @@ class PhpDocTemplate extends AbstractTemplate
             $this->generateComments(),
             $this->generateClass(),
             $this->generatePackage(),
+            $this->generateToDoS(),
             $this->generateParameters(),
             $this->generateReturn(),
             $this->generateThrows(),
+            $this->generateVariable(),
             $this->generateLine(' */'),
         );
         $this->clearProperties();
@@ -106,9 +131,9 @@ class PhpDocTemplate extends AbstractTemplate
      */
     private function generatePackage()
     {
-        $class = $this->getProperty('package');
+        $package = $this->getProperty('package');
 
-        return (is_string($class)) ? ' * @package ' . $class : '';
+        return (is_string($package)) ? ' * @package ' . $package : '';
     }
 
     /**
@@ -133,14 +158,14 @@ class PhpDocTemplate extends AbstractTemplate
     {
         $array = array();
 
-        foreach ($this->getProperty('parameters', array()) as $property) {
+        foreach ($this->getProperty('parameters', array()) as $parameter) {
             $line = ' * @param';
-            if (!empty($property['types'])) {
-                $line .= ' ' . implode('|', $property['types']);
+            if (!empty($parameter['types'])) {
+                $line .= ' ' . implode('|', $parameter['types']);
             }
-            $line .= ' $' . $property['name'];
-            if (strlen($property['comment']) > 0) {
-                $line .= ' ' . $property['comment'];
+            $line .= ' $' . $parameter['name'];
+            if (strlen($parameter['comment']) > 0) {
+                $line .= ' ' . $parameter['comment'];
             }
             $array[] = $this->generateLine($line);
         }
@@ -153,16 +178,16 @@ class PhpDocTemplate extends AbstractTemplate
      */
     private function generateReturn()
     {
-        $property = $this->getProperty('return');
+        $return = $this->getProperty('return');
         $line = '';
 
-        if (is_array($property)) {
+        if (is_array($return)) {
             $line = ' * @return';
-            if (!empty($property['types'])) {
-                $line .= ' ' . implode('|', $property['types']);
+            if (!empty($return['types'])) {
+                $line .= ' ' . implode('|', $return['types']);
             }
-            if (strlen($property['comment']) > 0) {
-                $line .= ' ' . $property['comment'];
+            if (strlen($return['comment']) > 0) {
+                $line .= ' ' . $return['comment'];
             }
         }
 
@@ -179,6 +204,40 @@ class PhpDocTemplate extends AbstractTemplate
 
         if (!empty($exceptions)) {
             $line .= ' * @throws ' . implode('|', $exceptions);
+        }
+
+        return $line;
+    }
+
+    /**
+     * @return array
+     */
+    private function generateToDoS()
+    {
+        $toDoS = $this->getProperty('todos', array());
+        $array = array();
+
+        foreach ($toDoS as $todo) {
+            $array[] = ' * @todo ' . $todo;
+        }
+
+        return $array;
+    }
+
+    /**
+     * @return string
+     */
+    private function generateVariable()
+    {
+        $variable = $this->getProperty('variable', array());
+        $line = '';
+
+        if (!empty($variable)) {
+            $line .= ' * @var';
+            if (!empty($variable['types'])) {
+                $line .= ' ' . implode('|', $variable['types']);
+            }
+            $line .= ' ' . $variable['name'];
         }
 
         return $line;
