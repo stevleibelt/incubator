@@ -105,27 +105,27 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @throws InvalidArgumentException|RuntimeException
      */
-    public function generate()
+    public function render()
     {
-        $this->generatedContent = array(
-            $this->generateLine('/**'),
-            $this->generateSee(),
-            $this->generateComments(),
-            $this->generateClass(),
-            $this->generatePackage(),
-            $this->generateToDoS(),
-            $this->generateParameters(),
-            $this->generateReturn(),
-            $this->generateThrows(),
-            $this->generateVariable(),
-            $this->generateLine(' */'),
+        $this->renderedContent = array(
+            $this->renderLine('/**'),
+            $this->renderSees(),
+            $this->renderComments(),
+            $this->renderClass(),
+            $this->renderPackage(),
+            $this->renderToDoS(),
+            $this->renderParameters(),
+            $this->renderReturn(),
+            $this->renderThrows(),
+            $this->renderVariable(),
+            $this->renderLine(' */'),
         );
     }
 
     /**
      * @return string
      */
-    private function generateClass()
+    private function renderClass()
     {
         $class = $this->getProperty('class');
 
@@ -135,7 +135,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return string
      */
-    private function generatePackage()
+    private function renderPackage()
     {
         $package = $this->getProperty('package');
 
@@ -145,7 +145,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return array
      */
-    private function generateComments()
+    private function renderComments()
     {
         $comments = $this->getProperty('comments', array());
         $array = array();
@@ -160,7 +160,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return array
      */
-    private function generateParameters()
+    private function renderParameters()
     {
         $array = array();
 
@@ -173,7 +173,7 @@ class PhpDocTemplate extends AbstractTemplate
             if (strlen($parameter['comment']) > 0) {
                 $line .= ' ' . $parameter['comment'];
             }
-            $array[] = $this->generateLine($line);
+            $array[] = $this->renderLine($line);
         }
 
         return $array;
@@ -182,7 +182,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return string
      */
-    private function generateReturn()
+    private function renderReturn()
     {
         $return = $this->getProperty('return');
         $line = '';
@@ -203,7 +203,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return array
      */
-    private function generateSee()
+    private function renderSees()
     {
         $sees = $this->getProperty('sees', array());
         $array = array();
@@ -218,7 +218,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return string
      */
-    private function generateThrows()
+    private function renderThrows()
     {
         $exceptions = $this->getProperty('throws', array());
         $line = '';
@@ -233,7 +233,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return array
      */
-    private function generateToDoS()
+    private function renderToDoS()
     {
         $toDoS = $this->getProperty('todos', array());
         $array = array();
@@ -248,7 +248,7 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @return string
      */
-    private function generateVariable()
+    private function renderVariable()
     {
         $variable = $this->getProperty('variable', array());
         $line = '';

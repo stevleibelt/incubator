@@ -18,7 +18,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     public function testWithNoProperties()
     {
         $template = $this->getNewPhpDocTemplate();
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -37,7 +37,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getNewPhpDocTemplate();
         $template->addComment('Foo');
         $template->addComment('Bar');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -61,7 +61,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     {
         $template = $this->getNewPhpDocTemplate();
         $template->setClass('UnitTest');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -81,7 +81,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     {
         $template = $this->getNewPhpDocTemplate();
         $template->setPackage('Unit\Test');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -103,7 +103,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template->addParameter('bar', array('Bar'));
         $template->addParameter('foo', array('Foo'));
         $template->addParameter('fooBar', array('Foo', 'Bar'), 'there is no foo without a bar');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -129,7 +129,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     {
         $template = $this->getNewPhpDocTemplate();
         $template->setReturn(array('Foo', 'Bar'), 'there is no foo without a bar');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -150,7 +150,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getNewPhpDocTemplate();
         $template->addSee('https://artodeto@bazzline.net');
         $template->addSee('https://github.com/stevleibelt');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -175,7 +175,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getNewPhpDocTemplate();
         $template->addThrows('BarException');
         $template->addThrows('FooException');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -196,7 +196,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getNewPhpDocTemplate();
         $template->addTodoS('implement bar exception');
         $template->addTodoS('implement foo exception');
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -220,7 +220,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     {
         $template = $this->getNewPhpDocTemplate();
         $template->setVariable('foobar', array('Bar', 'Foo'));
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',
@@ -254,7 +254,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template->addTodoS('implement bar exception');
         $template->addTodoS('implement foo exception');
         $template->setVariable('foobar', array('Bar', 'Foo'));
-        $template->generate();
+        $template->render();
 
         $expectedArray = array(
             '/**',

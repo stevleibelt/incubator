@@ -13,7 +13,7 @@ namespace Net\Bazzline\Component\Locator\Generator\Template;
 abstract class AbstractTemplate implements TemplateInterface
 {
     /** @var array */
-    protected $generatedContent = array();
+    protected $renderedContent = array();
 
     /** @var array */
     private $properties = array();
@@ -40,7 +40,7 @@ abstract class AbstractTemplate implements TemplateInterface
         }
     }
 
-    protected function clearProperties()
+    public function andClearProperties()
     {
         $this->properties = array();
     }
@@ -62,7 +62,7 @@ abstract class AbstractTemplate implements TemplateInterface
     {
         $array = array();
 
-        foreach ($this->generatedContent as $content) {
+        foreach ($this->renderedContent as $content) {
             if (is_array($content)) {
                 if (!empty($content)) {
                     $array[] = $content;
@@ -84,9 +84,9 @@ abstract class AbstractTemplate implements TemplateInterface
      */
     public function toString($prefix = '')
     {
-        if (is_array($this->generatedContent)
-            && !empty($this->generatedContent)) {
-            return $this->arrayToString($this->generatedContent, $prefix);
+        if (is_array($this->renderedContent)
+            && !empty($this->renderedContent)) {
+            return $this->arrayToString($this->renderedContent, $prefix);
         } else {
             return '';
         }
@@ -119,7 +119,7 @@ abstract class AbstractTemplate implements TemplateInterface
      * @param string $suffix
      * @return string
      */
-    protected function generateLine($prefix = '', $suffix = '')
+    protected function renderLine($prefix = '', $suffix = '')
     {
         return $prefix . $suffix;
     }

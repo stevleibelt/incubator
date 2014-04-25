@@ -12,10 +12,12 @@ namespace Net\Bazzline\Component\Locator\Generator\Template;
  */
 interface TemplateInterface
 {
+    public function andClearProperties();
+
     /**
      * @throws InvalidArgumentException|RuntimeException
      */
-    public function generate();
+    public function render();
 
     /**
      * @return array

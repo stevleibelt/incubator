@@ -61,19 +61,18 @@ class MethodTemplate extends AbstractTemplate
     /**
      * @throws InvalidArgumentException|RuntimeException
      */
-    public function generate()
+    public function render()
     {
-        $this->generatedContent = array(
-            $this->generateSignature(),
-            $this->generateBody(),
+        $this->renderedContent = array(
+            $this->renderSignature(),
+            $this->renderBody(),
         );
-        $this->clearProperties();
     }
 
     /**
      * @return array
      */
-    private function generateBody()
+    private function renderBody()
     {
         $isAbstract = $this->getProperty('abstract', false);
         $array = array();
@@ -92,7 +91,7 @@ class MethodTemplate extends AbstractTemplate
     /**
      * @return string
      */
-    private function generateSignature()
+    private function renderSignature()
     {
         $isAbstract = $this->getProperty('abstract', false);
         $isFinal = $this->getProperty('final', false);
