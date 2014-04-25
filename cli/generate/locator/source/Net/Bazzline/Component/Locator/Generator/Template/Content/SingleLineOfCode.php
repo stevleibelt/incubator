@@ -16,6 +16,11 @@ class SingleLineOfCode implements ContentInterface
     /** @var array|string[] */
     private $words = array();
 
+    public function __clone()
+    {
+        $this->clear();
+    }
+
     /**
      * @param string $string
      * @param string $previousWordSeparator
@@ -32,6 +37,11 @@ class SingleLineOfCode implements ContentInterface
         }
 
         return $this;
+    }
+
+    public function clear()
+    {
+        $this->words = array();
     }
 
     /**

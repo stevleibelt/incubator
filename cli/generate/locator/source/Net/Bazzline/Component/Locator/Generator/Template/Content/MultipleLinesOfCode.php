@@ -13,18 +13,39 @@ namespace Net\Bazzline\Component\Locator\Generator\Template\Content;
  */
 class MultipleLinesOfCode implements ContentInterface
 {
+    /** @var bool */
+    private $addEmptyLineIfAddIsCalledAgain = false;
+
     /** @var array|SingleLineOfCode[] */
     private $linesOfCode = array();
 
+    public function __clone()
+    {
+        $this->clear();
+    }
+
     /**
      * @param SingleLineOfCode $line
+     * @param bool $addEmptyLineIfAddIsCalledAgain
      * @return $this
      */
-    public function add(SingleLineOfCode $line)
+    public function add(SingleLineOfCode $line, $addEmptyLineIfAddIsCalledAgain = false)
     {
         $this->linesOfCode[] = $line;
+        if ($this->addEmptyLineIfAddIsCalledAgain) {
+            $clonedLine = clone $line;
+            //$clonedLine->clear(); //needed?
+            $this->linesOfCode[] = $clonedLine;
+            $this->addEmptyLineIfAddIsCalledAgain = false;
+        }
+        $this->addEmptyLineIfAddIsCalledAgain = (bool) $addEmptyLineIfAddIsCalledAgain;
 
         return $this;
+    }
+
+    public function clear()
+    {
+        $this->linesOfCode = array();
     }
 
     /**

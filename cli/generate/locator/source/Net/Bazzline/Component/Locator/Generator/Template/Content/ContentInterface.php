@@ -12,6 +12,8 @@ namespace Net\Bazzline\Component\Locator\Generator\Template\Content;
  */
 interface ContentInterface
 {
+    public function clear();
+
     /**
      * @return bool
      */
