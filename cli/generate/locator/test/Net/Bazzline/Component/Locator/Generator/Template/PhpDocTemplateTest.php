@@ -17,7 +17,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 {
     public function testWithNoProperties()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->render();
 
         $expectedArray = array(
@@ -31,10 +31,27 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedArray, $template->toArray());
         $this->assertEquals($expectedString, $template->toString());
     }
+    public function testWithNoPropertiesAndPrefix()
+    {
+        $template = $this->getTemplate();
+        $template->render();
+        $prefix = '    ';
+
+        $expectedArray = array(
+            '/**',
+            ' */'
+        );
+        $expectedString =
+            $prefix . '/**' . PHP_EOL .
+            $prefix . ' */';
+
+        $this->assertEquals($expectedArray, $template->toArray());
+        $this->assertEquals($expectedString, $template->toString($prefix));
+    }
 
     public function testWithComments()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->addComment('Foo');
         $template->addComment('Bar');
         $template->render();
@@ -59,7 +76,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithClass()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->setClass('UnitTest');
         $template->render();
 
@@ -79,7 +96,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithPackage()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->setPackage('Unit\Test');
         $template->render();
 
@@ -99,7 +116,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithParameters()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->addParameter('bar', array('Bar'));
         $template->addParameter('foo', array('Foo'));
         $template->addParameter('fooBar', array('Foo', 'Bar'), 'there is no foo without a bar');
@@ -127,7 +144,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithReturn()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->setReturn(array('Foo', 'Bar'), 'there is no foo without a bar');
         $template->render();
 
@@ -147,7 +164,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithSees()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->addSee('https://artodeto@bazzline.net');
         $template->addSee('https://github.com/stevleibelt');
         $template->render();
@@ -172,7 +189,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithThrows()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->addThrows('BarException');
         $template->addThrows('FooException');
         $template->render();
@@ -193,7 +210,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithToDos()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->addTodoS('implement bar exception');
         $template->addTodoS('implement foo exception');
         $template->render();
@@ -218,7 +235,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithVariable()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->setVariable('foobar', array('Bar', 'Foo'));
         $template->render();
 
@@ -238,7 +255,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithAll()
     {
-        $template = $this->getNewPhpDocTemplate();
+        $template = $this->getTemplate();
         $template->addComment('Foo');
         $template->addComment('Bar');
         $template->setClass('UnitTest');
@@ -307,7 +324,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     /**
      * @return PhpDocTemplate
      */
-    private function getNewPhpDocTemplate()
+    private function getTemplate()
     {
         return new PhpDocTemplate();
     }

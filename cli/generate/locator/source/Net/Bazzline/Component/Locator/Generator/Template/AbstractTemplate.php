@@ -12,6 +12,11 @@ namespace Net\Bazzline\Component\Locator\Generator\Template;
  */
 abstract class AbstractTemplate implements TemplateInterface
 {
+    //@todo create rendering strategy to use this trigger
+    //  the rendering strategy should add empty lines when needed
+    /** @var bool */
+    protected $addBlankLineIfContentFollows = false;
+
     /** @var array */
     protected $renderedContent = array();
 
