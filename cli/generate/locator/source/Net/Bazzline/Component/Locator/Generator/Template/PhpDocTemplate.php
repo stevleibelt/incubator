@@ -66,6 +66,14 @@ class PhpDocTemplate extends AbstractTemplate
     }
 
     /**
+     * @param string $see
+     */
+    public function addSee($see)
+    {
+        $this->addProperty('sees', (string) $see);
+    }
+
+    /**
      * @param string $exception
      */
     public function addThrows($exception)
@@ -80,8 +88,6 @@ class PhpDocTemplate extends AbstractTemplate
     {
         $this->addProperty('todos', (string) $toDo);
     }
-
-
 
     /**
      * @param string $name
@@ -103,6 +109,7 @@ class PhpDocTemplate extends AbstractTemplate
     {
         $this->generatedContent = array(
             $this->generateLine('/**'),
+            $this->generateSee(),
             $this->generateComments(),
             $this->generateClass(),
             $this->generatePackage(),
@@ -113,7 +120,6 @@ class PhpDocTemplate extends AbstractTemplate
             $this->generateVariable(),
             $this->generateLine(' */'),
         );
-        $this->clearProperties();
     }
 
     /**
@@ -192,6 +198,21 @@ class PhpDocTemplate extends AbstractTemplate
         }
 
         return $line;
+    }
+
+    /**
+     * @return array
+     */
+    private function generateSee()
+    {
+        $sees = $this->getProperty('sees', array());
+        $array = array();
+
+        foreach ($sees as $see) {
+            $array[] = ' * @see ' . $see;
+        }
+
+        return $array;
     }
 
     /**

@@ -145,6 +145,31 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedString, $template->toString());
     }
 
+    public function testWithSees()
+    {
+        $template = $this->getNewPhpDocTemplate();
+        $template->addSee('https://artodeto@bazzline.net');
+        $template->addSee('https://github.com/stevleibelt');
+        $template->generate();
+
+        $expectedArray = array(
+            '/**',
+            array (
+                ' * @see https://artodeto@bazzline.net',
+                ' * @see https://github.com/stevleibelt',
+            ),
+            ' */'
+        );
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @see https://artodeto@bazzline.net' . PHP_EOL .
+            ' * @see https://github.com/stevleibelt' . PHP_EOL .
+            ' */';
+
+        $this->assertEquals($expectedArray, $template->toArray());
+        $this->assertEquals($expectedString, $template->toString());
+    }
+
     public function testWithThrows()
     {
         $template = $this->getNewPhpDocTemplate();
@@ -222,6 +247,8 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template->addParameter('foo', array('Foo'));
         $template->addParameter('fooBar', array('Foo', 'Bar'), 'there is no foo without a bar');
         $template->setReturn(array('Foo', 'Bar'), 'there is no foo without a bar');
+        $template->addSee('https://artodeto@bazzline.net');
+        $template->addSee('https://github.com/stevleibelt');
         $template->addThrows('BarException');
         $template->addThrows('FooException');
         $template->addTodoS('implement bar exception');
@@ -231,6 +258,10 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
 
         $expectedArray = array(
             '/**',
+            array (
+                ' * @see https://artodeto@bazzline.net',
+                ' * @see https://github.com/stevleibelt',
+            ),
             array(
                 ' * Foo',
                 ' * Bar'
@@ -253,6 +284,8 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         );
         $expectedString =
             '/**' . PHP_EOL .
+            ' * @see https://artodeto@bazzline.net' . PHP_EOL .
+            ' * @see https://github.com/stevleibelt' . PHP_EOL .
             ' * Foo' . PHP_EOL .
             ' * Bar' . PHP_EOL .
             ' * Class UnitTest' .  PHP_EOL .
