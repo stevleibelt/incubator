@@ -120,6 +120,7 @@ abstract class AbstractTemplate implements TemplateInterface
     }
 
     /**
+     * @deprecated
      * @param string $prefix
      * @param string $suffix
      * @return string
