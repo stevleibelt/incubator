@@ -20,10 +20,10 @@ interface ContentInterface
     public function hasContent();
 
     /**
-     * @param string $prefix
+     * @param string $indention
      * @return string
      */
-    public function toString($prefix = '');
+    public function toString($indention = '');
 
     /**
      * @return string

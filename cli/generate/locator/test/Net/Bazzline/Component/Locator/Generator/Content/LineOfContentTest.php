@@ -6,14 +6,14 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator\Content;
 
-use Net\Bazzline\Component\Locator\Generator\Content\SingleLine;
+use Net\Bazzline\Component\Locator\Generator\Content\LineOfContent;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Class SingleLineTest
+ * Class LineOfContentTest
  * @package Test\Net\Bazzline\Component\Locator\Generator\Content
  */
-class SingleLineTest extends PHPUnit_Framework_TestCase
+class LineOfContentTest extends PHPUnit_Framework_TestCase
 {
     public function testWithoutContent()
     {
@@ -86,10 +86,10 @@ class SingleLineTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return SingleLine
+     * @return LineOfContent
      */
     private function getContent()
     {
-        return new SingleLine();
+        return new LineOfContent();
     }
 } 

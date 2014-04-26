@@ -7,17 +7,17 @@
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
 /**
- * Class MultipleLinesOfCode
+ * Class BlockOfContent
  *
  * @package Net\Bazzline\Component\Locator\Generator\Content
  */
-class MultipleLinesOfCode implements ContentInterface
+class BlockOfContent implements ContentInterface
 {
     /** @var bool */
     private $addEmptyLineIfAddIsCalledAgain = false;
 
-    /** @var array|SingleLine[] */
-    private $linesOfCode = array();
+    /** @var array|ContentInterface[] */
+    private $contents = array();
 
     public function __clone()
     {
@@ -31,11 +31,11 @@ class MultipleLinesOfCode implements ContentInterface
      */
     public function add(ContentInterface $content, $addEmptyLineIfAddIsCalledAgain = false)
     {
-        $this->linesOfCode[] = $content;
+        $this->contents[] = $content;
         if ($this->addEmptyLineIfAddIsCalledAgain) {
             $clonedLine = clone $content;
             //$clonedLine->clear(); //needed?
-            $this->linesOfCode[] = $clonedLine;
+            $this->contents[] = $clonedLine;
             $this->addEmptyLineIfAddIsCalledAgain = false;
         }
         $this->addEmptyLineIfAddIsCalledAgain = (bool) $addEmptyLineIfAddIsCalledAgain;
@@ -45,7 +45,7 @@ class MultipleLinesOfCode implements ContentInterface
 
     public function clear()
     {
-        $this->linesOfCode = array();
+        $this->contents = array();
     }
 
     /**
@@ -53,23 +53,35 @@ class MultipleLinesOfCode implements ContentInterface
      */
     public function hasContent()
     {
-        return (!empty($this->linesOfCode));
+        return (!empty($this->contents));
     }
 
     /**
-     * @param string $prefix
+     * @param string $indention
      * @return string
      */
-    public function toString($prefix = '')
+    public function toString($indention = '')
     {
         $string = '';
 
-        foreach ($this->linesOfCode as $lineOfCode) {
-            if ($lineOfCode->hasContent()) {
-                $string .= $lineOfCode->toString($prefix) . PHP_EOL;
+        foreach ($this->contents as $content) {
+            if ($content->hasContent()) {
+                if ($content instanceof BlockOfContent) {
+                    $string .= $content->toString(str_repeat($indention, 2)) . PHP_EOL;
+                } else if ($content instanceof LineOfContent) {
+                    $string .= $content->toString($indention) . PHP_EOL;
+                }
             }
         }
 
         return $string;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toString(' ');
     }
 }

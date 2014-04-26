@@ -7,14 +7,14 @@
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
 /**
- * Class SingleLine
+ * Class LineOfContent
  *
  * @package Net\Bazzline\Component\Locator\Generator\Content
  */
-class SingleLine implements ContentInterface
+class LineOfContent implements ContentInterface
 {
     /** @var array|string[] */
-    private $words = array();
+    private $parts = array();
 
     public function __clone()
     {
@@ -29,10 +29,10 @@ class SingleLine implements ContentInterface
     public function add($string, $previousWordSeparator = ' ')
     {
         if (strlen($string) > 0) {
-            if (empty($this->words)) {
-                $this->words[] = $string;
+            if (empty($this->parts)) {
+                $this->parts[] = $string;
             } else {
-                $this->words[] = $previousWordSeparator . $string;
+                $this->parts[] = $previousWordSeparator . $string;
             }
         }
 
@@ -41,7 +41,7 @@ class SingleLine implements ContentInterface
 
     public function clear()
     {
-        $this->words = array();
+        $this->parts = array();
     }
 
     /**
@@ -49,16 +49,16 @@ class SingleLine implements ContentInterface
      */
     public function hasContent()
     {
-        return (!empty($this->words));
+        return (!empty($this->parts));
     }
 
     /**
-     * @param string $prefix
+     * @param string $indention
      * @return string
      */
-    public function toString($prefix = '')
+    public function toString($indention = '')
     {
-        return implode('', $this->words);
+        return implode('', $this->parts);
     }
 
     /**
