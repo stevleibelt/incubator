@@ -61,6 +61,30 @@ class SingleLineTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($content, $singleLine->toString());
     }
 
+    public function testClear()
+    {
+        $content = 'there is no foo without a bar';
+        $singleLine = $this->getContent();
+        $singleLine->add($content);
+        $singleLine->clear();
+
+        $this->assertFalse($singleLine->hasContent());
+        $this->assertEquals('', $singleLine->toString());
+    }
+
+    public function testClone()
+    {
+        $content = 'there is no foo without a bar';
+        $singleLine = $this->getContent();
+        $singleLine->add($content);
+        $clonedSingleLine = clone $singleLine;
+
+        $this->assertTrue($singleLine->hasContent());
+        $this->assertEquals($content, $singleLine->toString());
+        $this->assertFalse($clonedSingleLine->hasContent());
+        $this->assertEquals('', $clonedSingleLine->toString());
+    }
+
     /**
      * @return SingleLine
      */

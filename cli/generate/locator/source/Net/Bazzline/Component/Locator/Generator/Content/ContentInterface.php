@@ -24,4 +24,9 @@ interface ContentInterface
      * @return string
      */
     public function toString($prefix = '');
+
+    /**
+     * @return string
+     */
+    public function __toString();
 }

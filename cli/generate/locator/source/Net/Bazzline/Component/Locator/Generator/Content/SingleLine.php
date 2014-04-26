@@ -60,4 +60,12 @@ class SingleLine implements ContentInterface
     {
         return implode('', $this->words);
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toString(' ');
+    }
 }
