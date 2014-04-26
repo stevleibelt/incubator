@@ -63,17 +63,17 @@ class MethodTemplate extends AbstractTemplate
 
     /**
      * @param string $name
-     * @param string $default
-     * @param string $type
+     * @param string $defaultValue
+     * @param string $typeHint
      * @param bool $isReference
      */
-    public function addParameter($name, $default = '', $type = '', $isReference = false)
+    public function addParameter($name, $defaultValue = '', $typeHint = '', $isReference = false)
     {
         $parameter = array(
-            'default'       => $default,
+            'default_value' => $defaultValue,
             'name'          => $name,
             'is_reference'  => $isReference,
-            'type'          => $type
+            'type_hint'     => $typeHint
         );
 
         $this->addProperty('parameters', $parameter);
@@ -136,12 +136,12 @@ class MethodTemplate extends AbstractTemplate
 
         $parameterLine = $this->getLine();
         foreach ($parameters as $parameter) {
-            if (strlen($parameter['type']) > 0) {
-                $parameterLine->add($parameter['type']);
+            if (strlen($parameter['type_hint']) > 0) {
+                $parameterLine->add($parameter['type_hint']);
             }
             $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);
-            if (strlen((string) $parameter['default']) > 0) {
-                $parameterLine->add('= ' . (string) $parameter['default']);
+            if (strlen((string) $parameter['default_value']) > 0) {
+                $parameterLine->add('= ' . (string) $parameter['default_value']);
             }
         }
         $line->add('function ' . $name . '(' . $parameterLine->andConvertToString() . ')' . (($isAbstract) ? ';' : ''));
