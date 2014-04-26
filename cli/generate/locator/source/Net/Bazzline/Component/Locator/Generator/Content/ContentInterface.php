@@ -4,11 +4,11 @@
  * @since 2014-04-25 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template\Content;
+namespace Net\Bazzline\Component\Locator\Generator\Content;
 
 /**
  * Interface ContentInterface
- * @package Net\Bazzline\Component\Locator\Generator\Template\Content
+ * @package Net\Bazzline\Component\Locator\Generator\Content
  */
 interface ContentInterface
 {

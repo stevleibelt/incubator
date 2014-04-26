@@ -4,19 +4,19 @@
  * @since 2014-04-25
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template\Content;
+namespace Net\Bazzline\Component\Locator\Generator\Content;
 
 /**
  * Class MultipleLinesOfCode
  *
- * @package Net\Bazzline\Component\Locator\Generator\Template\Content
+ * @package Net\Bazzline\Component\Locator\Generator\Content
  */
 class MultipleLinesOfCode implements ContentInterface
 {
     /** @var bool */
     private $addEmptyLineIfAddIsCalledAgain = false;
 
-    /** @var array|SingleLineOfCode[] */
+    /** @var array|SingleLine[] */
     private $linesOfCode = array();
 
     public function __clone()
@@ -25,15 +25,15 @@ class MultipleLinesOfCode implements ContentInterface
     }
 
     /**
-     * @param SingleLineOfCode $line
+     * @param ContentInterface $content
      * @param bool $addEmptyLineIfAddIsCalledAgain
      * @return $this
      */
-    public function add(SingleLineOfCode $line, $addEmptyLineIfAddIsCalledAgain = false)
+    public function add(ContentInterface $content, $addEmptyLineIfAddIsCalledAgain = false)
     {
-        $this->linesOfCode[] = $line;
+        $this->linesOfCode[] = $content;
         if ($this->addEmptyLineIfAddIsCalledAgain) {
-            $clonedLine = clone $line;
+            $clonedLine = clone $content;
             //$clonedLine->clear(); //needed?
             $this->linesOfCode[] = $clonedLine;
             $this->addEmptyLineIfAddIsCalledAgain = false;

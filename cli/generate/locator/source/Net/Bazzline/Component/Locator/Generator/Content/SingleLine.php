@@ -4,14 +4,14 @@
  * @since 2014-04-25
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template\Content;
+namespace Net\Bazzline\Component\Locator\Generator\Content;
 
 /**
- * Class SingleLineOfCode
+ * Class SingleLine
  *
- * @package Net\Bazzline\Component\Locator\Generator\Template\Content
+ * @package Net\Bazzline\Component\Locator\Generator\Content
  */
-class SingleLineOfCode implements ContentInterface
+class SingleLine implements ContentInterface
 {
     /** @var array|string[] */
     private $words = array();
