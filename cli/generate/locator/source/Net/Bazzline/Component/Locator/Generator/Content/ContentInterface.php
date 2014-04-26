@@ -14,6 +14,13 @@ interface ContentInterface
 {
     /**
      * @param string|ContentInterface $content
+     * @throws InvalidArgumentException
+     */
+    public function __construct($content = null);
+
+    /**
+     * @param string|ContentInterface $content
+     * @throws InvalidArgumentException
      */
     public function add($content);
 

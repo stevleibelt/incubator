@@ -6,12 +6,14 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
+use Net\Bazzline\Component\Locator\Generator\Template\InvalidArgumentException;
+
 /**
- * Class LineOfContent
+ * Class Line
  *
  * @package Net\Bazzline\Component\Locator\Generator\Content
  */
-class LineOfContent implements ContentInterface
+class Line extends AbstractContent
 {
     /** @var array|string[] */
     private $parts = array();
@@ -19,23 +21,22 @@ class LineOfContent implements ContentInterface
     /** @var string */
     private $separator = ' ';
 
-    public function __clone()
-    {
-        $this->clear();
-    }
-
     /**
      * @param string|ContentInterface $content
-     * @return $this
+     * @throws InvalidArgumentException
      */
     public function add($content)
     {
-        if (strlen($content) > 0) {
-            if (empty($this->parts)) {
-                $this->parts[] = $content;
-            } else {
+        if (is_string($content)) {
+            if (strlen($content) > 0) {
                 $this->parts[] = $content;
             }
+        } else if ($content instanceof ContentInterface) {
+            if ($content->hasContent()) {
+                $this->parts[] = $content->toString();
+            }
+        } else {
+            throw new InvalidArgumentException('content has to be string or instance of ContentInterface');
         }
     }
 

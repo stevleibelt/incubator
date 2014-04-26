@@ -7,26 +7,29 @@
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
 /**
- * Class BlockOfContent
+ * Class Block
  *
  * @package Net\Bazzline\Component\Locator\Generator\Content
  */
-class BlockOfContent implements ContentInterface
+class Block extends AbstractContent
 {
     /** @var array|ContentInterface[] */
     private $contents = array();
 
-    public function __clone()
-    {
-        $this->clear();
-    }
-
     /**
      * @param string|ContentInterface $content
+     * @throws InvalidArgumentException
      */
     public function add($content)
     {
-        $this->contents[] = $content;
+        if (is_string($content)) {
+            $lineOfContent = new Line($content);
+            $this->contents[] = $lineOfContent;
+        } else if ($content instanceof ContentInterface) {
+            $this->contents[] = $content;
+        } else {
+            throw new InvalidArgumentException('content has to be string or instance of ContentInterface');
+        }
     }
 
     public function clear()
@@ -49,13 +52,19 @@ class BlockOfContent implements ContentInterface
     public function toString($indention = '')
     {
         $string = '';
+        end($this->contents);
+        $lastKey = key($this->contents);
+        reset($this->contents);
 
-        foreach ($this->contents as $content) {
+        foreach ($this->contents as $key => $content) {
             if ($content->hasContent()) {
-                if ($content instanceof BlockOfContent) {
-                    $string .= $content->toString(str_repeat($indention, 2)) . PHP_EOL;
-                } else if ($content instanceof LineOfContent) {
-                    $string .= $content->toString($indention) . PHP_EOL;
+                if ($content instanceof Block) {
+                    $string .= $content->toString(str_repeat($indention, 2));
+                } else {
+                    $string .= $content->toString($indention);
+                }
+                if ($key !== $lastKey) {
+                    $string .= PHP_EOL;
                 }
             }
         }
