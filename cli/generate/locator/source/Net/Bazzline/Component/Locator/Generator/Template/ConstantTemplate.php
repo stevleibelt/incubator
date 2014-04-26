@@ -16,14 +16,6 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 class ConstantTemplate extends AbstractTemplate
 {
     /**
-     * @param PhpDocumentationTemplate $phpDocumentation
-     */
-    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation)
-    {
-        $this->addProperty('documentation', $phpDocumentation, false);
-    }
-
-    /**
      * @param string $name
      */
     public function setName($name)
@@ -47,7 +39,6 @@ class ConstantTemplate extends AbstractTemplate
      */
     public function fillOut()
     {
-        $documentation = $this->getProperty('documentation');
         $name = $this->getProperty('name');
         $value = $this->getProperty('value');
 
@@ -58,9 +49,6 @@ class ConstantTemplate extends AbstractTemplate
 
         $block = $this->getBlock();
 
-        if ($documentation instanceof PhpDocumentationTemplate) {
-            $block->add(explode(PHP_EOL, $documentation->andConvertToString()));
-        }
         $block->add('const ' . $name . ' = ' . $value . ';');
         $this->addContent($block);
     }

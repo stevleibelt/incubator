@@ -6,7 +6,6 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator\Template;
 
-use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
@@ -16,7 +15,7 @@ use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 class ConstantTemplateTest extends GeneratorTestCase
 {
     /**
-     * @expectedException RuntimeException
+     * @expectedException \Net\Bazzline\Component\Locator\Generator\RuntimeException
      * @expectedExceptionMessage name and value are mandatory
      */
     public function testWithNoProperties()
@@ -36,18 +35,4 @@ class ConstantTemplateTest extends GeneratorTestCase
 
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
-
-    public function testWithDocumentation()
-    {
-$this->markTestIncomplete('documentation have to be implemented');
-        $documentationTemplate = $this->getPropertyTemplate();
-        $template = $this->getConstantTemplate();
-        $template->setName('UNIT_TEST');
-        $template->setValue('\'foobar\'');
-        $template->fillOut();
-
-        $expectedString = 'const UNIT_TEST = \'foobar\';';
-
-        $this->assertEquals($expectedString, $template->andConvertToString());
-    }
-} 
+}

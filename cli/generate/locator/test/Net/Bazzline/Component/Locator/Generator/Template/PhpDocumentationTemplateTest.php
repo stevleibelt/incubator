@@ -169,7 +169,7 @@ class PhpDocumentationTemplateGeneratorTest extends GeneratorTestCase
 
         $expectedString =
             '/**' . PHP_EOL .
-            ' * @var Bar|Foo foobar' . PHP_EOL .
+            ' * @var Bar|Foo $foobar' . PHP_EOL .
             ' */';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
@@ -210,7 +210,7 @@ class PhpDocumentationTemplateGeneratorTest extends GeneratorTestCase
             ' * @param Foo|Bar $fooBar there is no foo without a bar' . PHP_EOL .
             ' * @return Foo|Bar there is no foo without a bar' . PHP_EOL .
             ' * @throws BarException|FooException' . PHP_EOL .
-            ' * @var Bar|Foo foobar' . PHP_EOL .
+            ' * @var Bar|Foo $foobar' . PHP_EOL .
             ' */';
 
         $this->assertEquals($expectedString, $template->andConvertToString());

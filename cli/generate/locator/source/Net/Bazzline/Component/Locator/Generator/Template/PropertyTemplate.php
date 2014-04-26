@@ -65,14 +65,13 @@ class PropertyTemplate extends AbstractTemplate
     public function fillOut()
     {
         $documentation = $this->getProperty('documentation');
-        $isFinal = $this->getProperty('final', false);
         $isStatic = $this->getProperty('static', false);
         $name = $this->getProperty('name');
         $value = $this->getProperty('value');
         $visibility = $this->getProperty('visibility');
 
         if (is_null($name)) {
-            throw new RuntimeException('name is a mandatory');
+            throw new RuntimeException('name is mandatory');
         }
 
         $block = $this->getBlock();
@@ -80,9 +79,6 @@ class PropertyTemplate extends AbstractTemplate
 
         if ($documentation instanceof PhpDocumentationTemplate) {
             $block->add(explode(PHP_EOL, $documentation->andConvertToString()));
-        }
-        if ($isFinal) {
-            $line->add('final');
         }
 
         if (!is_null($visibility)) {

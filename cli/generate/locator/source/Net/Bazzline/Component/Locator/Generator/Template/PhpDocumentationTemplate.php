@@ -218,7 +218,7 @@ class PhpDocumentationTemplate extends AbstractTemplate
             if (!empty($variable['types'])) {
                 $line->add(implode('|', $variable['types']));
             }
-            $line->add($variable['name']);
+            $line->add('$' . $variable['name']);
             $this->addContent($line);
         }
     }
