@@ -6,14 +6,14 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator\Template;
 
-use Net\Bazzline\Component\Locator\Generator\Template\PhpDocTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Class PhpDocTemplateTest
+ * Class PhpDocumentationTemplateTest
  * @package Test\Net\Bazzline\Component\Locator\Generator\Template
  */
-class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
+class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 {
     public function testWithNoProperties()
     {
@@ -218,10 +218,10 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return PhpDocTemplate
+     * @return PhpDocumentationTemplate
      */
     private function getTemplate()
     {
-        return new PhpDocTemplate();
+        return new PhpDocumentationTemplate();
     }
 } 

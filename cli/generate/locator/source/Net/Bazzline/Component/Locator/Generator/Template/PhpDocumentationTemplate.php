@@ -10,10 +10,10 @@ use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
- * Class PhpDocTemplate
+ * Class PhpDocumentationTemplate
  * @package Net\Bazzline\Component\Locator\Generator\Template
  */
-class PhpDocTemplate extends AbstractTemplate
+class PhpDocumentationTemplate extends AbstractTemplate
 {
     /**
      * @param string $comment

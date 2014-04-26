@@ -28,6 +28,14 @@ class MethodTemplate extends AbstractTemplate
         $this->addProperty('body', $body, false);
     }
 
+    /**
+     * @param PhpDocumentationTemplate $phpDocumentation
+     */
+    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation)
+    {
+        $this->addProperty('documentation', $phpDocumentation, false);
+    }
+
     public function setFinal()
     {
         $this->addProperty('final', true, false);
@@ -84,6 +92,7 @@ class MethodTemplate extends AbstractTemplate
      */
     public function fillOut()
     {
+        $this->fillOutPhpDocumentation();
         $this->fillOutSignature();
         $this->fillOutBody();
     }
@@ -104,9 +113,15 @@ class MethodTemplate extends AbstractTemplate
         }
     }
 
-    /**
-     * @return string
-     */
+    private function fillOutPhpDocumentation()
+    {
+        $documentation = $this->getProperty('documentation');
+
+        if ($documentation instanceof PhpDocumentationTemplate) {
+            $this->addContent(explode(PHP_EOL, $documentation->andConvertToString()));
+        }
+    }
+
     private function fillOutSignature()
     {
         $isAbstract = $this->getProperty('abstract', false);
