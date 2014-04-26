@@ -6,6 +6,9 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Template;
 
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+use Net\Bazzline\Component\Locator\Generator\RuntimeException;
+
 /**
  * Class PhpDocTemplate
  * @package Net\Bazzline\Component\Locator\Generator\Template
@@ -105,162 +108,118 @@ class PhpDocTemplate extends AbstractTemplate
     /**
      * @throws InvalidArgumentException|RuntimeException
      */
-    public function render()
+    public function fillOut()
     {
-        $this->renderedContent = array(
-            $this->renderLine('/**'),
-            $this->renderSees(),
-            $this->renderComments(),
-            $this->renderClass(),
-            $this->renderPackage(),
-            $this->renderToDoS(),
-            $this->renderParameters(),
-            $this->renderReturn(),
-            $this->renderThrows(),
-            $this->renderVariable(),
-            $this->renderLine(' */'),
-        );
+        $this->addContent('/**');
+        $this->fillOutSees();
+        $this->fillOutComments();
+        $this->fillOutClass();
+        $this->fillOutPackage();
+        $this->fillOutToDoS();
+        $this->fillOutParameters();
+        $this->fillOutReturn();
+        $this->fillOutThrows();
+        $this->fillOutVariable();
+        $this->addContent(' */');
     }
 
-    /**
-     * @return string
-     */
-    private function renderClass()
+    private function fillOutClass()
     {
         $class = $this->getProperty('class');
 
-        return (is_string($class)) ? ' * Class ' . $class : '';
+        if (is_string($class)) {
+            $line = $this->getLine(' * Class ' . $class);
+            $this->addContent($line);
+        }
     }
 
-    /**
-     * @return string
-     */
-    private function renderPackage()
+    private function fillOutPackage()
     {
         $package = $this->getProperty('package');
 
-        return (is_string($package)) ? ' * @package ' . $package : '';
-    }
-
-    /**
-     * @return array
-     */
-    private function renderComments()
-    {
-        $comments = $this->getProperty('comments', array());
-        $array = array();
-
-        foreach ($comments as $comment) {
-            $array[] = ' * ' . $comment;
+        if (is_string($package)) {
+            $line = $this->getLine(' * @package ' . $package);
+            $this->addContent($line);
         }
-
-        return $array;
     }
 
-    /**
-     * @return array
-     */
-    private function renderParameters()
+    private function fillOutComments()
     {
-        $array = array();
+        foreach ($this->getProperty('comments', array()) as $comment) {
+            $line = $this->getLine(' * ' . $comment);
+            $this->addContent($line);
+        }
+    }
+
+    private function fillOutParameters()
+    {
 
         foreach ($this->getProperty('parameters', array()) as $parameter) {
-            $line = ' * @param';
+            $line = $this->getLine(' * @param');
             if (!empty($parameter['types'])) {
-                $line .= ' ' . implode('|', $parameter['types']);
+                $line->add(implode('|', $parameter['types']));
             }
-            $line .= ' $' . $parameter['name'];
+            $line->add('$' . $parameter['name']);
             if (strlen($parameter['comment']) > 0) {
-                $line .= ' ' . $parameter['comment'];
+                $line->add($parameter['comment']);
             }
-            $array[] = $this->renderLine($line);
+            $this->addContent($line);
         }
-
-        return $array;
     }
 
-    /**
-     * @return string
-     */
-    private function renderReturn()
+    private function fillOutReturn()
     {
         $return = $this->getProperty('return');
-        $line = '';
 
         if (is_array($return)) {
-            $line = ' * @return';
+            $line = $this->getLine(' * @return');
             if (!empty($return['types'])) {
-                $line .= ' ' . implode('|', $return['types']);
+                $line->add(implode('|', $return['types']));
             }
             if (strlen($return['comment']) > 0) {
-                $line .= ' ' . $return['comment'];
+                $line->add($return['comment']);
             }
+            $this->addContent($line);
         }
-
-        return $line;
     }
 
-    /**
-     * @return array
-     */
-    private function renderSees()
+    private function fillOutSees()
     {
-        $sees = $this->getProperty('sees', array());
-        $array = array();
-
-        foreach ($sees as $see) {
-            $array[] = ' * @see ' . $see;
+        foreach ($this->getProperty('sees', array()) as $see) {
+            $line = $this->getLine(' * @see ' . $see);
+            $this->addContent($line);
         }
-
-        return $array;
     }
 
-    /**
-     * @return string
-     */
-    private function renderThrows()
+    private function fillOutThrows()
     {
-        $exceptions = $this->getProperty('throws', array());
-        $line = '';
+        $throws = $this->getProperty('throws', array());
 
-        if (!empty($exceptions)) {
-            $line .= ' * @throws ' . implode('|', $exceptions);
+        if (!empty($throws)) {
+            $line = $this->getLine(' * @throws ' . implode('|', $throws));
+            $this->addContent($line);
         }
-
-        return $line;
     }
 
-    /**
-     * @return array
-     */
-    private function renderToDoS()
+    private function fillOutToDoS()
     {
-        $toDoS = $this->getProperty('todos', array());
-        $array = array();
-
-        foreach ($toDoS as $todo) {
-            $array[] = ' * @todo ' . $todo;
+        foreach ($this->getProperty('todos', array()) as $todo) {
+            $line = $this->getLine(' * @todo ' . $todo);
+            $this->addContent($line);
         }
-
-        return $array;
     }
 
-    /**
-     * @return string
-     */
-    private function renderVariable()
+    private function fillOutVariable()
     {
-        $variable = $this->getProperty('variable', array());
-        $line = '';
+        $variable = $this->getProperty('variable');
 
-        if (!empty($variable)) {
-            $line .= ' * @var';
+        if (is_array($variable)) {
+            $line =  $this->getLine(' * @var');
             if (!empty($variable['types'])) {
-                $line .= ' ' . implode('|', $variable['types']);
+                $line->add(implode('|', $variable['types']));
             }
-            $line .= ' ' . $variable['name'];
+            $line->add($variable['name']);
+            $this->addContent($line);
         }
-
-        return $line;
     }
 }

@@ -6,6 +6,9 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Template;
 
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+use Net\Bazzline\Component\Locator\Generator\RuntimeException;
+
 /**
  * Class MethodTemplate
  * @package Net\Bazzline\Component\Locator\Generator\Template
@@ -79,37 +82,29 @@ class MethodTemplate extends AbstractTemplate
     /**
      * @throws InvalidArgumentException|RuntimeException
      */
-    public function render()
+    public function fillOut()
     {
-        $this->renderedContent = array(
-            $this->renderSignature(),
-            $this->renderBody(),
-        );
+        $this->fillOutSignature();
+        $this->fillOutBody();
     }
 
-    /**
-     * @return string|array
-     */
-    private function renderBody()
+    private function fillOutBody()
     {
         $isAbstract = $this->getProperty('abstract', false);
-        $array = array();
 
-        if ($isAbstract) {
-            $array[] = ';';
-        } else {
-            $array[] = '{';
-            $array[] = $this->getProperty('body', array('//@todo implement'));
-            $array[] = '}';
+        if (!$isAbstract) {
+            $block = $this->getBlock();
+            $block->add('{');
+            $block->add($this->getProperty('body', array('//@todo implement')));
+            $block->add('}');
+            $this->addContent($block);
         }
-
-        return $array;
     }
 
     /**
      * @return string
      */
-    private function renderSignature()
+    private function fillOutSignature()
     {
         $isAbstract = $this->getProperty('abstract', false);
         $isFinal = $this->getProperty('final', false);
@@ -120,40 +115,39 @@ class MethodTemplate extends AbstractTemplate
         $name = $this->getProperty('name');
         $parameters = $this->getProperty('parameters', array());
 
-        $string = '';
+        $line = $this->getLine();
 
         if ($isAbstract) {
-            $string .= 'abstract ';
+            $line->add('abstract');
         }
 
         if ($isFinal) {
-            $string .= 'final ';
+            $line->add('final');
         }
 
         if ($isPrivate) {
-            $string .= 'private ';
+            $line->add('private');
         } else if ($isProtected) {
-            $string .= 'protected ';
+            $line->add('protected');
         } else if ($isPublic) {
-            $string .= 'public ';
+            $line->add('public');
         }
 
         if ($isStatic) {
-            $string .= 'static ';
+            $line->add('static');
         }
 
-        $string .= 'function ' . $name . '(';
+        $parameterLine = $this->getLine();
         foreach ($parameters as $parameter) {
             if (strlen($parameter['type']) > 0) {
-                $string .= $parameter['type'] . ' ';
+                $parameterLine->add($parameter['type']);
             }
-            $string .= ($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name'];
+            $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);
             if (strlen((string) $parameter['default']) > 0) {
-                $string .= ' = ' . (string) $parameter['default'];
+                $parameterLine->add('= ' . (string) $parameter['default']);
             }
         }
-        $string .= ')';
-
-        return $string;
+        $line->add('function ' . $name . '(' . $parameterLine->andConvertToString() . ')' . (($isAbstract) ? ';' : ''));
+        $this->addContent($line);
     }
 }

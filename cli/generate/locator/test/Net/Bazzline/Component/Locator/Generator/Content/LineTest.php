@@ -20,7 +20,17 @@ class LineTest extends PHPUnit_Framework_TestCase
         $line = $this->getContent();
 
         $this->assertFalse($line->hasContent());
-        $this->assertEquals('', $line->toString());
+        $this->assertEquals('', $line->andConvertToString());
+    }
+
+    public function testToString()
+    {
+        $content = 'there is no foo without a bar';
+        $line = $this->getContent();
+        $line->add($content);
+
+        $this->assertTrue($line->hasContent());
+        $this->assertEquals($content, (string) $line);
     }
 
     public function testAdd()
@@ -30,7 +40,37 @@ class LineTest extends PHPUnit_Framework_TestCase
         $line->add($content);
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->toString());
+        $this->assertEquals($content, $line->andConvertToString());
+    }
+
+    public function testAddArray()
+    {
+        $content = 'there is no foo without a bar';
+        $contentAsArray = explode(' ', $content);
+        $line = $this->getContent();
+        $line->add($contentAsArray);
+
+        $this->assertTrue($line->hasContent());
+        $this->assertEquals($content, $line->andConvertToString());
+    }
+
+    public function testAddNestedArray()
+    {
+        $contentAsArray = array(
+            array('there'),
+            array('is'),
+            array('no'),
+            array('f', 'o', 'o'),
+            array('without'),
+            array('a'),
+            array('b', 'a', 'r')
+        );
+        $expectedContent = 'there is no f o o without a b a r';
+        $line = $this->getContent();
+        $line->add($contentAsArray);
+
+        $this->assertTrue($line->hasContent());
+        $this->assertEquals($expectedContent, $line->andConvertToString());
     }
 
     public function testMultipleAdd()
@@ -44,7 +84,7 @@ class LineTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->toString());
+        $this->assertEquals($content, $line->andConvertToString());
     }
 
     public function testMultipleAddWithSeparator()
@@ -59,7 +99,7 @@ class LineTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->toString());
+        $this->assertEquals($content, $line->andConvertToString());
     }
 
     public function testClear()
@@ -70,7 +110,7 @@ class LineTest extends PHPUnit_Framework_TestCase
         $line->clear();
 
         $this->assertFalse($line->hasContent());
-        $this->assertEquals('', $line->toString());
+        $this->assertEquals('', $line->andConvertToString());
     }
 
     public function testClone()
@@ -81,9 +121,9 @@ class LineTest extends PHPUnit_Framework_TestCase
         $anotherLine = clone $line;
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->toString());
+        $this->assertEquals($content, $line->andConvertToString());
         $this->assertFalse($anotherLine->hasContent());
-        $this->assertEquals('', $anotherLine->toString());
+        $this->assertEquals('', $anotherLine->andConvertToString());
     }
 
     /**

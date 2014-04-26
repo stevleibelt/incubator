@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+
 /**
  * Class AbstractContent
  * @package Net\Bazzline\Component\Locator\Generator\Content
@@ -18,7 +20,7 @@ abstract class AbstractContent implements ContentInterface
     }
 
     /**
-     * @param string|ContentInterface $content
+     * @param string|array|ContentInterface $content
      * @throws InvalidArgumentException
      */
     public function __construct($content = null)
@@ -26,5 +28,13 @@ abstract class AbstractContent implements ContentInterface
         if (!is_null($content)) {
             $this->add($content);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->andConvertToString('');
     }
 }

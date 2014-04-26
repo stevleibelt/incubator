@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+
 /**
  * Interface ContentInterface
  * @package Net\Bazzline\Component\Locator\Generator\Content
@@ -13,13 +15,13 @@ namespace Net\Bazzline\Component\Locator\Generator\Content;
 interface ContentInterface
 {
     /**
-     * @param string|ContentInterface $content
+     * @param string|array|ContentInterface $content
      * @throws InvalidArgumentException
      */
     public function __construct($content = null);
 
     /**
-     * @param string|ContentInterface $content
+     * @param string|array|ContentInterface $content
      * @throws InvalidArgumentException
      */
     public function add($content);
@@ -35,7 +37,7 @@ interface ContentInterface
      * @param string $indention
      * @return string
      */
-    public function toString($indention = '');
+    public function andConvertToString($indention = '');
 
     /**
      * @return string

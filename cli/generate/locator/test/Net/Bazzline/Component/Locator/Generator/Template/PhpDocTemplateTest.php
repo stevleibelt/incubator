@@ -18,35 +18,25 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
     public function testWithNoProperties()
     {
         $template = $this->getTemplate();
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
     public function testWithNoPropertiesAndPrefix()
     {
         $template = $this->getTemplate();
-        $template->render();
+        $template->fillOut();
         $prefix = '    ';
 
-        $expectedArray = array(
-            '/**',
-            ' */'
-        );
         $expectedString =
             $prefix . '/**' . PHP_EOL .
             $prefix . ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString($prefix));
+        $this->assertEquals($expectedString, $template->andConvertToString($prefix));
     }
 
     public function testWithComments()
@@ -54,64 +44,43 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->addComment('Foo');
         $template->addComment('Bar');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            array(
-                ' * Foo',
-                ' * Bar'
-            ),
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * Foo' . PHP_EOL .
             ' * Bar' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithClass()
     {
         $template = $this->getTemplate();
         $template->setClass('UnitTest');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            ' * Class UnitTest',
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * Class UnitTest' .  PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithPackage()
     {
         $template = $this->getTemplate();
         $template->setPackage('Unit\Test');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            ' * @package Unit\Test',
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @package Unit\Test' .  PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithParameters()
@@ -120,17 +89,8 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template->addParameter('bar', array('Bar'));
         $template->addParameter('foo', array('Foo'));
         $template->addParameter('fooBar', array('Foo', 'Bar'), 'there is no foo without a bar');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            array(
-                ' * @param Bar $bar',
-                ' * @param Foo $foo',
-                ' * @param Foo|Bar $fooBar there is no foo without a bar'
-            ),
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @param Bar $bar' . PHP_EOL .
@@ -138,28 +98,21 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
             ' * @param Foo|Bar $fooBar there is no foo without a bar' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithReturn()
     {
         $template = $this->getTemplate();
         $template->setReturn(array('Foo', 'Bar'), 'there is no foo without a bar');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            ' * @return Foo|Bar there is no foo without a bar',
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @return Foo|Bar there is no foo without a bar' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithSees()
@@ -167,24 +120,15 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->addSee('https://artodeto@bazzline.net');
         $template->addSee('https://github.com/stevleibelt');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            array (
-                ' * @see https://artodeto@bazzline.net',
-                ' * @see https://github.com/stevleibelt',
-            ),
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @see https://artodeto@bazzline.net' . PHP_EOL .
             ' * @see https://github.com/stevleibelt' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithThrows()
@@ -192,20 +136,14 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->addThrows('BarException');
         $template->addThrows('FooException');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            ' * @throws BarException|FooException',
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @throws BarException|FooException' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithToDos()
@@ -213,44 +151,29 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->addTodoS('implement bar exception');
         $template->addTodoS('implement foo exception');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            array (
-                ' * @todo implement bar exception',
-                ' * @todo implement foo exception',
-            ),
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @todo implement bar exception' . PHP_EOL .
             ' * @todo implement foo exception' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithVariable()
     {
         $template = $this->getTemplate();
         $template->setVariable('foobar', array('Bar', 'Foo'));
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            ' * @var Bar|Foo foobar',
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @var Bar|Foo foobar' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithAll()
@@ -271,34 +194,8 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
         $template->addTodoS('implement bar exception');
         $template->addTodoS('implement foo exception');
         $template->setVariable('foobar', array('Bar', 'Foo'));
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            '/**',
-            array (
-                ' * @see https://artodeto@bazzline.net',
-                ' * @see https://github.com/stevleibelt',
-            ),
-            array(
-                ' * Foo',
-                ' * Bar'
-            ),
-            ' * Class UnitTest',
-            ' * @package Unit\Test',
-            array (
-                ' * @todo implement bar exception',
-                ' * @todo implement foo exception',
-            ),
-            array(
-                ' * @param Bar $bar',
-                ' * @param Foo $foo',
-                ' * @param Foo|Bar $fooBar there is no foo without a bar'
-            ),
-            ' * @return Foo|Bar there is no foo without a bar',
-            ' * @throws BarException|FooException',
-            ' * @var Bar|Foo foobar',
-            ' */'
-        );
         $expectedString =
             '/**' . PHP_EOL .
             ' * @see https://artodeto@bazzline.net' . PHP_EOL .
@@ -317,8 +214,7 @@ class PhpDocTemplateTest extends PHPUnit_Framework_TestCase
             ' * @var Bar|Foo foobar' . PHP_EOL .
             ' */';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     /**

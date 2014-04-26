@@ -21,7 +21,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $block = $this->getContent();
 
         $this->assertFalse($block->hasContent());
-        $this->assertEquals('', $block->toString());
+        $this->assertEquals('', $block->andConvertToString());
     }
 
     public function testAddString()
@@ -31,7 +31,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $block->add($content);
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($content, $block->toString());
+        $this->assertEquals($content, $block->andConvertToString());
     }
 
     public function testAddStringWithIndention()
@@ -42,7 +42,100 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $indention = '    ';
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($indention . $content, $block->toString($indention));
+        $this->assertEquals($indention . $content, $block->andConvertToString($indention));
+    }
+
+    public function testAddArray()
+    {
+        $content = 'there is no foo without a bar';
+        $contentAsArray = explode(' ', $content);
+        $expectedContent = implode(PHP_EOL, $contentAsArray);
+        $block = $this->getContent();
+        $block->add($contentAsArray);
+
+        $this->assertTrue($block->hasContent());
+        $this->assertEquals($expectedContent, $block->andConvertToString());
+    }
+
+    public function testAddArrayWithIndention()
+    {
+        $content = 'there is no foo without a bar';
+        $contentAsArray = explode(' ', $content);
+        $indention = '    ';
+        $expectedContent =
+            $indention . 'there' . PHP_EOL .
+            $indention . 'is' . PHP_EOL .
+            $indention . 'no' . PHP_EOL .
+            $indention . 'foo' . PHP_EOL .
+            $indention . 'without' . PHP_EOL .
+            $indention . 'a' . PHP_EOL .
+            $indention . 'bar';
+        $block = $this->getContent();
+        $block->add($contentAsArray);
+
+        $this->assertTrue($block->hasContent());
+        $this->assertEquals($expectedContent, $block->andConvertToString($indention));
+    }
+
+    public function testAddNestedArray()
+    {
+        $contentAsArray = array(
+            array('there'),
+            array('is'),
+            array('no'),
+            array('f', 'o', 'o'),
+            array('without'),
+            array('a'),
+            array('b', 'a', 'r')
+        );
+        $expectedContent =
+            'there' . PHP_EOL .
+            'is' . PHP_EOL .
+            'no' . PHP_EOL .
+            'f' . PHP_EOL .
+            'o' . PHP_EOL .
+            'o' . PHP_EOL .
+            'without' . PHP_EOL .
+            'a' . PHP_EOL .
+            'b' . PHP_EOL .
+            'a' . PHP_EOL .
+            'r';
+        $block = $this->getContent();
+        $block->add($contentAsArray);
+
+        $this->assertTrue($block->hasContent());
+        $this->assertEquals($expectedContent, $block->andConvertToString());
+    }
+
+    public function testAddNestedArrayWithIndention()
+    {
+        $contentAsArray = array(
+            array('there'),
+            array('is'),
+            array('no'),
+            array('f', 'o', 'o'),
+            array('without'),
+            array('a'),
+            array('b', 'a', 'r')
+        );
+        $indention = '    ';
+        $expectedContent =
+            $indention . 'there' . PHP_EOL .
+            $indention . 'is' . PHP_EOL .
+            $indention . 'no' . PHP_EOL .
+            $indention . 'f' . PHP_EOL .
+            $indention . 'o' . PHP_EOL .
+            $indention . 'o' . PHP_EOL .
+            $indention . 'without' . PHP_EOL .
+            $indention . 'a' . PHP_EOL .
+            $indention . 'b' . PHP_EOL .
+            $indention . 'a' . PHP_EOL .
+            $indention . 'r';
+        $block = $this->getContent();
+        $block->add($contentAsArray);
+
+        $this->assertTrue($block->hasContent());
+        $this->assertEquals($expectedContent, $block->andConvertToString($indention));
     }
 
     public function testAddLine()
@@ -52,7 +145,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $block->add($content);
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($content, $block->toString());
+        $this->assertEquals($content, $block->andConvertToString());
     }
 
     public function testAddLineWithIndention()
@@ -63,7 +156,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $indention = '    ';
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($indention . $content, $block->toString($indention));
+        $this->assertEquals($indention . $content, $block->andConvertToString($indention));
     }
 
     public function testAddBlock()
@@ -77,7 +170,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
             'there is no foo without a bar' . PHP_EOL .
             'never ever';
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($expectedContent, $block->toString());
+        $this->assertEquals($expectedContent, $block->andConvertToString());
     }
 
     public function testAddBlockWithIndention()
@@ -92,7 +185,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
             $indention . $indention . 'there is no foo without a bar' . PHP_EOL .
             $indention . $indention . 'never ever';
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($expectedContent, $block->toString($indention));
+        $this->assertEquals($expectedContent, $block->andConvertToString($indention));
     }
 
     public function testMultipleAdd()
@@ -106,7 +199,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals(implode(PHP_EOL, $contentAsArray), $block->toString());
+        $this->assertEquals(implode(PHP_EOL, $contentAsArray), $block->andConvertToString());
     }
 
     public function testClear()
@@ -117,7 +210,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $block->clear();
 
         $this->assertFalse($block->hasContent());
-        $this->assertEquals('', $block->toString());
+        $this->assertEquals('', $block->andConvertToString());
     }
 
     public function testClone()
@@ -128,9 +221,9 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $anotherLine = clone $block;
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($content, $block->toString());
+        $this->assertEquals($content, $block->andConvertToString());
         $this->assertFalse($anotherLine->hasContent());
-        $this->assertEquals('', $anotherLine->toString());
+        $this->assertEquals('', $anotherLine->andConvertToString());
     }
 
     /**

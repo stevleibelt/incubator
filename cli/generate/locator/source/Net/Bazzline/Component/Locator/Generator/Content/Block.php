@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+
 /**
  * Class Block
  *
@@ -17,7 +19,7 @@ class Block extends AbstractContent
     private $contents = array();
 
     /**
-     * @param string|ContentInterface $content
+     * @param string|array|ContentInterface $content
      * @throws InvalidArgumentException
      */
     public function add($content)
@@ -25,10 +27,14 @@ class Block extends AbstractContent
         if (is_string($content)) {
             $lineOfContent = new Line($content);
             $this->contents[] = $lineOfContent;
+        } else if (is_array($content)) {
+            foreach ($content as $part) {
+                $this->add($part);
+            }
         } else if ($content instanceof ContentInterface) {
             $this->contents[] = $content;
         } else {
-            throw new InvalidArgumentException('content has to be string or instance of ContentInterface');
+            throw new InvalidArgumentException('content has to be string, an array or instance of ContentInterface');
         }
     }
 
@@ -49,7 +55,7 @@ class Block extends AbstractContent
      * @param string $indention
      * @return string
      */
-    public function toString($indention = '')
+    public function andConvertToString($indention = '')
     {
         $string = '';
         end($this->contents);
@@ -59,9 +65,9 @@ class Block extends AbstractContent
         foreach ($this->contents as $key => $content) {
             if ($content->hasContent()) {
                 if ($content instanceof Block) {
-                    $string .= $content->toString(str_repeat($indention, 2));
+                    $string .= $content->andConvertToString(str_repeat($indention, 2));
                 } else {
-                    $string .= $content->toString($indention);
+                    $string .= $content->andConvertToString($indention);
                 }
                 if ($key !== $lastKey) {
                     $string .= PHP_EOL;
@@ -70,13 +76,5 @@ class Block extends AbstractContent
         }
 
         return $string;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->toString('');
     }
 }

@@ -6,27 +6,30 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Template;
 
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+use Net\Bazzline\Component\Locator\Generator\RuntimeException;
+
 /**
  * Interface TemplateInterface
  * @package Net\Bazzline\Component\Locator\Generator\Template
  */
 interface TemplateInterface
 {
-    public function andClearProperties();
+    public function clear();
 
     /**
      * @throws InvalidArgumentException|RuntimeException
      */
-    public function render();
+    public function fillOut();
 
     /**
-     * @return array
-     */
-    public function toArray();
-
-    /**
-     * @param string $prefix
+     * @param string $indention
      * @return string
      */
-    public function toString($prefix = '');
-} 
+    public function andConvertToString($indention = '');
+
+    /**
+     * @return string
+     */
+    public function __toString();
+}

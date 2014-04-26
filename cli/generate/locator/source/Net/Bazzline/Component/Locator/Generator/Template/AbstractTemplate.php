@@ -6,22 +6,34 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Template;
 
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+use Net\Bazzline\Component\Locator\Generator\Content\Block;
+use Net\Bazzline\Component\Locator\Generator\Content\ContentInterface;
+use Net\Bazzline\Component\Locator\Generator\Content\Line;
+
 /**
  * Class AbstractTemplate
  * @package Net\Bazzline\Component\Locator\Generator\Template
+ * @todo create rendering strategy to use this trigger for add blank line if content follows
  */
 abstract class AbstractTemplate implements TemplateInterface
 {
-    //@todo create rendering strategy to use this trigger
-    //  the rendering strategy should add empty lines when needed
-    /** @var bool */
-    protected $addBlankLineIfContentFollows = false;
-
-    /** @var array */
-    protected $renderedContent = array();
+    /** @var Block */
+    private $block;
 
     /** @var array */
     private $properties = array();
+
+    public function __construct()
+    {
+        $this->clear();
+    }
+
+    public function clear()
+    {
+        $this->properties = array();
+        $this->block = new Block();
+    }
 
     /**
      * @param string $name
@@ -45,9 +57,13 @@ abstract class AbstractTemplate implements TemplateInterface
         }
     }
 
-    public function andClearProperties()
+    /**
+     * @param string|ContentInterface $content
+     * @throws InvalidArgumentException
+     */
+    protected function addContent($content)
     {
-        $this->properties = array();
+        $this->block->add($content);
     }
 
     /**
@@ -61,13 +77,14 @@ abstract class AbstractTemplate implements TemplateInterface
     }
 
     /**
+     * @deprecated
      * @return array
      */
     public function toArray()
     {
         $array = array();
 
-        foreach ($this->renderedContent as $content) {
+        foreach ($this->block as $content) {
             if (is_array($content)) {
                 if (!empty($content)) {
                     $array[] = $content;
@@ -84,20 +101,24 @@ abstract class AbstractTemplate implements TemplateInterface
     }
 
     /**
-     * @param string $prefix
+     * @param string $indention
      * @return string
      */
-    public function toString($prefix = '')
+    public function andConvertToString($indention = '')
     {
-        if (is_array($this->renderedContent)
-            && !empty($this->renderedContent)) {
-            return $this->arrayToString($this->renderedContent, $prefix);
-        } else {
-            return '';
-        }
+        return $this->block->andConvertToString($indention);
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->andConvertToString('');
+    }
+
+    /**
+     * @deprecated
      * @param array $array
      * @param string $prefix
      * @return string
@@ -117,6 +138,24 @@ abstract class AbstractTemplate implements TemplateInterface
         $string = implode(PHP_EOL, $lines);
 
         return $string;
+    }
+
+    /**
+     * @param null|string|Line|Block $content
+     * @return Block
+     */
+    protected function getBlock($content = null)
+    {
+        return new Block($content);
+    }
+
+    /**
+     * @param null|string $content
+     * @return Line
+     */
+    protected function getLine($content = null)
+    {
+        return new Line($content);
     }
 
     /**

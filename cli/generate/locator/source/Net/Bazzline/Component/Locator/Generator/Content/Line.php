@@ -6,7 +6,7 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Content;
 
-use Net\Bazzline\Component\Locator\Generator\Template\InvalidArgumentException;
+use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 
 /**
  * Class Line
@@ -22,7 +22,7 @@ class Line extends AbstractContent
     private $separator = ' ';
 
     /**
-     * @param string|ContentInterface $content
+     * @param string|array|ContentInterface $content
      * @throws InvalidArgumentException
      */
     public function add($content)
@@ -31,12 +31,16 @@ class Line extends AbstractContent
             if (strlen($content) > 0) {
                 $this->parts[] = $content;
             }
+        } else if (is_array($content)) {
+            foreach ($content as $part) {
+                $this->add($part);
+            }
         } else if ($content instanceof ContentInterface) {
             if ($content->hasContent()) {
-                $this->parts[] = $content->toString();
+                $this->parts[] = $content->andConvertToString();
             }
         } else {
-            throw new InvalidArgumentException('content has to be string or instance of ContentInterface');
+            throw new InvalidArgumentException('content has to be string, an array or instance of ContentInterface');
         }
     }
 
@@ -65,16 +69,8 @@ class Line extends AbstractContent
      * @param string $indention
      * @return string
      */
-    public function toString($indention = '')
+    public function andConvertToString($indention = '')
     {
         return $indention . implode($this->separator, $this->parts);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->toString('');
     }
 }

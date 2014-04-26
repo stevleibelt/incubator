@@ -20,26 +20,15 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
     {
         $template = $this->getTemplate();
         $template->setName('unittest');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'function unittest()',
-            array(
-                '{',
-                array (
-                    '//@todo implement'
-                ),
-                '}'
-            )
-        );
         $expectedString =
             'function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
             '//@todo implement' . PHP_EOL .
             '}';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testAsAbstract()
@@ -47,20 +36,11 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->setAbstract();
         $template->setName('unittest');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'abstract function unittest()',
-            array(
-                ';',
-            )
-        );
-        $expectedString =
-            'abstract function unittest()' . PHP_EOL .
-            ';';
+        $expectedString = 'abstract function unittest();';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithBody()
@@ -77,16 +57,8 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->setName('unittest');
         $template->setBody($body);
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'function unittest()',
-            array(
-                '{',
-                $body,
-                '}'
-            )
-        );
         $expectedString =
             'function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
@@ -97,8 +69,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
             'return $foobar' . PHP_EOL .
             '}';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testAsFinal()
@@ -106,26 +77,15 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->setFinal();
         $template->setName('unittest');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'final function unittest()',
-            array(
-                '{',
-                array (
-                    '//@todo implement'
-                ),
-                '}'
-            )
-        );
         $expectedString =
             'final function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
             '//@todo implement' . PHP_EOL .
             '}';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testAsPrivate()
@@ -133,26 +93,15 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->setPrivate();
         $template->setName('unittest');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'private function unittest()',
-            array(
-                '{',
-                array (
-                    '//@todo implement'
-                ),
-                '}'
-            )
-        );
         $expectedString =
             'private function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
             '//@todo implement' . PHP_EOL .
             '}';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testAsProtected()
@@ -160,26 +109,15 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->setProtected();
         $template->setName('unittest');
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'protected function unittest()',
-            array(
-                '{',
-                array (
-                    '//@todo implement'
-                ),
-                '}'
-            )
-        );
         $expectedString =
             'protected function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
             '//@todo implement' . PHP_EOL .
             '}';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testAsPublic()
@@ -187,26 +125,15 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $template = $this->getTemplate();
         $template->setName('unittest');
         $template->setPublic();
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'public function unittest()',
-            array(
-                '{',
-                array (
-                    '//@todo implement'
-                ),
-                '}'
-            )
-        );
         $expectedString =
             'public function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
             '//@todo implement' . PHP_EOL .
             '}';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithALot()
@@ -225,16 +152,8 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $template->setName('unittest');
         $template->setFinal();
         $template->setPublic();
-        $template->render();
+        $template->fillOut();
 
-        $expectedArray = array(
-            'final public function unittest()',
-            array(
-                '{',
-                $body,
-                '}'
-            )
-        );
         $expectedString =
             'final public function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
@@ -245,8 +164,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
             'return $foobar' . PHP_EOL .
             '}';
 
-        $this->assertEquals($expectedArray, $template->toArray());
-        $this->assertEquals($expectedString, $template->toString());
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     /**
