@@ -13,5 +13,8 @@ namespace Net\Bazzline\Component\Locator\Generator;
  */
 class Generator
 {
-
+    //fetches configuration
+    //creates all needed instances
+    //backup old file if exists
+    //generates (creates file)
 } 
