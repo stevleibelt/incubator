@@ -43,17 +43,17 @@ class MethodTemplate extends AbstractTemplate
 
     public function setPrivate()
     {
-        $this->addProperty('private', true, false);
+        $this->addProperty('visibility', 'private', false);
     }
 
     public function setProtected()
     {
-        $this->addProperty('protected', true, false);
+        $this->addProperty('visibility', 'protected', false);
     }
 
     public function setPublic()
     {
-        $this->addProperty('public', true, false);
+        $this->addProperty('visibility', 'public', false);
     }
 
     public function setStatic()
@@ -111,12 +111,10 @@ class MethodTemplate extends AbstractTemplate
     {
         $isAbstract = $this->getProperty('abstract', false);
         $isFinal = $this->getProperty('final', false);
-        $isPrivate = $this->getProperty('private', false);
-        $isProtected = $this->getProperty('protected', false);
-        $isPublic = $this->getProperty('public', false);
         $isStatic = $this->getProperty('static', false);
         $name = $this->getProperty('name');
         $parameters = $this->getProperty('parameters', array());
+        $visibility = $this->getProperty('visibility');
 
         $line = $this->getLine();
 
@@ -128,12 +126,8 @@ class MethodTemplate extends AbstractTemplate
             $line->add('final');
         }
 
-        if ($isPrivate) {
-            $line->add('private');
-        } else if ($isProtected) {
-            $line->add('protected');
-        } else if ($isPublic) {
-            $line->add('public');
+        if (!is_null($visibility)) {
+            $line->add($visibility);
         }
 
         if ($isStatic) {
