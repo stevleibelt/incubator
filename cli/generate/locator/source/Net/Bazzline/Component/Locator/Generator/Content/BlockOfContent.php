@@ -13,9 +13,6 @@ namespace Net\Bazzline\Component\Locator\Generator\Content;
  */
 class BlockOfContent implements ContentInterface
 {
-    /** @var bool */
-    private $addEmptyLineIfAddIsCalledAgain = false;
-
     /** @var array|ContentInterface[] */
     private $contents = array();
 
@@ -25,22 +22,11 @@ class BlockOfContent implements ContentInterface
     }
 
     /**
-     * @param ContentInterface $content
-     * @param bool $addEmptyLineIfAddIsCalledAgain
-     * @return $this
+     * @param string|ContentInterface $content
      */
-    public function add(ContentInterface $content, $addEmptyLineIfAddIsCalledAgain = false)
+    public function add($content)
     {
         $this->contents[] = $content;
-        if ($this->addEmptyLineIfAddIsCalledAgain) {
-            $clonedLine = clone $content;
-            //$clonedLine->clear(); //needed?
-            $this->contents[] = $clonedLine;
-            $this->addEmptyLineIfAddIsCalledAgain = false;
-        }
-        $this->addEmptyLineIfAddIsCalledAgain = (bool) $addEmptyLineIfAddIsCalledAgain;
-
-        return $this;
     }
 
     public function clear()
@@ -82,6 +68,6 @@ class BlockOfContent implements ContentInterface
      */
     public function __toString()
     {
-        return $this->toString(' ');
+        return $this->toString('');
     }
 }

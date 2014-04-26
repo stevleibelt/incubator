@@ -52,9 +52,10 @@ class LineOfContentTest extends PHPUnit_Framework_TestCase
         $content = 'there:is:no:foo:without:a:bar';
         $contentAsArray = explode(':', $content);
         $singleLine = $this->getContent();
+        $singleLine->setContentSeparator(':');
 
         foreach ($contentAsArray as $part) {
-            $singleLine->add($part, ':');
+            $singleLine->add($part);
         }
 
         $this->assertTrue($singleLine->hasContent());

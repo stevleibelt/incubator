@@ -12,6 +12,11 @@ namespace Net\Bazzline\Component\Locator\Generator\Content;
  */
 interface ContentInterface
 {
+    /**
+     * @param string|ContentInterface $content
+     */
+    public function add($content);
+
     public function clear();
 
     /**

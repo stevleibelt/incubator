@@ -16,27 +16,35 @@ class LineOfContent implements ContentInterface
     /** @var array|string[] */
     private $parts = array();
 
+    /** @var string */
+    private $separator = ' ';
+
     public function __clone()
     {
         $this->clear();
     }
 
     /**
-     * @param string $string
-     * @param string $previousWordSeparator
+     * @param string|ContentInterface $content
      * @return $this
      */
-    public function add($string, $previousWordSeparator = ' ')
+    public function add($content)
     {
-        if (strlen($string) > 0) {
+        if (strlen($content) > 0) {
             if (empty($this->parts)) {
-                $this->parts[] = $string;
+                $this->parts[] = $content;
             } else {
-                $this->parts[] = $previousWordSeparator . $string;
+                $this->parts[] = $content;
             }
         }
+    }
 
-        return $this;
+    /**
+     * @param $separator
+     */
+    public function setContentSeparator($separator)
+    {
+        $this->separator = (string) $separator;
     }
 
     public function clear()
@@ -58,7 +66,7 @@ class LineOfContent implements ContentInterface
      */
     public function toString($indention = '')
     {
-        return implode('', $this->parts);
+        return $indention . implode($this->separator, $this->parts);
     }
 
     /**
@@ -66,6 +74,6 @@ class LineOfContent implements ContentInterface
      */
     public function __toString()
     {
-        return $this->toString(' ');
+        return $this->toString('');
     }
 }
