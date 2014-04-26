@@ -25,7 +25,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $expectedString =
             'function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            '//@todo implement' . PHP_EOL .
+            $template->getIndention() . '//@todo implement' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
@@ -62,11 +62,12 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $expectedString =
             'function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            '$bar = new Bar();' . PHP_EOL .
-            '$foo = new Foo();' . PHP_EOL .
-            '$foobar->add($bar);' . PHP_EOL .
-            '$foobar->add($foo);' . PHP_EOL .
-            'return $foobar' . PHP_EOL .
+            $template->getIndention() . '$bar = new Bar();' . PHP_EOL .
+            $template->getIndention() . '$foo = new Foo();' . PHP_EOL .
+            $template->getIndention() . '$foobar->add($bar);' . PHP_EOL .
+            $template->getIndention() . '$foobar->add($foo);' . PHP_EOL .
+            $template->getIndention() . PHP_EOL .
+            $template->getIndention() . 'return $foobar' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
@@ -82,7 +83,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $expectedString =
             'final function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            '//@todo implement' . PHP_EOL .
+            $template->getIndention() . '//@todo implement' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
@@ -98,7 +99,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $expectedString =
             'private function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            '//@todo implement' . PHP_EOL .
+            $template->getIndention() . '//@todo implement' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
@@ -114,7 +115,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $expectedString =
             'protected function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            '//@todo implement' . PHP_EOL .
+            $template->getIndention() . '//@todo implement' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
@@ -130,7 +131,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $expectedString =
             'public function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            '//@todo implement' . PHP_EOL .
+            $template->getIndention() . '//@todo implement' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
@@ -157,11 +158,12 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
         $expectedString =
             'final public function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            '$bar = new Bar();' . PHP_EOL .
-            '$foo = new Foo();' . PHP_EOL .
-            '$foobar->add($bar);' . PHP_EOL .
-            '$foobar->add($foo);' . PHP_EOL .
-            'return $foobar' . PHP_EOL .
+            $template->getIndention() . '$bar = new Bar();' . PHP_EOL .
+            $template->getIndention() . '$foo = new Foo();' . PHP_EOL .
+            $template->getIndention() . '$foobar->add($bar);' . PHP_EOL .
+            $template->getIndention() . '$foobar->add($foo);' . PHP_EOL .
+            $template->getIndention() . PHP_EOL .
+            $template->getIndention() . 'return $foobar' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());

@@ -28,9 +28,7 @@ class Line extends AbstractContent
     public function add($content)
     {
         if (is_string($content)) {
-            if (strlen($content) > 0) {
-                $this->parts[] = $content;
-            }
+            $this->parts[] = $content;
         } else if (is_array($content)) {
             foreach ($content as $part) {
                 $this->add($part);

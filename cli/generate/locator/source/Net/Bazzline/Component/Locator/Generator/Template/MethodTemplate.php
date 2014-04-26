@@ -93,11 +93,14 @@ class MethodTemplate extends AbstractTemplate
         $isAbstract = $this->getProperty('abstract', false);
 
         if (!$isAbstract) {
-            $block = $this->getBlock();
-            $block->add('{');
-            $block->add($this->getProperty('body', array('//@todo implement')));
-            $block->add('}');
-            $this->addContent($block);
+            $this->addContent($this->getLine('{'));
+            $this->addContent(
+                $this->getBlock(
+                    $this->getProperty('body', array('//@todo implement'))
+                ),
+                true
+            );
+            $this->addContent($this->getLine('}'));
         }
     }
 

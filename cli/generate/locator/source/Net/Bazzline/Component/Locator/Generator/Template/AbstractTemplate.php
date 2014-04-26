@@ -18,8 +18,14 @@ use Net\Bazzline\Component\Locator\Generator\Content\Line;
  */
 abstract class AbstractTemplate implements TemplateInterface
 {
+    const INDENTION_FOUR_SPACES = '    ';
+    const INDENTION_TAB = "\t";
+
     /** @var Block */
     private $block;
+
+    /** @var string */
+    private $indention;
 
     /** @var array */
     private $properties = array();
@@ -27,12 +33,46 @@ abstract class AbstractTemplate implements TemplateInterface
     public function __construct()
     {
         $this->clear();
+        $this->indention = self::INDENTION_FOUR_SPACES;
     }
 
     public function clear()
     {
         $this->properties = array();
         $this->block = new Block();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndention()
+    {
+        return $this->indention;
+    }
+
+    /**
+     * @param string $indention
+     */
+    public function setIndention($indention)
+    {
+        $this->indention = (string) $indention;
+    }
+
+    /**
+     * @param string $indention
+     * @return string
+     */
+    public function andConvertToString($indention = '')
+    {
+        return $this->block->andConvertToString($indention);
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->andConvertToString('');
     }
 
     /**
@@ -59,10 +99,17 @@ abstract class AbstractTemplate implements TemplateInterface
 
     /**
      * @param string|ContentInterface $content
+     * @param bool $isIndented
      * @throws InvalidArgumentException
      */
-    protected function addContent($content)
+    protected function addContent($content, $isIndented = false)
     {
+        if ($isIndented) {
+            if (!($content instanceof ContentInterface)) {
+                $content = $this->getLine($content);
+            }
+            $content = $content->andConvertToString($this->indention);
+        }
         $this->block->add($content);
     }
 
@@ -74,70 +121,6 @@ abstract class AbstractTemplate implements TemplateInterface
     protected function getProperty($name, $default = null)
     {
         return (isset($this->properties[$name])) ? $this->properties[$name] : $default;
-    }
-
-    /**
-     * @deprecated
-     * @return array
-     */
-    public function toArray()
-    {
-        $array = array();
-
-        foreach ($this->block as $content) {
-            if (is_array($content)) {
-                if (!empty($content)) {
-                    $array[] = $content;
-                }
-            } else {
-                $string = (string) $content;
-                if (strlen($string) > 0) {
-                    $array[] = $string;
-                }
-            }
-        }
-
-        return $array;
-    }
-
-    /**
-     * @param string $indention
-     * @return string
-     */
-    public function andConvertToString($indention = '')
-    {
-        return $this->block->andConvertToString($indention);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->andConvertToString('');
-    }
-
-    /**
-     * @deprecated
-     * @param array $array
-     * @param string $prefix
-     * @return string
-     */
-    protected function arrayToString(array $array, $prefix)
-    {
-        $lines = array();
-
-        foreach ($array as $value) {
-            $line = (is_array($value)) ? $this->arrayToString($value, $prefix) : (string) $value;
-
-            if (strlen($line) > 0) {
-                $lines[] = $prefix . $line;
-            }
-        }
-
-        $string = implode(PHP_EOL, $lines);
-
-        return $string;
     }
 
     /**
@@ -156,16 +139,5 @@ abstract class AbstractTemplate implements TemplateInterface
     protected function getLine($content = null)
     {
         return new Line($content);
-    }
-
-    /**
-     * @deprecated
-     * @param string $prefix
-     * @param string $suffix
-     * @return string
-     */
-    protected function renderLine($prefix = '', $suffix = '')
-    {
-        return $prefix . $suffix;
     }
 }
