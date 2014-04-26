@@ -6,18 +6,17 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator\Template;
 
-use PHPUnit_Framework_TestCase;
-use Net\Bazzline\Component\Locator\Generator\Template\MethodTemplate;
+use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
- * Class MethodTemplateTest
+ * Class MethodTemplateGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\Generator\Template
  */
-class MethodTemplateTest extends PHPUnit_Framework_TestCase
+class MethodTemplateGeneratorTest extends GeneratorTestCase
 {
     public function testWithNoProperties()
     {
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setName('unittest');
         $template->fillOut();
 
@@ -32,7 +31,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testAsAbstract()
     {
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setAbstract();
         $template->setName('unittest');
         $template->fillOut();
@@ -53,7 +52,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
             'return $foobar'
         );
 
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setName('unittest');
         $template->setBody($body);
         $template->fillOut();
@@ -74,7 +73,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testAsFinal()
     {
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setFinal();
         $template->setName('unittest');
         $template->fillOut();
@@ -90,7 +89,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testAsPrivate()
     {
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setPrivate();
         $template->setName('unittest');
         $template->fillOut();
@@ -106,7 +105,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testAsProtected()
     {
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setProtected();
         $template->setName('unittest');
         $template->fillOut();
@@ -122,7 +121,7 @@ class MethodTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testAsPublic()
     {
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setName('unittest');
         $template->setPublic();
         $template->fillOut();
@@ -153,7 +152,7 @@ $this->markTestIncomplete('add documentation');
             'return $foobar'
         );
 
-        $template = $this->getTemplate();
+        $template = $this->getMethodTemplate();
         $template->setBody($body);
         $template->setName('unittest');
         $template->setFinal();
@@ -173,12 +172,4 @@ $this->markTestIncomplete('add documentation');
 
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
-
-    /**
-     * @return MethodTemplate
-     */
-    private function getTemplate()
-    {
-        return new MethodTemplate();
-    }
-} 
+}

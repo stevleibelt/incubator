@@ -71,6 +71,10 @@ class PropertyTemplate extends AbstractTemplate
         $value = $this->getProperty('value');
         $visibility = $this->getProperty('visibility');
 
+        if (is_null($name)) {
+            throw new RuntimeException('name is a mandatory');
+        }
+
         $block = $this->getBlock();
         $line = $this->getLine();
 

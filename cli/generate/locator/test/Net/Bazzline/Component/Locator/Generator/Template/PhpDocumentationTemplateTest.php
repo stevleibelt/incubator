@@ -6,18 +6,17 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator\Template;
 
-use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
-use PHPUnit_Framework_TestCase;
+use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
- * Class PhpDocumentationTemplateTest
+ * Class PhpDocumentationTemplateGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\Generator\Template
  */
-class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
+class PhpDocumentationTemplateGeneratorTest extends GeneratorTestCase
 {
     public function testWithNoProperties()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->fillOut();
 
         $expectedString =
@@ -28,7 +27,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
     }
     public function testWithNoPropertiesAndPrefix()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->fillOut();
         $prefix = '    ';
 
@@ -41,7 +40,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithComments()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->addComment('Foo');
         $template->addComment('Bar');
         $template->fillOut();
@@ -57,7 +56,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithClass()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->setClass('UnitTest');
         $template->fillOut();
 
@@ -71,7 +70,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithPackage()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->setPackage('Unit\Test');
         $template->fillOut();
 
@@ -85,7 +84,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithParameters()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->addParameter('bar', array('Bar'));
         $template->addParameter('foo', array('Foo'));
         $template->addParameter('fooBar', array('Foo', 'Bar'), 'there is no foo without a bar');
@@ -103,7 +102,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithReturn()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->setReturn(array('Foo', 'Bar'), 'there is no foo without a bar');
         $template->fillOut();
 
@@ -117,7 +116,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithSees()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->addSee('https://artodeto@bazzline.net');
         $template->addSee('https://github.com/stevleibelt');
         $template->fillOut();
@@ -133,7 +132,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithThrows()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->addThrows('BarException');
         $template->addThrows('FooException');
         $template->fillOut();
@@ -148,7 +147,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithToDos()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->addTodoS('implement bar exception');
         $template->addTodoS('implement foo exception');
         $template->fillOut();
@@ -164,7 +163,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithVariable()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->setVariable('foobar', array('Bar', 'Foo'));
         $template->fillOut();
 
@@ -178,7 +177,7 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
     public function testWithAll()
     {
-        $template = $this->getTemplate();
+        $template = $this->getPhpDocumentationTemplate();
         $template->addComment('Foo');
         $template->addComment('Bar');
         $template->setClass('UnitTest');
@@ -216,12 +215,4 @@ class PhpDocumentationTemplateTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
-
-    /**
-     * @return PhpDocumentationTemplate
-     */
-    private function getTemplate()
-    {
-        return new PhpDocumentationTemplate();
-    }
-} 
+}

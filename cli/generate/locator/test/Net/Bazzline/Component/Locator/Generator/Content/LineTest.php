@@ -6,18 +6,17 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator\Content;
 
-use Net\Bazzline\Component\Locator\Generator\Content\Line;
-use PHPUnit_Framework_TestCase;
+use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
- * Class LineTest
+ * Class LineGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\Generator\Content
  */
-class LineTest extends PHPUnit_Framework_TestCase
+class LineGeneratorTest extends GeneratorTestCase
 {
     public function testWithoutContent()
     {
-        $line = $this->getContent();
+        $line = $this->getLine();
 
         $this->assertFalse($line->hasContent());
         $this->assertEquals('', $line->andConvertToString());
@@ -26,7 +25,7 @@ class LineTest extends PHPUnit_Framework_TestCase
     public function testToString()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getContent();
+        $line = $this->getLine();
         $line->add($content);
 
         $this->assertTrue($line->hasContent());
@@ -36,7 +35,7 @@ class LineTest extends PHPUnit_Framework_TestCase
     public function testAdd()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getContent();
+        $line = $this->getLine();
         $line->add($content);
 
         $this->assertTrue($line->hasContent());
@@ -47,7 +46,7 @@ class LineTest extends PHPUnit_Framework_TestCase
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
-        $line = $this->getContent();
+        $line = $this->getLine();
         $line->add($contentAsArray);
 
         $this->assertTrue($line->hasContent());
@@ -66,7 +65,7 @@ class LineTest extends PHPUnit_Framework_TestCase
             array('b', 'a', 'r')
         );
         $expectedContent = 'there is no f o o without a b a r';
-        $line = $this->getContent();
+        $line = $this->getLine();
         $line->add($contentAsArray);
 
         $this->assertTrue($line->hasContent());
@@ -77,7 +76,7 @@ class LineTest extends PHPUnit_Framework_TestCase
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
-        $line = $this->getContent();
+        $line = $this->getLine();
 
         foreach ($contentAsArray as $part) {
             $line->add($part);
@@ -91,7 +90,7 @@ class LineTest extends PHPUnit_Framework_TestCase
     {
         $content = 'there:is:no:foo:without:a:bar';
         $contentAsArray = explode(':', $content);
-        $line = $this->getContent();
+        $line = $this->getLine();
         $line->setContentSeparator(':');
 
         foreach ($contentAsArray as $part) {
@@ -102,10 +101,22 @@ class LineTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($content, $line->andConvertToString());
     }
 
+    public function testAddLine()
+    {
+        $content = 'there is no foo without a bar';
+        $contentLine = $this->getLine();
+        $contentLine->add($content);
+        $line = $this->getLine();
+        $line->add($contentLine);
+
+        $this->assertTrue($line->hasContent());
+        $this->assertEquals($content, $line->andConvertToString());
+    }
+
     public function testClear()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getContent();
+        $line = $this->getLine();
         $line->add($content);
         $line->clear();
 
@@ -116,7 +127,7 @@ class LineTest extends PHPUnit_Framework_TestCase
     public function testClone()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getContent();
+        $line = $this->getLine();
         $line->add($content);
         $anotherLine = clone $line;
 
@@ -125,12 +136,4 @@ class LineTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($anotherLine->hasContent());
         $this->assertEquals('', $anotherLine->andConvertToString());
     }
-
-    /**
-     * @return Line
-     */
-    private function getContent()
-    {
-        return new Line();
-    }
-} 
+}

@@ -51,6 +51,11 @@ class ConstantTemplate extends AbstractTemplate
         $name = $this->getProperty('name');
         $value = $this->getProperty('value');
 
+        if (is_null($name)
+            || is_null($value)) {
+            throw new RuntimeException('name and value are mandatory');
+        }
+
         $block = $this->getBlock();
 
         if ($documentation instanceof PhpDocumentationTemplate) {

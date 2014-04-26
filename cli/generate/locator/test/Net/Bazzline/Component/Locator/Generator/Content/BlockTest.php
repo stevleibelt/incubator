@@ -8,17 +8,17 @@ namespace Test\Net\Bazzline\Component\Locator\Generator\Content;
 
 use Net\Bazzline\Component\Locator\Generator\Content\Block;
 use Net\Bazzline\Component\Locator\Generator\Content\Line;
-use PHPUnit_Framework_TestCase;
+use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
- * Class BlockTest
+ * Class BlockGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\Generator\Content
  */
-class BlockTest extends PHPUnit_Framework_TestCase
+class BlockGeneratorTest extends GeneratorTestCase
 {
     public function testWithoutContent()
     {
-        $block = $this->getContent();
+        $block = $this->getBlock();
 
         $this->assertFalse($block->hasContent());
         $this->assertEquals('', $block->andConvertToString());
@@ -27,7 +27,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     public function testAddString()
     {
         $content = 'there is no foo without a bar';
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
 
         $this->assertTrue($block->hasContent());
@@ -37,7 +37,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     public function testAddStringWithIndention()
     {
         $content = 'there is no foo without a bar';
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
         $indention = '    ';
 
@@ -50,7 +50,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
         $expectedContent = implode(PHP_EOL, $contentAsArray);
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
@@ -70,7 +70,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
             $indention . 'without' . PHP_EOL .
             $indention . 'a' . PHP_EOL .
             $indention . 'bar';
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
@@ -100,7 +100,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
             'b' . PHP_EOL .
             'a' . PHP_EOL .
             'r';
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
@@ -131,7 +131,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
             $indention . 'b' . PHP_EOL .
             $indention . 'a' . PHP_EOL .
             $indention . 'r';
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
@@ -141,7 +141,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     public function testAddLine()
     {
         $content = new Line('there is no foo without a bar');
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
 
         $this->assertTrue($block->hasContent());
@@ -151,7 +151,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     public function testAddLineWithIndention()
     {
         $content = new Line('there is no foo without a bar');
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
         $indention = '    ';
 
@@ -163,7 +163,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     {
         $content = new Block('there is no foo without a bar');
         $content->add('never ever');
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
 
         $expectedContent =
@@ -177,7 +177,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     {
         $content = new Block('there is no foo without a bar');
         $content->add('never ever');
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
         $indention = '    ';
 
@@ -192,7 +192,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
-        $block = $this->getContent();
+        $block = $this->getBlock();
 
         foreach ($contentAsArray as $part) {
             $block->add($part);
@@ -205,7 +205,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     public function testClear()
     {
         $content = 'there is no foo without a bar';
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
         $block->clear();
 
@@ -216,7 +216,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     public function testClone()
     {
         $content = 'there is no foo without a bar';
-        $block = $this->getContent();
+        $block = $this->getBlock();
         $block->add($content);
         $anotherLine = clone $block;
 
@@ -224,13 +224,5 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($content, $block->andConvertToString());
         $this->assertFalse($anotherLine->hasContent());
         $this->assertEquals('', $anotherLine->andConvertToString());
-    }
-
-    /**
-     * @return Block
-     */
-    private function getContent()
-    {
-        return new Block();
     }
 }
