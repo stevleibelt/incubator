@@ -148,7 +148,7 @@ array (
         if (file_exists($pathToOldLocatorFile . DIRECTORY_SEPARATOR . $oldName)) {
             $oldNameAsArray = explode('.', $oldName);
             $extension = array_pop($oldNameAsArray);
-            $newName = implode('.', $oldNameAsArray) . time() . $extension;
+            $newName = implode('.', $oldNameAsArray) . '.' . time() . '.' . $extension;
             if (rename($pathToOldLocatorFile . DIRECTORY_SEPARATOR . $oldName, $pathToOldLocatorFile . DIRECTORY_SEPARATOR . $newName) === false) {
                 throw new Exception('old locator file with name "' . $oldName . '" already exists and can not be renamed to "' . $newName . '"');
             }
