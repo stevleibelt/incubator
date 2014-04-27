@@ -149,12 +149,11 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
 
     public function testWithDocumentation()
     {
-$this->markTestIncomplete('todo');
+        $this->markTestIncomplete('todo');
     }
 
     public function testWithALot()
     {
-$this->markTestIncomplete('add documentation');
         $body = array(
             '$bar = new Bar();',
             '$foo = new Foo();',
@@ -178,7 +177,7 @@ $this->markTestIncomplete('add documentation');
             $template->getIndention() . '$foo = new Foo();' . PHP_EOL .
             $template->getIndention() . '$foobar->add($bar);' . PHP_EOL .
             $template->getIndention() . '$foobar->add($foo);' . PHP_EOL .
-            $template->getIndention() . PHP_EOL .
+            '' . PHP_EOL .
             $template->getIndention() . 'return $foobar' . PHP_EOL .
             '}';
 
