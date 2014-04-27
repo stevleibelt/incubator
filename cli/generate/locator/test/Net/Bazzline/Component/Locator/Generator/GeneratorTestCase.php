@@ -13,6 +13,7 @@ use Net\Bazzline\Component\Locator\Generator\Template\ConstantTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\MethodTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\PropertyTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\TemplateInterface;
 use Net\Bazzline\Component\Locator\Generator\Template\TraitTemplate;
 use PHPUnit_Framework_TestCase;
 use Mockery;
@@ -36,6 +37,14 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     protected function getMockeryMock($fullQualifiedClassName)
     {
         return Mockery::mock($fullQualifiedClassName);
+    }
+
+    /**
+     * @param TemplateInterface $template
+     */
+    protected function debugTemplate(TemplateInterface $template)
+    {
+        echo PHP_EOL . '----' . PHP_EOL . $template->andConvertToString() . PHP_EOL . '----' . PHP_EOL;
     }
     //----end of general----
 

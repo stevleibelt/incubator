@@ -106,11 +106,26 @@ abstract class AbstractTemplate implements TemplateInterface
     {
         if ($isIndented) {
             if (!($content instanceof ContentInterface)) {
-                $content = $this->getLine($content);
+                $content = $this->getBlock($content);
             }
             $content = $content->andConvertToString($this->indention);
         }
         $this->block->add($content);
+    }
+
+    /**
+     * @param TemplateInterface $template
+     * @param bool $isIndented
+     */
+    protected function addTemplateAsContent(TemplateInterface $template, $isIndented = false)
+    {
+        $this->addContent(
+            explode(
+                PHP_EOL,
+                $template->andConvertToString()
+            ),
+            $isIndented
+        );
     }
 
     /**

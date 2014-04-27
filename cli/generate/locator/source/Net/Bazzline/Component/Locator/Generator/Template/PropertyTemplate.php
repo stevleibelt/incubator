@@ -31,22 +31,22 @@ class PropertyTemplate extends AbstractTemplate
         $this->addProperty('name', (string) $name, false);
     }
 
-    public function setPrivate()
+    public function setIsPrivate()
     {
         $this->addProperty('visibility', 'private', false);
     }
 
-    public function setProtected()
+    public function setIsProtected()
     {
         $this->addProperty('visibility', 'protected', false);
     }
 
-    public function setPublic()
+    public function setIsPublic()
     {
         $this->addProperty('visibility', 'public', false);
     }
 
-    public function setStatic()
+    public function setIsStatic()
     {
         $this->addProperty('static', true, false);
     }

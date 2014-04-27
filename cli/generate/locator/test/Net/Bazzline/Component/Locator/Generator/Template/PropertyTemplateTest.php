@@ -51,7 +51,7 @@ class PropertyTemplateTest extends GeneratorTestCase
     {
         $template = $this->getPropertyTemplate();
         $template->setName('unitTest');
-        $template->setStatic();
+        $template->setIsStatic();
         $template->setValue('\'foobar\'');
         $template->fillOut();
 
@@ -64,7 +64,7 @@ class PropertyTemplateTest extends GeneratorTestCase
     {
         $template = $this->getPropertyTemplate();
         $template->setName('unitTest');
-        $template->setPrivate();
+        $template->setIsPrivate();
         $template->setValue('\'foobar\'');
         $template->fillOut();
 
@@ -77,7 +77,7 @@ class PropertyTemplateTest extends GeneratorTestCase
     {
         $template = $this->getPropertyTemplate();
         $template->setName('unitTest');
-        $template->setProtected();
+        $template->setIsProtected();
         $template->setValue('\'foobar\'');
         $template->fillOut();
 
@@ -90,7 +90,7 @@ class PropertyTemplateTest extends GeneratorTestCase
     {
         $template = $this->getPropertyTemplate();
         $template->setName('unitTest');
-        $template->setPublic();
+        $template->setIsPublic();
         $template->setValue('\'foobar\'');
         $template->fillOut();
 
@@ -107,7 +107,7 @@ class PropertyTemplateTest extends GeneratorTestCase
         $template = $this->getPropertyTemplate();
         $template->setDocumentation($documentation);
         $template->setName('unitTest');
-        $template->setPublic();
+        $template->setIsPublic();
         $template->setValue('\'foobar\'');
         $template->fillOut();
 
@@ -124,8 +124,8 @@ class PropertyTemplateTest extends GeneratorTestCase
     {
         $template = $this->getPropertyTemplate();
         $template->setName('unitTest');
-        $template->setPublic();
-        $template->setStatic();
+        $template->setIsPublic();
+        $template->setIsStatic();
         $template->setValue('\'foobar\'');
         $template->fillOut();
 

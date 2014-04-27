@@ -42,15 +42,23 @@ class ClassTemplate extends AbstractTemplate
             'name'  => $fullQualifiedClassName
         );
 
-        $this->addProperty('implements', $use);
+        $this->addProperty('uses', $use);
     }
 
     /**
      * @param ConstantTemplate $constant
      */
-    public function addConstant(ConstantTemplate $constant)
+    public function addClassConstant(ConstantTemplate $constant)
     {
         $this->addProperty('constants', $constant);
+    }
+
+    /**
+     * @param PropertyTemplate $property
+     */
+    public function addClassProperty(PropertyTemplate $property)
+    {
+        $this->addProperty('properties', $property);
     }
 
     /**
@@ -59,14 +67,6 @@ class ClassTemplate extends AbstractTemplate
     public function addMethod(MethodTemplate $method)
     {
         $this->addProperty('methods', $method);
-    }
-
-    /**
-     * @param PropertyTemplate $property
-     */
-    public function addProperty(PropertyTemplate $property)
-    {
-        $this->addProperty('properties', $property);
     }
 
     /**
@@ -101,6 +101,14 @@ class ClassTemplate extends AbstractTemplate
     }
 
     /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->addProperty('name', (string) $name, false);
+    }
+
+    /**
      * @param string $namespace
      */
     public function setNamespace($namespace)
@@ -122,48 +130,47 @@ class ClassTemplate extends AbstractTemplate
 
     private function fillOutBody()
     {
-        $isAbstract = $this->getProperty('abstract', false);
+        $this->addContent('{');
+        $block = $this->getBlock();
+        /** @var null|ConstantTemplate[] $constants */
+        $constants = $this->getProperty('constants');
+        /** @var null|MethodTemplate[] $methods */
+        $methods = $this->getProperty('methods');
+        /** @var null|PropertyTemplate[] $properties */
+        $properties = $this->getProperty('properties');
+        /** @var null|TraitTemplate[] $traits */
+        $traits = $this->getProperty('traits');
 
-        if (!$isAbstract) {
-            $block = $this->getBlock();
-            /** @var null|ConstantTemplate[] $constants */
-            $constants = $this->getProperty('constants');
-            /** @var null|MethodTemplate[] $methods */
-            $methods = $this->getProperty('methods');
-            /** @var null|PropertyTemplate[] $properties */
-            $properties = $this->getProperty('properties');
-            /** @var null|TraitTemplate[] $traits */
-            $traits = $this->getProperty('traits');
-
-            if (is_array($constants)) {
-                foreach($constants as $constant) {
-                    $block->add($constant->andConvertToString());
-                    $block->add('');
-                }
-            }
-            if (is_array($methods)) {
-                foreach($methods as $method) {
-                    $block->add($method->andConvertToString());
-                    $block->add('');
-                }
-            }
-            if (is_array($properties)) {
-                foreach($properties as $property) {
-                    $block->add($property->andConvertToString());
-                    $block->add('');
-                }
-            }
-            if (is_array($traits)) {
-                foreach($traits as $trait) {
-                    $block->add($trait->andConvertToString());
-                    $block->add('');
-                }
-            }
-
-            if ($block->hasContent()) {
-                $this->addContent($block);
+        if (is_array($constants)) {
+            foreach($constants as $constant) {
+                $constant->fillOut();
+                $this->addTemplateAsContent($constant, true);
+                $this->addContent('');
             }
         }
+        if (is_array($properties)) {
+            foreach($properties as $property) {
+                $property->fillOut();
+                $this->addTemplateAsContent($property, true);
+                $this->addContent('');
+            }
+        }
+        if (is_array($traits)) {
+            foreach($traits as $trait) {
+                $trait->fillOut();
+                $this->addTemplateAsContent($trait, true);
+                $this->addContent('');
+            }
+        }
+        if (is_array($methods)) {
+            foreach($methods as $method) {
+                $method->fillOut();
+                $this->addTemplateAsContent($method, true);
+                $this->addContent('');
+            }
+        }
+
+        $this->addContent('}');
     }
 
     private function fillOutNamespace()
@@ -193,11 +200,12 @@ class ClassTemplate extends AbstractTemplate
 
     private function fillOutSignature()
     {
-        $isAbstract = $this->getProperty('abstract', false);
-        $isFinal = $this->getProperty('final', false);
-        $extends = $this->getProperty('extends');
-        $implements = $this->getProperty('implements');
-        $name = $this->getProperty('name');
+        $isAbstract     = $this->getProperty('abstract', false);
+        $isInterface    = $this->getProperty('interface', false);
+        $isFinal        = $this->getProperty('final', false);
+        $extends        = $this->getProperty('extends');
+        $implements     = $this->getProperty('implements');
+        $name           = $this->getProperty('name');
 
         if (is_null($name)) {
             throw new RuntimeException('name is mandatory');
@@ -206,17 +214,22 @@ class ClassTemplate extends AbstractTemplate
         $line = $this->getLine();
         if ($isAbstract) {
             $line->add('abstract');
+        } else if ($isInterface) {
+            $line->add('interface');
         } else if ($isFinal) {
             $line->add('final');
         }
 
         $line->add('class ' . $name);
         if (is_array($extends)) {
-            $line->add('extends ', implode(',', $extends));
+            $line->add('extends');
+            $line->add(implode(',', $extends));
         }
         if (is_array($implements)) {
-            $line->add('implements ', implode(',', $implements));
+            $line->add('implements');
+            $line->add(implode(',', $implements));
         }
+        $this->addContent($line);
     }
 
     private function fillOutUse()
@@ -227,7 +240,7 @@ class ClassTemplate extends AbstractTemplate
             $block = $this->getBlock();
             foreach ($uses as $use) {
                 if (strlen($use['alias']) > 0) {
-                    $block->add('use ' . $use['name'] . ' alias ' . $use['alias'] . ';');
+                    $block->add('use ' . $use['name'] . ' as ' . $use['alias'] . ';');
                 } else {
                     $block->add('use ' . $use['name'] . ';');
                 }

@@ -76,7 +76,7 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
             $template->getIndention() . '$foo = new Foo();' . PHP_EOL .
             $template->getIndention() . '$foobar->add($bar);' . PHP_EOL .
             $template->getIndention() . '$foobar->add($foo);' . PHP_EOL .
-            $template->getIndention() . PHP_EOL .
+            '' . PHP_EOL .
             $template->getIndention() . 'return $foobar' . PHP_EOL .
             '}';
 

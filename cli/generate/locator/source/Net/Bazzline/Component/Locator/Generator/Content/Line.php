@@ -69,6 +69,6 @@ class Line extends AbstractContent
      */
     public function andConvertToString($indention = '')
     {
-        return $indention . implode($this->separator, $this->parts);
+        return (implode('', $this->parts) !== '') ? $indention . implode($this->separator, $this->parts) : '';
     }
 }
