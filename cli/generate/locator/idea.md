@@ -8,8 +8,8 @@ Thats why I this project should lead to an locator, that can be configured as kn
 ```php
 return array(
     'class_name' => 'Locator',
+    'file_name' => 'Locator.php',
     'namespace' => 'Application\Service',
-    'output_path' => 'Application/Service',
     'parent_class_name' => 'BaseLocator',
     'shared_instance' => array(
         'CookieManager' => 'Application\Cookie\CookieManager',              //invokable instance, CookieManager can be created by using "$cookieManager = new CookieManager()"
