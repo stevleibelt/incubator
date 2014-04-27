@@ -194,7 +194,8 @@ class ClassTemplate extends AbstractTemplate
         $documentation = $this->getProperty('documentation');
 
         if ($documentation instanceof PhpDocumentationTemplate) {
-            $this->addContent(explode(PHP_EOL, $documentation->andConvertToString()));
+            $documentation->fillOut();
+            $this->addTemplateAsContent($documentation);
         }
     }
 

@@ -219,12 +219,35 @@ class ClassTemplateTest extends GeneratorTestCase
 
     public function testWithPhpDocumentation()
     {
-        $this->markTestIncomplete('');
+        $documentation  = $this->getPhpDocumentationTemplate();
+        $template       = $this->getClassTemplate();
+
+        $documentation->setClass('UnitTest');
+        $documentation->setPackage('Foo\Bar');
+
+        $template->setDocumentation($documentation);
+        $template->setNamespace('Foo\Bar');
+        $template->setName('UnitTest');
+        $template->fillOut();
+
+        $expectedString =
+            'namespace Foo\Bar;' . PHP_EOL .
+            '' . PHP_EOL .
+            '/**' . PHP_EOL .
+            ' * Class UnitTest' . PHP_EOL .
+            ' * @package Foo\Bar' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'class UnitTest' . PHP_EOL .
+            '{' . PHP_EOL .
+            '}';
+
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithNamespace()
     {
         $template = $this->getClassTemplate();
+
         $template->setNamespace('Foo\Bar');
         $template->setName('UnitTest');
         $template->fillOut();
@@ -242,10 +265,11 @@ class ClassTemplateTest extends GeneratorTestCase
     public function testWithALot()
     {
         $template       = $this->getClassTemplate();
+        $documentation  = $this->getPhpDocumentationTemplate();
         $constantBar    = $this->getConstantTemplate();
         $constantFoo    = $this->getConstantTemplate();
-        $methodOne  = $this->getMethodTemplate();
-        $methodTwo  = $this->getMethodTemplate();
+        $methodOne      = $this->getMethodTemplate();
+        $methodTwo      = $this->getMethodTemplate();
         $propertyBar    = $this->getPropertyTemplate();
         $propertyFoo    = $this->getPropertyTemplate();
 
@@ -253,6 +277,9 @@ class ClassTemplateTest extends GeneratorTestCase
         $constantBar->setValue('\'foo\'');
         $constantFoo->setName('FOO');
         $constantFoo->setValue('\'bar\'');
+
+        $documentation->setClass('UnitTest');
+        $documentation->setPackage('Foo\Bar');
         $methodOne->setName('methodOne');
         $methodOne->setIsPrivate();
         $methodTwo->setName('methodTwo');
@@ -264,7 +291,6 @@ class ClassTemplateTest extends GeneratorTestCase
         $propertyFoo->setValue(42);
         $propertyFoo->setIsProtected();
 
-        $template->setNamespace('Baz');
         $template->addClassConstant($constantBar);
         $template->addClassConstant($constantFoo);
         $template->addClassProperty($propertyBar);
@@ -279,7 +305,9 @@ class ClassTemplateTest extends GeneratorTestCase
         $template->addUse('BarFoo\BarFooInterface');
         $template->addUse('Foo\Bar', 'FooBar');
         $template->addUse('FooBar\FooBarInterface');
+        $template->setDocumentation($documentation);
         $template->setName('UnitTest');
+        $template->setNamespace('Baz');
         $template->fillOut();
 
         $expectedString =
@@ -290,6 +318,10 @@ class ClassTemplateTest extends GeneratorTestCase
             'use Foo\Bar as FooBar;' . PHP_EOL .
             'use FooBar\FooBarInterface;' . PHP_EOL .
             '' . PHP_EOL .
+            '/**' . PHP_EOL .
+            ' * Class UnitTest' . PHP_EOL .
+            ' * @package Foo\Bar' . PHP_EOL .
+            ' */' . PHP_EOL .
             'class UnitTest extends BarFoo,FooBar implements BarFooInterface,FooBarInterface' . PHP_EOL .
             '{' . PHP_EOL .
             $template->getIndention() . "const BAR = 'foo';" . PHP_EOL .
