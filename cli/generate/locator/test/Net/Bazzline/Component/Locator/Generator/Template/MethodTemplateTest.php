@@ -32,11 +32,23 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
     public function testAsAbstract()
     {
         $template = $this->getMethodTemplate();
-        $template->setAbstract();
+        $template->setIsAbstract();
         $template->setName('unittest');
         $template->fillOut();
 
         $expectedString = 'abstract function unittest();';
+
+        $this->assertEquals($expectedString, $template->andConvertToString());
+    }
+
+    public function testWithNoBody()
+    {
+        $template = $this->getMethodTemplate();
+        $template->setHasNoBody();
+        $template->setName('unittest');
+        $template->fillOut();
+
+        $expectedString = 'function unittest();';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
@@ -74,7 +86,7 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
     public function testAsFinal()
     {
         $template = $this->getMethodTemplate();
-        $template->setFinal();
+        $template->setIsFinal();
         $template->setName('unittest');
         $template->fillOut();
 
@@ -90,7 +102,7 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
     public function testAsPrivate()
     {
         $template = $this->getMethodTemplate();
-        $template->setPrivate();
+        $template->setIsPrivate();
         $template->setName('unittest');
         $template->fillOut();
 
@@ -106,7 +118,7 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
     public function testAsProtected()
     {
         $template = $this->getMethodTemplate();
-        $template->setProtected();
+        $template->setIsProtected();
         $template->setName('unittest');
         $template->fillOut();
 
@@ -123,7 +135,7 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
     {
         $template = $this->getMethodTemplate();
         $template->setName('unittest');
-        $template->setPublic();
+        $template->setIsPublic();
         $template->fillOut();
 
         $expectedString =
@@ -155,8 +167,8 @@ $this->markTestIncomplete('add documentation');
         $template = $this->getMethodTemplate();
         $template->setBody($body);
         $template->setName('unittest');
-        $template->setFinal();
-        $template->setPublic();
+        $template->setIsFinal();
+        $template->setIsPublic();
         $template->fillOut();
 
         $expectedString =

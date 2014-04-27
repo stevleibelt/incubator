@@ -15,7 +15,7 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
  */
 class MethodTemplate extends AbstractTemplate
 {
-    public function setAbstract()
+    public function setIsAbstract()
     {
         $this->addProperty('abstract', true, false);
     }
@@ -26,6 +26,7 @@ class MethodTemplate extends AbstractTemplate
     public function setBody(array $body)
     {
         $this->addProperty('body', $body, false);
+        $this->addProperty('has_body', true, false);
     }
 
     /**
@@ -36,9 +37,34 @@ class MethodTemplate extends AbstractTemplate
         $this->addProperty('documentation', $phpDocumentation, false);
     }
 
-    public function setFinal()
+    public function setHasNoBody()
+    {
+        $this->addProperty('has_body', false, false);
+    }
+
+    public function setIsFinal()
     {
         $this->addProperty('final', true, false);
+    }
+
+    public function setIsPrivate()
+    {
+        $this->addProperty('visibility', 'private', false);
+    }
+
+    public function setIsProtected()
+    {
+        $this->addProperty('visibility', 'protected', false);
+    }
+
+    public function setIsPublic()
+    {
+        $this->addProperty('visibility', 'public', false);
+    }
+
+    public function setIsStatic()
+    {
+        $this->addProperty('static', true, false);
     }
 
     /**
@@ -47,26 +73,6 @@ class MethodTemplate extends AbstractTemplate
     public function setName($name)
     {
         $this->addProperty('name', (string) $name, false);
-    }
-
-    public function setPrivate()
-    {
-        $this->addProperty('visibility', 'private', false);
-    }
-
-    public function setProtected()
-    {
-        $this->addProperty('visibility', 'protected', false);
-    }
-
-    public function setPublic()
-    {
-        $this->addProperty('visibility', 'public', false);
-    }
-
-    public function setStatic()
-    {
-        $this->addProperty('static', true, false);
     }
 
     /**
@@ -99,9 +105,11 @@ class MethodTemplate extends AbstractTemplate
 
     private function fillOutBody()
     {
+        $hasBody    = $this->getProperty('has_body', true);
         $isAbstract = $this->getProperty('abstract', false);
 
-        if (!$isAbstract) {
+        if (!$isAbstract
+            && $hasBody) {
             $this->addContent($this->getLine('{'));
             $this->addContent(
                 $this->getBlock(
@@ -124,20 +132,19 @@ class MethodTemplate extends AbstractTemplate
 
     private function fillOutSignature()
     {
-        $isAbstract = $this->getProperty('abstract', false);
-        $isFinal = $this->getProperty('final', false);
-        $isStatic = $this->getProperty('static', false);
-        $name = $this->getProperty('name');
-        $parameters = $this->getProperty('parameters', array());
-        $visibility = $this->getProperty('visibility');
+        $hasBody        = $this->getProperty('has_body', true);
+        $isAbstract     = $this->getProperty('abstract', false);
+        $isFinal        = $this->getProperty('final', false);
+        $isStatic       = $this->getProperty('static', false);
+        $name           = $this->getProperty('name');
+        $parameters     = $this->getProperty('parameters', array());
+        $visibility     = $this->getProperty('visibility');
 
         $line = $this->getLine();
 
         if ($isAbstract) {
             $line->add('abstract');
-        }
-
-        if ($isFinal) {
+        } else if ($isFinal) {
             $line->add('final');
         }
 
@@ -159,7 +166,7 @@ class MethodTemplate extends AbstractTemplate
                 $parameterLine->add('= ' . (string) $parameter['default_value']);
             }
         }
-        $line->add('function ' . $name . '(' . $parameterLine->andConvertToString() . ')' . (($isAbstract) ? ';' : ''));
+        $line->add('function ' . $name . '(' . $parameterLine->andConvertToString() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
         $this->addContent($line);
     }
 }

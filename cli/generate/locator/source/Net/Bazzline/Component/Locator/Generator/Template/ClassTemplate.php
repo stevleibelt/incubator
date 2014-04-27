@@ -77,22 +77,27 @@ class ClassTemplate extends AbstractTemplate
         $this->addProperty('traits', $trait);
     }
 
-    public function setAbstract()
-    {
-        $this->addProperty('abstract', true, false);
-    }
-
-    public function setFinal()
-    {
-        $this->addProperty('final', true, false);
-    }
-
     /**
      * @param PhpDocumentationTemplate $phpDocumentation
      */
     public function setDocumentation(PhpDocumentationTemplate $phpDocumentation)
     {
         $this->addProperty('documentation', $phpDocumentation, false);
+    }
+
+    public function setIsAbstract()
+    {
+        $this->addProperty('abstract', true, false);
+    }
+
+    public function setIsFinal()
+    {
+        $this->addProperty('final', true, false);
+    }
+
+    public function setIsInterface()
+    {
+        $this->addProperty('interface', true, false);
     }
 
     /**
