@@ -101,7 +101,6 @@ class Generator
     }
 /*
 array (
-'file_name' => 'Locator.php',
 'shared_instance' =>
 array (
 'CookieManager' => 'Application\\Cookie\\CookieManager',
@@ -128,6 +127,10 @@ array (
         $class->setName($this->configuration['class_name']);
         $class->setNamespace($this->configuration['namespace']);
         $class->setDocumentation($documentation);
+
+        //create instance pooling methods
+        //create method for shared_instance
+        //create method for single_instance
 
         $class->fillOut();
 
