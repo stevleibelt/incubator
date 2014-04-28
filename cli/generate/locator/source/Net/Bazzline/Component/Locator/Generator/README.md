@@ -2,4 +2,5 @@
 
 # ToDo
 
-* implement Trait template
+* what about something like this?
+* https://github.com/zetacomponents/PhpGenerator/blob/master/docs/example_general.php
