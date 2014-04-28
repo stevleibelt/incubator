@@ -56,6 +56,14 @@ class TraitTemplate extends AbstractTemplate
     }
 
     /**
+     * @return null|string
+     */
+    public function getName()
+    {
+        return $this->getProperty('name');
+    }
+
+    /**
      * @throws InvalidArgumentException|RuntimeException
      */
     public function fillOut()

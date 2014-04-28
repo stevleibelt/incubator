@@ -214,7 +214,26 @@ class ClassTemplateTest extends GeneratorTestCase
 
     public function testWithTraits()
     {
-        $this->markTestIncomplete('implement test when traits are implemented');
+        $template   = $this->getClassTemplate();
+        $traitOne   = $this->getTraitTemplate();
+        $traitTwo   = $this->getTraitTemplate();
+
+        $traitOne->setName('TraitOne');
+        $traitTwo->setName('TraitTwo');
+
+        $template->addTrait($traitOne);
+        $template->addTrait($traitTwo);
+        $template->setName('UnitTest');
+        $template->fillOut();
+
+        $expectedString =
+            'class UnitTest' . PHP_EOL .
+            '{' . PHP_EOL .
+            $template->getIndention() . 'use TraitOne,TraitTwo;' . PHP_EOL .
+            '' . PHP_EOL .
+            '}';
+
+        $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
     public function testWithPhpDocumentation()
@@ -264,7 +283,6 @@ class ClassTemplateTest extends GeneratorTestCase
 
     public function testWithALot()
     {
-        $template       = $this->getClassTemplate();
         $documentation  = $this->getPhpDocumentationTemplate();
         $constantBar    = $this->getConstantTemplate();
         $constantFoo    = $this->getConstantTemplate();
@@ -272,6 +290,7 @@ class ClassTemplateTest extends GeneratorTestCase
         $methodTwo      = $this->getMethodTemplate();
         $propertyBar    = $this->getPropertyTemplate();
         $propertyFoo    = $this->getPropertyTemplate();
+        $template       = $this->getClassTemplate();
 
         $constantBar->setName('BAR');
         $constantBar->setValue('\'foo\'');

@@ -35,6 +35,7 @@ class TraitTemplateTest extends GeneratorTestCase
             '{' . PHP_EOL .
             '}';
 
+        $this->assertEquals('UnitTest', $template->getName());
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
 

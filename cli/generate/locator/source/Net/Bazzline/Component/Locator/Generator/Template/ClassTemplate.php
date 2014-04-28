@@ -74,7 +74,7 @@ class ClassTemplate extends AbstractTemplate
      */
     public function addTrait(TraitTemplate $trait)
     {
-        $this->addProperty('traits', $trait);
+        $this->addProperty('traits', $trait->getName());
     }
 
     /**
@@ -137,9 +137,13 @@ class ClassTemplate extends AbstractTemplate
         $methods = $this->getProperty('methods');
         /** @var null|PropertyTemplate[] $properties */
         $properties = $this->getProperty('properties');
-        /** @var null|TraitTemplate[] $traits */
+        /** @var null|array $traits */
         $traits = $this->getProperty('traits');
 
+        if (is_array($traits)) {
+            $this->addContent('use ' . implode(',', $traits) . ';', true);
+            $this->addContent('');
+        }
         if (is_array($constants)) {
             foreach($constants as $constant) {
                 $constant->fillOut();
@@ -151,13 +155,6 @@ class ClassTemplate extends AbstractTemplate
             foreach($properties as $property) {
                 $property->fillOut();
                 $this->addTemplateAsContent($property, true);
-                $this->addContent('');
-            }
-        }
-        if (is_array($traits)) {
-            foreach($traits as $trait) {
-                $trait->fillOut();
-                $this->addTemplateAsContent($trait, true);
                 $this->addContent('');
             }
         }
