@@ -198,6 +198,9 @@ class ClassTemplate extends AbstractTemplate
         }
     }
 
+    /**
+     * @throws \Net\Bazzline\Component\Locator\Generator\RuntimeException
+     */
     private function fillOutSignature()
     {
         $isAbstract     = $this->getProperty('abstract', false);

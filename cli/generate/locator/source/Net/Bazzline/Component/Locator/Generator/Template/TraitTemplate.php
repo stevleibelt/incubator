@@ -110,9 +110,17 @@ class TraitTemplate extends AbstractTemplate
         }
     }
 
+    /**
+     * @throws \Net\Bazzline\Component\Locator\Generator\RuntimeException
+     */
     private function fillOutSignature()
     {
         $name = $this->getProperty('name');
+
+        if (is_null($name)) {
+            throw new RuntimeException('name is mandatory');
+        }
+
         $line = $this->getLine('trait ' . $name);
         $this->addContent($line);
     }

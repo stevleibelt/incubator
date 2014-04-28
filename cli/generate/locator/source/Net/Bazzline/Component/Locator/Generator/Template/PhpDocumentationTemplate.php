@@ -24,11 +24,11 @@ class PhpDocumentationTemplate extends AbstractTemplate
     }
 
     /**
-     * @param string $class
+     * @param string $className
      */
-    public function setClass($class)
+    public function setClass($className)
     {
-        $this->addProperty('class', (string) $class, false);
+        $this->addProperty('class', (string) $className, false);
     }
 
     /**
