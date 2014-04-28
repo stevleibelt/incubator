@@ -42,6 +42,7 @@ use Application\Service\Factory\LockFileFactory;
 class Locator extends BaseLocator
 {
     //@todo add map for "instance pooling hash key to class" that the BaseLocator can use.
+    private $sharedInstancePool = array();
 
     /**
      * @return Application\Cookie\CookieManager
@@ -74,6 +75,8 @@ class Locator extends BaseLocator
     {
         return $this->fetchFromFactory('Application\Service\Factory\LockFileFactory')->create();  //factory is stored in an instance pool
     }
+
+
 }
 ```
 

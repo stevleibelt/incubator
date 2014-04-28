@@ -9,7 +9,9 @@ namespace Net\Bazzline\Component\Locator\Generator;
 
 use Exception;
 use Net\Bazzline\Component\Locator\Generator\Template\ClassTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\MethodTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\PropertyTemplate;
 
 require_once __DIR__ . '/../../../../../../vendor/autoload.php';
 
@@ -116,10 +118,41 @@ array (
     private function createLocatorFile()
     {
         $class = new ClassTemplate();
+        //@todo move into methods like: $class = $this->enrichWithDocumentation($class)
         $documentation = new PhpDocumentationTemplate();
-
         $documentation->setClass($this->configuration['class_name']);
         $documentation->setPackage($this->configuration['namespace']);
+
+        $factoryInstancePool = new PropertyTemplate();
+        //@todo add documentation
+        $factoryInstancePool->setName('factoryInstancePool');
+        $factoryInstancePool->setIsPrivate();
+        $factoryInstancePool->setValue('array()');
+
+        $sharedInstancePool = new PropertyTemplate();
+        //@todo add documentation
+        $sharedInstancePool->setName('sharedInstancePool');
+        $sharedInstancePool->setIsPrivate();
+        $sharedInstancePool->setValue('array()');
+
+        $isInInstancePool = new MethodTemplate();
+        //@todo add documentation
+        $isInInstancePool->setName('isInInstancePool');
+        $isInInstancePool->addParameter('key', '', 'string');
+        $isInInstancePool->addParameter('type', '', 'string');
+        $isInInstancePool->setBody(array(
+            'switch ($type) {',
+            '    case \'factory\';',
+            '        return (isset($this->factoryInstancePool[$key]));',
+            '        break;',
+            '    case \'shared\':',
+            '        return (isset($this->sharedInstancePool[$key]));',
+            '        break;',
+            '    default:',
+            '        return (isset($this->defaultInstancePool[$key]));',
+            '        break;',
+            '}'
+        ));
 
         if (isset($this->configuration['parent_class_name'])) {
             $class->addExtends($this->configuration['parent_class_name']);
@@ -127,6 +160,9 @@ array (
         $class->setName($this->configuration['class_name']);
         $class->setNamespace($this->configuration['namespace']);
         $class->setDocumentation($documentation);
+        $class->addClassProperty($factoryInstancePool);
+        $class->addClassProperty($sharedInstancePool);
+        $class->addMethod($isInInstancePool);
 
         //create instance pooling methods
         //create method for shared_instance
