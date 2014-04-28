@@ -87,3 +87,4 @@ The BaseLocator is taking care of the instance pooling.
 * [sensio generator bundle](https://github.com/sensiolabs/SensioGeneratorBundle)
 * [php-ide-stub-generator](https://github.com/racztiborzoltan/php-ide-stub-generator)
 * [php-token-reflection](https://github.com/Andrewsville/PHP-Token-Reflection)
+* [code-generator](https://github.com/Speicher210/CodeGenerator)
