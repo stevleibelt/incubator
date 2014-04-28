@@ -131,7 +131,6 @@ class ClassTemplate extends AbstractTemplate
     private function fillOutBody()
     {
         $this->addContent('{');
-        $block = $this->getBlock();
         /** @var null|ConstantTemplate[] $constants */
         $constants = $this->getProperty('constants');
         /** @var null|MethodTemplate[] $methods */
