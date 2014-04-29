@@ -6,6 +6,7 @@
 * add description in php documentation
 * implement [automatically documentation](https://github.com/wells5609/CodeGenerator)
 * rename template to generator
+* [flavour api](https://github.com/propelorm/Propel/blob/master/generator/lib/builder/om/OMBuilder.php)
 * [extend trait](https://github.com/Speicher210/CodeGenerator/blob/master/docs/php/oop/generate-trait.md)
 * [extend indention](https://github.com/Speicher210/CodeGenerator/blob/master/src/Wingu/OctopusCore/CodeGenerator/GeneratorInterface.php)
 * implement [annotation](https://github.com/Speicher210/CodeGenerator/tree/master/src/Wingu/OctopusCore/CodeGenerator/PHP/Annotation)
