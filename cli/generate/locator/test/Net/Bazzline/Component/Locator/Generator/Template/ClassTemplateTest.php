@@ -261,6 +261,7 @@ class ClassTemplateTest extends GeneratorTestCase
             '}';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
+        $this->assertSame($documentation, $template->getDocumentation());
     }
 
     public function testWithNamespace()

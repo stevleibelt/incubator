@@ -16,6 +16,14 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 class PropertyTemplate extends AbstractTemplate
 {
     /**
+     * @return null|PhpDocumentationTemplate
+     */
+    public function getDocumentation()
+    {
+        return $this->getProperty('documentation');
+    }
+
+    /**
      * @param PhpDocumentationTemplate $phpDocumentation
      */
     public function setDocumentation(PhpDocumentationTemplate $phpDocumentation)

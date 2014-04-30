@@ -118,6 +118,7 @@ class PropertyTemplateTest extends GeneratorTestCase
             'public $unitTest = \'foobar\';';
 
         $this->assertEquals($expectedString, $template->andConvertToString());
+        $this->assertSame($documentation, $template->getDocumentation());
     }
 
     public function testWithAll()

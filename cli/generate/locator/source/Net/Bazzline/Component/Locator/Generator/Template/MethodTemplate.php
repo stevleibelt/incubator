@@ -15,6 +15,14 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
  */
 class MethodTemplate extends AbstractTemplate
 {
+    /**
+     * @return null|PhpDocumentationTemplate
+     */
+    public function getDocumentation()
+    {
+        return $this->getProperty('documentation');
+    }
+
     public function setIsAbstract()
     {
         $this->addProperty('abstract', true, false);

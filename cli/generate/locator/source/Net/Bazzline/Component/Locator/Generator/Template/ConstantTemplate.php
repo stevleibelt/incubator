@@ -30,9 +30,6 @@ class ConstantTemplate extends AbstractTemplate
     {
         $this->addProperty('value', (string) $value, false);
     }
-    /**
-     * @param PhpDocumentationTemplate $phpDocumentation
-     */
 
     /**
      * @throws InvalidArgumentException|RuntimeException

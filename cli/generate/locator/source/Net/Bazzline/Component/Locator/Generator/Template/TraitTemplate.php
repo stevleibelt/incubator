@@ -16,6 +16,14 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 class TraitTemplate extends AbstractTemplate
 {
     /**
+     * @return null|PhpDocumentationTemplate
+     */
+    public function getDocumentation()
+    {
+        return $this->getProperty('documentation');
+    }
+
+    /**
      * @param ConstantTemplate $constant
      */
     public function addTraitConstant(ConstantTemplate $constant)
