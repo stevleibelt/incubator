@@ -15,6 +15,9 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
  */
 class ClassTemplate extends AbstractTemplate
 {
+    /** @var bool */
+    private $completePhpDocumentationAutomatically = false;
+
     /**
      * @return null|PhpDocumentationTemplate
      */
@@ -87,10 +90,12 @@ class ClassTemplate extends AbstractTemplate
 
     /**
      * @param PhpDocumentationTemplate $phpDocumentation
+     * @param bool $completeAutomatically
      */
-    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation)
+    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation, $completeAutomatically = true)
     {
         $this->addProperty('documentation', $phpDocumentation, false);
+        $this->completePhpDocumentationAutomatically = $completeAutomatically;
     }
 
     public function setIsAbstract()

@@ -15,6 +15,32 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
  */
 class MethodTemplate extends AbstractTemplate
 {
+    /** @var bool */
+    private $completePhpDocumentationAutomatically = false;
+
+    /**
+     * @param string $name
+     * @param string $defaultValue
+     * @param string $typeHint
+     * @param bool $isReference
+     */
+    public function addParameter($name, $defaultValue = '', $typeHint = '', $isReference = false)
+    {
+        $parameter = array(
+            'default_value' => $defaultValue,
+            'name'          => $name,
+            'is_reference'  => $isReference,
+            'type_hint'     => $typeHint
+        );
+
+        $this->addProperty('parameters', $parameter);
+        if ($this->completePhpDocumentationAutomatically === true) {
+            /** @var PhpDocumentationTemplate $documentation */
+            $documentation = $this->getProperty('documentation');
+            $documentation->addParameter($name, array($typeHint));
+        }
+    }
+
     /**
      * @return null|PhpDocumentationTemplate
      */
@@ -39,10 +65,12 @@ class MethodTemplate extends AbstractTemplate
 
     /**
      * @param PhpDocumentationTemplate $phpDocumentation
+     * @param bool $completeAutomatically
      */
-    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation)
+    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation, $completeAutomatically = true)
     {
         $this->addProperty('documentation', $phpDocumentation, false);
+        $this->completePhpDocumentationAutomatically = $completeAutomatically;
     }
 
     public function setHasNoBody()
@@ -81,24 +109,6 @@ class MethodTemplate extends AbstractTemplate
     public function setName($name)
     {
         $this->addProperty('name', (string) $name, false);
-    }
-
-    /**
-     * @param string $name
-     * @param string $defaultValue
-     * @param string $typeHint
-     * @param bool $isReference
-     */
-    public function addParameter($name, $defaultValue = '', $typeHint = '', $isReference = false)
-    {
-        $parameter = array(
-            'default_value' => $defaultValue,
-            'name'          => $name,
-            'is_reference'  => $isReference,
-            'type_hint'     => $typeHint
-        );
-
-        $this->addProperty('parameters', $parameter);
     }
 
     /**
@@ -167,7 +177,8 @@ class MethodTemplate extends AbstractTemplate
 
         $parameterLine = $this->getLine();
         foreach ($parameters as $parameter) {
-            if (strlen($parameter['type_hint']) > 0) {
+            if ((strlen($parameter['type_hint']) > 0)
+                && (!in_array($parameter['type_hint'], array('bool', 'int', 'string')))) {
                 $parameterLine->add($parameter['type_hint']);
             }
             $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);

@@ -131,7 +131,28 @@ class TraitTemplateTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
-    public function testWithPhpDocumentation()
+    public function testWithEmptyPhpDocumentation()
+    {
+        $documentation  = $this->getPhpDocumentationTemplate();
+        $template       = $this->getTraitTemplate();
+
+        $template->setDocumentation($documentation);
+        $template->setName('UnitTest');
+        $template->fillOut();
+
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * Class UnitTest' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'trait UnitTest' . PHP_EOL .
+            '{' . PHP_EOL .
+            '}';
+
+        $this->assertEquals($expectedString, $template->andConvertToString());
+        $this->assertSame($documentation, $template->getDocumentation());
+    }
+
+    public function testWithManualPhpDocumentation()
     {
         $documentation  = $this->getPhpDocumentationTemplate();
         $template       = $this->getTraitTemplate();
@@ -139,7 +160,7 @@ class TraitTemplateTest extends GeneratorTestCase
         $documentation->setClass('UnitTest');
         $documentation->setPackage('Foo\Bar');
 
-        $template->setDocumentation($documentation);
+        $template->setDocumentation($documentation, false);
         $template->setName('UnitTest');
         $template->fillOut();
 

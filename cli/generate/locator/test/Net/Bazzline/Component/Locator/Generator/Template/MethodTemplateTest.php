@@ -147,14 +147,38 @@ class MethodTemplateGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
-    public function testWithDocumentation()
+    public function testWithEmptyPhpDocumentation()
+    {
+        $documentation  = $this->getPhpDocumentationTemplate();
+        $template       = $this->getMethodTemplate();
+
+        $template->setDocumentation($documentation);
+        $template->addParameter('foo', '', 'string');
+        $template->setName('unittest');
+        $template->setIsPublic();
+        $template->fillOut();
+
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @param string $foo' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'public function unittest($foo)' . PHP_EOL .
+            '{' . PHP_EOL .
+            $template->getIndention() . '//@todo implement' . PHP_EOL .
+            '}';
+
+        $this->assertEquals($expectedString, $template->andConvertToString());
+        $this->assertSame($documentation, $template->getDocumentation());
+    }
+
+    public function testWithManualPhpDocumentation()
     {
         $documentation  = $this->getPhpDocumentationTemplate();
         $template       = $this->getMethodTemplate();
 
         $documentation->addParameter('foo', 'string');
 
-        $template->setDocumentation($documentation);
+        $template->setDocumentation($documentation, false);
         $template->addParameter('foo');
         $template->setName('unittest');
         $template->setIsPublic();

@@ -86,6 +86,11 @@ class PropertyTemplateTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $template->andConvertToString());
     }
 
+    public function testWithTypeHint()
+    {
+        $this->markTestIncomplete('imlement it end extend "with all"');
+    }
+
     public function testWithPublic()
     {
         $template = $this->getPropertyTemplate();

@@ -15,6 +15,9 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
  */
 class PropertyTemplate extends AbstractTemplate
 {
+    /** @var bool */
+    private $completePhpDocumentationAutomatically = false;
+
     /**
      * @return null|PhpDocumentationTemplate
      */
@@ -25,10 +28,12 @@ class PropertyTemplate extends AbstractTemplate
 
     /**
      * @param PhpDocumentationTemplate $phpDocumentation
+     * @param bool $completeAutomatically
      */
-    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation)
+    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation, $completeAutomatically = true)
     {
         $this->addProperty('documentation', $phpDocumentation, false);
+        $this->completePhpDocumentationAutomatically = $completeAutomatically;
     }
 
     /**
@@ -37,6 +42,12 @@ class PropertyTemplate extends AbstractTemplate
     public function setName($name)
     {
         $this->addProperty('name', (string) $name, false);
+        if ($this->completePhpDocumentationAutomatically === true) {
+            /** @var PhpDocumentationTemplate $documentation */
+            $documentation = $this->getProperty('documentation');
+            //@todo
+            //$documentation->setVariable($name);
+        }
     }
 
     public function setIsPrivate()
@@ -57,6 +68,14 @@ class PropertyTemplate extends AbstractTemplate
     public function setIsStatic()
     {
         $this->addProperty('static', true, false);
+    }
+
+    /**
+     * @param string $typeHint
+     */
+    public function addTypeHint($typeHint)
+    {
+        $this->addProperty('type_hint', (string) $typeHint);
     }
 
     /**
