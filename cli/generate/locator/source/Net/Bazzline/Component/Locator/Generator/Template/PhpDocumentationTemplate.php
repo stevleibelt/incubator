@@ -41,29 +41,29 @@ class PhpDocumentationTemplate extends AbstractTemplate
 
     /**
      * @param string $name
-     * @param array $types
+     * @param array $typeHints
      * @param string $comment
      */
-    public function addParameter($name, $types = array(), $comment = '')
+    public function addParameter($name, $typeHints = array(), $comment = '')
     {
         $parameter = array(
-            'comment'   => (string) $comment,
-            'name'      => (string) $name,
-            'types'     => (array) $types
+            'comment'       => (string) $comment,
+            'name'          => (string) $name,
+            'type_hints'    => (array) $typeHints
         );
 
         $this->addProperty('parameters', $parameter);
     }
 
     /**
-     * @param array $types
+     * @param array $typeHints
      * @param string $comment
      */
-    public function setReturn($types, $comment = '')
+    public function setReturn($typeHints, $comment = '')
     {
         $return = array(
-            'comment'   => (string) $comment,
-            'types'     => (array) $types
+            'comment'       => (string) $comment,
+            'type_hints'    => (array) $typeHints
         );
         $this->addProperty('return', $return, false);
     }
@@ -94,13 +94,13 @@ class PhpDocumentationTemplate extends AbstractTemplate
 
     /**
      * @param string $name
-     * @param array $types
+     * @param array $typeHints
      */
-    public function setVariable($name, $types = array())
+    public function setVariable($name, $typeHints = array())
     {
         $variable = array(
-            'name'  => $name,
-            'types' => $types
+            'name'          => $name,
+            'type_hints'    => $typeHints
         );
         $this->addProperty('variable', $variable, false);
     }
@@ -156,8 +156,8 @@ class PhpDocumentationTemplate extends AbstractTemplate
 
         foreach ($this->getProperty('parameters', array()) as $parameter) {
             $line = $this->getLine(' * @param');
-            if (!empty($parameter['types'])) {
-                $line->add(implode('|', $parameter['types']));
+            if (!empty($parameter['type_hints'])) {
+                $line->add(implode('|', $parameter['type_hints']));
             }
             $line->add('$' . $parameter['name']);
             if (strlen($parameter['comment']) > 0) {
@@ -173,8 +173,8 @@ class PhpDocumentationTemplate extends AbstractTemplate
 
         if (is_array($return)) {
             $line = $this->getLine(' * @return');
-            if (!empty($return['types'])) {
-                $line->add(implode('|', $return['types']));
+            if (!empty($return['type_hints'])) {
+                $line->add(implode('|', $return['type_hints']));
             }
             if (strlen($return['comment']) > 0) {
                 $line->add($return['comment']);
@@ -215,8 +215,8 @@ class PhpDocumentationTemplate extends AbstractTemplate
 
         if (is_array($variable)) {
             $line =  $this->getLine(' * @var');
-            if (!empty($variable['types'])) {
-                $line->add(implode('|', $variable['types']));
+            if (!empty($variable['type_hints'])) {
+                $line->add(implode('|', $variable['type_hints']));
             }
             $line->add('$' . $variable['name']);
             $this->addContent($line);

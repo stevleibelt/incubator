@@ -42,6 +42,14 @@ class MethodTemplate extends AbstractTemplate
     }
 
     /**
+     * @return null|array
+     */
+    public function getBody()
+    {
+        return $this->getProperty('body', null);
+    }
+
+    /**
      * @return null|PhpDocumentationTemplate
      */
     public function getDocumentation()
@@ -178,7 +186,7 @@ class MethodTemplate extends AbstractTemplate
         $parameterLine = $this->getLine();
         foreach ($parameters as $parameter) {
             if ((strlen($parameter['type_hint']) > 0)
-                && (!in_array($parameter['type_hint'], array('bool', 'int', 'string')))) {
+                && (!in_array($parameter['type_hint'], $this->getNotPrintableTypeHints()))) {
                 $parameterLine->add($parameter['type_hint']);
             }
             $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);

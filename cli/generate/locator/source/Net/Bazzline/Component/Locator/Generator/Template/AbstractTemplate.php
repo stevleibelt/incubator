@@ -155,4 +155,12 @@ abstract class AbstractTemplate implements TemplateInterface
     {
         return new Line($content);
     }
+
+    /**
+     * @return array
+     */
+    protected function getNotPrintableTypeHints()
+    {
+        return array('bool', 'boolean', 'int', 'integer', 'object', 'resource', 'string');
+    }
 }
