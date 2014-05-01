@@ -69,6 +69,8 @@ Existing Projects
 * [wintersmith](https://github.com/jnordberg/wintersmith)
 * [docpad](https://github.com/bevry/docpad)
 * [hexo](https://github.com/tommy351/hexo)
+* [phrozn](https://github.com/Pawka/phrozn)
+* [PieCrust](https://github.com/ludovicchabant/PieCrust)
 
 Components
 ----------
