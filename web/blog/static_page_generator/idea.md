@@ -62,6 +62,13 @@ Existing Projects
 * [StaticBlogGenerator](https://github.com/genintho/StaticBlogGenerator)
 * [acrylamid](https://github.com/posativ/acrylamid)
 * [tempo](https://github.com/catnapgames/Tempo)
+* [top static site generators comparison](http://staticgen.com/)
+* [blacksmith](https://github.com/flatiron/blacksmith)
+* [wheat](https://github.com/creationix/wheat)
+* [poet](https://github.com/jsantell/poet)
+* [wintersmith](https://github.com/jnordberg/wintersmith)
+* [docpad](https://github.com/bevry/docpad)
+* [hexo](https://github.com/tommy351/hexo)
 
 Components
 ----------
