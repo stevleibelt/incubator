@@ -13,11 +13,8 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
  * Class MethodTemplate
  * @package Net\Bazzline\Component\Locator\Generator\Template
  */
-class MethodTemplate extends AbstractTemplate
+class MethodTemplate extends AbstractDocumentedTemplate
 {
-    /** @var bool */
-    private $completePhpDocumentationAutomatically = false;
-
     /**
      * @param string $name
      * @param string $defaultValue
@@ -49,14 +46,6 @@ class MethodTemplate extends AbstractTemplate
         return $this->getProperty('body', null);
     }
 
-    /**
-     * @return null|PhpDocumentationTemplate
-     */
-    public function getDocumentation()
-    {
-        return $this->getProperty('documentation');
-    }
-
     public function setIsAbstract()
     {
         $this->addProperty('abstract', true, false);
@@ -69,16 +58,6 @@ class MethodTemplate extends AbstractTemplate
     {
         $this->addProperty('body', $body, false);
         $this->addProperty('has_body', true, false);
-    }
-
-    /**
-     * @param PhpDocumentationTemplate $phpDocumentation
-     * @param bool $completeAutomatically
-     */
-    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation, $completeAutomatically = true)
-    {
-        $this->addProperty('documentation', $phpDocumentation, false);
-        $this->completePhpDocumentationAutomatically = $completeAutomatically;
     }
 
     public function setHasNoBody()

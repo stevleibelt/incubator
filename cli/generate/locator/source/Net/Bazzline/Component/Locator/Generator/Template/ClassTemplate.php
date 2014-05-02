@@ -13,19 +13,8 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
  * Class ClassTemplate
  * @package Net\Bazzline\Component\Locator\Generator\Template
  */
-class ClassTemplate extends AbstractTemplate
+class ClassTemplate extends AbstractDocumentedTemplate
 {
-    /** @var bool */
-    private $completePhpDocumentationAutomatically = false;
-
-    /**
-     * @return null|PhpDocumentationTemplate
-     */
-    public function getDocumentation()
-    {
-        return $this->getProperty('documentation');
-    }
-
     /**
      * @param string $className
      */
@@ -86,16 +75,6 @@ class ClassTemplate extends AbstractTemplate
     public function addTrait(TraitTemplate $trait)
     {
         $this->addProperty('traits', $trait->getName());
-    }
-
-    /**
-     * @param PhpDocumentationTemplate $phpDocumentation
-     * @param bool $completeAutomatically
-     */
-    public function setDocumentation(PhpDocumentationTemplate $phpDocumentation, $completeAutomatically = true)
-    {
-        $this->addProperty('documentation', $phpDocumentation, false);
-        $this->completePhpDocumentationAutomatically = $completeAutomatically;
     }
 
     public function setIsAbstract()
