@@ -11,9 +11,9 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
  * Class PhpDocumentationTemplate
- * @package Net\Bazzline\Component\Locator\Generator\Template
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class PhpDocumentationTemplate extends AbstractTemplate
+class PhpDocumentationTemplate extends AbstractGenerator
 {
     /**
      * @param string $comment

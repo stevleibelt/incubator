@@ -11,9 +11,9 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
  * Class ConstantTemplate
- * @package Net\Bazzline\Component\Locator\Generator\Template
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class ConstantTemplate extends AbstractTemplate
+class ConstantTemplate extends AbstractGenerator
 {
     /**
      * @param string $name

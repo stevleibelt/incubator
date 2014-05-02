@@ -10,10 +10,10 @@ use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
- * Interface TemplateInterface
- * @package Net\Bazzline\Component\Locator\Generator\Template
+ * Interface GeneratorInterface
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-interface TemplateInterface
+interface GeneratorInterface
 {
     public function clear();
 
@@ -23,7 +23,7 @@ interface TemplateInterface
     public function fillOut();
 
     /**
-     * @param string $indention
+     * @param string $indention - @todo replace with Indention class
      * @return string
      */
     public function andConvertToString($indention = '');

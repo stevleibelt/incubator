@@ -12,11 +12,11 @@ use Net\Bazzline\Component\Locator\Generator\Content\ContentInterface;
 use Net\Bazzline\Component\Locator\Generator\Content\Line;
 
 /**
- * Class AbstractTemplate
- * @package Net\Bazzline\Component\Locator\Generator\Template
+ * Class AbstractGenerator
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  * @todo create rendering strategy to use this trigger for add blank line if content follows
  */
-abstract class AbstractTemplate implements TemplateInterface
+abstract class AbstractGenerator implements GeneratorInterface
 {
     const INDENTION_FOUR_SPACES = '    ';
     const INDENTION_TAB = "\t";
@@ -114,10 +114,10 @@ abstract class AbstractTemplate implements TemplateInterface
     }
 
     /**
-     * @param TemplateInterface $template
+     * @param GeneratorInterface $template
      * @param bool $isIndented
      */
-    protected function addTemplateAsContent(TemplateInterface $template, $isIndented = false)
+    protected function addTemplateAsContent(GeneratorInterface $template, $isIndented = false)
     {
         $this->addContent(
             explode(

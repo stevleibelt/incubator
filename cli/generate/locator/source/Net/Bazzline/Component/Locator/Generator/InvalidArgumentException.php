@@ -10,6 +10,6 @@ use \Exception;
 
 /**
  * Class InvalidArgumentException
- * @package Net\Bazzline\Component\Locator\Generator
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator
  */
 class InvalidArgumentException extends Exception {}

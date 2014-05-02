@@ -11,7 +11,7 @@ use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 /**
  * Class Line
  *
- * @package Net\Bazzline\Component\Locator\Generator\Content
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Content
  */
 class Line extends AbstractContent
 {

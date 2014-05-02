@@ -10,7 +10,7 @@ use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 
 /**
  * Interface ContentInterface
- * @package Net\Bazzline\Component\Locator\Generator\Content
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Content
  */
 interface ContentInterface
 {

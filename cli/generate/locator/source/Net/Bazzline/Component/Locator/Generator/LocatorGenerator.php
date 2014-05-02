@@ -13,11 +13,11 @@ use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\PropertyTemplate;
 
 /**
- * Class Generator
+ * Class LocatorGenerator
  *
  * @package Net\Bazzline\Component\Locator
  */
-class Generator
+class LocatorGenerator
 {
     /** @var array */
     private $configuration;

@@ -11,7 +11,7 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
  * Class PropertyTemplate
- * @package Net\Bazzline\Component\Locator\Generator\Template
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
 class PropertyTemplate extends AbstractDocumentedTemplate
 {

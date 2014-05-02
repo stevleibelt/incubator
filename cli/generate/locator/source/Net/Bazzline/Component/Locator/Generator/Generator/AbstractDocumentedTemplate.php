@@ -8,10 +8,10 @@ namespace Net\Bazzline\Component\Locator\Generator\Template;
 
 /**
  * Class AbstractDocumentedTemplate
- * @package Net\Bazzline\Component\Locator\Generator\Template
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  * @author stev leibelt <artodeto@bazzline.net>
  */
-abstract class AbstractDocumentedTemplate extends AbstractTemplate
+abstract class AbstractDocumentedTemplate extends AbstractGenerator
 {
     /** @var bool */
     protected $completePhpDocumentationAutomatically = false;

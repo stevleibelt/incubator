@@ -12,7 +12,7 @@ use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
  * Class BlockGeneratorTest
- * @package Test\Net\Bazzline\Component\Locator\Generator\Content
+ * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator\Content
  */
 class BlockGeneratorTest extends GeneratorTestCase
 {

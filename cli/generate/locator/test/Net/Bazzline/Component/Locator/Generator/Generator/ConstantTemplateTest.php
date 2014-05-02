@@ -10,7 +10,7 @@ use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
  * Class ConstantTemplateTest
- * @package Test\Net\Bazzline\Component\Locator\Generator\Template
+ * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
 class ConstantTemplateTest extends GeneratorTestCase
 {

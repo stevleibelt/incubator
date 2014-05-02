@@ -13,14 +13,14 @@ use Net\Bazzline\Component\Locator\Generator\Template\ConstantTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\MethodTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
 use Net\Bazzline\Component\Locator\Generator\Template\PropertyTemplate;
-use Net\Bazzline\Component\Locator\Generator\Template\TemplateInterface;
+use Net\Bazzline\Component\Locator\Generator\Template\GeneratorInterface;
 use Net\Bazzline\Component\Locator\Generator\Template\TraitTemplate;
 use PHPUnit_Framework_TestCase;
 use Mockery;
 
 /**
  * Class GeneratorTestCase
- * @package Test\Net\Bazzline\Component\Locator\Generator
+ * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator
  */
 class GeneratorTestCase extends PHPUnit_Framework_TestCase
 {
@@ -40,9 +40,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param TemplateInterface $template
+     * @param GeneratorInterface $template
      */
-    protected function debugTemplate(TemplateInterface $template)
+    protected function debugTemplate(GeneratorInterface $template)
     {
         echo PHP_EOL . '----' . PHP_EOL . $template->andConvertToString() . PHP_EOL . '----' . PHP_EOL;
     }

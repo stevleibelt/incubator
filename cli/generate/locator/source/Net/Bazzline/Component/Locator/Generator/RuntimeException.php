@@ -10,6 +10,6 @@ use Exception;
 
 /**
  * Class RuntimeException
- * @package Net\Bazzline\Component\Locator\Generator
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator
  */
 class RuntimeException extends Exception {}
