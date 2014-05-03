@@ -6,8 +6,6 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator;
 
-use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
-
 /**
  * Class ClassGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator\Generator
