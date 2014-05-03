@@ -94,7 +94,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     /**
      * @return DocumentationGenerator
      */
-    protected function getDocumentationGenerator()
+    protected function getPhpDocumentationTemplate()
     {
         return new DocumentationGenerator();
     }
@@ -102,7 +102,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     /**
      * @return PropertyGenerator
      */
-    protected function getPropertyGenerator()
+    protected function getPropertyTemplate()
     {
         return new PropertyGenerator();
     }
@@ -110,7 +110,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     /**
      * @return TraitGenerator
      */
-    protected function getTraitGenerator()
+    protected function getTraitTemplate()
     {
         return new TraitGenerator();
     }

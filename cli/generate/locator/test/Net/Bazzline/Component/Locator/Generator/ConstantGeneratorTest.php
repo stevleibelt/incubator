@@ -4,15 +4,15 @@
  * @since 2014-04-27 
  */
 
-namespace Test\Net\Bazzline\Component\Locator\Generator\Template;
+namespace Test\Net\Bazzline\Component\Locator\Generator;
 
 use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
 
 /**
- * Class ConstantTemplateTest
+ * Class ConstantGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class ConstantTemplateTest extends GeneratorTestCase
+class ConstantGeneratorTest extends GeneratorTestCase
 {
     /**
      * @expectedException \Net\Bazzline\Component\Locator\Generator\RuntimeException
@@ -20,19 +20,18 @@ class ConstantTemplateTest extends GeneratorTestCase
      */
     public function testWithNoProperties()
     {
-        $template = $this->getConstantTemplate();
-        $template->fillOut();
+        $generator = $this->getConstantGenerator();
+        $generator->generate();
     }
 
     public function testWithNameAndValue()
     {
-        $template = $this->getConstantTemplate();
-        $template->setName('UNIT_TEST');
-        $template->setValue('\'foobar\'');
-        $template->fillOut();
+        $generator = $this->getConstantGenerator();
+        $generator->setName('UNIT_TEST');
+        $generator->setValue('\'foobar\'');
 
         $expectedString = 'const UNIT_TEST = \'foobar\';';
 
-        $this->assertEquals($expectedString, $template->andConvertToString());
+        $this->assertEquals($expectedString, $generator->generate());
     }
 }
