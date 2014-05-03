@@ -4,13 +4,13 @@
  * @since 2014-04-24
  */
 
-namespace Net\Bazzline\Component\Locator\Generator;
+namespace Net\Bazzline\Component\Locator;
 
 use Exception;
-use Net\Bazzline\Component\Locator\Generator\Template\ClassTemplate;
-use Net\Bazzline\Component\Locator\Generator\Template\MethodTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\ClassGenerator;
+use Net\Bazzline\Component\Locator\Generator\Template\MethodGenerator;
 use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
-use Net\Bazzline\Component\Locator\Generator\Template\PropertyTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\PropertyGenerator;
 
 /**
  * Class LocatorGenerator
@@ -79,25 +79,25 @@ array (
 */
     private function createLocatorFile()
     {
-        $class = new ClassTemplate();
+        $class = new ClassGenerator();
         //@todo move into methods like: $class = $this->enrichWithDocumentation($class)
         $documentation = new PhpDocumentationTemplate();
         $documentation->setClass($this->configuration['class_name']);
         $documentation->setPackage($this->configuration['namespace']);
 
-        $factoryInstancePool = new PropertyTemplate();
+        $factoryInstancePool = new PropertyGenerator();
         //@todo add documentation
         $factoryInstancePool->setName('factoryInstancePool');
         $factoryInstancePool->setIsPrivate();
         $factoryInstancePool->setValue('array()');
 
-        $sharedInstancePool = new PropertyTemplate();
+        $sharedInstancePool = new PropertyGenerator();
         //@todo add documentation
         $sharedInstancePool->setName('sharedInstancePool');
         $sharedInstancePool->setIsPrivate();
         $sharedInstancePool->setValue('array()');
 
-        $isInInstancePool = new MethodTemplate();
+        $isInInstancePool = new MethodGenerator();
         //@todo add documentation
         $isInInstancePool->setName('isInInstancePool');
         $isInInstancePool->addParameter('key', '', 'string');

@@ -5,9 +5,9 @@
  */
 #!/bin/php
 
-use Net\Bazzline\Component\Locator\Generator\Generator;
+use Net\Bazzline\Component\Locator\Generator;
 
-require_once __DIR__ . '/../../../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 global $argc, $argv;
 

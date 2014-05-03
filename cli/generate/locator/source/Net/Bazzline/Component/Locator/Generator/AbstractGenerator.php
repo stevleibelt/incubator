@@ -4,9 +4,8 @@
  * @since 2014-04-24 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template;
+namespace Net\Bazzline\Component\Locator\Generator;
 
-use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 use Net\Bazzline\Component\Locator\Generator\Content\Block;
 use Net\Bazzline\Component\Locator\Generator\Content\ContentInterface;
 use Net\Bazzline\Component\Locator\Generator\Content\Line;
@@ -18,9 +17,6 @@ use Net\Bazzline\Component\Locator\Generator\Content\Line;
  */
 abstract class AbstractGenerator implements GeneratorInterface
 {
-    const INDENTION_FOUR_SPACES = '    ';
-    const INDENTION_TAB = "\t";
-
     /** @var Block */
     private $block;
 
@@ -33,7 +29,6 @@ abstract class AbstractGenerator implements GeneratorInterface
     public function __construct()
     {
         $this->clear();
-        $this->indention = self::INDENTION_FOUR_SPACES;
     }
 
     public function clear()
@@ -43,7 +38,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @return string
+     * @return Indention
      */
     public function getIndention()
     {
@@ -51,20 +46,22 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param string $indention
+     * @param Indention $indention
+     * @return $this
      */
-    public function setIndention($indention)
+    public function setIndention(Indention $indention)
     {
-        $this->indention = (string) $indention;
+        $this->indention = $indention;
+
+        return $this;
     }
 
     /**
-     * @param string $indention
      * @return string
      */
-    public function andConvertToString($indention = '')
+    public function generate()
     {
-        return $this->block->andConvertToString($indention);
+        return $this->block->andConvertToString($this->indention);
     }
 
     /**
@@ -72,7 +69,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      */
     public function __toString()
     {
-        return $this->andConvertToString('');
+        return $this->generate('');
     }
 
     /**
@@ -114,15 +111,15 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param GeneratorInterface $template
+     * @param GeneratorInterface $generator
      * @param bool $isIndented
      */
-    protected function addTemplateAsContent(GeneratorInterface $template, $isIndented = false)
+    protected function addGeneratorAsContent(GeneratorInterface $generator, $isIndented = false)
     {
         $this->addContent(
             explode(
                 PHP_EOL,
-                $template->andConvertToString()
+                $generator->generate()
             ),
             $isIndented
         );

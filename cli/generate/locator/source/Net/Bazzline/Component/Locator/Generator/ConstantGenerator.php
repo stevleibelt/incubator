@@ -4,16 +4,16 @@
  * @since 2014-04-27 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
- * Class ConstantTemplate
+ * Class ConstantGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class ConstantTemplate extends AbstractGenerator
+class ConstantGenerator extends AbstractGenerator
 {
     /**
      * @param string $name

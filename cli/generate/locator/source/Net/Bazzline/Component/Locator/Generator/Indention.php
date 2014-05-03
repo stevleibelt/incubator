@@ -4,14 +4,17 @@
  * @since 2014-05-02 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Content;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 /**
  * Class Indention
- * @package Net\Bazzline\Component\Locator\Generator\Content
+ * @package Net\Bazzline\Component\Locator\Generator
  */
 class Indention
 {
+    const FOUR_SPACES_INDENTION = '    ';
+    const TAB_INDENTION = "\t";
+
     /**
      * @var int
      */
@@ -20,7 +23,7 @@ class Indention
     /**
      * @var string
      */
-    private $string = '    ';
+    private $string = self::FOUR_SPACES_INDENTION;
 
     /**
      * @return string

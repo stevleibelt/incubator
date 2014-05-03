@@ -4,16 +4,16 @@
  * @since 2014-04-27 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
- * Class PropertyTemplate
+ * Class PropertyGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class PropertyTemplate extends AbstractDocumentedTemplate
+class PropertyGenerator extends AbstractDocumentedGenerator
 {
     /**
      * @param string $name
@@ -21,8 +21,8 @@ class PropertyTemplate extends AbstractDocumentedTemplate
     public function setName($name)
     {
         $this->addProperty('name', (string) $name, false);
-        if ($this->completePhpDocumentationAutomatically === true) {
-            /** @var PhpDocumentationTemplate $documentation */
+        if ($this->completeDocumentationAutomatically === true) {
+            /** @var DocumentationGenerator $documentation */
             $documentation = $this->getProperty('documentation');
             //@todo
             //$documentation->setVariable($name);
@@ -83,8 +83,8 @@ class PropertyTemplate extends AbstractDocumentedTemplate
         $block = $this->getBlock();
         $line = $this->getLine();
 
-        if ($documentation instanceof PhpDocumentationTemplate) {
-            $block->add(explode(PHP_EOL, $documentation->andConvertToString()));
+        if ($documentation instanceof DocumentationGenerator) {
+            $block->add(explode(PHP_EOL, $documentation->generate()));
         }
 
         if (!is_null($visibility)) {

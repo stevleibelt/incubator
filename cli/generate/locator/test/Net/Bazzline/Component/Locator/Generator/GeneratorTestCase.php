@@ -8,13 +8,13 @@ namespace Test\Net\Bazzline\Component\Locator\Generator;
 
 use Net\Bazzline\Component\Locator\Generator\Content\Block;
 use Net\Bazzline\Component\Locator\Generator\Content\Line;
-use Net\Bazzline\Component\Locator\Generator\Template\ClassTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\ClassGenerator;
 use Net\Bazzline\Component\Locator\Generator\Template\ConstantTemplate;
-use Net\Bazzline\Component\Locator\Generator\Template\MethodTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\MethodGenerator;
 use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
-use Net\Bazzline\Component\Locator\Generator\Template\PropertyTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\PropertyGenerator;
 use Net\Bazzline\Component\Locator\Generator\Template\GeneratorInterface;
-use Net\Bazzline\Component\Locator\Generator\Template\TraitTemplate;
+use Net\Bazzline\Component\Locator\Generator\Template\TraitGenerator;
 use PHPUnit_Framework_TestCase;
 use Mockery;
 
@@ -68,11 +68,11 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
 
     //----begin of template----
     /**
-     * @return ClassTemplate
+     * @return ClassGenerator
      */
     protected function getClassTemplate()
     {
-        return new ClassTemplate();
+        return new ClassGenerator();
     }
 
     /**
@@ -84,11 +84,11 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return MethodTemplate
+     * @return MethodGenerator
      */
     protected function getMethodTemplate()
     {
-        return new MethodTemplate();
+        return new MethodGenerator();
     }
 
     /**
@@ -100,19 +100,19 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return PropertyTemplate
+     * @return PropertyGenerator
      */
     protected function getPropertyTemplate()
     {
-        return new PropertyTemplate();
+        return new PropertyGenerator();
     }
 
     /**
-     * @return TraitTemplate
+     * @return TraitGenerator
      */
     protected function getTraitTemplate()
     {
-        return new TraitTemplate();
+        return new TraitGenerator();
     }
     //----end of template----
 }

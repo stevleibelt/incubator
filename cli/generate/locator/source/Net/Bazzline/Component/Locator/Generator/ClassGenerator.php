@@ -4,16 +4,16 @@
  * @since 2014-04-26 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
 use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 
 /**
- * Class ClassTemplate
+ * Class ClassGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class ClassTemplate extends AbstractDocumentedTemplate
+class ClassGenerator extends AbstractDocumentedGenerator
 {
     /**
      * @param string $className
@@ -46,33 +46,33 @@ class ClassTemplate extends AbstractDocumentedTemplate
     }
 
     /**
-     * @param ConstantTemplate $constant
+     * @param ConstantGenerator $constant
      */
-    public function addClassConstant(ConstantTemplate $constant)
+    public function addClassConstant(ConstantGenerator $constant)
     {
         $this->addProperty('constants', $constant);
     }
 
     /**
-     * @param PropertyTemplate $property
+     * @param PropertyGenerator $property
      */
-    public function addClassProperty(PropertyTemplate $property)
+    public function addClassProperty(PropertyGenerator $property)
     {
         $this->addProperty('properties', $property);
     }
 
     /**
-     * @param MethodTemplate $method
+     * @param MethodGenerator $method
      */
-    public function addMethod(MethodTemplate $method)
+    public function addMethod(MethodGenerator $method)
     {
         $this->addProperty('methods', $method);
     }
 
     /**
-     * @param TraitTemplate $trait
+     * @param TraitGenerator $trait
      */
-    public function addTrait(TraitTemplate $trait)
+    public function addTrait(TraitGenerator $trait)
     {
         $this->addProperty('traits', $trait->getName());
     }
@@ -123,11 +123,11 @@ class ClassTemplate extends AbstractDocumentedTemplate
     private function fillOutBody()
     {
         $this->addContent('{');
-        /** @var null|ConstantTemplate[] $constants */
+        /** @var null|ConstantGenerator[] $constants */
         $constants = $this->getProperty('constants');
-        /** @var null|MethodTemplate[] $methods */
+        /** @var null|MethodGenerator[] $methods */
         $methods = $this->getProperty('methods');
-        /** @var null|PropertyTemplate[] $properties */
+        /** @var null|PropertyGenerator[] $properties */
         $properties = $this->getProperty('properties');
         /** @var null|array $traits */
         $traits = $this->getProperty('traits');
@@ -139,21 +139,21 @@ class ClassTemplate extends AbstractDocumentedTemplate
         if (is_array($constants)) {
             foreach($constants as $constant) {
                 $constant->fillOut();
-                $this->addTemplateAsContent($constant, true);
+                $this->addGeneratorAsContent($constant, true);
                 $this->addContent('');
             }
         }
         if (is_array($properties)) {
             foreach($properties as $property) {
                 $property->fillOut();
-                $this->addTemplateAsContent($property, true);
+                $this->addGeneratorAsContent($property, true);
                 $this->addContent('');
             }
         }
         if (is_array($methods)) {
             foreach($methods as $method) {
                 $method->fillOut();
-                $this->addTemplateAsContent($method, true);
+                $this->addGeneratorAsContent($method, true);
                 $this->addContent('');
             }
         }
@@ -181,9 +181,9 @@ class ClassTemplate extends AbstractDocumentedTemplate
     {
         $documentation = $this->getProperty('documentation');
 
-        if ($documentation instanceof PhpDocumentationTemplate) {
+        if ($documentation instanceof DocumentationGenerator) {
             $documentation->fillOut();
-            $this->addTemplateAsContent($documentation);
+            $this->addGeneratorAsContent($documentation);
         }
     }
 

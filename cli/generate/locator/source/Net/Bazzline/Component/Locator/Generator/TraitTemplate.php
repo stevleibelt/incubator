@@ -4,37 +4,34 @@
  * @since 2014-04-26 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template;
-
-use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
-use Net\Bazzline\Component\Locator\Generator\RuntimeException;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 /**
- * Class TraitTemplate
+ * Class TraitGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class TraitTemplate extends AbstractDocumentedTemplate
+class TraitGenerator extends AbstractDocumentedGenerator
 {
     /**
-     * @param ConstantTemplate $constant
+     * @param ConstantGenerator $constant
      */
-    public function addTraitConstant(ConstantTemplate $constant)
+    public function addTraitConstant(ConstantGenerator $constant)
     {
         $this->addProperty('constants', $constant);
     }
 
     /**
-     * @param PropertyTemplate $property
+     * @param PropertyGenerator $property
      */
-    public function addTraitProperty(PropertyTemplate $property)
+    public function addTraitProperty(PropertyGenerator $property)
     {
         $this->addProperty('properties', $property);
     }
 
     /**
-     * @param MethodTemplate $method
+     * @param MethodGenerator $method
      */
-    public function addMethod(MethodTemplate $method)
+    public function addMethod(MethodGenerator $method)
     {
         $this->addProperty('methods', $method);
     }
@@ -45,8 +42,8 @@ class TraitTemplate extends AbstractDocumentedTemplate
     public function setName($name)
     {
         $this->addProperty('name', (string) $name, false);
-        if ($this->completePhpDocumentationAutomatically === true) {
-            /** @var PhpDocumentationTemplate $documentation */
+        if ($this->completeDocumentationAutomatically === true) {
+            /** @var DocumentationGenerator $documentation */
             $documentation = $this->getProperty('documentation');
             $documentation->setClass($name);
         }
@@ -73,31 +70,31 @@ class TraitTemplate extends AbstractDocumentedTemplate
     private function fillOutBody()
     {
         $this->addContent('{');
-        /** @var null|ConstantTemplate[] $constants */
+        /** @var null|ConstantGenerator[] $constants */
         $constants = $this->getProperty('constants');
-        /** @var null|MethodTemplate[] $methods */
+        /** @var null|MethodGenerator[] $methods */
         $methods = $this->getProperty('methods');
-        /** @var null|PropertyTemplate[] $properties */
+        /** @var null|PropertyGenerator[] $properties */
         $properties = $this->getProperty('properties');
 
         if (is_array($constants)) {
             foreach($constants as $constant) {
-                $constant->fillOut();
-                $this->addTemplateAsContent($constant, true);
+                $constant->generate();
+                $this->addGeneratorAsContent($constant, true);
                 $this->addContent('');
             }
         }
         if (is_array($properties)) {
             foreach($properties as $property) {
                 $property->fillOut();
-                $this->addTemplateAsContent($property, true);
+                $this->addGeneratorAsContent($property, true);
                 $this->addContent('');
             }
         }
         if (is_array($methods)) {
             foreach($methods as $method) {
                 $method->fillOut();
-                $this->addTemplateAsContent($method, true);
+                $this->addGeneratorAsContent($method, true);
                 $this->addContent('');
             }
         }
@@ -109,9 +106,9 @@ class TraitTemplate extends AbstractDocumentedTemplate
     {
         $documentation = $this->getProperty('documentation');
 
-        if ($documentation instanceof PhpDocumentationTemplate) {
-            $documentation->fillOut();
-            $this->addTemplateAsContent($documentation);
+        if ($documentation instanceof DocumentationGenerator) {
+            $documentation->generate();
+            $this->addGeneratorAsContent($documentation);
         }
     }
 

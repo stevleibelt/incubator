@@ -4,16 +4,13 @@
  * @since 2014-04-24 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template;
-
-use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
-use Net\Bazzline\Component\Locator\Generator\RuntimeException;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 /**
- * Class PhpDocumentationTemplate
+ * Class DocumentationGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class PhpDocumentationTemplate extends AbstractGenerator
+class DocumentationGenerator extends AbstractGenerator
 {
     /**
      * @param string $comment

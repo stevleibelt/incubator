@@ -4,16 +4,13 @@
  * @since 2014-04-24 
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Template;
-
-use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
-use Net\Bazzline\Component\Locator\Generator\RuntimeException;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 /**
- * Class MethodTemplate
+ * Class MethodGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-class MethodTemplate extends AbstractDocumentedTemplate
+class MethodGenerator extends AbstractDocumentedGenerator
 {
     /**
      * @param string $name
@@ -31,8 +28,8 @@ class MethodTemplate extends AbstractDocumentedTemplate
         );
 
         $this->addProperty('parameters', $parameter);
-        if ($this->completePhpDocumentationAutomatically === true) {
-            /** @var PhpDocumentationTemplate $documentation */
+        if ($this->completeDocumentationAutomatically === true) {
+            /** @var DocumentationGenerator $documentation */
             $documentation = $this->getProperty('documentation');
             $documentation->addParameter($name, array($typeHint));
         }
@@ -130,9 +127,9 @@ class MethodTemplate extends AbstractDocumentedTemplate
     {
         $documentation = $this->getProperty('documentation');
 
-        if ($documentation instanceof PhpDocumentationTemplate) {
-            $documentation->fillOut();
-            $this->addTemplateAsContent($documentation);
+        if ($documentation instanceof DocumentationGenerator) {
+            $documentation->generate();
+            $this->addGeneratorAsContent($documentation);
         }
     }
 
