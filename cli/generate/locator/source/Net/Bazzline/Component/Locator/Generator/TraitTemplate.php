@@ -60,14 +60,14 @@ class TraitGenerator extends AbstractDocumentedGenerator
     /**
      * @throws InvalidArgumentException|RuntimeException
      */
-    public function fillOut()
+    public function generate()
     {
-        $this->fillOutPhpDocumentation();
-        $this->fillOutSignature();
-        $this->fillOutBody();
+        $this->generateDocumentation();
+        $this->generateSignature();
+        $this->generateBody();
     }
 
-    private function fillOutBody()
+    private function generateBody()
     {
         $this->addContent('{');
         /** @var null|ConstantGenerator[] $constants */
@@ -86,14 +86,14 @@ class TraitGenerator extends AbstractDocumentedGenerator
         }
         if (is_array($properties)) {
             foreach($properties as $property) {
-                $property->fillOut();
+                $property->generate();
                 $this->addGeneratorAsContent($property, true);
                 $this->addContent('');
             }
         }
         if (is_array($methods)) {
             foreach($methods as $method) {
-                $method->fillOut();
+                $method->generate();
                 $this->addGeneratorAsContent($method, true);
                 $this->addContent('');
             }
@@ -102,7 +102,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
         $this->addContent('}');
     }
 
-    private function fillOutPhpDocumentation()
+    private function generateDocumentation()
     {
         $documentation = $this->getProperty('documentation');
 
@@ -115,7 +115,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
     /**
      * @throws \Net\Bazzline\Component\Locator\Generator\RuntimeException
      */
-    private function fillOutSignature()
+    private function generateSignature()
     {
         $name = $this->getProperty('name');
 

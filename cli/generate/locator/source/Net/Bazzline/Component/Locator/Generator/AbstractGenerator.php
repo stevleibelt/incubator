@@ -59,14 +59,6 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return string
      */
-    public function generate()
-    {
-        return $this->block->andConvertToString($this->indention);
-    }
-
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return $this->generate('');
