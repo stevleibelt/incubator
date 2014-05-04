@@ -97,15 +97,16 @@ class MethodGenerator extends AbstractDocumentedGenerator
 
     /**
      * @throws InvalidArgumentException|RuntimeException
+     * @return string
      */
-    public function fillOut()
+    public function generate()
     {
-        $this->fillOutPhpDocumentation();
-        $this->fillOutSignature();
-        $this->fillOutBody();
+        $this->generateDocumentation();
+        $this->generateSignature();
+        $this->generateBody();
     }
 
-    private function fillOutBody()
+    private function generateBody()
     {
         $hasBody    = $this->getProperty('has_body', true);
         $isAbstract = $this->getProperty('abstract', false);
@@ -123,7 +124,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
         }
     }
 
-    private function fillOutPhpDocumentation()
+    private function generateDocumentation()
     {
         $documentation = $this->getProperty('documentation');
 
@@ -133,7 +134,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
         }
     }
 
-    private function fillOutSignature()
+    private function generateSignature()
     {
         $hasBody        = $this->getProperty('has_body', true);
         $isAbstract     = $this->getProperty('abstract', false);

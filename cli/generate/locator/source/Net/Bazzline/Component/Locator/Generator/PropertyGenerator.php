@@ -67,8 +67,9 @@ class PropertyGenerator extends AbstractDocumentedGenerator
 
     /**
      * @throws InvalidArgumentException|RuntimeException
+     * @return string
      */
-    public function fillOut()
+    public function generate()
     {
         $documentation = $this->getProperty('documentation');
         $isStatic = $this->getProperty('static', false);

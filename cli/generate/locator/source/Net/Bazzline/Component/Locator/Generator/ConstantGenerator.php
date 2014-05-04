@@ -33,8 +33,9 @@ class ConstantGenerator extends AbstractGenerator
 
     /**
      * @throws InvalidArgumentException|RuntimeException
+     * @return string
      */
-    public function fillOut()
+    public function generate()
     {
         $name = $this->getProperty('name');
         $value = $this->getProperty('value');

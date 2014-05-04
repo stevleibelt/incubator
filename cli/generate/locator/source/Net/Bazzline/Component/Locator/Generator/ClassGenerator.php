@@ -110,17 +110,18 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
     /**
      * @throws InvalidArgumentException|RuntimeException
+     * @return string
      */
-    public function fillOut()
+    public function generate()
     {
-        $this->fillOutNamespace();
-        $this->fillOutUse();
-        $this->fillOutPhpDocumentation();
-        $this->fillOutSignature();
-        $this->fillOutBody();
+        $this->generateNamespace();
+        $this->generateUse();
+        $this->generateDocumentation();
+        $this->generateSignature();
+        $this->generateBody();
     }
 
-    private function fillOutBody()
+    private function generateBody()
     {
         $this->addContent('{');
         /** @var null|ConstantGenerator[] $constants */
@@ -138,21 +139,18 @@ class ClassGenerator extends AbstractDocumentedGenerator
         }
         if (is_array($constants)) {
             foreach($constants as $constant) {
-                $constant->fillOut();
                 $this->addGeneratorAsContent($constant, true);
                 $this->addContent('');
             }
         }
         if (is_array($properties)) {
             foreach($properties as $property) {
-                $property->fillOut();
                 $this->addGeneratorAsContent($property, true);
                 $this->addContent('');
             }
         }
         if (is_array($methods)) {
             foreach($methods as $method) {
-                $method->fillOut();
                 $this->addGeneratorAsContent($method, true);
                 $this->addContent('');
             }
@@ -161,7 +159,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $this->addContent('}');
     }
 
-    private function fillOutNamespace()
+    private function generateNamespace()
     {
         $namespace = $this->getProperty('namespace');
 
@@ -177,12 +175,11 @@ class ClassGenerator extends AbstractDocumentedGenerator
         }
     }
 
-    private function fillOutPhpDocumentation()
+    private function generateDocumentation()
     {
         $documentation = $this->getProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
-            $documentation->fillOut();
             $this->addGeneratorAsContent($documentation);
         }
     }
@@ -190,7 +187,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
     /**
      * @throws \Net\Bazzline\Component\Locator\Generator\RuntimeException
      */
-    private function fillOutSignature()
+    private function generateSignature()
     {
         $isAbstract     = $this->getProperty('abstract', false);
         $isInterface    = $this->getProperty('interface', false);
@@ -224,7 +221,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $this->addContent($line);
     }
 
-    private function fillOutUse()
+    private function generateUse()
     {
         $uses = $this->getProperty('uses');
 

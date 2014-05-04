@@ -104,23 +104,24 @@ class DocumentationGenerator extends AbstractGenerator
 
     /**
      * @throws InvalidArgumentException|RuntimeException
+     * @return string
      */
-    public function fillOut()
+    public function generate()
     {
         $this->addContent('/**');
-        $this->fillOutSees();
-        $this->fillOutComments();
-        $this->fillOutClass();
-        $this->fillOutPackage();
-        $this->fillOutToDoS();
-        $this->fillOutParameters();
-        $this->fillOutReturn();
-        $this->fillOutThrows();
-        $this->fillOutVariable();
+        $this->generateSees();
+        $this->generateComments();
+        $this->generateClass();
+        $this->generatePackage();
+        $this->generateToDoS();
+        $this->generateParameters();
+        $this->generateReturn();
+        $this->generateThrows();
+        $this->generateVariable();
         $this->addContent(' */');
     }
 
-    private function fillOutClass()
+    private function generateClass()
     {
         $class = $this->getProperty('class');
 
@@ -130,7 +131,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutPackage()
+    private function generatePackage()
     {
         $package = $this->getProperty('package');
 
@@ -140,7 +141,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutComments()
+    private function generateComments()
     {
         foreach ($this->getProperty('comments', array()) as $comment) {
             $line = $this->getLine(' * ' . $comment);
@@ -148,7 +149,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutParameters()
+    private function generateParameters()
     {
 
         foreach ($this->getProperty('parameters', array()) as $parameter) {
@@ -164,7 +165,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutReturn()
+    private function generateReturn()
     {
         $return = $this->getProperty('return');
 
@@ -180,7 +181,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutSees()
+    private function generateSees()
     {
         foreach ($this->getProperty('sees', array()) as $see) {
             $line = $this->getLine(' * @see ' . $see);
@@ -188,7 +189,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutThrows()
+    private function generateThrows()
     {
         $throws = $this->getProperty('throws', array());
 
@@ -198,7 +199,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutToDoS()
+    private function generateToDoS()
     {
         foreach ($this->getProperty('todos', array()) as $todo) {
             $line = $this->getLine(' * @todo ' . $todo);
@@ -206,7 +207,7 @@ class DocumentationGenerator extends AbstractGenerator
         }
     }
 
-    private function fillOutVariable()
+    private function generateVariable()
     {
         $variable = $this->getProperty('variable');
 
