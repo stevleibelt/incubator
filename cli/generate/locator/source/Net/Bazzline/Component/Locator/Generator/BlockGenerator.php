@@ -4,37 +4,35 @@
  * @since 2014-04-25
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Content;
-
-use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 /**
- * Class Block
+ * Class BlockGenerator
  *
- * @package Net\Bazzline\Component\Locator\LocatorGenerator\Content
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator
  */
-class Block extends AbstractContent
+class BlockGenerator extends AbstractContentGenerator
 {
-    /** @var array|ContentInterface[] */
+    /** @var array|GeneratorInterface[]|AbstractContentGenerator[] */
     private $contents = array();
 
     /**
-     * @param string|array|ContentInterface $content
+     * @param string|array|GeneratorInterface $content
      * @throws InvalidArgumentException
      */
     public function add($content)
     {
         if (is_string($content)) {
-            $lineOfContent = new Line($content);
+            $lineOfContent = new LineGenerator($content);
             $this->contents[] = $lineOfContent;
         } else if (is_array($content)) {
             foreach ($content as $part) {
                 $this->add($part);
             }
-        } else if ($content instanceof ContentInterface) {
+        } else if ($content instanceof AbstractContentGenerator) {
             $this->contents[] = $content;
         } else {
-            throw new InvalidArgumentException('content has to be string, an array or instance of ContentInterface');
+            throw new InvalidArgumentException('content has to be string, an array or instance of AbstractContentGenerator');
         }
     }
 
@@ -52,10 +50,10 @@ class Block extends AbstractContent
     }
 
     /**
-     * @param string $indention
+     * @throws InvalidArgumentException|RuntimeException
      * @return string
      */
-    public function andConvertToString($indention = '')
+    public function generate()
     {
         $string = '';
         end($this->contents);
@@ -64,10 +62,12 @@ class Block extends AbstractContent
 
         foreach ($this->contents as $key => $content) {
             if ($content->hasContent()) {
-                if ($content instanceof Block) {
-                    $string .= $content->andConvertToString(str_repeat($indention, 2));
+                if ($content instanceof BlockGenerator) {
+                    //add and increase indention
+                    $string .= $content->generate();
                 } else {
-                    $string .= $content->andConvertToString($indention);
+                    //add indention
+                    $string .= $content->generate();
                 }
                 if ($key !== $lastKey) {
                     $string .= PHP_EOL;

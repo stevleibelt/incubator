@@ -4,16 +4,14 @@
  * @since 2014-04-25
  */
 
-namespace Net\Bazzline\Component\Locator\Generator\Content;
-
-use Net\Bazzline\Component\Locator\Generator\InvalidArgumentException;
+namespace Net\Bazzline\Component\Locator\Generator;
 
 /**
- * Class Line
+ * Class LineGenerator
  *
- * @package Net\Bazzline\Component\Locator\LocatorGenerator\Content
+ * @package Net\Bazzline\Component\Locator\LocatorGenerator
  */
-class Line extends AbstractContent
+class LineGenerator extends AbstractContentGenerator
 {
     /** @var array|string[] */
     private $parts = array();
@@ -22,7 +20,7 @@ class Line extends AbstractContent
     private $separator = ' ';
 
     /**
-     * @param string|array|ContentInterface $content
+     * @param string|array|GeneratorInterface[]|AbstractContentGenerator[] $content
      * @throws InvalidArgumentException
      */
     public function add($content)
@@ -33,12 +31,12 @@ class Line extends AbstractContent
             foreach ($content as $part) {
                 $this->add($part);
             }
-        } else if ($content instanceof ContentInterface) {
+        } else if ($content instanceof AbstractContentGenerator) {
             if ($content->hasContent()) {
-                $this->parts[] = $content->andConvertToString();
+                $this->parts[] = $content->generate();
             }
         } else {
-            throw new InvalidArgumentException('content has to be string, an array or instance of ContentInterface');
+            throw new InvalidArgumentException('content has to be string, an array or instance of AbstractContentGenerator');
         }
     }
 
@@ -64,11 +62,11 @@ class Line extends AbstractContent
     }
 
     /**
-     * @param string $indention
+     * @throws InvalidArgumentException|RuntimeException
      * @return string
      */
-    public function andConvertToString($indention = '')
+    public function generate()
     {
-        return (implode('', $this->parts) !== '') ? $indention . implode($this->separator, $this->parts) : '';
+        return (implode('', $this->parts) !== '') ? $this->getIndention()->toString() . implode($this->separator, $this->parts) : '';
     }
 }

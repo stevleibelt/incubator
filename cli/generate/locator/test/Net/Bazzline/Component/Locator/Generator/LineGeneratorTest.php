@@ -4,28 +4,26 @@
  * @since 2014-04-26 
  */
 
-namespace Test\Net\Bazzline\Component\Locator\Generator\Content;
-
-use Test\Net\Bazzline\Component\Locator\Generator\GeneratorTestCase;
+namespace Test\Net\Bazzline\Component\Locator\Generator;
 
 /**
  * Class LineGeneratorTest
- * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator\Content
+ * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator
  */
 class LineGeneratorTest extends GeneratorTestCase
 {
     public function testWithoutContent()
     {
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
 
         $this->assertFalse($line->hasContent());
-        $this->assertEquals('', $line->andConvertToString());
+        $this->assertEquals('', $line->generate());
     }
 
     public function testToString()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->add($content);
 
         $this->assertTrue($line->hasContent());
@@ -35,22 +33,22 @@ class LineGeneratorTest extends GeneratorTestCase
     public function testAdd()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->add($content);
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->andConvertToString());
+        $this->assertEquals($content, $line->generate());
     }
 
     public function testAddArray()
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->add($contentAsArray);
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->andConvertToString());
+        $this->assertEquals($content, $line->generate());
     }
 
     public function testAddNestedArray()
@@ -65,32 +63,32 @@ class LineGeneratorTest extends GeneratorTestCase
             array('b', 'a', 'r')
         );
         $expectedContent = 'there is no f o o without a b a r';
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->add($contentAsArray);
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($expectedContent, $line->andConvertToString());
+        $this->assertEquals($expectedContent, $line->generate());
     }
 
     public function testMultipleAdd()
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
 
         foreach ($contentAsArray as $part) {
             $line->add($part);
         }
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->andConvertToString());
+        $this->assertEquals($content, $line->generate());
     }
 
     public function testMultipleAddWithSeparator()
     {
         $content = 'there:is:no:foo:without:a:bar';
         $contentAsArray = explode(':', $content);
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->setContentSeparator(':');
 
         foreach ($contentAsArray as $part) {
@@ -98,42 +96,42 @@ class LineGeneratorTest extends GeneratorTestCase
         }
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->andConvertToString());
+        $this->assertEquals($content, $line->generate());
     }
 
     public function testAddLine()
     {
         $content = 'there is no foo without a bar';
-        $contentLine = $this->getLine();
+        $contentLine = $this->getLineGenerator();
         $contentLine->add($content);
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->add($contentLine);
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->andConvertToString());
+        $this->assertEquals($content, $line->generate());
     }
 
     public function testClear()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->add($content);
         $line->clear();
 
         $this->assertFalse($line->hasContent());
-        $this->assertEquals('', $line->andConvertToString());
+        $this->assertEquals('', $line->generate());
     }
 
     public function testClone()
     {
         $content = 'there is no foo without a bar';
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         $line->add($content);
         $anotherLine = clone $line;
 
         $this->assertTrue($line->hasContent());
-        $this->assertEquals($content, $line->andConvertToString());
+        $this->assertEquals($content, $line->generate());
         $this->assertFalse($anotherLine->hasContent());
-        $this->assertEquals('', $anotherLine->andConvertToString());
+        $this->assertEquals('', $anotherLine->generate());
     }
 }

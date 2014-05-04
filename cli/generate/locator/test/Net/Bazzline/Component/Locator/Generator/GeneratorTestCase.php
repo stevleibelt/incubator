@@ -6,14 +6,14 @@
 
 namespace Test\Net\Bazzline\Component\Locator\Generator;
 
-use Net\Bazzline\Component\Locator\Generator\Content\Block;
-use Net\Bazzline\Component\Locator\Generator\Content\Line;
+use Net\Bazzline\Component\Locator\Generator\BlockGenerator;
 use Net\Bazzline\Component\Locator\Generator\ClassGenerator;
 use Net\Bazzline\Component\Locator\Generator\ConstantGenerator;
-use Net\Bazzline\Component\Locator\Generator\MethodGenerator;
 use Net\Bazzline\Component\Locator\Generator\DocumentationGenerator;
-use Net\Bazzline\Component\Locator\Generator\PropertyGenerator;
 use Net\Bazzline\Component\Locator\Generator\GeneratorInterface;
+use Net\Bazzline\Component\Locator\Generator\LineGenerator;
+use Net\Bazzline\Component\Locator\Generator\MethodGenerator;
+use Net\Bazzline\Component\Locator\Generator\PropertyGenerator;
 use Net\Bazzline\Component\Locator\Generator\TraitGenerator;
 use PHPUnit_Framework_TestCase;
 use Mockery;
@@ -50,19 +50,19 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
 
     //----begin of content----
     /**
-     * @return Block
+     * @return BlockGenerator
      */
-    protected function getBlock()
+    protected function getBlockGenerator()
     {
-        return new Block();
+        return new BlockGenerator();
     }
 
     /**
-     * @return Line
+     * @return LineGenerator
      */
-    protected function getLine()
+    protected function getLineGenerator()
     {
-        return new Line();
+        return new LineGenerator();
     }
     //----end of content----
 
