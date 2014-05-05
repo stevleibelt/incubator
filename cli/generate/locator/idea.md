@@ -57,7 +57,9 @@ class Locator extends BaseLocator
      */
     public function getDatabase()
     {
-        return $this->fetchFromInstancePoolByFactory('Application\Service\Factory\DatabaseFactory');
+        $factory = $this->fetchFactoryFromInstancePool('Application\Service\Factory\DatabaseFactory');
+
+        return $factory->create();
     }
 
     /**
@@ -77,6 +79,21 @@ class Locator extends BaseLocator
     }
 
 
+    protected function fetchFactoryFromInstancePool($className)
+    {
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException('factory "' . $className . '" does not exist.');
+        }
+
+        //@todo use hashing to create a straight keymap
+        if (!isset($this->factoryInstancePool[$className])) {
+            $factory = new $className();
+            $factory->setLocator($this);
+            $this->factoryInstancePool[$className] = $factory;
+        }
+
+        return $this->factoryInstancePool[$className];
+    }
 }
 ```
 
