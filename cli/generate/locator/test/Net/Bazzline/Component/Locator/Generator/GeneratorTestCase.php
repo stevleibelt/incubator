@@ -11,6 +11,7 @@ use Net\Bazzline\Component\Locator\Generator\ClassGenerator;
 use Net\Bazzline\Component\Locator\Generator\ConstantGenerator;
 use Net\Bazzline\Component\Locator\Generator\DocumentationGenerator;
 use Net\Bazzline\Component\Locator\Generator\GeneratorInterface;
+use Net\Bazzline\Component\Locator\Generator\Indention;
 use Net\Bazzline\Component\Locator\Generator\LineGenerator;
 use Net\Bazzline\Component\Locator\Generator\MethodGenerator;
 use Net\Bazzline\Component\Locator\Generator\PropertyGenerator;
@@ -31,6 +32,14 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return Indention
+     */
+    protected function getIndention()
+    {
+        return new Indention();
+    }
+
+    /**
      * @param string $fullQualifiedClassName
      * @return Mockery\MockInterface
      */
@@ -48,7 +57,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     }
     //----end of general----
 
-    //----begin of content----
+    //----begin of generator----
     /**
      * @return BlockGenerator
      */
@@ -64,9 +73,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     {
         return new LineGenerator();
     }
-    //----end of content----
 
-    //----begin of template----
     /**
      * @return ClassGenerator
      */
@@ -114,5 +121,5 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     {
         return new TraitGenerator();
     }
-    //----end of template----
+    //----end of generator----
 }

@@ -23,7 +23,10 @@ class LineGeneratorTest extends GeneratorTestCase
     public function testToString()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->add($content);
 
         $this->assertTrue($line->hasContent());
@@ -33,7 +36,10 @@ class LineGeneratorTest extends GeneratorTestCase
     public function testAdd()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->add($content);
 
         $this->assertTrue($line->hasContent());
@@ -44,7 +50,10 @@ class LineGeneratorTest extends GeneratorTestCase
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
+        $indention = $this->getIndention();
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->add($contentAsArray);
 
         $this->assertTrue($line->hasContent());
@@ -63,7 +72,10 @@ class LineGeneratorTest extends GeneratorTestCase
             array('b', 'a', 'r')
         );
         $expectedContent = 'there is no f o o without a b a r';
+        $indention = $this->getIndention();
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->add($contentAsArray);
 
         $this->assertTrue($line->hasContent());
@@ -74,7 +86,10 @@ class LineGeneratorTest extends GeneratorTestCase
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
+        $indention = $this->getIndention();
+
         $line = $this->getLineGenerator();
+        $line->setIndention($indention);
 
         foreach ($contentAsArray as $part) {
             $line->add($part);
@@ -88,7 +103,10 @@ class LineGeneratorTest extends GeneratorTestCase
     {
         $content = 'there:is:no:foo:without:a:bar';
         $contentAsArray = explode(':', $content);
+        $indention = $this->getIndention();
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->setContentSeparator(':');
 
         foreach ($contentAsArray as $part) {
@@ -102,9 +120,15 @@ class LineGeneratorTest extends GeneratorTestCase
     public function testAddLine()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $contentLine = $this->getLineGenerator();
+
+        $contentLine->setIndention($indention);
         $contentLine->add($content);
+
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->add($contentLine);
 
         $this->assertTrue($line->hasContent());
@@ -114,8 +138,12 @@ class LineGeneratorTest extends GeneratorTestCase
     public function testClear()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->add($content);
+
         $line->clear();
 
         $this->assertFalse($line->hasContent());
@@ -125,8 +153,12 @@ class LineGeneratorTest extends GeneratorTestCase
     public function testClone()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $line = $this->getLineGenerator();
+
+        $line->setIndention($indention);
         $line->add($content);
+
         $anotherLine = clone $line;
 
         $this->assertTrue($line->hasContent());
