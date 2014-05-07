@@ -171,7 +171,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
                 $parameterLine->add('= ' . (string) $parameter['default_value']);
             }
         }
-        $line->add('function ' . $name . '(' . $parameterLine->andConvertToString() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
+        $line->add('function ' . $name . '(' . $parameterLine->generate() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
         $this->addContent($line);
     }
 }

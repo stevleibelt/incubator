@@ -7,10 +7,11 @@
 namespace Net\Bazzline\Component\Locator;
 
 use Exception;
-use Net\Bazzline\Component\Locator\Generator\Template\ClassGenerator;
-use Net\Bazzline\Component\Locator\Generator\Template\MethodGenerator;
-use Net\Bazzline\Component\Locator\Generator\Template\PhpDocumentationTemplate;
-use Net\Bazzline\Component\Locator\Generator\Template\PropertyGenerator;
+use Net\Bazzline\Component\Locator\Generator\ClassGenerator;
+use Net\Bazzline\Component\Locator\Generator\Indention;
+use Net\Bazzline\Component\Locator\Generator\MethodGenerator;
+use Net\Bazzline\Component\Locator\Generator\DocumentationGenerator;
+use Net\Bazzline\Component\Locator\Generator\PropertyGenerator;
 
 /**
  * Class LocatorGenerator
@@ -79,25 +80,26 @@ array (
 */
     private function createLocatorFile()
     {
-        $class = new ClassGenerator();
+        $indention = new Indention();
+        $class = new ClassGenerator($indention);
         //@todo move into methods like: $class = $this->enrichWithDocumentation($class)
-        $documentation = new PhpDocumentationTemplate();
+        $documentation = new DocumentationGenerator($indention);
         $documentation->setClass($this->configuration['class_name']);
         $documentation->setPackage($this->configuration['namespace']);
 
-        $factoryInstancePool = new PropertyGenerator();
+        $factoryInstancePool = new PropertyGenerator($indention);
         //@todo add documentation
         $factoryInstancePool->setName('factoryInstancePool');
         $factoryInstancePool->setIsPrivate();
         $factoryInstancePool->setValue('array()');
 
-        $sharedInstancePool = new PropertyGenerator();
+        $sharedInstancePool = new PropertyGenerator($indention);
         //@todo add documentation
         $sharedInstancePool->setName('sharedInstancePool');
         $sharedInstancePool->setIsPrivate();
         $sharedInstancePool->setValue('array()');
 
-        $isInInstancePool = new MethodGenerator();
+        $isInInstancePool = new MethodGenerator($indention);
         //@todo add documentation
         $isInInstancePool->setName('isInInstancePool');
         $isInInstancePool->addParameter('key', '', 'string');
@@ -131,9 +133,7 @@ array (
         //create method for shared_instance
         //create method for single_instance
 
-        $class->fillOut();
-
-        $content = '<?php' . PHP_EOL . $class->andConvertToString();
+        $content = '<?php' . PHP_EOL . $class->generate();
 
         if (file_put_contents($this->outputPath . DIRECTORY_SEPARATOR . $this->configuration['file_name'], $content) === false) {
             throw new Exception('can not create new locator in "' . $this->outputPath . DIRECTORY_SEPARATOR . $this->configuration['file_name']);

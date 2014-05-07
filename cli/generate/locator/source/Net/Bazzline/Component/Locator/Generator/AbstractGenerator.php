@@ -31,6 +31,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     public function clear()
     {
         $this->properties = array();
+        //@todo clone
         $this->block = $this->getBlockGenerator();
         $this->block->setIndention($this->getIndention());
     }
@@ -106,13 +107,27 @@ abstract class AbstractGenerator implements GeneratorInterface
      */
     protected function addGeneratorAsContent(GeneratorInterface $generator, $isIndented = false)
     {
+        if ($isIndented) {
+            $this->getIndention()->increaseLevel();
+        }
+        $generator->setIndention($this->getIndention());
         $this->addContent(
             explode(
                 PHP_EOL,
                 $generator->generate()
-            ),
-            $isIndented
+            )
         );
+        if ($isIndented) {
+            $this->getIndention()->decreaseLevel();
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateContent()
+    {
+        return $this->block->generate();
     }
 
     /**

@@ -119,6 +119,8 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $this->generateDocumentation();
         $this->generateSignature();
         $this->generateBody();
+
+        return $this->generateContent();
     }
 
     private function generateBody()
@@ -139,6 +141,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
         }
         if (is_array($constants)) {
             foreach($constants as $constant) {
+//echo var_export($constant, true) . PHP_EOL;
                 $this->addGeneratorAsContent($constant, true);
                 $this->addContent('');
             }
@@ -226,16 +229,18 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $uses = $this->getProperty('uses');
 
         if (is_array($uses)) {
-            $block = $this->getBlockGenerator();
             foreach ($uses as $use) {
+                $line = $this->getLineGenerator();
                 if (strlen($use['alias']) > 0) {
-                    $block->add('use ' . $use['name'] . ' as ' . $use['alias'] . ';');
+                    $line->add('use ' . $use['name'] . ' as ' . $use['alias'] . ';');
                 } else {
-                    $block->add('use ' . $use['name'] . ';');
+                    $line->add('use ' . $use['name'] . ';');
                 }
+                $this->addContent($line);
             }
-            $block->add('');
-            $this->addContent($block);
+            $line = $this->getLineGenerator();
+            $line->add('');
+            $this->addContent($line);
         }
     }
 }
