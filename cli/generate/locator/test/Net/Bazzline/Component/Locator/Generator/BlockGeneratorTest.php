@@ -26,7 +26,9 @@ class BlockGeneratorTest extends GeneratorTestCase
     public function testAddString()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
 
         $this->assertTrue($block->hasContent());
@@ -36,9 +38,11 @@ class BlockGeneratorTest extends GeneratorTestCase
     public function testAddStringWithIndention()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
-        $indention = '    ';
+        $indention->increaseLevel();
 
         $this->assertTrue($block->hasContent());
         $this->assertEquals($indention . $content, $block->generate($indention));
@@ -49,7 +53,9 @@ class BlockGeneratorTest extends GeneratorTestCase
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
         $expectedContent = implode(PHP_EOL, $contentAsArray);
+        $indention = $this->getIndention();
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
@@ -60,7 +66,8 @@ class BlockGeneratorTest extends GeneratorTestCase
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
-        $indention = '    ';
+        $indention = $this->getIndention();
+        $indention->increaseLevel();
         $expectedContent =
             $indention . 'there' . PHP_EOL .
             $indention . 'is' . PHP_EOL .
@@ -70,10 +77,11 @@ class BlockGeneratorTest extends GeneratorTestCase
             $indention . 'a' . PHP_EOL .
             $indention . 'bar';
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($expectedContent, $block->generate($indention));
+        $this->assertEquals($expectedContent, $block->generate());
     }
 
     public function testAddNestedArray()
@@ -99,7 +107,9 @@ class BlockGeneratorTest extends GeneratorTestCase
             'b' . PHP_EOL .
             'a' . PHP_EOL .
             'r';
+        $indention = $this->getIndention();
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
@@ -117,7 +127,8 @@ class BlockGeneratorTest extends GeneratorTestCase
             array('a'),
             array('b', 'a', 'r')
         );
-        $indention = '    ';
+        $indention = $this->getIndention();
+        $indention->increaseLevel();
         $expectedContent =
             $indention . 'there' . PHP_EOL .
             $indention . 'is' . PHP_EOL .
@@ -131,16 +142,19 @@ class BlockGeneratorTest extends GeneratorTestCase
             $indention . 'a' . PHP_EOL .
             $indention . 'r';
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($contentAsArray);
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($expectedContent, $block->generate($indention));
+        $this->assertEquals($expectedContent, $block->generate());
     }
 
     public function testAddLine()
     {
-        $content = new LineGenerator('there is no foo without a bar');
+        $indention = $this->getIndention();
+        $content = new LineGenerator('there is no foo without a bar', $indention);
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
 
         $this->assertTrue($block->hasContent());
@@ -149,49 +163,59 @@ class BlockGeneratorTest extends GeneratorTestCase
 
     public function testAddLineWithIndention()
     {
-        $content = new LineGenerator('there is no foo without a bar');
+        $indention = $this->getIndention();
+        $indention->increaseLevel();
+        $content = new LineGenerator('there is no foo without a bar', $indention);
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
-        $indention = '    ';
 
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($indention . $content, $block->generate($indention));
+        $this->assertEquals($content, $block->generate());
     }
 
     public function testAddBlock()
     {
-        $content = new BlockGenerator('there is no foo without a bar');
+        $indention = $this->getIndention();
+        $content = new BlockGenerator('there is no foo without a bar', $indention);
         $content->add('never ever');
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
 
+        $indention->increaseLevel();
         $expectedContent =
-            'there is no foo without a bar' . PHP_EOL .
-            'never ever';
+            $indention . 'there is no foo without a bar' . PHP_EOL .
+            $indention . 'never ever';
+        $indention->decreaseLevel();
         $this->assertTrue($block->hasContent());
         $this->assertEquals($expectedContent, $block->generate());
     }
 
     public function testAddBlockWithIndention()
     {
-        $content = new BlockGenerator('there is no foo without a bar');
+        $indention = $this->getIndention();
+        $content = new BlockGenerator('there is no foo without a bar', $indention);
         $content->add('never ever');
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
-        $indention = '    ';
+        $indention->increaseLevel();
 
         $expectedContent =
             $indention . $indention . 'there is no foo without a bar' . PHP_EOL .
             $indention . $indention . 'never ever';
         $this->assertTrue($block->hasContent());
-        $this->assertEquals($expectedContent, $block->generate($indention));
+        $this->assertEquals($expectedContent, $block->generate());
     }
 
     public function testMultipleAdd()
     {
         $content = 'there is no foo without a bar';
         $contentAsArray = explode(' ', $content);
+        $indention = $this->getIndention();
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
 
         foreach ($contentAsArray as $part) {
             $block->add($part);
@@ -204,7 +228,9 @@ class BlockGeneratorTest extends GeneratorTestCase
     public function testClear()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
         $block->clear();
 
@@ -215,7 +241,9 @@ class BlockGeneratorTest extends GeneratorTestCase
     public function testClone()
     {
         $content = 'there is no foo without a bar';
+        $indention = $this->getIndention();
         $block = $this->getBlockGenerator();
+        $block->setIndention($indention);
         $block->add($content);
         $anotherLine = clone $block;
 

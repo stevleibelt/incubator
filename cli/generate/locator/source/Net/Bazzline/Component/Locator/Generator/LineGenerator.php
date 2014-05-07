@@ -32,6 +32,7 @@ class LineGenerator extends AbstractContentGenerator
                 $this->add($part);
             }
         } else if ($content instanceof AbstractContentGenerator) {
+            $content->setIndention($this->getIndention());
             if ($content->hasContent()) {
                 $this->parts[] = $content->generate();
             }

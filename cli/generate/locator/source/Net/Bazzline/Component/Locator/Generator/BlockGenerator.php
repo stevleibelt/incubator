@@ -13,7 +13,7 @@ namespace Net\Bazzline\Component\Locator\Generator;
  */
 class BlockGenerator extends AbstractContentGenerator
 {
-    /** @var array|GeneratorInterface[]|AbstractContentGenerator[] */
+    /** @var array|BlockGenerator[]|LineGenerator[] */
     private $contents = array();
 
     /**
@@ -23,13 +23,14 @@ class BlockGenerator extends AbstractContentGenerator
     public function add($content)
     {
         if (is_string($content)) {
-            $lineOfContent = new LineGenerator($content);
+            $lineOfContent = new LineGenerator($content, $this->getIndention());
             $this->contents[] = $lineOfContent;
         } else if (is_array($content)) {
             foreach ($content as $part) {
                 $this->add($part);
             }
         } else if ($content instanceof AbstractContentGenerator) {
+            $content->setIndention($this->getIndention());
             $this->contents[] = $content;
         } else {
             throw new InvalidArgumentException('content has to be string, an array or instance of AbstractContentGenerator');
@@ -63,10 +64,10 @@ class BlockGenerator extends AbstractContentGenerator
         foreach ($this->contents as $key => $content) {
             if ($content->hasContent()) {
                 if ($content instanceof BlockGenerator) {
-                    //add and increase indention
+                    $this->getIndention()->increaseLevel();
                     $string .= $content->generate();
+                    $this->getIndention()->decreaseLevel();
                 } else {
-                    //add indention
                     $string .= $content->generate();
                 }
                 if ($key !== $lastKey) {
