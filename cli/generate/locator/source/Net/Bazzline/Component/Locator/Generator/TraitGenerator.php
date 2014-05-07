@@ -123,7 +123,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
             throw new RuntimeException('name is mandatory');
         }
 
-        $line = $this->getLine('trait ' . $name);
+        $line = $this->getLineGenerator('trait ' . $name);
         $this->addContent($line);
     }
 }

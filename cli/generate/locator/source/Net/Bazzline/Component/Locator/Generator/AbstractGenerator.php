@@ -6,10 +6,6 @@
 
 namespace Net\Bazzline\Component\Locator\Generator;
 
-use Net\Bazzline\Component\Locator\Generator\Content\Block;
-use Net\Bazzline\Component\Locator\Generator\Content\ContentInterface;
-use Net\Bazzline\Component\Locator\Generator\Content\Line;
-
 /**
  * Class AbstractGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
@@ -17,7 +13,7 @@ use Net\Bazzline\Component\Locator\Generator\Content\Line;
  */
 abstract class AbstractGenerator implements GeneratorInterface
 {
-    /** @var Block */
+    /** @var BlockGenerator */
     private $block;
 
     /** @var string */
@@ -26,15 +22,17 @@ abstract class AbstractGenerator implements GeneratorInterface
     /** @var array */
     private $properties = array();
 
-    public function __construct()
+    public function __construct(Indention $indention)
     {
+        $this->setIndention($indention);
         $this->clear();
     }
 
     public function clear()
     {
         $this->properties = array();
-        $this->block = new Block();
+        $this->block = $this->getBlockGenerator();
+        $this->block->setIndention($this->getIndention());
     }
 
     /**
@@ -87,17 +85,17 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param string|ContentInterface $content
+     * @param string|AbstractGenerator[] $content
      * @param bool $isIndented
      * @throws InvalidArgumentException
      */
     protected function addContent($content, $isIndented = false)
     {
         if ($isIndented) {
-            if (!($content instanceof ContentInterface)) {
-                $content = $this->getBlock($content);
+            if (!($content instanceof AbstractGenerator)) {
+                $content = $this->getBlockGenerator($content);
             }
-            $content = $content->andConvertToString($this->indention);
+            $content = $content->generate();
         }
         $this->block->add($content);
     }
@@ -128,21 +126,25 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param null|string|Line|Block $content
-     * @return Block
+     * @param null|string|LineGenerator|BlockGenerator $content
+     * @return BlockGenerator
      */
-    protected function getBlock($content = null)
+    protected function getBlockGenerator($content = null)
     {
-        return new Block($content);
+        $block = new BlockGenerator($this->getIndention(), $content);
+
+        return $block;
     }
 
     /**
      * @param null|string $content
-     * @return Line
+     * @return LineGenerator
      */
-    protected function getLine($content = null)
+    protected function getLineGenerator($content = null)
     {
-        return new Line($content);
+        $line = new LineGenerator($this->getIndention(), $content);
+
+        return $line;
     }
 
     /**

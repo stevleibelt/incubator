@@ -63,7 +63,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getBlockGenerator()
     {
-        return new BlockGenerator();
+        return new BlockGenerator($this->getIndention());
     }
 
     /**
@@ -71,7 +71,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getLineGenerator()
     {
-        return new LineGenerator();
+        return new LineGenerator($this->getIndention());
     }
 
     /**
@@ -79,7 +79,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getClassGenerator()
     {
-        return new ClassGenerator();
+        return new ClassGenerator($this->getIndention());
     }
 
     /**
@@ -87,7 +87,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getConstantGenerator()
     {
-        return new ConstantGenerator();
+        return new ConstantGenerator($this->getIndention());
     }
 
     /**
@@ -95,7 +95,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getMethodGenerator()
     {
-        return new MethodGenerator();
+        return new MethodGenerator($this->getIndention());
     }
 
     /**
@@ -103,7 +103,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getDocumentationGenerator()
     {
-        return new DocumentationGenerator();
+        return new DocumentationGenerator($this->getIndention());
     }
 
     /**
@@ -111,7 +111,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getPropertyGenerator()
     {
-        return new PropertyGenerator();
+        return new PropertyGenerator($this->getIndention());
     }
 
     /**
@@ -119,7 +119,7 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getTraitGenerator()
     {
-        return new TraitGenerator();
+        return new TraitGenerator($this->getIndention());
     }
     //----end of generator----
 }

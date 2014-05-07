@@ -45,7 +45,7 @@ class ConstantGenerator extends AbstractGenerator
             throw new RuntimeException('name and value are mandatory');
         }
 
-        $block = $this->getBlock();
+        $block = $this->getBlockGenerator();
 
         $block->add('const ' . $name . ' = ' . $value . ';');
         $this->addContent($block);

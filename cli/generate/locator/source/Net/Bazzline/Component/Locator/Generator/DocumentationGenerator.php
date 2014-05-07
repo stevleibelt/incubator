@@ -126,7 +126,7 @@ class DocumentationGenerator extends AbstractGenerator
         $class = $this->getProperty('class');
 
         if (is_string($class)) {
-            $line = $this->getLine(' * Class ' . $class);
+            $line = $this->getLineGenerator(' * Class ' . $class);
             $this->addContent($line);
         }
     }
@@ -136,7 +136,7 @@ class DocumentationGenerator extends AbstractGenerator
         $package = $this->getProperty('package');
 
         if (is_string($package)) {
-            $line = $this->getLine(' * @package ' . $package);
+            $line = $this->getLineGenerator(' * @package ' . $package);
             $this->addContent($line);
         }
     }
@@ -144,7 +144,7 @@ class DocumentationGenerator extends AbstractGenerator
     private function generateComments()
     {
         foreach ($this->getProperty('comments', array()) as $comment) {
-            $line = $this->getLine(' * ' . $comment);
+            $line = $this->getLineGenerator(' * ' . $comment);
             $this->addContent($line);
         }
     }
@@ -153,7 +153,7 @@ class DocumentationGenerator extends AbstractGenerator
     {
 
         foreach ($this->getProperty('parameters', array()) as $parameter) {
-            $line = $this->getLine(' * @param');
+            $line = $this->getLineGenerator(' * @param');
             if (!empty($parameter['type_hints'])) {
                 $line->add(implode('|', $parameter['type_hints']));
             }
@@ -170,7 +170,7 @@ class DocumentationGenerator extends AbstractGenerator
         $return = $this->getProperty('return');
 
         if (is_array($return)) {
-            $line = $this->getLine(' * @return');
+            $line = $this->getLineGenerator(' * @return');
             if (!empty($return['type_hints'])) {
                 $line->add(implode('|', $return['type_hints']));
             }
@@ -184,7 +184,7 @@ class DocumentationGenerator extends AbstractGenerator
     private function generateSees()
     {
         foreach ($this->getProperty('sees', array()) as $see) {
-            $line = $this->getLine(' * @see ' . $see);
+            $line = $this->getLineGenerator(' * @see ' . $see);
             $this->addContent($line);
         }
     }
@@ -194,7 +194,7 @@ class DocumentationGenerator extends AbstractGenerator
         $throws = $this->getProperty('throws', array());
 
         if (!empty($throws)) {
-            $line = $this->getLine(' * @throws ' . implode('|', $throws));
+            $line = $this->getLineGenerator(' * @throws ' . implode('|', $throws));
             $this->addContent($line);
         }
     }
@@ -202,7 +202,7 @@ class DocumentationGenerator extends AbstractGenerator
     private function generateToDoS()
     {
         foreach ($this->getProperty('todos', array()) as $todo) {
-            $line = $this->getLine(' * @todo ' . $todo);
+            $line = $this->getLineGenerator(' * @todo ' . $todo);
             $this->addContent($line);
         }
     }
@@ -212,7 +212,7 @@ class DocumentationGenerator extends AbstractGenerator
         $variable = $this->getProperty('variable');
 
         if (is_array($variable)) {
-            $line =  $this->getLine(' * @var');
+            $line =  $this->getLineGenerator(' * @var');
             if (!empty($variable['type_hints'])) {
                 $line->add(implode('|', $variable['type_hints']));
             }

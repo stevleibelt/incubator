@@ -18,15 +18,14 @@ abstract class AbstractContentGenerator extends AbstractGenerator
     }
 
     /**
-     * @param string|array|GeneratorInterface $content
      * @param Indention $indention
+     * @param string|array|GeneratorInterface $content
      * @throws InvalidArgumentException
      */
-    public function __construct($content = null, Indention $indention = null)
+    public function __construct(Indention $indention, $content = null)
     {
-        if (!is_null($content)
-            && !is_null($indention)) {
-            $this->setIndention($indention);
+        parent::__construct($indention);
+        if (!is_null($content)) {
             $this->add($content);
         }
     }

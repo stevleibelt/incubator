@@ -23,7 +23,7 @@ class BlockGenerator extends AbstractContentGenerator
     public function add($content)
     {
         if (is_string($content)) {
-            $lineOfContent = new LineGenerator($content, $this->getIndention());
+            $lineOfContent = $this->getLineGenerator($content);
             $this->contents[] = $lineOfContent;
         } else if (is_array($content)) {
             foreach ($content as $part) {

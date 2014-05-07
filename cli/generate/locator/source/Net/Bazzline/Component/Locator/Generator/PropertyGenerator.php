@@ -81,8 +81,8 @@ class PropertyGenerator extends AbstractDocumentedGenerator
             throw new RuntimeException('name is mandatory');
         }
 
-        $block = $this->getBlock();
-        $line = $this->getLine();
+        $block = $this->getBlockGenerator();
+        $line = $this->getLineGenerator();
 
         if ($documentation instanceof DocumentationGenerator) {
             $block->add(explode(PHP_EOL, $documentation->generate()));

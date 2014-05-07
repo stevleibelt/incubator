@@ -113,14 +113,14 @@ class MethodGenerator extends AbstractDocumentedGenerator
 
         if (!$isAbstract
             && $hasBody) {
-            $this->addContent($this->getLine('{'));
+            $this->addContent($this->getLineGenerator('{'));
             $this->addContent(
-                $this->getBlock(
+                $this->getBlockGenerator(
                     $this->getProperty('body', array('//@todo implement'))
                 ),
                 true
             );
-            $this->addContent($this->getLine('}'));
+            $this->addContent($this->getLineGenerator('}'));
         }
     }
 
@@ -144,7 +144,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
         $parameters     = $this->getProperty('parameters', array());
         $visibility     = $this->getProperty('visibility');
 
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
 
         if ($isAbstract) {
             $line->add('abstract');
@@ -160,7 +160,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
             $line->add('static');
         }
 
-        $parameterLine = $this->getLine();
+        $parameterLine = $this->getLineGenerator();
         foreach ($parameters as $parameter) {
             if ((strlen($parameter['type_hint']) > 0)
                 && (!in_array($parameter['type_hint'], $this->getNotPrintableTypeHints()))) {

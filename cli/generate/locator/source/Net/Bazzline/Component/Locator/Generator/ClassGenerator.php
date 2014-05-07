@@ -165,7 +165,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
         if (!is_null($namespace)) {
             $this->addContent(
-                $this->getBlock(
+                $this->getBlockGenerator(
                     array(
                         'namespace ' . $namespace . ';',
                         ''
@@ -200,7 +200,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
             throw new RuntimeException('name is mandatory');
         }
 
-        $line = $this->getLine();
+        $line = $this->getLineGenerator();
         if ($isAbstract) {
             $line->add('abstract');
         } else if ($isInterface) {
@@ -226,7 +226,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $uses = $this->getProperty('uses');
 
         if (is_array($uses)) {
-            $block = $this->getBlock();
+            $block = $this->getBlockGenerator();
             foreach ($uses as $use) {
                 if (strlen($use['alias']) > 0) {
                     $block->add('use ' . $use['name'] . ' as ' . $use['alias'] . ';');
