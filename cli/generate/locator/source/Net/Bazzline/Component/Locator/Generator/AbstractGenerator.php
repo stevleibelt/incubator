@@ -103,7 +103,7 @@ abstract class AbstractGenerator implements GeneratorInterface
 
     /**
      * @param GeneratorInterface $generator
-     * @param bool $isIndented
+     * @param bool $isIndented - needed?
      */
     protected function addGeneratorAsContent(GeneratorInterface $generator, $isIndented = false)
     {

@@ -21,7 +21,7 @@ use Mockery;
 
 /**
  * Class GeneratorTestCase
- * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator
+ * @package Test\Net\Bazzline\Component\Locator\Generator
  */
 class GeneratorTestCase extends PHPUnit_Framework_TestCase
 {
