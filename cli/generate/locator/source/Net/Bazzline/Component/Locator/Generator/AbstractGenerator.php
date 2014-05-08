@@ -93,10 +93,12 @@ abstract class AbstractGenerator implements GeneratorInterface
     protected function addContent($content, $isIndented = false)
     {
         if ($isIndented) {
+            $this->getIndention()->increaseLevel();
             if (!($content instanceof AbstractGenerator)) {
                 $content = $this->getBlockGenerator($content);
             }
             $content = $content->generate();
+            $this->getIndention()->decreaseLevel();
         }
         $this->block->add($content);
     }
@@ -125,7 +127,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return string
      */
-    protected function generateContent()
+    protected function generateStringFromContent()
     {
         return $this->block->generate();
     }

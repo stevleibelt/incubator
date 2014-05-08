@@ -102,5 +102,7 @@ class PropertyGenerator extends AbstractDocumentedGenerator
         }
         $block->add($line);
         $this->addContent($block);
+
+        return $this->generateStringFromContent();
     }
 }

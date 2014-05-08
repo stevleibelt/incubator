@@ -104,6 +104,8 @@ class MethodGenerator extends AbstractDocumentedGenerator
         $this->generateDocumentation();
         $this->generateSignature();
         $this->generateBody();
+
+        return $this->generateStringFromContent();
     }
 
     private function generateBody()
@@ -113,14 +115,14 @@ class MethodGenerator extends AbstractDocumentedGenerator
 
         if (!$isAbstract
             && $hasBody) {
-            $this->addContent($this->getLineGenerator('{'));
+            $this->addContent($this->getBlockGenerator('{'));
             $this->addContent(
                 $this->getBlockGenerator(
                     $this->getProperty('body', array('//@todo implement'))
                 ),
                 true
             );
-            $this->addContent($this->getLineGenerator('}'));
+            $this->addContent($this->getBlockGenerator('}'));
         }
     }
 
@@ -144,6 +146,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
         $parameters     = $this->getProperty('parameters', array());
         $visibility     = $this->getProperty('visibility');
 
+        //@todo refactor the wired usage for line and block generator
         $line = $this->getLineGenerator();
 
         if ($isAbstract) {
@@ -172,6 +175,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
             }
         }
         $line->add('function ' . $name . '(' . $parameterLine->generate() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
-        $this->addContent($line);
+        $block = $this->getBlockGenerator($line);
+        $this->addContent($block);
     }
 }

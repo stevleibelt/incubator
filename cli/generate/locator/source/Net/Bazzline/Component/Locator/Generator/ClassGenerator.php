@@ -120,7 +120,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $this->generateSignature();
         $this->generateBody();
 
-        return $this->generateContent();
+        return $this->generateStringFromContent();
     }
 
     private function generateBody()
@@ -141,7 +141,6 @@ class ClassGenerator extends AbstractDocumentedGenerator
         }
         if (is_array($constants)) {
             foreach($constants as $constant) {
-//echo var_export($constant, true) . PHP_EOL;
                 $this->addGeneratorAsContent($constant, true);
                 $this->addContent('');
             }

@@ -49,5 +49,7 @@ class ConstantGenerator extends AbstractGenerator
 
         $block->add('const ' . $name . ' = ' . $value . ';');
         $this->addContent($block);
+
+        return $this->generateStringFromContent();
     }
 }
