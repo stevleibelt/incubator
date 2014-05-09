@@ -119,6 +119,8 @@ class DocumentationGenerator extends AbstractGenerator
         $this->generateThrows();
         $this->generateVariable();
         $this->addContent(' */');
+
+        return $this->generateStringFromContent();
     }
 
     private function generateClass()

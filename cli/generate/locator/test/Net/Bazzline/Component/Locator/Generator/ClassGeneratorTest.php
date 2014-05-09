@@ -246,7 +246,6 @@ class ClassGeneratorTest extends GeneratorTestCase
 
     public function testWithPhpDocumentation()
     {
-        $this->markTestSkipped();
         $documentation  = $this->getDocumentationGenerator();
         $generator       = $this->getClassGenerator();
 
@@ -274,7 +273,6 @@ class ClassGeneratorTest extends GeneratorTestCase
 
     public function testWithNamespace()
     {
-        $this->markTestSkipped();
         $generator = $this->getClassGenerator();
 
         $generator->setNamespace('Foo\Bar');
@@ -292,7 +290,6 @@ class ClassGeneratorTest extends GeneratorTestCase
 
     public function testWithALot()
     {
-        $this->markTestSkipped();
         $documentation  = $this->getDocumentationGenerator();
         $constantBar    = $this->getConstantGenerator();
         $constantFoo    = $this->getConstantGenerator();
@@ -300,7 +297,7 @@ class ClassGeneratorTest extends GeneratorTestCase
         $methodTwo      = $this->getMethodGenerator();
         $propertyBar    = $this->getPropertyGenerator();
         $propertyFoo    = $this->getPropertyGenerator();
-        $generator       = $this->getClassGenerator();
+        $generator      = $this->getClassGenerator();
 
         $constantBar->setName('BAR');
         $constantBar->setValue('\'foo\'');
@@ -338,6 +335,9 @@ class ClassGeneratorTest extends GeneratorTestCase
         $generator->setName('UnitTest');
         $generator->setNamespace('Baz');
 
+        $indention = $generator->getIndention();
+        $indention->increaseLevel();
+
         $expectedString =
             'namespace Baz;' . PHP_EOL .
             '' . PHP_EOL .
@@ -352,25 +352,27 @@ class ClassGeneratorTest extends GeneratorTestCase
             ' */' . PHP_EOL .
             'class UnitTest extends BarFoo,FooBar implements BarFooInterface,FooBarInterface' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . "const BAR = 'foo';" . PHP_EOL .
+            $indention . "const BAR = 'foo';" . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . "const FOO = 'bar';" . PHP_EOL .
+            $indention . "const FOO = 'bar';" . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'private $bar = 23;' . PHP_EOL .
+            $indention . 'private $bar = 23;' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'protected $foo = 42;' . PHP_EOL .
+            $indention . 'protected $foo = 42;' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'private function methodOne()' . PHP_EOL .
-            $generator->getIndention() . '{' . PHP_EOL .
-            $generator->getIndention() . $generator->getIndention() . '//@todo implement' . PHP_EOL .
-            $generator->getIndention() . '}' . PHP_EOL .
+            $indention . 'private function methodOne()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . $indention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'protected function methodTwo()' . PHP_EOL .
-            $generator->getIndention() . '{' . PHP_EOL .
-            $generator->getIndention() . $generator->getIndention() . '//@todo implement' . PHP_EOL .
-            $generator->getIndention() . '}' . PHP_EOL .
+            $indention . 'protected function methodTwo()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . $indention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
             '' . PHP_EOL .
             '}';
+
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }

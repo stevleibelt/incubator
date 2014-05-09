@@ -94,10 +94,16 @@ abstract class AbstractGenerator implements GeneratorInterface
     {
         if ($isIndented) {
             $this->getIndention()->increaseLevel();
-            if (!($content instanceof AbstractGenerator)) {
+        }
+        if (!($content instanceof AbstractGenerator)) {
+            if (is_array($content)) {
                 $content = $this->getBlockGenerator($content);
+            } else {
+                $content = $this->getLineGenerator($content);
             }
-            $content = $content->generate();
+        }
+        $content = $content->generate();
+        if ($isIndented) {
             $this->getIndention()->decreaseLevel();
         }
         $this->block->add($content);
@@ -109,19 +115,14 @@ abstract class AbstractGenerator implements GeneratorInterface
      */
     protected function addGeneratorAsContent(GeneratorInterface $generator, $isIndented = false)
     {
-        if ($isIndented) {
-            $this->getIndention()->increaseLevel();
-        }
         $generator->setIndention($this->getIndention());
         $this->addContent(
             explode(
                 PHP_EOL,
                 $generator->generate()
-            )
+            ),
+            $isIndented
         );
-        if ($isIndented) {
-            $this->getIndention()->decreaseLevel();
-        }
     }
 
     /**

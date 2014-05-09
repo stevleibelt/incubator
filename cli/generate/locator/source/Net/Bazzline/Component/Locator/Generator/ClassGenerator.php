@@ -167,11 +167,13 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
         if (!is_null($namespace)) {
             $this->addContent(
-                $this->getBlockGenerator(
-                    array(
-                        'namespace ' . $namespace . ';',
-                        ''
-                    )
+                $this->getLineGenerator(
+                    'namespace ' . $namespace . ';'
+                )
+            );
+            $this->addContent(
+                $this->getLineGenerator(
+                    ''
                 )
             );
         }
