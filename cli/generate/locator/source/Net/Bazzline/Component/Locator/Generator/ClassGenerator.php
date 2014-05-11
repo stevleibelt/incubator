@@ -185,6 +185,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
         if ($documentation instanceof DocumentationGenerator) {
             $this->addGeneratorAsContent($documentation);
+            $documentation->clear();
         }
     }
 

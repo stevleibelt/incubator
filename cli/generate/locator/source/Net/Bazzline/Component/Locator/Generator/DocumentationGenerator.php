@@ -108,17 +108,19 @@ class DocumentationGenerator extends AbstractGenerator
      */
     public function generate()
     {
-        $this->addContent('/**');
-        $this->generateSees();
-        $this->generateComments();
-        $this->generateClass();
-        $this->generatePackage();
-        $this->generateToDoS();
-        $this->generateParameters();
-        $this->generateReturn();
-        $this->generateThrows();
-        $this->generateVariable();
-        $this->addContent(' */');
+        if ($this->hasContent()) {
+            $this->addContent('/**');
+            $this->generateSees();
+            $this->generateComments();
+            $this->generateClass();
+            $this->generatePackage();
+            $this->generateToDoS();
+            $this->generateParameters();
+            $this->generateReturn();
+            $this->generateThrows();
+            $this->generateVariable();
+            $this->addContent(' */');
+        }
 
         return $this->generateStringFromContent();
     }

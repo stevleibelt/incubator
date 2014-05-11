@@ -56,6 +56,14 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
+     * @return boolean
+     */
+    public function hasContent()
+    {
+        return $this->block->hasContent();
+    }
+
+    /**
      * @return string
      */
     public function __toString()

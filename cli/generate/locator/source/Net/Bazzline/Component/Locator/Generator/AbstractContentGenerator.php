@@ -35,9 +35,4 @@ abstract class AbstractContentGenerator extends AbstractGenerator
      * @throws InvalidArgumentException
      */
     abstract public function add($content);
-
-    /**
-     * @return bool
-     */
-    abstract public function hasContent();
 }

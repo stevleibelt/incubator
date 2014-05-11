@@ -21,6 +21,11 @@ interface GeneratorInterface extends IndentionAwareInterface
     public function generate();
 
     /**
+     * @return boolean
+     */
+    public function hasContent();
+
+    /**
      * @return string
      */
     public function __toString();

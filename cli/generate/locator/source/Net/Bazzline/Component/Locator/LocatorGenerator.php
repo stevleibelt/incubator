@@ -88,19 +88,19 @@ array (
         $documentation->setPackage($this->configuration['namespace']);
 
         $factoryInstancePool = new PropertyGenerator($indention);
-        //@todo add documentation
+        $factoryInstancePool->setDocumentation($documentation);
         $factoryInstancePool->setName('factoryInstancePool');
         $factoryInstancePool->setIsPrivate();
         $factoryInstancePool->setValue('array()');
 
         $sharedInstancePool = new PropertyGenerator($indention);
-        //@todo add documentation
+        $sharedInstancePool->setDocumentation($documentation);
         $sharedInstancePool->setName('sharedInstancePool');
         $sharedInstancePool->setIsPrivate();
         $sharedInstancePool->setValue('array()');
 
         $isInInstancePool = new MethodGenerator($indention);
-        //@todo add documentation
+        $isInInstancePool->setDocumentation($documentation);
         $isInInstancePool->setName('isInInstancePool');
         $isInInstancePool->addParameter('key', '', 'string');
         $isInInstancePool->addParameter('type', '', 'string');

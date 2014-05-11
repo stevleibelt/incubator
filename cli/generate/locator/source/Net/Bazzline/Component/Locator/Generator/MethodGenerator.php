@@ -133,6 +133,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
         if ($documentation instanceof DocumentationGenerator) {
             $documentation->generate();
             $this->addGeneratorAsContent($documentation);
+            $documentation->clear();
         }
     }
 
