@@ -86,7 +86,6 @@ class PropertyGenerator extends AbstractDocumentedGenerator
 
         if ($documentation instanceof DocumentationGenerator) {
             $block->add(explode(PHP_EOL, $documentation->generate()));
-            $documentation->clear();
         }
 
         if (!is_null($visibility)) {

@@ -63,9 +63,11 @@ class TraitGenerator extends AbstractDocumentedGenerator
      */
     public function generate()
     {
-        $this->generateDocumentation();
-        $this->generateSignature();
-        $this->generateBody();
+        if ($this->canBeGenerated()) {
+            $this->generateDocumentation();
+            $this->generateSignature();
+            $this->generateBody();
+        }
 
         return $this->generateStringFromContent();
     }

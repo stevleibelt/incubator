@@ -37,18 +37,20 @@ class ConstantGenerator extends AbstractGenerator
      */
     public function generate()
     {
-        $name = $this->getProperty('name');
-        $value = $this->getProperty('value');
+        if ($this->canBeGenerated()) {
+            $name = $this->getProperty('name');
+            $value = $this->getProperty('value');
 
-        if (is_null($name)
-            || is_null($value)) {
-            throw new RuntimeException('name and value are mandatory');
+            if (is_null($name)
+                || is_null($value)) {
+                throw new RuntimeException('name and value are mandatory');
+            }
+
+            $block = $this->getBlockGenerator();
+
+            $block->add('const ' . $name . ' = ' . $value . ';');
+            $this->addContent($block);
         }
-
-        $block = $this->getBlockGenerator();
-
-        $block->add('const ' . $name . ' = ' . $value . ';');
-        $this->addContent($block);
 
         return $this->generateStringFromContent();
     }

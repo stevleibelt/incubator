@@ -131,52 +131,54 @@ class MethodGenerator extends AbstractDocumentedGenerator
         $documentation = $this->getProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
-            $documentation->generate();
             $this->addGeneratorAsContent($documentation);
-            $documentation->clear();
         }
     }
 
     private function generateSignature()
     {
-        $hasBody        = $this->getProperty('has_body', true);
-        $isAbstract     = $this->getProperty('abstract', false);
-        $isFinal        = $this->getProperty('final', false);
-        $isStatic       = $this->getProperty('static', false);
-        $name           = $this->getProperty('name');
-        $parameters     = $this->getProperty('parameters', array());
-        $visibility     = $this->getProperty('visibility');
+        if ($this->canBeGenerated()) {
+            $hasBody        = $this->getProperty('has_body', true);
+            $isAbstract     = $this->getProperty('abstract', false);
+            $isFinal        = $this->getProperty('final', false);
+            $isStatic       = $this->getProperty('static', false);
+            $name           = $this->getProperty('name');
+            $parameters     = $this->getProperty('parameters', array());
+            $visibility     = $this->getProperty('visibility');
 
-        //@todo refactor the wired usage for line and block generator
-        $line = $this->getLineGenerator();
+            //@todo refactor the wired usage for line and block generator
+            $line = $this->getLineGenerator();
 
-        if ($isAbstract) {
-            $line->add('abstract');
-        } else if ($isFinal) {
-            $line->add('final');
-        }
-
-        if (!is_null($visibility)) {
-            $line->add($visibility);
-        }
-
-        if ($isStatic) {
-            $line->add('static');
-        }
-
-        $parameterLine = $this->getLineGenerator();
-        foreach ($parameters as $parameter) {
-            if ((strlen($parameter['type_hint']) > 0)
-                && (!in_array($parameter['type_hint'], $this->getNotPrintableTypeHints()))) {
-                $parameterLine->add($parameter['type_hint']);
+            if ($isAbstract) {
+                $line->add('abstract');
+            } else if ($isFinal) {
+                $line->add('final');
             }
-            $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);
-            if (strlen((string) $parameter['default_value']) > 0) {
-                $parameterLine->add('= ' . (string) $parameter['default_value']);
+
+            if (!is_null($visibility)) {
+                $line->add($visibility);
             }
+
+            if ($isStatic) {
+                $line->add('static');
+            }
+
+            $parameterLine = $this->getLineGenerator();
+            foreach ($parameters as $parameter) {
+                if ((strlen($parameter['type_hint']) > 0)
+                    && (!in_array($parameter['type_hint'], $this->getNotPrintableTypeHints()))) {
+                    $parameterLine->add($parameter['type_hint']);
+                }
+                $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);
+                if (strlen((string) $parameter['default_value']) > 0) {
+                    $parameterLine->add('= ' . (string) $parameter['default_value']);
+                }
+            }
+            $line->add('function ' . $name . '(' . $parameterLine->generate() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
+            $block = $this->getBlockGenerator($line);
+            $this->addContent($block);
         }
-        $line->add('function ' . $name . '(' . $parameterLine->generate() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
-        $block = $this->getBlockGenerator($line);
-        $this->addContent($block);
+
+        return $this->generateStringFromContent();
     }
 }

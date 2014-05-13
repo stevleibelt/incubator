@@ -23,6 +23,9 @@ class LocatorGenerator
     /** @var array */
     private $configuration;
 
+    /** @var Indention */
+    private $indention;
+
     /** @var string */
     private $outputPath;
 
@@ -80,27 +83,27 @@ array (
 */
     private function createLocatorFile()
     {
-        $indention = new Indention();
-        $class = new ClassGenerator($indention);
+        $this->indention = new Indention();
+        $class = new ClassGenerator($this->indention);
         //@todo move into methods like: $class = $this->enrichWithDocumentation($class)
-        $documentation = new DocumentationGenerator($indention);
+        $documentation = $this->createNewDocumentationGenerator();
         $documentation->setClass($this->configuration['class_name']);
         $documentation->setPackage($this->configuration['namespace']);
 
-        $factoryInstancePool = new PropertyGenerator($indention);
-        $factoryInstancePool->setDocumentation($documentation);
+        $factoryInstancePool = new PropertyGenerator($this->indention);
+        $factoryInstancePool->setDocumentation($this->createNewDocumentationGenerator());
         $factoryInstancePool->setName('factoryInstancePool');
         $factoryInstancePool->setIsPrivate();
         $factoryInstancePool->setValue('array()');
 
-        $sharedInstancePool = new PropertyGenerator($indention);
-        $sharedInstancePool->setDocumentation($documentation);
+        $sharedInstancePool = new PropertyGenerator($this->indention);
+        $sharedInstancePool->setDocumentation($this->createNewDocumentationGenerator());
         $sharedInstancePool->setName('sharedInstancePool');
         $sharedInstancePool->setIsPrivate();
         $sharedInstancePool->setValue('array()');
 
-        $isInInstancePool = new MethodGenerator($indention);
-        $isInInstancePool->setDocumentation($documentation);
+        $isInInstancePool = new MethodGenerator($this->indention);
+        $isInInstancePool->setDocumentation($this->createNewDocumentationGenerator());
         $isInInstancePool->setName('isInInstancePool');
         $isInInstancePool->addParameter('key', '', 'string');
         $isInInstancePool->addParameter('type', '', 'string');
@@ -155,5 +158,13 @@ array (
                 throw new Exception('old locator file with name "' . $oldName . '" already exists and can not be renamed to "' . $newName . '"');
             }
         }
+    }
+
+    /**
+     * @return DocumentationGenerator
+     */
+    private function createNewDocumentationGenerator()
+    {
+        return new DocumentationGenerator($this->indention);
     }
 } 

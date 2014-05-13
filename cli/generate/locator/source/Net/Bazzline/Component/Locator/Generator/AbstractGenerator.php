@@ -13,6 +13,9 @@ namespace Net\Bazzline\Component\Locator\Generator;
  */
 abstract class AbstractGenerator implements GeneratorInterface
 {
+    /** @var boolean */
+    private $canBeGenerated;
+
     /** @var BlockGenerator */
     private $block;
 
@@ -72,6 +75,24 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
+     * @return $this
+     */
+    protected function markAsCanBeGenerated()
+    {
+        $this->canBeGenerated = true;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function canBeGenerated()
+    {
+        return ($this->canBeGenerated === true);
+    }
+
+    /**
      * @param string $name
      * @param mixed $value
      * @param bool $isStackable
@@ -91,6 +112,7 @@ abstract class AbstractGenerator implements GeneratorInterface
             }
             $this->properties[$name] = $value;
         }
+        $this->markAsCanBeGenerated();
     }
 
     /**

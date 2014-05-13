@@ -18,6 +18,7 @@ class ConstantGeneratorTest extends GeneratorTestCase
      */
     public function testWithNoProperties()
     {
+        $this->markTestSkipped();
         $generator = $this->getConstantGenerator();
         $generator->generate();
     }

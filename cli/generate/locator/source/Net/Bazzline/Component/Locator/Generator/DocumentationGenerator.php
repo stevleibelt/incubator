@@ -108,7 +108,7 @@ class DocumentationGenerator extends AbstractGenerator
      */
     public function generate()
     {
-        if ($this->hasContent()) {
+        if ($this->canBeGenerated()) {
             $this->addContent('/**');
             $this->generateSees();
             $this->generateComments();

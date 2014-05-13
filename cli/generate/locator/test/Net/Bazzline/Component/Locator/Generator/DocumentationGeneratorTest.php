@@ -16,9 +16,7 @@ class DocumentationGeneratorTest extends GeneratorTestCase
     {
         $generator = $this->getDocumentationGenerator();
 
-        $expectedString =
-            '/**' . PHP_EOL .
-            ' */';
+        $expectedString = '';
 
         $this->assertEquals($expectedString, $generator->generate());
     }

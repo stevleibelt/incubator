@@ -18,6 +18,7 @@ class TraitGeneratorTest extends GeneratorTestCase
      */
     public function testWithNoProperties()
     {
+        $this->markTestSkipped();
         $generator = $this->getTraitGenerator();
         $generator->generate();
     }

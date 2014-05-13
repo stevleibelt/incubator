@@ -114,11 +114,13 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function generate()
     {
-        $this->generateNamespace();
-        $this->generateUse();
-        $this->generateDocumentation();
-        $this->generateSignature();
-        $this->generateBody();
+        if ($this->canBeGenerated()) {
+            $this->generateNamespace();
+            $this->generateUse();
+            $this->generateDocumentation();
+            $this->generateSignature();
+            $this->generateBody();
+        }
 
         return $this->generateStringFromContent();
     }
@@ -185,7 +187,6 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
         if ($documentation instanceof DocumentationGenerator) {
             $this->addGeneratorAsContent($documentation);
-            $documentation->clear();
         }
     }
 
