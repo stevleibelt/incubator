@@ -178,7 +178,5 @@ class MethodGenerator extends AbstractDocumentedGenerator
             $block = $this->getBlockGenerator($line);
             $this->addContent($block);
         }
-
-        return $this->generateStringFromContent();
     }
 }
