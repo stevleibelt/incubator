@@ -1,9 +1,9 @@
 <?php
+#!/bin/php
 /**
  * @author sleibelt
  * @since 2014-04-29
  */
-#!/bin/php
 
 use Net\Bazzline\Component\Locator\LocatorGenerator;
 
