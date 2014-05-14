@@ -110,7 +110,7 @@ class FileGenerator extends AbstractDocumentedGenerator
 
         if (is_array($constants)) {
             foreach($constants as $constant) {
-                $this->addGeneratorAsContent($constant, true);
+                $this->addGeneratorAsContent($constant);
                 $this->addContent('');
             }
         }
@@ -123,7 +123,7 @@ class FileGenerator extends AbstractDocumentedGenerator
 
         if (is_array($properties)) {
             foreach($properties as $property) {
-                $this->addGeneratorAsContent($property, true);
+                $this->addGeneratorAsContent($property);
                 $this->addContent('');
             }
         }
@@ -136,7 +136,7 @@ class FileGenerator extends AbstractDocumentedGenerator
 
         if (is_array($traits)) {
             foreach($traits as $trait) {
-                $this->addGeneratorAsContent($trait, true);
+                $this->addGeneratorAsContent($trait);
                 $this->addContent('');
             }
         }
@@ -149,7 +149,7 @@ class FileGenerator extends AbstractDocumentedGenerator
 
         if (is_array($methods)) {
             foreach($methods as $method) {
-                $this->addGeneratorAsContent($method, true);
+                $this->addGeneratorAsContent($method);
                 $this->addContent('');
             }
         }
@@ -162,7 +162,7 @@ class FileGenerator extends AbstractDocumentedGenerator
 
         if (is_array($classes)) {
             foreach($classes as $class) {
-                $this->addGeneratorAsContent($class, true);
+                $this->addGeneratorAsContent($class);
                 $this->addContent('');
             }
         }
