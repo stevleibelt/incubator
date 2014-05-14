@@ -14,7 +14,7 @@ namespace Net\Bazzline\Component\Locator\Generator;
 class BlockGenerator extends AbstractContentGenerator
 {
     /** @var array|BlockGenerator[]|LineGenerator[] */
-    private $contents = array();
+    private $content = array();
 
     /**
      * @param string|array|GeneratorInterface $content
@@ -24,14 +24,14 @@ class BlockGenerator extends AbstractContentGenerator
     {
         if (is_string($content)) {
             $lineOfContent = $this->getLineGenerator($content);
-            $this->contents[] = $lineOfContent;
+            $this->content[] = $lineOfContent;
         } else if (is_array($content)) {
             foreach ($content as $part) {
                 $this->add($part);
             }
         } else if ($content instanceof AbstractContentGenerator) {
             $content->setIndention($this->getIndention());
-            $this->contents[] = $content;
+            $this->content[] = $content;
         } else {
             throw new InvalidArgumentException('content has to be string, an array or instance of AbstractContentGenerator');
         }
@@ -39,7 +39,7 @@ class BlockGenerator extends AbstractContentGenerator
 
     public function clear()
     {
-        $this->contents = array();
+        $this->content = array();
     }
 
     /**
@@ -47,7 +47,7 @@ class BlockGenerator extends AbstractContentGenerator
      */
     public function hasContent()
     {
-        return (!empty($this->contents));
+        return (!empty($this->content));
     }
 
     /**
@@ -57,11 +57,11 @@ class BlockGenerator extends AbstractContentGenerator
     public function generate()
     {
         $string = '';
-        end($this->contents);
-        $lastKey = key($this->contents);
-        reset($this->contents);
+        end($this->content);
+        $lastKey = key($this->content);
+        reset($this->content);
 
-        foreach ($this->contents as $key => $content) {
+        foreach ($this->content as $key => $content) {
             if ($content->hasContent()) {
                 if ($content instanceof BlockGenerator) {
                     $this->getIndention()->increaseLevel();
@@ -77,5 +77,13 @@ class BlockGenerator extends AbstractContentGenerator
         }
 
         return $string;
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return (count($this->content));
     }
 }

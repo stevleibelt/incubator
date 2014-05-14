@@ -14,7 +14,7 @@ namespace Net\Bazzline\Component\Locator\Generator;
 class LineGenerator extends AbstractContentGenerator
 {
     /** @var array|string[] */
-    private $parts = array();
+    private $content = array();
 
     /** @var string */
     private $separator = ' ';
@@ -26,7 +26,7 @@ class LineGenerator extends AbstractContentGenerator
     public function add($content)
     {
         if (is_string($content)) {
-            $this->parts[] = $content;
+            $this->content[] = $content;
         } else if (is_array($content)) {
             foreach ($content as $part) {
                 $this->add($part);
@@ -34,7 +34,7 @@ class LineGenerator extends AbstractContentGenerator
         } else if ($content instanceof AbstractContentGenerator) {
             $content->setIndention($this->getIndention());
             if ($content->hasContent()) {
-                $this->parts[] = $content->generate();
+                $this->content[] = $content->generate();
             }
         } else {
             throw new InvalidArgumentException('content has to be string, an array or instance of AbstractContentGenerator');
@@ -51,7 +51,7 @@ class LineGenerator extends AbstractContentGenerator
 
     public function clear()
     {
-        $this->parts = array();
+        $this->content = array();
     }
 
     /**
@@ -59,7 +59,7 @@ class LineGenerator extends AbstractContentGenerator
      */
     public function hasContent()
     {
-        return (!empty($this->parts));
+        return (!empty($this->content));
     }
 
     /**
@@ -68,6 +68,14 @@ class LineGenerator extends AbstractContentGenerator
      */
     public function generate()
     {
-        return (implode('', $this->parts) !== '') ? $this->getIndention()->toString() . implode($this->separator, $this->parts) : '';
+        return (implode('', $this->content) !== '') ? $this->getIndention()->toString() . implode($this->separator, $this->content) : '';
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return (count($this->content));
     }
 }
