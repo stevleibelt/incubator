@@ -42,26 +42,66 @@ class FileGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedContent, $generator->generate());
     }
 
+    public function testWithProperties()
+    {
+        $generator = $this->getFileGenerator();
+        $indention = $generator->getIndention();
+        $propertyBar = $this->getPropertyGenerator();
+        $propertyFoo = $this->getPropertyGenerator();
+
+        $propertyBar->setName('bar');
+        $propertyBar->markAsPublic();
+        $propertyBar->setValue('\'foo\'');
+        $propertyFoo->setName('foo');
+        $propertyFoo->setValue('\'bar\'');
+        $propertyFoo->markAsPrivate();
+
+        $generator->addFileProperty($propertyBar);
+        $generator->addFileProperty($propertyFoo);
+
+        $expectedContent = '<?php' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'public $bar = \'foo\';' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'private $foo = \'bar\';';
+
+        $this->assertEquals($expectedContent, $generator->generate());
+    }
+
     public function testWithAll()
     {
         $constantBar = $this->getConstantGenerator();
         $constantFoo = $this->getConstantGenerator();
         $generator = $this->getFileGenerator();
         $indention = $generator->getIndention();
+        $propertyBar = $this->getPropertyGenerator();
+        $propertyFoo = $this->getPropertyGenerator();
 
         $constantBar->setName('BAR');
         $constantBar->setValue('\'foo\'');
         $constantFoo->setName('FOO');
         $constantFoo->setValue('\'bar\'');
+        $propertyBar->setName('bar');
+        $propertyBar->markAsPublic();
+        $propertyBar->setValue('\'foo\'');
+        $propertyFoo->setName('foo');
+        $propertyFoo->setValue('\'bar\'');
+        $propertyFoo->markAsPrivate();
 
         $generator->addFileConstant($constantBar);
         $generator->addFileConstant($constantFoo);
+        $generator->addFileProperty($propertyBar);
+        $generator->addFileProperty($propertyFoo);
 
         $expectedContent = '<?php' . PHP_EOL .
             $indention . PHP_EOL .
             $indention . 'const BAR = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .
-            $indention . 'const FOO = \'bar\';';
+            $indention . 'const FOO = \'bar\';' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'public $bar = \'foo\';' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'private $foo = \'bar\';';
 
         $this->assertEquals($expectedContent, $generator->generate());
     }
