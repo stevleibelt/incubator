@@ -10,6 +10,7 @@ use Net\Bazzline\Component\Locator\Generator\BlockGenerator;
 use Net\Bazzline\Component\Locator\Generator\ClassGenerator;
 use Net\Bazzline\Component\Locator\Generator\ConstantGenerator;
 use Net\Bazzline\Component\Locator\Generator\DocumentationGenerator;
+use Net\Bazzline\Component\Locator\Generator\FileGenerator;
 use Net\Bazzline\Component\Locator\Generator\GeneratorInterface;
 use Net\Bazzline\Component\Locator\Generator\Indention;
 use Net\Bazzline\Component\Locator\Generator\LineGenerator;
@@ -120,6 +121,14 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     protected function getTraitGenerator()
     {
         return new TraitGenerator($this->getIndention());
+    }
+
+    /**
+     * @return FileGenerator
+     */
+    protected function getFileGenerator()
+    {
+        return new FileGenerator($this->getIndention());
     }
     //----end of generator----
 }

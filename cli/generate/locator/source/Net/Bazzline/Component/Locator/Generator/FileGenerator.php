@@ -12,6 +12,9 @@ namespace Net\Bazzline\Component\Locator\Generator;
  */
 class FileGenerator extends AbstractDocumentedGenerator
 {
+    /** @var boolean */
+    private $addEmptyLine;
+
     /**
      * @param ConstantGenerator $constant
      */
@@ -60,7 +63,7 @@ class FileGenerator extends AbstractDocumentedGenerator
     /**
      * @param int|string|array $content
      */
-    public function addContent($content)
+    public function addFileContent($content)
     {
         if (!is_array($content)) {
             $content = array($content);
@@ -77,6 +80,7 @@ class FileGenerator extends AbstractDocumentedGenerator
     public function generate()
     {
         if ($this->canBeGenerated()) {
+            $this->addEmptyLine = false;
             $isExecutable = $this->getProperty('is_executable', false);
             if ($isExecutable) {
                 $this->addContent('#!/bin/php');
@@ -101,6 +105,7 @@ class FileGenerator extends AbstractDocumentedGenerator
         foreach ($content as $partial) {
             $this->addContent($partial);
         }
+        $this->addEmptyLine = true;
     }
 
     private function generateConstants()
@@ -109,10 +114,17 @@ class FileGenerator extends AbstractDocumentedGenerator
         $constants = $this->getProperty('constants');
 
         if (is_array($constants)) {
-            foreach($constants as $constant) {
-                $this->addGeneratorAsContent($constant);
+            if ($this->addEmptyLine) {
                 $this->addContent('');
             }
+            $lastArrayKey = array_pop(array_keys($constants));
+            foreach($constants as $key => $constant) {
+                $this->addGeneratorAsContent($constant);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
+            }
+            $this->addEmptyLine = true;
         }
     }
 
@@ -122,11 +134,18 @@ class FileGenerator extends AbstractDocumentedGenerator
         $properties = $this->getProperty('properties');
 
         if (is_array($properties)) {
-            foreach($properties as $property) {
-                $this->addGeneratorAsContent($property);
+            if ($this->addEmptyLine) {
                 $this->addContent('');
             }
+            $lastArrayKey = array_pop(array_keys($properties));
+            foreach($properties as $key => $property) {
+                $this->addGeneratorAsContent($property);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
+            }
         }
+        $this->addEmptyLine = true;
     }
 
     private function generateTraits()
@@ -135,11 +154,18 @@ class FileGenerator extends AbstractDocumentedGenerator
         $traits = $this->getProperty('traits');
 
         if (is_array($traits)) {
-            foreach($traits as $trait) {
-                $this->addGeneratorAsContent($trait);
+            if ($this->addEmptyLine) {
                 $this->addContent('');
             }
+            $lastArrayKey = array_pop(array_keys($traits));
+            foreach($traits as $key => $trait) {
+                $this->addGeneratorAsContent($trait);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
+            }
         }
+        $this->addEmptyLine = true;
     }
 
     private function generateMethods()
@@ -148,11 +174,18 @@ class FileGenerator extends AbstractDocumentedGenerator
         $methods = $this->getProperty('methods');
 
         if (is_array($methods)) {
-            foreach($methods as $method) {
-                $this->addGeneratorAsContent($method);
+            if ($this->addEmptyLine) {
                 $this->addContent('');
             }
+            $lastArrayKey = array_pop(array_keys($methods));
+            foreach($methods as $key => $method) {
+                $this->addGeneratorAsContent($method);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
+            }
         }
+        $this->addEmptyLine = true;
     }
 
     private function generateClasses()
@@ -161,9 +194,15 @@ class FileGenerator extends AbstractDocumentedGenerator
         $classes = $this->getProperty('classes');
 
         if (is_array($classes)) {
-            foreach($classes as $class) {
-                $this->addGeneratorAsContent($class);
+            if ($this->addEmptyLine) {
                 $this->addContent('');
+            }
+            $lastArrayKey = array_pop(array_keys($classes));
+            foreach($classes as $key => $class) {
+                $this->addGeneratorAsContent($class);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
             }
         }
     }
