@@ -23,17 +23,11 @@ class DocumentationGeneratorTest extends GeneratorTestCase
 
     public function testWithNoPropertiesAndPrefix()
     {
-        $this->markTestSkipped();
         $generator = $this->getDocumentationGenerator();
         $indention = $generator->getIndention();
         $indention->increaseLevel();
-$this->debugGenerator($generator);
 
-        $expectedString =
-            $indention . '/**' . PHP_EOL .
-            $indention . ' */';
-
-        $this->assertEquals($expectedString, $generator->generate());
+        $this->assertEquals('', $generator->generate());
     }
 
     public function testWithComments()
