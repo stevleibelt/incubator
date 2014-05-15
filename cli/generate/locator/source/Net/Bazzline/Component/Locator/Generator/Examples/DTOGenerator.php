@@ -41,7 +41,7 @@ foreach ($properties as $value) {
     if (!is_null($value['value'])) {
         $property->setValue('value');
     }
-    $property->setIsPrivate();
+    $property->markAsPrivate();
     $property->setDocumentation(new DocumentationGenerator($indention));
     //---- end of properties
 

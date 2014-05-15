@@ -75,10 +75,10 @@ class TraitGeneratorTest extends GeneratorTestCase
 
         $propertyBar->setName('bar');
         $propertyBar->setValue(23);
-        $propertyBar->setIsPrivate();
+        $propertyBar->markAsPrivate();
         $propertyFoo->setName('foo');
         $propertyFoo->setValue(42);
-        $propertyFoo->setIsProtected();
+        $propertyFoo->markAsProtected();
 
         $generator->addTraitProperty($propertyBar);
         $generator->addTraitProperty($propertyFoo);
@@ -200,10 +200,10 @@ class TraitGeneratorTest extends GeneratorTestCase
         $methodTwo->setIsProtected();
         $propertyBar->setName('bar');
         $propertyBar->setValue(23);
-        $propertyBar->setIsPrivate();
+        $propertyBar->markAsPrivate();
         $propertyFoo->setName('foo');
         $propertyFoo->setValue(42);
-        $propertyFoo->setIsProtected();
+        $propertyFoo->markAsProtected();
 
         $generator->addTraitConstant($constantBar);
         $generator->addTraitConstant($constantFoo);

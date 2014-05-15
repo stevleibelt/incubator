@@ -93,13 +93,13 @@ array (
         $factoryInstancePool = new PropertyGenerator($this->indention);
         $factoryInstancePool->setDocumentation($this->createNewDocumentationGenerator());
         $factoryInstancePool->setName('factoryInstancePool');
-        $factoryInstancePool->setIsPrivate();
+        $factoryInstancePool->markAsPrivate();
         $factoryInstancePool->setValue('array()');
 
         $sharedInstancePool = new PropertyGenerator($this->indention);
         $sharedInstancePool->setDocumentation($this->createNewDocumentationGenerator());
         $sharedInstancePool->setName('sharedInstancePool');
-        $sharedInstancePool->setIsPrivate();
+        $sharedInstancePool->markAsPrivate();
         $sharedInstancePool->setValue('array()');
 
         $isInInstancePool = new MethodGenerator($this->indention);

@@ -147,10 +147,10 @@ class ClassGeneratorTest extends GeneratorTestCase
 
         $propertyBar->setName('bar');
         $propertyBar->setValue(23);
-        $propertyBar->setIsPrivate();
+        $propertyBar->markAsPrivate();
         $propertyFoo->setName('foo');
         $propertyFoo->setValue(42);
-        $propertyFoo->setIsProtected();
+        $propertyFoo->markAsProtected();
 
         $generator->addClassProperty($propertyBar);
         $generator->addClassProperty($propertyFoo);
@@ -304,10 +304,10 @@ class ClassGeneratorTest extends GeneratorTestCase
         $methodTwo->setIsProtected();
         $propertyBar->setName('bar');
         $propertyBar->setValue(23);
-        $propertyBar->setIsPrivate();
+        $propertyBar->markAsPrivate();
         $propertyFoo->setName('foo');
         $propertyFoo->setValue(42);
-        $propertyFoo->setIsProtected();
+        $propertyFoo->markAsProtected();
 
         $generator->addClassConstant($constantBar);
         $generator->addClassConstant($constantFoo);

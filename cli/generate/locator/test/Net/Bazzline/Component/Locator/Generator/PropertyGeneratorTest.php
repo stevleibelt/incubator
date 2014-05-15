@@ -9,6 +9,7 @@ namespace Test\Net\Bazzline\Component\Locator\Generator;
 /**
  * Class PropertyGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator\Generator
+ * @todo markAsPrivate test etc.
  */
 class PropertyGeneratorTest extends GeneratorTestCase
 {
@@ -50,7 +51,7 @@ class PropertyGeneratorTest extends GeneratorTestCase
         $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
         $generator->setName('unitTest');
-        $generator->setIsStatic();
+        $generator->markAsStatic();
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'static $unitTest = \'foobar\';';
@@ -63,7 +64,7 @@ class PropertyGeneratorTest extends GeneratorTestCase
         $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
         $generator->setName('unitTest');
-        $generator->setIsPrivate();
+        $generator->markAsPrivate();
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'private $unitTest = \'foobar\';';
@@ -76,7 +77,7 @@ class PropertyGeneratorTest extends GeneratorTestCase
         $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
         $generator->setName('unitTest');
-        $generator->setIsProtected();
+        $generator->markAsProtected();
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'protected $unitTest = \'foobar\';';
@@ -94,7 +95,7 @@ class PropertyGeneratorTest extends GeneratorTestCase
         $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
         $generator->setName('unitTest');
-        $generator->setIsPublic();
+        $generator->markAsPublic();
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'public $unitTest = \'foobar\';';
@@ -110,7 +111,7 @@ class PropertyGeneratorTest extends GeneratorTestCase
         $generator = $this->getPropertyGenerator();
         $generator->setDocumentation($documentation);
         $generator->setName('unitTest');
-        $generator->setIsPublic();
+        $generator->markAsPublic();
         $generator->setValue('\'foobar\'');
 
         $expectedString =
@@ -128,8 +129,8 @@ class PropertyGeneratorTest extends GeneratorTestCase
         $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
         $generator->setName('unitTest');
-        $generator->setIsPublic();
-        $generator->setIsStatic();
+        $generator->markAsPublic();
+        $generator->markAsStatic();
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'public static $unitTest = \'foobar\';';

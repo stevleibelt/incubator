@@ -29,22 +29,22 @@ class PropertyGenerator extends AbstractDocumentedGenerator
         }
     }
 
-    public function setIsPrivate()
+    public function markAsPrivate()
     {
         $this->addProperty('visibility', 'private', false);
     }
 
-    public function setIsProtected()
+    public function markAsProtected()
     {
         $this->addProperty('visibility', 'protected', false);
     }
 
-    public function setIsPublic()
+    public function markAsPublic()
     {
         $this->addProperty('visibility', 'public', false);
     }
 
-    public function setIsStatic()
+    public function markAsStatic()
     {
         $this->addProperty('static', true, false);
     }
