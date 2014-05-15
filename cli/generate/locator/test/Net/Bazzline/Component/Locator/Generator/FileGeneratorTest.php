@@ -68,6 +68,21 @@ class FileGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedContent, $generator->generate());
     }
 
+    public function testWithClasses()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testWithMethods()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testWithContent()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testWithAll()
     {
         $constantBar = $this->getConstantGenerator();
@@ -92,8 +107,10 @@ class FileGeneratorTest extends GeneratorTestCase
         $generator->addFileConstant($constantFoo);
         $generator->addFileProperty($propertyBar);
         $generator->addFileProperty($propertyFoo);
+        $generator->markAsExecutable();
 
-        $expectedContent = '<?php' . PHP_EOL .
+        $expectedContent = '#!/bin/php' . PHP_EOL .
+            $indention . '<?php' . PHP_EOL .
             $indention . PHP_EOL .
             $indention . 'const BAR = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .
