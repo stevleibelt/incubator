@@ -70,7 +70,28 @@ class FileGeneratorTest extends GeneratorTestCase
 
     public function testWithClasses()
     {
-        $this->markTestIncomplete();
+        $classBar = $this->getClassGenerator();
+        $classFoo = $this->getClassGenerator();
+        $generator = $this->getFileGenerator();
+        $indention = $generator->getIndention();
+
+        $classBar->setName('bar');
+        $classFoo->setName('foo');
+
+        $generator->addClass($classBar);
+        $generator->addClass($classFoo);
+
+        $expectedContent = '<?php' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'class bar' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'class foo' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . '}';
+
+        $this->assertEquals($expectedContent, $generator->generate());
     }
 
     public function testWithMethods()
@@ -85,6 +106,8 @@ class FileGeneratorTest extends GeneratorTestCase
 
     public function testWithAll()
     {
+        $classBar = $this->getClassGenerator();
+        $classFoo = $this->getClassGenerator();
         $constantBar = $this->getConstantGenerator();
         $constantFoo = $this->getConstantGenerator();
         $generator = $this->getFileGenerator();
@@ -92,6 +115,8 @@ class FileGeneratorTest extends GeneratorTestCase
         $propertyBar = $this->getPropertyGenerator();
         $propertyFoo = $this->getPropertyGenerator();
 
+        $classBar->setName('bar');
+        $classFoo->setName('foo');
         $constantBar->setName('BAR');
         $constantBar->setValue('\'foo\'');
         $constantFoo->setName('FOO');
@@ -103,6 +128,8 @@ class FileGeneratorTest extends GeneratorTestCase
         $propertyFoo->setValue('\'bar\'');
         $propertyFoo->markAsPrivate();
 
+        $generator->addClass($classBar);
+        $generator->addClass($classFoo);
         $generator->addFileConstant($constantBar);
         $generator->addFileConstant($constantFoo);
         $generator->addFileProperty($propertyBar);
@@ -118,7 +145,15 @@ class FileGeneratorTest extends GeneratorTestCase
             $indention . PHP_EOL .
             $indention . 'public $bar = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .
-            $indention . 'private $foo = \'bar\';';
+            $indention . 'private $foo = \'bar\';' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'class bar' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'class foo' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . '}';
 
         $this->assertEquals($expectedContent, $generator->generate());
     }

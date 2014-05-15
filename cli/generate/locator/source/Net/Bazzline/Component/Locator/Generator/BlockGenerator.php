@@ -61,9 +61,7 @@ class BlockGenerator extends AbstractContentGenerator
     public function generate()
     {
         $string = '';
-        end($this->content);
-        $lastKey = key($this->content);
-        reset($this->content);
+        $lastKey = array_pop(array_keys($this->content));
 
         foreach ($this->content as $key => $content) {
             if ($content->hasContent()) {
