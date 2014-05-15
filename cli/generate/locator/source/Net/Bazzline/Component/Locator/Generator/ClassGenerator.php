@@ -137,26 +137,48 @@ class ClassGenerator extends AbstractDocumentedGenerator
         /** @var null|array $traits */
         $traits = $this->getProperty('traits');
 
+        $addEmptyLine = false;
+
         if (is_array($traits)) {
             $this->addContent('use ' . implode(',', $traits) . ';', true);
-            $this->addContent('');
+            $addEmptyLine = true;
         }
         if (is_array($constants)) {
-            foreach($constants as $constant) {
-                $this->addGeneratorAsContent($constant, true);
+            if ($addEmptyLine) {
                 $this->addContent('');
             }
+            $lastArrayKey = array_pop(array_keys($constants));
+            foreach($constants as $key => $constant) {
+                $this->addGeneratorAsContent($constant, true);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
+            }
+            $addEmptyLine = true;
         }
         if (is_array($properties)) {
-            foreach($properties as $property) {
-                $this->addGeneratorAsContent($property, true);
+            if ($addEmptyLine) {
                 $this->addContent('');
             }
+            $lastArrayKey = array_pop(array_keys($properties));
+            foreach($properties as $key => $property) {
+                $this->addGeneratorAsContent($property, true);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
+            }
+            $addEmptyLine = true;
         }
         if (is_array($methods)) {
-            foreach($methods as $method) {
-                $this->addGeneratorAsContent($method, true);
+            if ($addEmptyLine) {
                 $this->addContent('');
+            }
+            $lastArrayKey = array_pop(array_keys($methods));
+            foreach($methods as $key => $method) {
+                $this->addGeneratorAsContent($method, true);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
             }
         }
 

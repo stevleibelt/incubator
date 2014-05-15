@@ -132,7 +132,6 @@ class ClassGeneratorTest extends GeneratorTestCase
             $indention . "const BAR = 'foo';" . PHP_EOL .
             '' . PHP_EOL .
             $indention . "const FOO = 'bar';" . PHP_EOL .
-            '' . PHP_EOL .
             '}';
 
         $indention->decreaseLevel();
@@ -166,7 +165,6 @@ class ClassGeneratorTest extends GeneratorTestCase
             $indention . 'private $bar = 23;' . PHP_EOL .
             '' . PHP_EOL .
             $indention . 'protected $foo = 42;' . PHP_EOL .
-            '' . PHP_EOL .
             '}';
 
         $indention->decreaseLevel();
@@ -204,7 +202,6 @@ class ClassGeneratorTest extends GeneratorTestCase
             $indention . '{' . PHP_EOL .
             $indention . $generator->getIndention() . '//@todo implement' . PHP_EOL .
             $indention . '}' . PHP_EOL .
-            '' . PHP_EOL .
             '}';
 
         $indention->decreaseLevel();
@@ -232,7 +229,6 @@ class ClassGeneratorTest extends GeneratorTestCase
             'class UnitTest' . PHP_EOL .
             '{' . PHP_EOL .
             $indention . 'use TraitOne,TraitTwo;' . PHP_EOL .
-            '' . PHP_EOL .
             '}';
 
         $indention->decreaseLevel();
@@ -365,7 +361,6 @@ class ClassGeneratorTest extends GeneratorTestCase
             $indention . '{' . PHP_EOL .
             $indention . $indention . '//@todo implement' . PHP_EOL .
             $indention . '}' . PHP_EOL .
-            '' . PHP_EOL .
             '}';
 
         $indention->decreaseLevel();
