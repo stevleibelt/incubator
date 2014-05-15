@@ -58,32 +58,32 @@ class MethodGenerator extends AbstractDocumentedGenerator
         $this->addProperty('has_body', true, false);
     }
 
-    public function setHasNoBody()
+    public function markAsHasNoBody()
     {
         $this->addProperty('has_body', false, false);
     }
 
-    public function setIsFinal()
+    public function markAsFinal()
     {
         $this->addProperty('final', true, false);
     }
 
-    public function setIsPrivate()
+    public function markAsPrivate()
     {
         $this->addProperty('visibility', 'private', false);
     }
 
-    public function setIsProtected()
+    public function markAsProtected()
     {
         $this->addProperty('visibility', 'protected', false);
     }
 
-    public function setIsPublic()
+    public function markAsPublic()
     {
         $this->addProperty('visibility', 'public', false);
     }
 
-    public function setIsStatic()
+    public function markAsStatic()
     {
         $this->addProperty('static', true, false);
     }

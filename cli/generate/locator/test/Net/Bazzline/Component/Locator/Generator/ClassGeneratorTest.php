@@ -179,9 +179,9 @@ class ClassGeneratorTest extends GeneratorTestCase
         $methodTwo  = $this->getMethodGenerator();
 
         $methodOne->setName('methodOne');
-        $methodOne->setIsPrivate();
+        $methodOne->markAsPrivate();
         $methodTwo->setName('methodTwo');
-        $methodTwo->setIsProtected();
+        $methodTwo->markAsProtected();
 
         $generator->addMethod($methodOne);
         $generator->addMethod($methodTwo);
@@ -299,9 +299,9 @@ class ClassGeneratorTest extends GeneratorTestCase
         $documentation->setClass('UnitTest');
         $documentation->setPackage('Foo\Bar');
         $methodOne->setName('methodOne');
-        $methodOne->setIsPrivate();
+        $methodOne->markAsPrivate();
         $methodTwo->setName('methodTwo');
-        $methodTwo->setIsProtected();
+        $methodTwo->markAsProtected();
         $propertyBar->setName('bar');
         $propertyBar->setValue(23);
         $propertyBar->markAsPrivate();

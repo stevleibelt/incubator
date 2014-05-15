@@ -27,7 +27,7 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testAsAbstract()
+    public function testMarkAsAbstract()
     {
         $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
@@ -39,11 +39,11 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testWithNoBody()
+    public function testMarkAsHasNoBody()
     {
         $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
-        $generator->setHasNoBody();
+        $generator->markAsHasNoBody();
         $generator->setName('unittest');
 
         $expectedString = 'function unittest();';
@@ -81,11 +81,11 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testAsFinal()
+    public function testMarkAsFinal()
     {
         $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
-        $generator->setIsFinal();
+        $generator->markAsFinal();
         $generator->setName('unittest');
 
         $expectedString =
@@ -97,11 +97,11 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testAsPrivate()
+    public function testMarkAsPrivate()
     {
         $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
-        $generator->setIsPrivate();
+        $generator->markAsPrivate();
         $generator->setName('unittest');
 
         $expectedString =
@@ -113,11 +113,11 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testAsProtected()
+    public function testMarkAsProtected()
     {
         $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
-        $generator->setIsProtected();
+        $generator->markAsProtected();
         $generator->setName('unittest');
 
         $expectedString =
@@ -129,15 +129,32 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testAsPublic()
+    public function testMarkAsPublic()
     {
         $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->setName('unittest');
-        $generator->setIsPublic();
+        $generator->markAsPublic();
 
         $expectedString =
             'public function unittest()' . PHP_EOL .
+            '{' . PHP_EOL .
+            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            '}';
+
+        $this->assertEquals($expectedString, $generator->generate());
+    }
+
+    public function testMarkAsStatic()
+    {
+        $this->markTestSkipped();
+        $generator = $this->getMethodGenerator();
+        $generator->setName('unittest');
+        $generator->markAsPublic();
+        $generator->markAsStatic();
+
+        $expectedString =
+            'static public function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
             $generator->getIndention() . '//@todo implement' . PHP_EOL .
             '}';
@@ -154,7 +171,7 @@ class MethodGeneratorTest extends GeneratorTestCase
         $generator->setDocumentation($documentation);
         $generator->addParameter('foo', '', 'string');
         $generator->setName('unittest');
-        $generator->setIsPublic();
+        $generator->markAsPublic();
 
         $expectedString =
             '/**' . PHP_EOL .
@@ -180,7 +197,7 @@ class MethodGeneratorTest extends GeneratorTestCase
         $generator->setDocumentation($documentation, false);
         $generator->addParameter('foo');
         $generator->setName('unittest');
-        $generator->setIsPublic();
+        $generator->markAsPublic();
 
         $expectedString =
             '/**' . PHP_EOL .
@@ -210,8 +227,8 @@ class MethodGeneratorTest extends GeneratorTestCase
         $generator = $this->getMethodGenerator();
         $generator->setBody($body);
         $generator->setName('unittest');
-        $generator->setIsFinal();
-        $generator->setIsPublic();
+        $generator->markAsFinal();
+        $generator->markAsPublic();
 
         $expectedString =
             'final public function unittest()' . PHP_EOL .
