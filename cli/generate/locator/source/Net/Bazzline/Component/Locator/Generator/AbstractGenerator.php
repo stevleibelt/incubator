@@ -42,7 +42,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return Indention
      */
-    public function getIndention()
+    final public function getIndention()
     {
         return $this->indention;
     }
@@ -51,7 +51,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param Indention $indention
      * @return $this
      */
-    public function setIndention(Indention $indention)
+    final public function setIndention(Indention $indention)
     {
         $this->indention = $indention;
 
@@ -69,7 +69,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return string
      */
-    public function __toString()
+    final public function __toString()
     {
         return $this->generate('');
     }
@@ -77,7 +77,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return $this
      */
-    protected function markAsCanBeGenerated()
+    final protected function markAsCanBeGenerated()
     {
         $this->canBeGenerated = true;
 
@@ -87,7 +87,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return bool
      */
-    protected function canBeGenerated()
+    final protected function canBeGenerated()
     {
         return ($this->canBeGenerated === true);
     }
@@ -97,7 +97,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param mixed $value
      * @param bool $isStackable
      */
-    protected function addProperty($name, $value, $isStackable = true)
+    final protected function addProperty($name, $value, $isStackable = true)
     {
         $name = (string) $name;
         if ($isStackable) {
@@ -120,7 +120,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param bool $isIndented
      * @throws InvalidArgumentException
      */
-    protected function addContent($content, $isIndented = false)
+    final protected function addContent($content, $isIndented = false)
     {
         if ($isIndented) {
             $this->getIndention()->increaseLevel();
@@ -143,7 +143,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param GeneratorInterface $generator
      * @param bool $isIndented - needed?
      */
-    protected function addGeneratorAsContent(GeneratorInterface $generator, $isIndented = false)
+    final protected function addGeneratorAsContent(GeneratorInterface $generator, $isIndented = false)
     {
         $generator->setIndention($this->getIndention());
         $this->addContent(
@@ -158,7 +158,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return string
      */
-    protected function generateStringFromContent()
+    final protected function generateStringFromContent()
     {
         return $this->block->generate();
     }
@@ -168,7 +168,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param mixed $default
      * @return null|string|array
      */
-    protected function getProperty($name, $default = null)
+    final protected function getProperty($name, $default = null)
     {
         return (isset($this->properties[$name])) ? $this->properties[$name] : $default;
     }
@@ -177,7 +177,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param null|string|LineGenerator|BlockGenerator $content
      * @return BlockGenerator
      */
-    protected function getBlockGenerator($content = null)
+    final protected function getBlockGenerator($content = null)
     {
         $block = new BlockGenerator($this->getIndention(), $content);
 
@@ -188,7 +188,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param null|string $content
      * @return LineGenerator
      */
-    protected function getLineGenerator($content = null)
+    final protected function getLineGenerator($content = null)
     {
         $line = new LineGenerator($this->getIndention(), $content);
 
@@ -198,7 +198,7 @@ abstract class AbstractGenerator implements GeneratorInterface
     /**
      * @return array
      */
-    protected function getNotPrintableTypeHints()
+    final protected function getNotPrintableTypeHints()
     {
         return array('bool', 'boolean', 'int', 'integer', 'object', 'resource', 'string');
     }

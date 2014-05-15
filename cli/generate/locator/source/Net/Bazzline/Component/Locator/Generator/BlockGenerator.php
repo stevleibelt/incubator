@@ -37,6 +37,9 @@ class BlockGenerator extends AbstractContentGenerator
         }
     }
 
+    /**
+     * @todo why not use AbstractGenerator::clear()?
+     */
     public function clear()
     {
         $this->content = array();
@@ -44,6 +47,7 @@ class BlockGenerator extends AbstractContentGenerator
 
     /**
      * @return bool
+     * @todo why not use AbstractGenerator::hasContent()?
      */
     public function hasContent()
     {
