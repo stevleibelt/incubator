@@ -12,15 +12,10 @@ namespace Test\Net\Bazzline\Component\Locator\Generator;
  */
 class ConstantGeneratorTest extends GeneratorTestCase
 {
-    /**
-     * @expectedException \Net\Bazzline\Component\Locator\Generator\RuntimeException
-     * @expectedExceptionMessage name and value are mandatory
-     */
     public function testWithNoProperties()
     {
-        $this->markTestSkipped();
         $generator = $this->getConstantGenerator();
-        $generator->generate();
+        $this->assertEquals('', $generator->generate());
     }
 
     public function testWithNameAndValue()
