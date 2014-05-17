@@ -96,10 +96,10 @@ class FileGeneratorTest extends GeneratorTestCase
 
     public function testWithMethods()
     {
-        $methodBar = $this->getMethodGenerator();
-        $methodFoo = $this->getMethodGenerator();
         $generator = $this->getFileGenerator();
         $indention = $generator->getIndention();
+        $methodBar = $this->getMethodGenerator();
+        $methodFoo = $this->getMethodGenerator();
 
         $methodBar->setName('bar');
         $methodBar->markAsPublic();
@@ -141,6 +141,8 @@ class FileGeneratorTest extends GeneratorTestCase
         $constantFoo = $this->getConstantGenerator();
         $generator = $this->getFileGenerator();
         $indention = $generator->getIndention();
+        $methodBar = $this->getMethodGenerator();
+        $methodFoo = $this->getMethodGenerator();
         $propertyBar = $this->getPropertyGenerator();
         $propertyFoo = $this->getPropertyGenerator();
 
@@ -150,6 +152,10 @@ class FileGeneratorTest extends GeneratorTestCase
         $constantBar->setValue('\'foo\'');
         $constantFoo->setName('FOO');
         $constantFoo->setValue('\'bar\'');
+        $methodBar->setName('bar');
+        $methodBar->markAsPublic();
+        $methodFoo->setName('foo');
+        $methodFoo->markAsProtected();
         $propertyBar->setName('bar');
         $propertyBar->markAsPublic();
         $propertyBar->setValue('\'foo\'');
@@ -163,7 +169,13 @@ class FileGeneratorTest extends GeneratorTestCase
         $generator->addFileConstant($constantFoo);
         $generator->addFileProperty($propertyBar);
         $generator->addFileProperty($propertyFoo);
+        $generator->addMethod($methodBar);
+        $generator->addMethod($methodFoo);
         $generator->markAsExecutable();
+
+        $indention->increaseLevel();
+        $doubledIndention = $indention->toString();
+        $indention->decreaseLevel();
 
         $expectedContent = '#!/bin/php' . PHP_EOL .
             $indention . '<?php' . PHP_EOL .
@@ -175,6 +187,16 @@ class FileGeneratorTest extends GeneratorTestCase
             $indention . 'public $bar = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .
             $indention . 'private $foo = \'bar\';' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'public function bar()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $doubledIndention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'protected function foo()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $doubledIndention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
             $indention . PHP_EOL .
             $indention . 'class bar' . PHP_EOL .
             $indention . '{' . PHP_EOL .
