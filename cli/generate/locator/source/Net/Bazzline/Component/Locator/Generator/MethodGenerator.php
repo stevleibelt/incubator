@@ -28,10 +28,10 @@ class MethodGenerator extends AbstractDocumentedGenerator
             'type_hint'     => $typeHint
         );
 
-        $this->addProperty('parameters', $parameter);
+        $this->addGeneratorProperty('parameters', $parameter);
         if ($this->completeDocumentationAutomatically === true) {
             /** @var DocumentationGenerator $documentation */
-            $documentation = $this->getProperty('documentation');
+            $documentation = $this->getGeneratorProperty('documentation');
             $documentation->addParameter($name, array($typeHint));
         }
     }
@@ -41,12 +41,12 @@ class MethodGenerator extends AbstractDocumentedGenerator
      */
     public function getBody()
     {
-        return $this->getProperty('body', null);
+        return $this->getGeneratorProperty('body', null);
     }
 
     public function setIsAbstract()
     {
-        $this->addProperty('abstract', true, false);
+        $this->addGeneratorProperty('abstract', true, false);
     }
 
     /**
@@ -54,38 +54,38 @@ class MethodGenerator extends AbstractDocumentedGenerator
      */
     public function setBody(array $body)
     {
-        $this->addProperty('body', $body, false);
-        $this->addProperty('has_body', true, false);
+        $this->addGeneratorProperty('body', $body, false);
+        $this->addGeneratorProperty('has_body', true, false);
     }
 
     public function markAsHasNoBody()
     {
-        $this->addProperty('has_body', false, false);
+        $this->addGeneratorProperty('has_body', false, false);
     }
 
     public function markAsFinal()
     {
-        $this->addProperty('final', true, false);
+        $this->addGeneratorProperty('final', true, false);
     }
 
     public function markAsPrivate()
     {
-        $this->addProperty('visibility', 'private', false);
+        $this->addGeneratorProperty('visibility', 'private', false);
     }
 
     public function markAsProtected()
     {
-        $this->addProperty('visibility', 'protected', false);
+        $this->addGeneratorProperty('visibility', 'protected', false);
     }
 
     public function markAsPublic()
     {
-        $this->addProperty('visibility', 'public', false);
+        $this->addGeneratorProperty('visibility', 'public', false);
     }
 
     public function markAsStatic()
     {
-        $this->addProperty('static', true, false);
+        $this->addGeneratorProperty('static', true, false);
     }
 
     /**
@@ -93,7 +93,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
      */
     public function setName($name)
     {
-        $this->addProperty('name', (string) $name, false);
+        $this->addGeneratorProperty('name', (string) $name, false);
     }
 
     /**
@@ -111,15 +111,15 @@ class MethodGenerator extends AbstractDocumentedGenerator
 
     private function generateBody()
     {
-        $hasBody    = $this->getProperty('has_body', true);
-        $isAbstract = $this->getProperty('abstract', false);
+        $hasBody    = $this->getGeneratorProperty('has_body', true);
+        $isAbstract = $this->getGeneratorProperty('abstract', false);
 
         if (!$isAbstract
             && $hasBody) {
             $this->addContent($this->getBlockGenerator('{'));
             $this->addContent(
                 $this->getBlockGenerator(
-                    $this->getProperty('body', array('//@todo implement'))
+                    $this->getGeneratorProperty('body', array('//@todo implement'))
                 ),
                 true
             );
@@ -129,7 +129,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
 
     private function generateDocumentation()
     {
-        $documentation = $this->getProperty('documentation');
+        $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
             $this->addGeneratorAsContent($documentation);
@@ -139,13 +139,13 @@ class MethodGenerator extends AbstractDocumentedGenerator
     private function generateSignature()
     {
         if ($this->canBeGenerated()) {
-            $hasBody        = $this->getProperty('has_body', true);
-            $isAbstract     = $this->getProperty('abstract', false);
-            $isFinal        = $this->getProperty('final', false);
-            $isStatic       = $this->getProperty('static', false);
-            $name           = $this->getProperty('name');
-            $parameters     = $this->getProperty('parameters', array());
-            $visibility     = $this->getProperty('visibility');
+            $hasBody        = $this->getGeneratorProperty('has_body', true);
+            $isAbstract     = $this->getGeneratorProperty('abstract', false);
+            $isFinal        = $this->getGeneratorProperty('final', false);
+            $isStatic       = $this->getGeneratorProperty('static', false);
+            $name           = $this->getGeneratorProperty('name');
+            $parameters     = $this->getGeneratorProperty('parameters', array());
+            $visibility     = $this->getGeneratorProperty('visibility');
 
             //@todo refactor the wired usage for line and block generator
             $line = $this->getLineGenerator();

@@ -30,8 +30,8 @@ class FileGeneratorTest extends GeneratorTestCase
         $constantFoo->setName('FOO');
         $constantFoo->setValue('\'bar\'');
 
-        $generator->addFileConstant($constantBar);
-        $generator->addFileConstant($constantFoo);
+        $generator->addConstant($constantBar);
+        $generator->addConstant($constantFoo);
 
         $expectedContent = '<?php' . PHP_EOL .
             $indention . PHP_EOL .
@@ -56,8 +56,8 @@ class FileGeneratorTest extends GeneratorTestCase
         $propertyFoo->setValue('\'bar\'');
         $propertyFoo->markAsPrivate();
 
-        $generator->addFileProperty($propertyBar);
-        $generator->addFileProperty($propertyFoo);
+        $generator->addProperty($propertyBar);
+        $generator->addProperty($propertyFoo);
 
         $expectedContent = '<?php' . PHP_EOL .
             $indention . PHP_EOL .
@@ -180,10 +180,10 @@ class FileGeneratorTest extends GeneratorTestCase
 
         $generator->addClass($classBar);
         $generator->addClass($classFoo);
-        $generator->addFileConstant($constantBar);
-        $generator->addFileConstant($constantFoo);
-        $generator->addFileProperty($propertyBar);
-        $generator->addFileProperty($propertyFoo);
+        $generator->addConstant($constantBar);
+        $generator->addConstant($constantFoo);
+        $generator->addProperty($propertyBar);
+        $generator->addProperty($propertyFoo);
         $generator->addMethod($methodBar);
         $generator->addMethod($methodFoo);
         $generator->markAsExecutable();

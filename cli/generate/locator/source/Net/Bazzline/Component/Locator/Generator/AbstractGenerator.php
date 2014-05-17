@@ -97,7 +97,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param mixed $value
      * @param bool $isStackable
      */
-    final protected function addProperty($name, $value, $isStackable = true)
+    final protected function addGeneratorProperty($name, $value, $isStackable = true)
     {
         $name = (string) $name;
         if ($isStackable) {
@@ -119,6 +119,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param string|AbstractGenerator[] $content
      * @param bool $isIndented
      * @throws InvalidArgumentException
+     * @todo extend addContent to support int|string|array|LineGenerator|BlockGenerator
      */
     final protected function addContent($content, $isIndented = false)
     {
@@ -168,7 +169,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      * @param mixed $default
      * @return null|string|array
      */
-    final protected function getProperty($name, $default = null)
+    final protected function getGeneratorProperty($name, $default = null)
     {
         return (isset($this->properties[$name])) ? $this->properties[$name] : $default;
     }

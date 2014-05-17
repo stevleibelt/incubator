@@ -21,7 +21,7 @@ abstract class AbstractDocumentedGenerator extends AbstractGenerator
      */
     final public function getDocumentation()
     {
-        return $this->getProperty('documentation');
+        return $this->getGeneratorProperty('documentation');
     }
 
     /**
@@ -30,7 +30,7 @@ abstract class AbstractDocumentedGenerator extends AbstractGenerator
      */
     final public function setDocumentation(DocumentationGenerator $documentation, $completeAutomatically = true)
     {
-        $this->addProperty('documentation', $documentation, false);
+        $this->addGeneratorProperty('documentation', $documentation, false);
         $this->completeDocumentationAutomatically = $completeAutomatically;
     }
 }

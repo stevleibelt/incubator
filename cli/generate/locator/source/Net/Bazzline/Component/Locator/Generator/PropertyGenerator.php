@@ -20,10 +20,10 @@ class PropertyGenerator extends AbstractDocumentedGenerator
      */
     public function setName($name)
     {
-        $this->addProperty('name', (string) $name, false);
+        $this->addGeneratorProperty('name', (string) $name, false);
         if ($this->completeDocumentationAutomatically === true) {
             /** @var DocumentationGenerator $documentation */
-            $documentation = $this->getProperty('documentation');
+            $documentation = $this->getGeneratorProperty('documentation');
             //@todo
             //$documentation->setVariable($name);
         }
@@ -31,22 +31,22 @@ class PropertyGenerator extends AbstractDocumentedGenerator
 
     public function markAsPrivate()
     {
-        $this->addProperty('visibility', 'private', false);
+        $this->addGeneratorProperty('visibility', 'private', false);
     }
 
     public function markAsProtected()
     {
-        $this->addProperty('visibility', 'protected', false);
+        $this->addGeneratorProperty('visibility', 'protected', false);
     }
 
     public function markAsPublic()
     {
-        $this->addProperty('visibility', 'public', false);
+        $this->addGeneratorProperty('visibility', 'public', false);
     }
 
     public function markAsStatic()
     {
-        $this->addProperty('static', true, false);
+        $this->addGeneratorProperty('static', true, false);
     }
 
     /**
@@ -54,7 +54,7 @@ class PropertyGenerator extends AbstractDocumentedGenerator
      */
     public function addTypeHint($typeHint)
     {
-        $this->addProperty('type_hint', (string) $typeHint);
+        $this->addGeneratorProperty('type_hint', (string) $typeHint);
     }
 
     /**
@@ -62,7 +62,7 @@ class PropertyGenerator extends AbstractDocumentedGenerator
      */
     public function setValue($value)
     {
-        $this->addProperty('value', (string) $value, false);
+        $this->addGeneratorProperty('value', (string) $value, false);
     }
 
     /**
@@ -71,11 +71,11 @@ class PropertyGenerator extends AbstractDocumentedGenerator
      */
     public function generate()
     {
-        $documentation = $this->getProperty('documentation');
-        $isStatic = $this->getProperty('static', false);
-        $name = $this->getProperty('name');
-        $value = $this->getProperty('value');
-        $visibility = $this->getProperty('visibility');
+        $documentation = $this->getGeneratorProperty('documentation');
+        $isStatic = $this->getGeneratorProperty('static', false);
+        $name = $this->getGeneratorProperty('name');
+        $value = $this->getGeneratorProperty('value');
+        $visibility = $this->getGeneratorProperty('visibility');
 
         if (is_null($name)) {
             throw new RuntimeException('name is mandatory');

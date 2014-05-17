@@ -20,7 +20,7 @@ class ConstantGenerator extends AbstractGenerator
      */
     public function setName($name)
     {
-        $this->addProperty('name', (string) $name, false);
+        $this->addGeneratorProperty('name', (string) $name, false);
     }
 
     /**
@@ -28,7 +28,7 @@ class ConstantGenerator extends AbstractGenerator
      */
     public function setValue($value)
     {
-        $this->addProperty('value', (string) $value, false);
+        $this->addGeneratorProperty('value', (string) $value, false);
     }
 
     /**
@@ -38,8 +38,8 @@ class ConstantGenerator extends AbstractGenerator
     public function generate()
     {
         if ($this->canBeGenerated()) {
-            $name = $this->getProperty('name');
-            $value = $this->getProperty('value');
+            $name = $this->getGeneratorProperty('name');
+            $value = $this->getGeneratorProperty('value');
 
             if (is_null($name)
                 || is_null($value)) {

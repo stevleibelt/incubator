@@ -44,7 +44,7 @@ class LineGenerator extends AbstractContentGenerator
     /**
      * @param $separator
      */
-    public function setContentSeparator($separator)
+    public function setSeparator($separator)
     {
         $this->separator = (string) $separator;
     }

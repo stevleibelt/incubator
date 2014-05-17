@@ -15,17 +15,17 @@ class TraitGenerator extends AbstractDocumentedGenerator
     /**
      * @param ConstantGenerator $constant
      */
-    public function addTraitConstant(ConstantGenerator $constant)
+    public function addConstant(ConstantGenerator $constant)
     {
-        $this->addProperty('constants', $constant);
+        $this->addGeneratorProperty('constants', $constant);
     }
 
     /**
      * @param PropertyGenerator $property
      */
-    public function addTraitProperty(PropertyGenerator $property)
+    public function addProperty(PropertyGenerator $property)
     {
-        $this->addProperty('properties', $property);
+        $this->addGeneratorProperty('properties', $property);
     }
 
     /**
@@ -33,7 +33,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
      */
     public function addMethod(MethodGenerator $method)
     {
-        $this->addProperty('methods', $method);
+        $this->addGeneratorProperty('methods', $method);
     }
 
     /**
@@ -41,10 +41,10 @@ class TraitGenerator extends AbstractDocumentedGenerator
      */
     public function setName($name)
     {
-        $this->addProperty('name', (string) $name, false);
+        $this->addGeneratorProperty('name', (string) $name, false);
         if ($this->completeDocumentationAutomatically === true) {
             /** @var DocumentationGenerator $documentation */
-            $documentation = $this->getProperty('documentation');
+            $documentation = $this->getGeneratorProperty('documentation');
             $documentation->setClass($name);
         }
     }
@@ -54,7 +54,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
      */
     public function getName()
     {
-        return $this->getProperty('name');
+        return $this->getGeneratorProperty('name');
     }
 
     /**
@@ -76,11 +76,11 @@ class TraitGenerator extends AbstractDocumentedGenerator
     {
         $this->addContent('{');
         /** @var null|ConstantGenerator[] $constants */
-        $constants = $this->getProperty('constants');
+        $constants = $this->getGeneratorProperty('constants');
         /** @var null|MethodGenerator[] $methods */
-        $methods = $this->getProperty('methods');
+        $methods = $this->getGeneratorProperty('methods');
         /** @var null|PropertyGenerator[] $properties */
-        $properties = $this->getProperty('properties');
+        $properties = $this->getGeneratorProperty('properties');
 
         if (is_array($constants)) {
             foreach($constants as $constant) {
@@ -109,7 +109,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
 
     private function generateDocumentation()
     {
-        $documentation = $this->getProperty('documentation');
+        $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
             $documentation->generate();
@@ -122,7 +122,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
      */
     private function generateSignature()
     {
-        $name = $this->getProperty('name');
+        $name = $this->getGeneratorProperty('name');
 
         if (is_null($name)) {
             throw new RuntimeException('name is mandatory');

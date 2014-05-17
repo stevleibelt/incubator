@@ -20,7 +20,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function addExtends($className)
     {
-        $this->addProperty('extends', (string) $className);
+        $this->addGeneratorProperty('extends', (string) $className);
     }
 
     /**
@@ -28,7 +28,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function addImplements($interfaceName)
     {
-        $this->addProperty('implements', (string) $interfaceName);
+        $this->addGeneratorProperty('implements', (string) $interfaceName);
     }
 
     /**
@@ -42,7 +42,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
             'name'  => $fullQualifiedClassName
         );
 
-        $this->addProperty('uses', $use);
+        $this->addGeneratorProperty('uses', $use);
     }
 
     /**
@@ -50,7 +50,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function addClassConstant(ConstantGenerator $constant)
     {
-        $this->addProperty('constants', $constant);
+        $this->addGeneratorProperty('constants', $constant);
     }
 
     /**
@@ -58,7 +58,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function addClassProperty(PropertyGenerator $property)
     {
-        $this->addProperty('properties', $property);
+        $this->addGeneratorProperty('properties', $property);
     }
 
     /**
@@ -66,7 +66,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function addMethod(MethodGenerator $method)
     {
-        $this->addProperty('methods', $method);
+        $this->addGeneratorProperty('methods', $method);
     }
 
     /**
@@ -74,22 +74,22 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function addTrait(TraitGenerator $trait)
     {
-        $this->addProperty('traits', $trait->getName());
+        $this->addGeneratorProperty('traits', $trait->getName());
     }
 
     public function setIsAbstract()
     {
-        $this->addProperty('abstract', true, false);
+        $this->addGeneratorProperty('abstract', true, false);
     }
 
     public function setIsFinal()
     {
-        $this->addProperty('final', true, false);
+        $this->addGeneratorProperty('final', true, false);
     }
 
     public function setIsInterface()
     {
-        $this->addProperty('interface', true, false);
+        $this->addGeneratorProperty('interface', true, false);
     }
 
     /**
@@ -97,7 +97,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function setName($name)
     {
-        $this->addProperty('name', (string) $name, false);
+        $this->addGeneratorProperty('name', (string) $name, false);
     }
 
     /**
@@ -105,7 +105,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     public function setNamespace($namespace)
     {
-        $this->addProperty('namespace', (string) $namespace, false);
+        $this->addGeneratorProperty('namespace', (string) $namespace, false);
     }
 
     /**
@@ -129,13 +129,13 @@ class ClassGenerator extends AbstractDocumentedGenerator
     {
         $this->addContent('{');
         /** @var null|ConstantGenerator[] $constants */
-        $constants = $this->getProperty('constants');
+        $constants = $this->getGeneratorProperty('constants');
         /** @var null|MethodGenerator[] $methods */
-        $methods = $this->getProperty('methods');
+        $methods = $this->getGeneratorProperty('methods');
         /** @var null|PropertyGenerator[] $properties */
-        $properties = $this->getProperty('properties');
+        $properties = $this->getGeneratorProperty('properties');
         /** @var null|array $traits */
-        $traits = $this->getProperty('traits');
+        $traits = $this->getGeneratorProperty('traits');
 
         $addEmptyLine = false;
 
@@ -187,7 +187,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
     private function generateNamespace()
     {
-        $namespace = $this->getProperty('namespace');
+        $namespace = $this->getGeneratorProperty('namespace');
 
         if (!is_null($namespace)) {
             $this->addContent(
@@ -205,7 +205,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
     private function generateDocumentation()
     {
-        $documentation = $this->getProperty('documentation');
+        $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
             $this->addGeneratorAsContent($documentation);
@@ -217,12 +217,12 @@ class ClassGenerator extends AbstractDocumentedGenerator
      */
     private function generateSignature()
     {
-        $isAbstract     = $this->getProperty('abstract', false);
-        $isInterface    = $this->getProperty('interface', false);
-        $isFinal        = $this->getProperty('final', false);
-        $extends        = $this->getProperty('extends');
-        $implements     = $this->getProperty('implements');
-        $name           = $this->getProperty('name');
+        $isAbstract     = $this->getGeneratorProperty('abstract', false);
+        $isInterface    = $this->getGeneratorProperty('interface', false);
+        $isFinal        = $this->getGeneratorProperty('final', false);
+        $extends        = $this->getGeneratorProperty('extends');
+        $implements     = $this->getGeneratorProperty('implements');
+        $name           = $this->getGeneratorProperty('name');
 
         if (is_null($name)) {
             throw new RuntimeException('name is mandatory');
@@ -251,7 +251,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
     private function generateUse()
     {
-        $uses = $this->getProperty('uses');
+        $uses = $this->getGeneratorProperty('uses');
 
         if (is_array($uses)) {
             foreach ($uses as $use) {

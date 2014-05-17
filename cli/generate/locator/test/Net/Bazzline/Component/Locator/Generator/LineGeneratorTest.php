@@ -107,7 +107,7 @@ class LineGeneratorTest extends GeneratorTestCase
         $line = $this->getLineGenerator();
 
         $line->setIndention($indention);
-        $line->setContentSeparator(':');
+        $line->setSeparator(':');
 
         foreach ($contentAsArray as $part) {
             $line->add($part);

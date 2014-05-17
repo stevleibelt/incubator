@@ -50,8 +50,8 @@ class TraitGeneratorTest extends GeneratorTestCase
         $constantFoo->setName('FOO');
         $constantFoo->setValue('\'bar\'');
 
-        $generator->addTraitConstant($constantBar);
-        $generator->addTraitConstant($constantFoo);
+        $generator->addConstant($constantBar);
+        $generator->addConstant($constantFoo);
         $generator->setName('UnitTest');
 
         $expectedString =
@@ -80,8 +80,8 @@ class TraitGeneratorTest extends GeneratorTestCase
         $propertyFoo->setValue(42);
         $propertyFoo->markAsProtected();
 
-        $generator->addTraitProperty($propertyBar);
-        $generator->addTraitProperty($propertyFoo);
+        $generator->addProperty($propertyBar);
+        $generator->addProperty($propertyFoo);
         $generator->setName('UnitTest');
 
         $expectedString =
@@ -205,12 +205,12 @@ class TraitGeneratorTest extends GeneratorTestCase
         $propertyFoo->setValue(42);
         $propertyFoo->markAsProtected();
 
-        $generator->addTraitConstant($constantBar);
-        $generator->addTraitConstant($constantFoo);
+        $generator->addConstant($constantBar);
+        $generator->addConstant($constantFoo);
         $generator->addMethod($methodOne);
         $generator->addMethod($methodTwo);
-        $generator->addTraitProperty($propertyBar);
-        $generator->addTraitProperty($propertyFoo);
+        $generator->addProperty($propertyBar);
+        $generator->addProperty($propertyFoo);
         $generator->setDocumentation($documentation);
         $generator->setName('UnitTest');
 
