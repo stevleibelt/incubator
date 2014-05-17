@@ -96,7 +96,36 @@ class FileGeneratorTest extends GeneratorTestCase
 
     public function testWithMethods()
     {
-        $this->markTestIncomplete();
+        $methodBar = $this->getMethodGenerator();
+        $methodFoo = $this->getMethodGenerator();
+        $generator = $this->getFileGenerator();
+        $indention = $generator->getIndention();
+
+        $methodBar->setName('bar');
+        $methodBar->markAsPublic();
+        $methodFoo->setName('foo');
+        $methodFoo->markAsProtected();
+
+        $generator->addMethod($methodBar);
+        $generator->addMethod($methodFoo);
+
+        $indention->increaseLevel();
+        $doubledIndention = $indention->toString();
+        $indention->decreaseLevel();
+
+        $expectedContent = '<?php' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'public function bar()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $doubledIndention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
+            $indention . PHP_EOL .
+            $indention . 'protected function foo()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $doubledIndention . '//@todo implement' . PHP_EOL .
+            $indention . '}';
+
+        $this->assertEquals($expectedContent, $generator->generate());
     }
 
     public function testWithContent()
