@@ -202,4 +202,17 @@ abstract class AbstractGenerator implements GeneratorInterface
     {
         return array('bool', 'boolean', 'int', 'integer', 'object', 'resource', 'string');
     }
+
+    /**
+     * @param array $array
+     * @return mixed
+     */
+    final protected function getLastArrayKey(array $array)
+    {
+        end($array);
+        $lastArrayKey = key($array);
+        reset($array);
+
+        return $lastArrayKey;
+    }
 }

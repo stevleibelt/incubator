@@ -147,7 +147,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
             if ($addEmptyLine) {
                 $this->addContent('');
             }
-            $lastArrayKey = array_pop(array_keys($constants));
+            $lastArrayKey = $this->getLastArrayKey($constants);
             foreach($constants as $key => $constant) {
                 $this->addGeneratorAsContent($constant, true);
                 if ($key !== $lastArrayKey) {
@@ -160,7 +160,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
             if ($addEmptyLine) {
                 $this->addContent('');
             }
-            $lastArrayKey = array_pop(array_keys($properties));
+            $lastArrayKey = $this->getLastArrayKey($properties);
             foreach($properties as $key => $property) {
                 $this->addGeneratorAsContent($property, true);
                 if ($key !== $lastArrayKey) {
@@ -173,7 +173,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
             if ($addEmptyLine) {
                 $this->addContent('');
             }
-            $lastArrayKey = array_pop(array_keys($methods));
+            $lastArrayKey = $this->getLastArrayKey($methods);
             foreach($methods as $key => $method) {
                 $this->addGeneratorAsContent($method, true);
                 if ($key !== $lastArrayKey) {
