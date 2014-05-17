@@ -130,7 +130,18 @@ class FileGeneratorTest extends GeneratorTestCase
 
     public function testWithContent()
     {
-        $this->markTestIncomplete();
+        $content = array(
+            '//@todo implement',
+        );
+        $generator = $this->getFileGenerator();
+        $indention = $generator->getIndention();
+
+        $generator->addFileContent($content);
+
+        $expectedContent = '<?php' . PHP_EOL .
+            $indention . '//@todo implement';
+
+        $this->assertEquals($expectedContent, $generator->generate());
     }
 
     public function testWithAll()
@@ -139,6 +150,9 @@ class FileGeneratorTest extends GeneratorTestCase
         $classFoo = $this->getClassGenerator();
         $constantBar = $this->getConstantGenerator();
         $constantFoo = $this->getConstantGenerator();
+        $content = array(
+            '//@todo implement',
+        );
         $generator = $this->getFileGenerator();
         $indention = $generator->getIndention();
         $methodBar = $this->getMethodGenerator();
@@ -146,6 +160,7 @@ class FileGeneratorTest extends GeneratorTestCase
         $propertyBar = $this->getPropertyGenerator();
         $propertyFoo = $this->getPropertyGenerator();
 
+        $generator->addFileContent($content);
         $classBar->setName('bar');
         $classFoo->setName('foo');
         $constantBar->setName('BAR');
@@ -179,6 +194,7 @@ class FileGeneratorTest extends GeneratorTestCase
 
         $expectedContent = '#!/bin/php' . PHP_EOL .
             $indention . '<?php' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             $indention . PHP_EOL .
             $indention . 'const BAR = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .
