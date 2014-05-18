@@ -9,7 +9,6 @@ namespace Test\Net\Bazzline\Component\Locator\Generator;
 /**
  * Class PropertyGeneratorTest
  * @package Test\Net\Bazzline\Component\Locator\LocatorGenerator\Generator
- * @todo markAsPrivate test etc.
  */
 class PropertyGeneratorTest extends GeneratorTestCase
 {
@@ -87,7 +86,17 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithTypeHint()
     {
-        $this->markTestIncomplete('implement it end extend "with all"');
+$this->markTestIncomplete('not testable until type hint is implemented in PropertyGenerator');
+        $generator = $this->getPropertyGenerator();
+
+        $generator->markAsPublic();
+        $generator->addTypeHint('array');
+        $generator->setName('unitTest');
+        $generator->setValue('array(1,2)');
+
+        $expectedString = 'public $unitTest = array(1,2);';
+
+        $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testWithPublic()

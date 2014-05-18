@@ -12,6 +12,8 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 /**
  * Class PropertyGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
+ * @todo implement usage of type hint
+ * @todo implement usage of documentation
  */
 class PropertyGenerator extends AbstractDocumentedGenerator
 {
