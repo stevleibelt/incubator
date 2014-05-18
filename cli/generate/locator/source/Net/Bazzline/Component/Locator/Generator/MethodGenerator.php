@@ -117,7 +117,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
         if (!$isAbstract
             && $hasBody) {
             $this->addContent($this->getBlockGenerator('{'));
-            $this->addContent(
+            $this->addGeneratorAsContent(
                 $this->getBlockGenerator(
                     $this->getGeneratorProperty('body', array('//@todo implement'))
                 ),

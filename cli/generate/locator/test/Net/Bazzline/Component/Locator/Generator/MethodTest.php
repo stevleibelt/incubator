@@ -14,22 +14,23 @@ class MethodGeneratorTest extends GeneratorTestCase
 {
     public function testWithNoProperties()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->setName('unittest');
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             'function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testMarkAsAbstract()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->setIsAbstract();
         $generator->setName('unittest');
@@ -41,7 +42,6 @@ class MethodGeneratorTest extends GeneratorTestCase
 
     public function testMarkAsHasNoBody()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->markAsHasNoBody();
         $generator->setName('unittest');
@@ -53,7 +53,6 @@ class MethodGeneratorTest extends GeneratorTestCase
 
     public function testWithBody()
     {
-        $this->markTestSkipped();
         $body = array(
             '$bar = new Bar();',
             '$foo = new Foo();',
@@ -66,121 +65,136 @@ class MethodGeneratorTest extends GeneratorTestCase
         $generator = $this->getMethodGenerator();
         $generator->setName('unittest');
         $generator->setBody($body);
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             'function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '$bar = new Bar();' . PHP_EOL .
-            $generator->getIndention() . '$foo = new Foo();' . PHP_EOL .
-            $generator->getIndention() . '$foobar->add($bar);' . PHP_EOL .
-            $generator->getIndention() . '$foobar->add($foo);' . PHP_EOL .
+            $indention . '$bar = new Bar();' . PHP_EOL .
+            $indention . '$foo = new Foo();' . PHP_EOL .
+            $indention . '$foobar->add($bar);' . PHP_EOL .
+            $indention . '$foobar->add($foo);' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'return $foobar' . PHP_EOL .
+            $indention . 'return $foobar' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testMarkAsFinal()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->markAsFinal();
         $generator->setName('unittest');
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             'final function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testMarkAsPrivate()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->markAsPrivate();
         $generator->setName('unittest');
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             'private function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testMarkAsProtected()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->markAsProtected();
         $generator->setName('unittest');
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             'protected function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testMarkAsPublic()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->setName('unittest');
         $generator->markAsPublic();
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             'public function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testMarkAsStatic()
     {
-        $this->markTestSkipped();
         $generator = $this->getMethodGenerator();
         $generator->setName('unittest');
         $generator->markAsPublic();
         $generator->markAsStatic();
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
-            'static public function unittest()' . PHP_EOL .
+            'public static function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testWithEmptyPhpDocumentation()
     {
-        $this->markTestSkipped();
         $documentation  = $this->getDocumentationGenerator();
-        $generator       = $this->getMethodGenerator();
+        $generator      = $this->getMethodGenerator();
 
         $generator->setDocumentation($documentation);
         $generator->addParameter('foo', '', 'string');
         $generator->setName('unittest');
         $generator->markAsPublic();
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             '/**' . PHP_EOL .
             ' * @param string $foo' . PHP_EOL .
             ' */' . PHP_EOL .
             'public function unittest($foo)' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
         $this->assertSame($documentation, $generator->getDocumentation());
@@ -188,9 +202,8 @@ class MethodGeneratorTest extends GeneratorTestCase
 
     public function testWithManualPhpDocumentation()
     {
-        $this->markTestSkipped();
         $documentation  = $this->getDocumentationGenerator();
-        $generator       = $this->getMethodGenerator();
+        $generator      = $this->getMethodGenerator();
 
         $documentation->addParameter('foo', 'string');
 
@@ -198,15 +211,18 @@ class MethodGeneratorTest extends GeneratorTestCase
         $generator->addParameter('foo');
         $generator->setName('unittest');
         $generator->markAsPublic();
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             '/**' . PHP_EOL .
             ' * @param string $foo' . PHP_EOL .
             ' */' . PHP_EOL .
             'public function unittest($foo)' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '//@todo implement' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
         $this->assertSame($documentation, $generator->getDocumentation());
@@ -214,7 +230,6 @@ class MethodGeneratorTest extends GeneratorTestCase
 
     public function testWithALot()
     {
-        $this->markTestSkipped();
         $body = array(
             '$bar = new Bar();',
             '$foo = new Foo();',
@@ -229,17 +244,20 @@ class MethodGeneratorTest extends GeneratorTestCase
         $generator->setName('unittest');
         $generator->markAsFinal();
         $generator->markAsPublic();
+        $indention = $generator->getIndention();
 
+        $indention->increaseLevel();
         $expectedString =
             'final public function unittest()' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . '$bar = new Bar();' . PHP_EOL .
-            $generator->getIndention() . '$foo = new Foo();' . PHP_EOL .
-            $generator->getIndention() . '$foobar->add($bar);' . PHP_EOL .
-            $generator->getIndention() . '$foobar->add($foo);' . PHP_EOL .
+            $indention . '$bar = new Bar();' . PHP_EOL .
+            $indention . '$foo = new Foo();' . PHP_EOL .
+            $indention . '$foobar->add($bar);' . PHP_EOL .
+            $indention . '$foobar->add($foo);' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'return $foobar' . PHP_EOL .
+            $indention . 'return $foobar' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
