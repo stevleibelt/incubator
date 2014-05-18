@@ -18,14 +18,12 @@ class TraitGeneratorTest extends GeneratorTestCase
      */
     public function testWithNoProperties()
     {
-        $this->markTestSkipped();
         $generator = $this->getTraitGenerator();
         $generator->generate();
     }
 
     public function testWithName()
     {
-        $this->markTestSkipped();
         $generator = $this->getTraitGenerator();
         $generator->setName('UnitTest');
 
@@ -40,8 +38,7 @@ class TraitGeneratorTest extends GeneratorTestCase
 
     public function testWithConstants()
     {
-        $this->markTestSkipped();
-        $generator       = $this->getTraitGenerator();
+        $generator      = $this->getTraitGenerator();
         $constantBar    = $this->getConstantGenerator();
         $constantFoo    = $this->getConstantGenerator();
 
@@ -54,22 +51,23 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->addConstant($constantFoo);
         $generator->setName('UnitTest');
 
+        $indention = $generator->getIndention();
+        $indention->increaseLevel();
         $expectedString =
             'trait UnitTest' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . "const BAR = 'foo';" . PHP_EOL .
+            $indention . "const BAR = 'foo';" . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . "const FOO = 'bar';" . PHP_EOL .
-            '' . PHP_EOL .
+            $indention . "const FOO = 'bar';" . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testWithProperties()
     {
-        $this->markTestSkipped();
-        $generator       = $this->getTraitGenerator();
+        $generator      = $this->getTraitGenerator();
         $propertyBar    = $this->getPropertyGenerator();
         $propertyFoo    = $this->getPropertyGenerator();
 
@@ -84,21 +82,22 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->addProperty($propertyFoo);
         $generator->setName('UnitTest');
 
+        $indention = $generator->getIndention();
+        $indention->increaseLevel();
         $expectedString =
             'trait UnitTest' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . 'private $bar = 23;' . PHP_EOL .
+            $indention . 'private $bar = 23;' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'protected $foo = 42;' . PHP_EOL .
-            '' . PHP_EOL .
+            $indention . 'protected $foo = 42;' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testWithMethods()
     {
-        $this->markTestSkipped();
         $generator      = $this->getTraitGenerator();
         $methodOne      = $this->getMethodGenerator();
         $methodTwo      = $this->getMethodGenerator();
@@ -112,27 +111,28 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->addMethod($methodTwo);
         $generator->setName('UnitTest');
 
+        $indention = $generator->getIndention();
+        $indention->increaseLevel();
         $expectedString =
             'trait UnitTest' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . 'private function methodOne()' . PHP_EOL .
-            $generator->getIndention() . '{' . PHP_EOL .
-            $generator->getIndention() . $generator->getIndention() . '//@todo implement' . PHP_EOL .
-            $generator->getIndention() . '}' . PHP_EOL .
+            $indention . 'private function methodOne()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . $indention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'protected function methodTwo()' . PHP_EOL .
-            $generator->getIndention() . '{' . PHP_EOL .
-            $generator->getIndention() . $generator->getIndention() . '//@todo implement' . PHP_EOL .
-            $generator->getIndention() . '}' . PHP_EOL .
-            '' . PHP_EOL .
+            $indention . 'protected function methodTwo()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . $indention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
     public function testWithEmptyPhpDocumentation()
     {
-        $this->markTestSkipped();
         $documentation  = $this->getDocumentationGenerator();
         $generator      = $this->getTraitGenerator();
 
@@ -153,7 +153,6 @@ class TraitGeneratorTest extends GeneratorTestCase
 
     public function testWithManualPhpDocumentation()
     {
-        $this->markTestSkipped();
         $documentation  = $this->getDocumentationGenerator();
         $generator      = $this->getTraitGenerator();
 
@@ -178,7 +177,6 @@ class TraitGeneratorTest extends GeneratorTestCase
 
     public function testWithAll()
     {
-        $this->markTestSkipped();
         $constantBar    = $this->getConstantGenerator();
         $constantFoo    = $this->getConstantGenerator();
         $documentation  = $this->getDocumentationGenerator();
@@ -214,6 +212,8 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->setDocumentation($documentation);
         $generator->setName('UnitTest');
 
+        $indention = $generator->getIndention();
+        $indention->increaseLevel();
         $expectedString =
             '/**' . PHP_EOL .
             ' * Class UnitTest' . PHP_EOL .
@@ -221,25 +221,25 @@ class TraitGeneratorTest extends GeneratorTestCase
             ' */' . PHP_EOL .
             'trait UnitTest' . PHP_EOL .
             '{' . PHP_EOL .
-            $generator->getIndention() . "const BAR = 'foo';" . PHP_EOL .
+            $indention . "const BAR = 'foo';" . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . "const FOO = 'bar';" . PHP_EOL .
+            $indention . "const FOO = 'bar';" . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'private $bar = 23;' . PHP_EOL .
+            $indention . 'private $bar = 23;' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'protected $foo = 42;' . PHP_EOL .
+            $indention . 'protected $foo = 42;' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'private function methodOne()' . PHP_EOL .
-            $generator->getIndention() . '{' . PHP_EOL .
-            $generator->getIndention() . $generator->getIndention() . '//@todo implement' . PHP_EOL .
-            $generator->getIndention() . '}' . PHP_EOL .
+            $indention . 'private function methodOne()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . $indention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
             '' . PHP_EOL .
-            $generator->getIndention() . 'protected function methodTwo()' . PHP_EOL .
-            $generator->getIndention() . '{' . PHP_EOL .
-            $generator->getIndention() . $generator->getIndention() . '//@todo implement' . PHP_EOL .
-            $generator->getIndention() . '}' . PHP_EOL .
-            '' . PHP_EOL .
+            $indention . 'protected function methodTwo()' . PHP_EOL .
+            $indention . '{' . PHP_EOL .
+            $indention . $indention . '//@todo implement' . PHP_EOL .
+            $indention . '}' . PHP_EOL .
             '}';
+        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }

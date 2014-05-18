@@ -50,11 +50,11 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param GeneratorInterface $template
+     * @param GeneratorInterface $generator
      */
-    protected function debugGenerator(GeneratorInterface $template)
+    protected function debugGenerator(GeneratorInterface $generator)
     {
-        echo PHP_EOL . '----' . PHP_EOL . $template->generate() . PHP_EOL . '----' . PHP_EOL;
+        echo PHP_EOL . '----' . PHP_EOL . $generator->generate() . PHP_EOL . '----' . PHP_EOL;
     }
     //----end of general----
 

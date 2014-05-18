@@ -63,6 +63,10 @@ class TraitGenerator extends AbstractDocumentedGenerator
      */
     public function generate()
     {
+        if (is_null($this->getGeneratorProperty('name'))) {
+            throw new RuntimeException('name is mandatory');
+        }
+
         if ($this->canBeGenerated()) {
             $this->generateDocumentation();
             $this->generateSignature();
@@ -74,6 +78,7 @@ class TraitGenerator extends AbstractDocumentedGenerator
 
     private function generateBody()
     {
+        $addEmptyLine = false;
         $this->addContent('{');
         /** @var null|ConstantGenerator[] $constants */
         $constants = $this->getGeneratorProperty('constants');
@@ -83,24 +88,38 @@ class TraitGenerator extends AbstractDocumentedGenerator
         $properties = $this->getGeneratorProperty('properties');
 
         if (is_array($constants)) {
-            foreach($constants as $constant) {
-                $constant->generate();
+            $lastArrayKey = $this->getLastArrayKey($constants);
+            foreach($constants as $key => $constant) {
                 $this->addGeneratorAsContent($constant, true);
-                $this->addContent('');
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
             }
+            $addEmptyLine = true;
         }
         if (is_array($properties)) {
-            foreach($properties as $property) {
-                $property->generate();
-                $this->addGeneratorAsContent($property, true);
+            if ($addEmptyLine) {
                 $this->addContent('');
             }
+            $lastArrayKey = $this->getLastArrayKey($properties);
+            foreach($properties as $key => $property) {
+                $this->addGeneratorAsContent($property, true);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
+            }
+            $addEmptyLine = true;
         }
         if (is_array($methods)) {
-            foreach($methods as $method) {
-                $method->generate();
-                $this->addGeneratorAsContent($method, true);
+            if ($addEmptyLine) {
                 $this->addContent('');
+            }
+            $lastArrayKey = $this->getLastArrayKey($methods);
+            foreach($methods as $key => $method) {
+                $this->addGeneratorAsContent($method, true);
+                if ($key !== $lastArrayKey) {
+                    $this->addContent('');
+                }
             }
         }
 
@@ -112,7 +131,6 @@ class TraitGenerator extends AbstractDocumentedGenerator
         $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
-            $documentation->generate();
             $this->addGeneratorAsContent($documentation);
         }
     }

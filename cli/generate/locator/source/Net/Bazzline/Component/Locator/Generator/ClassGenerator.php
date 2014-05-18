@@ -127,6 +127,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
     private function generateBody()
     {
+        $addEmptyLine = false;
         $this->addContent('{');
         /** @var null|ConstantGenerator[] $constants */
         $constants = $this->getGeneratorProperty('constants');
@@ -136,8 +137,6 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $properties = $this->getGeneratorProperty('properties');
         /** @var null|array $traits */
         $traits = $this->getGeneratorProperty('traits');
-
-        $addEmptyLine = false;
 
         if (is_array($traits)) {
             $this->addContent('use ' . implode(',', $traits) . ';', true);
