@@ -25,8 +25,8 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithName()
     {
-        $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
+
         $generator->setName('unitTest');
 
         $expectedString = '$unitTest;';
@@ -36,8 +36,8 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithNameAndValue()
     {
-        $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
+
         $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
@@ -48,10 +48,10 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithStatic()
     {
-        $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
-        $generator->setName('unitTest');
+
         $generator->markAsStatic();
+        $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'static $unitTest = \'foobar\';';
@@ -61,10 +61,10 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithPrivate()
     {
-        $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
-        $generator->setName('unitTest');
+
         $generator->markAsPrivate();
+        $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'private $unitTest = \'foobar\';';
@@ -74,10 +74,10 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithProtected()
     {
-        $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
-        $generator->setName('unitTest');
+
         $generator->markAsProtected();
+        $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'protected $unitTest = \'foobar\';';
@@ -87,15 +87,15 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithTypeHint()
     {
-        $this->markTestIncomplete('imlement it end extend "with all"');
+        $this->markTestIncomplete('implement it end extend "with all"');
     }
 
     public function testWithPublic()
     {
-        $this->markTestSkipped();
         $generator = $this->getPropertyGenerator();
-        $generator->setName('unitTest');
+
         $generator->markAsPublic();
+        $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
         $expectedString = 'public $unitTest = \'foobar\';';
@@ -105,13 +105,13 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithDocumentation()
     {
-        $this->markTestSkipped();
         $documentation = $this->getDocumentationGenerator();
         $documentation->setVariable('unitTest', array('string'));
         $generator = $this->getPropertyGenerator();
+
+        $generator->markAsPublic();
         $generator->setDocumentation($documentation);
         $generator->setName('unitTest');
-        $generator->markAsPublic();
         $generator->setValue('\'foobar\'');
 
         $expectedString =
@@ -126,14 +126,20 @@ class PropertyGeneratorTest extends GeneratorTestCase
 
     public function testWithAll()
     {
-        $this->markTestSkipped();
+        $documentation = $this->getDocumentationGenerator();
+        $documentation->setVariable('unitTest', array('string'));
         $generator = $this->getPropertyGenerator();
-        $generator->setName('unitTest');
+
         $generator->markAsPublic();
-        $generator->markAsStatic();
+        $generator->setDocumentation($documentation);
+        $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
-        $expectedString = 'public static $unitTest = \'foobar\';';
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @var string $unitTest' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'public $unitTest = \'foobar\';';
 
         $this->assertEquals($expectedString, $generator->generate());
     }
