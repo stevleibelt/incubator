@@ -56,20 +56,20 @@ foreach ($properties as $value) {
     $property->setDocumentation($documentationFactory->create($indention));
     //---- end of properties
 
-    //---- begin of getter methods
+    //---- begin of getter method
     $getterMethod = $methodFactory->create($indention);
     $getterMethod->setDocumentation($documentationFactory->create($indention));
     $getterMethod->setName('get' . ucfirst($value['name']));
     $getterMethod->setBody(array('$this->' . $value['name'] . ' = $' . $value['name'] . ';'), $value['typeHint']);
-    //---- end of getter methods
+    //---- end of getter method
 
-    //---- begin of setter methods
+    //---- begin of setter method
     $setterMethod = $methodFactory->create($indention);
     $setterMethod->setDocumentation($documentationFactory->create($indention));
     $setterMethod->addParameter($value['name'], null, $value['typeHint']);
     $setterMethod->setName('set' . ucfirst($value['name']));
     $setterMethod->setBody(array('return $this->' . $value['name'] . ';'));
-    //---- end of setter methods
+    //---- end of setter method
 
     $class->addClassProperty($property);
     $class->addMethod($getterMethod);
