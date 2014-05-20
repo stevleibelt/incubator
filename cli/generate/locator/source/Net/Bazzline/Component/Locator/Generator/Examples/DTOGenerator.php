@@ -49,14 +49,14 @@ foreach ($properties as $value) {
     $getterMethod = new MethodGenerator($indention);
     $getterMethod->setDocumentation(new DocumentationGenerator($indention));
     $getterMethod->setName('get' . ucfirst($value['name']));
-    $getterMethod->addParameter($value['name'], null, $value['typeHint']);
     $getterMethod->setBody(array('$this->' . $value['name'] . ' = $' . $value['name'] . ';'), $value['typeHint']);
     //---- end of getter methods
 
     //---- begin of setter methods
     $setterMethod = new MethodGenerator($indention);
     $setterMethod->setDocumentation(new DocumentationGenerator($indention));
-    $setterMethod->setName('get' . ucfirst($value['name']));
+    $setterMethod->addParameter($value['name'], null, $value['typeHint']);
+    $setterMethod->setName('set' . ucfirst($value['name']));
     $setterMethod->setBody(array('return $this->' . $value['name'] . ';'));
     //---- end of setter methods
 
