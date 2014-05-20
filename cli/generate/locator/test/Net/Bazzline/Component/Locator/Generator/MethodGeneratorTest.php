@@ -174,7 +174,7 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testWithEmptyPhpDocumentation()
+    public function testWithAutoDocumentation()
     {
         $documentation  = $this->getDocumentationGenerator();
         $generator      = $this->getMethodGenerator();
@@ -200,7 +200,35 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertSame($documentation, $generator->getDocumentation());
     }
 
-    public function testWithManualPhpDocumentation()
+    public function testWithAutoDocumentationAndBody()
+    {
+        $documentation  = $this->getDocumentationGenerator();
+        $generator      = $this->getMethodGenerator();
+
+        $generator->setDocumentation($documentation);
+        $generator->addParameter('foo', '', 'string');
+        $generator->setName('unittest');
+        $generator->markAsPublic();
+        $generator->setBody(array('return int($foo);'), 'int');
+        $indention = $generator->getIndention();
+
+        $indention->increaseLevel();
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @param string $foo' . PHP_EOL .
+            ' * @return int' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'public function unittest($foo)' . PHP_EOL .
+            '{' . PHP_EOL .
+            $indention . 'return int($foo);' . PHP_EOL .
+            '}';
+        $indention->decreaseLevel();
+
+        $this->assertEquals($expectedString, $generator->generate());
+        $this->assertSame($documentation, $generator->getDocumentation());
+    }
+
+    public function testWithManualDocumentation()
     {
         $documentation  = $this->getDocumentationGenerator();
         $generator      = $this->getMethodGenerator();

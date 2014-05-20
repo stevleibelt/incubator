@@ -51,11 +51,18 @@ class MethodGenerator extends AbstractDocumentedGenerator
 
     /**
      * @param array $body
+     * @param null|string|array $typeHintOfReturnValue
      */
-    public function setBody(array $body)
+    public function setBody(array $body, $typeHintOfReturnValue = null)
     {
         $this->addGeneratorProperty('body', $body, false);
         $this->addGeneratorProperty('has_body', true, false);
+        if ((!is_null($typeHintOfReturnValue))
+            && ($this->completeDocumentationAutomatically === true)) {
+            /** @var DocumentationGenerator $documentation */
+            $documentation = $this->getGeneratorProperty('documentation');
+            $documentation->setReturn($typeHintOfReturnValue);
+        }
     }
 
     public function markAsHasNoBody()
