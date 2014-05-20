@@ -50,7 +50,7 @@ foreach ($properties as $value) {
     $getterMethod->setDocumentation(new DocumentationGenerator($indention));
     $getterMethod->setName('get' . ucfirst($value['name']));
     $getterMethod->addParameter($value['name'], null, $value['typeHint']);
-    $getterMethod->setBody(array('$this->' . $value['name'] . ' = $' . $value['name'] . ';'));
+    $getterMethod->setBody(array('$this->' . $value['name'] . ' = $' . $value['name'] . ';'), $value['typeHint']);
     //---- end of getter methods
 
     //---- begin of setter methods
