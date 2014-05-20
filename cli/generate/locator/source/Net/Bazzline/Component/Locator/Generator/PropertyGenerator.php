@@ -12,23 +12,15 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 /**
  * Class PropertyGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
- * @todo implement usage of type hint
- * @todo implement usage of documentation
  */
 class PropertyGenerator extends AbstractDocumentedGenerator
 {
     /**
-     * @param string $name
+     * @param string $typeHint
      */
-    public function setName($name)
+    public function addTypeHint($typeHint)
     {
-        $this->addGeneratorProperty('name', (string) $name, false);
-        if ($this->completeDocumentationAutomatically === true) {
-            /** @var DocumentationGenerator $documentation */
-            $documentation = $this->getGeneratorProperty('documentation');
-            //@todo
-            //$documentation->setVariable($name);
-        }
+        $this->addGeneratorProperty('type_hints', (string) $typeHint);
     }
 
     public function markAsPrivate()
@@ -52,11 +44,11 @@ class PropertyGenerator extends AbstractDocumentedGenerator
     }
 
     /**
-     * @param string $typeHint
+     * @param string $name
      */
-    public function addTypeHint($typeHint)
+    public function setName($name)
     {
-        $this->addGeneratorProperty('type_hint', (string) $typeHint);
+        $this->addGeneratorProperty('name', (string) $name, false);
     }
 
     /**
@@ -76,6 +68,7 @@ class PropertyGenerator extends AbstractDocumentedGenerator
         $documentation = $this->getGeneratorProperty('documentation');
         $isStatic = $this->getGeneratorProperty('static', false);
         $name = $this->getGeneratorProperty('name');
+        $typeHints = $this->getGeneratorProperty('type_hints', array());
         $value = $this->getGeneratorProperty('value');
         $visibility = $this->getGeneratorProperty('visibility');
 
@@ -87,6 +80,9 @@ class PropertyGenerator extends AbstractDocumentedGenerator
         $line = $this->getLineGenerator();
 
         if ($documentation instanceof DocumentationGenerator) {
+            if ($this->completeDocumentationAutomatically === true) {
+                $documentation->setVariable($name, $typeHints);
+            }
             $block->add(explode(PHP_EOL, $documentation->generate()));
         }
 

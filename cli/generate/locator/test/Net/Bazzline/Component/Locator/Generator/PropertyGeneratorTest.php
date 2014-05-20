@@ -84,21 +84,6 @@ class PropertyGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testWithTypeHint()
-    {
-$this->markTestIncomplete('not testable until type hint is implemented in PropertyGenerator');
-        $generator = $this->getPropertyGenerator();
-
-        $generator->markAsPublic();
-        $generator->addTypeHint('array');
-        $generator->setName('unitTest');
-        $generator->setValue('array(1,2)');
-
-        $expectedString = 'public $unitTest = array(1,2);';
-
-        $this->assertEquals($expectedString, $generator->generate());
-    }
-
     public function testWithPublic()
     {
         $generator = $this->getPropertyGenerator();
@@ -112,14 +97,14 @@ $this->markTestIncomplete('not testable until type hint is implemented in Proper
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testWithDocumentation()
+    public function testWithManuallyDocumentation()
     {
         $documentation = $this->getDocumentationGenerator();
         $documentation->setVariable('unitTest', array('string'));
         $generator = $this->getPropertyGenerator();
 
+        $generator->setDocumentation($documentation, false);
         $generator->markAsPublic();
-        $generator->setDocumentation($documentation);
         $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
@@ -133,20 +118,62 @@ $this->markTestIncomplete('not testable until type hint is implemented in Proper
         $this->assertSame($documentation, $generator->getDocumentation());
     }
 
-    public function testWithAll()
+    public function testWithDocumentation()
     {
         $documentation = $this->getDocumentationGenerator();
-        $documentation->setVariable('unitTest', array('string'));
         $generator = $this->getPropertyGenerator();
 
-        $generator->markAsPublic();
         $generator->setDocumentation($documentation);
+        $generator->markAsPublic();
         $generator->setName('unitTest');
         $generator->setValue('\'foobar\'');
 
         $expectedString =
             '/**' . PHP_EOL .
-            ' * @var string $unitTest' . PHP_EOL .
+            ' * @var $unitTest' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'public $unitTest = \'foobar\';';
+
+        $this->assertEquals($expectedString, $generator->generate());
+        $this->assertSame($documentation, $generator->getDocumentation());
+    }
+
+    public function testWithDocumentationAndTypeHint()
+    {
+        $documentation = $this->getDocumentationGenerator();
+        $generator = $this->getPropertyGenerator();
+
+        $generator->setDocumentation($documentation);
+        $generator->markAsPublic();
+        $generator->addTypeHint('array');
+        $generator->setName('unitTest');
+        $generator->setValue('array(1,2)');
+
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @var array $unitTest' . PHP_EOL .
+            ' */' . PHP_EOL .
+            'public $unitTest = array(1,2);';
+
+        $this->assertEquals($expectedString, $generator->generate());
+    }
+
+    public function testWithAll()
+    {
+        $documentation = $this->getDocumentationGenerator();
+        $generator = $this->getPropertyGenerator();
+
+        $generator->markAsPublic();
+        $generator->setDocumentation($documentation);
+        $generator->setName('unitTest');
+        $generator->addTypeHint('string');
+        $generator->addTypeHint('Test');
+        $generator->addTypeHint('Unit');
+        $generator->setValue('\'foobar\'');
+
+        $expectedString =
+            '/**' . PHP_EOL .
+            ' * @var string|Test|Unit $unitTest' . PHP_EOL .
             ' */' . PHP_EOL .
             'public $unitTest = \'foobar\';';
 
