@@ -138,7 +138,7 @@ class ClassGeneratorTest extends GeneratorTestCase
 
     public function testWithClassProperties()
     {
-        $generator       = $this->getClassGenerator();
+        $generator      = $this->getClassGenerator();
         $propertyBar    = $this->getPropertyGenerator();
         $propertyFoo    = $this->getPropertyGenerator();
 
@@ -168,7 +168,7 @@ class ClassGeneratorTest extends GeneratorTestCase
 
     public function testWithMethods()
     {
-        $generator   = $this->getClassGenerator();
+        $generator  = $this->getClassGenerator();
         $methodOne  = $this->getMethodGenerator();
         $methodTwo  = $this->getMethodGenerator();
 
@@ -202,7 +202,7 @@ class ClassGeneratorTest extends GeneratorTestCase
 
     public function testWithTraits()
     {
-        $generator   = $this->getClassGenerator();
+        $generator  = $this->getClassGenerator();
         $traitOne   = $this->getTraitGenerator();
         $traitTwo   = $this->getTraitGenerator();
 
@@ -224,10 +224,10 @@ class ClassGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testWithPhpDocumentation()
+    public function testWithDocumentation()
     {
         $documentation  = $this->getDocumentationGenerator();
-        $generator       = $this->getClassGenerator();
+        $generator      = $this->getClassGenerator();
 
         $documentation->setClass('UnitTest');
         $documentation->setPackage('Foo\Bar');
