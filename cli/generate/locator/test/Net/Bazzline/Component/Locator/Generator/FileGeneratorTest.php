@@ -96,11 +96,10 @@ class FileGeneratorTest extends GeneratorTestCase
 
     public function testWithMethods()
     {
-$this->markTestSkipped('indention is currently broken');
         $generator = $this->getFileGenerator();
         $indention = $this->getIndention();
-        $methodBar = $this->getMethodGenerator();
-        $methodFoo = $this->getMethodGenerator();
+        $methodBar = $this->getMethodGenerator($generator->getIndention());
+        $methodFoo = $this->getMethodGenerator($generator->getIndention());
 
         $methodBar->setName('bar');
         $methodBar->markAsPublic();
@@ -147,7 +146,6 @@ $this->markTestSkipped('indention is currently broken');
 
     public function testWithAll()
     {
-$this->markTestSkipped('indention is currently broken');
         $classBar = $this->getClassGenerator();
         $classFoo = $this->getClassGenerator();
         $constantBar = $this->getConstantGenerator();
@@ -157,8 +155,8 @@ $this->markTestSkipped('indention is currently broken');
         );
         $generator = $this->getFileGenerator();
         $indention = $this->getIndention();
-        $methodBar = $this->getMethodGenerator();
-        $methodFoo = $this->getMethodGenerator();
+        $methodBar = $this->getMethodGenerator($generator->getIndention());
+        $methodFoo = $this->getMethodGenerator($generator->getIndention());
         $propertyBar = $this->getPropertyGenerator();
         $propertyFoo = $this->getPropertyGenerator();
 

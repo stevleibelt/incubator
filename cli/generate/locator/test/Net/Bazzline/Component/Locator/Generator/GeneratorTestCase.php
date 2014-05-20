@@ -65,75 +65,120 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
 
     //----begin of generator----
     /**
-     * @return BlockGenerator
+     * @param Indention $indention
+     * @return BlockGenerator|GeneratorInterface
      */
-    protected function getBlockGenerator()
+    protected function getBlockGenerator(Indention $indention = null)
     {
-        return $this->getBlockGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getBlockGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return ClassGenerator
      */
-    protected function getClassGenerator()
+    protected function getClassGenerator(Indention $indention = null)
     {
-        return $this->getClassGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getClassGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return ConstantGenerator
      */
-    protected function getConstantGenerator()
+    protected function getConstantGenerator(Indention $indention = null)
     {
-        return $this->getConstantGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getConstantGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return FileGenerator
      */
-    protected function getFileGenerator()
+    protected function getFileGenerator(Indention $indention = null)
     {
-        return $this->getFileGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getFileGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return LineGenerator
      */
-    protected function getLineGenerator()
+    protected function getLineGenerator(Indention $indention = null)
     {
-        return $this->getLineGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getLineGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return MethodGenerator
      */
-    protected function getMethodGenerator()
+    protected function getMethodGenerator(Indention $indention = null)
     {
-        return $this->getMethodGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getMethodGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return DocumentationGenerator
      */
-    protected function getDocumentationGenerator()
+    protected function getDocumentationGenerator(Indention $indention = null)
     {
-        return $this->getDocumentationGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getDocumentationGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return PropertyGenerator
      */
-    protected function getPropertyGenerator()
+    protected function getPropertyGenerator(Indention $indention = null)
     {
-        return $this->getPropertyGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getPropertyGeneratorFactory()->create($indention);
     }
 
     /**
+     * @param Indention $indention
      * @return TraitGenerator
      */
-    protected function getTraitGenerator()
+    protected function getTraitGenerator(Indention $indention = null)
     {
-        return $this->getTraitGeneratorFactory()->create($this->getIndention());
+        if (is_null($indention)) {
+            $indention = $this->getIndention();
+        }
+
+        return $this->getTraitGeneratorFactory()->create($indention);
     }
     //----end of generator----
 

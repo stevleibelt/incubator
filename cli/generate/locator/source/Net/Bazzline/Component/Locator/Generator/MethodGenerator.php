@@ -9,7 +9,6 @@ namespace Net\Bazzline\Component\Locator\Generator;
 /**
  * Class MethodGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
- * @todo set return
  */
 class MethodGenerator extends AbstractDocumentedGenerator
 {

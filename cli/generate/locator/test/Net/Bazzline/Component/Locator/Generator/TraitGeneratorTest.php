@@ -96,10 +96,9 @@ class TraitGeneratorTest extends GeneratorTestCase
 
     public function testWithMethods()
     {
-$this->markTestSkipped('indention is currently broken');
         $generator      = $this->getTraitGenerator();
-        $methodOne      = $this->getMethodGenerator();
-        $methodTwo      = $this->getMethodGenerator();
+        $methodOne      = $this->getMethodGenerator($generator->getIndention());
+        $methodTwo      = $this->getMethodGenerator($generator->getIndention());
 
         $methodOne->setName('methodOne');
         $methodOne->markAsPrivate();
@@ -175,15 +174,14 @@ $this->markTestSkipped('indention is currently broken');
 
     public function testWithAll()
     {
-$this->markTestSkipped('indention is currently broken');
         $constantBar    = $this->getConstantGenerator();
         $constantFoo    = $this->getConstantGenerator();
         $documentation  = $this->getDocumentationGenerator();
-        $methodOne      = $this->getMethodGenerator();
-        $methodTwo      = $this->getMethodGenerator();
+        $generator      = $this->getTraitGenerator();
+        $methodOne      = $this->getMethodGenerator($generator->getIndention());
+        $methodTwo      = $this->getMethodGenerator($generator->getIndention());
         $propertyBar    = $this->getPropertyGenerator();
         $propertyFoo    = $this->getPropertyGenerator();
-        $generator      = $this->getTraitGenerator();
 
         $constantBar->setName('BAR');
         $constantBar->setValue('\'foo\'');

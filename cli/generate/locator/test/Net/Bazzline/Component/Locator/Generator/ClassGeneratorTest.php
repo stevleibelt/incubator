@@ -168,10 +168,9 @@ class ClassGeneratorTest extends GeneratorTestCase
 
     public function testWithMethods()
     {
-$this->markTestSkipped('indention is currently broken');
         $generator  = $this->getClassGenerator();
-        $methodOne  = $this->getMethodGenerator();
-        $methodTwo  = $this->getMethodGenerator();
+        $methodOne  = $this->getMethodGenerator($generator->getIndention());
+        $methodTwo  = $this->getMethodGenerator($generator->getIndention());
 
         $methodOne->setName('methodOne');
         $methodOne->markAsPrivate();
@@ -271,15 +270,14 @@ $this->markTestSkipped('indention is currently broken');
 
     public function testWithALot()
     {
-$this->markTestSkipped('indention is currently broken');
         $documentation  = $this->getDocumentationGenerator();
         $constantBar    = $this->getConstantGenerator();
         $constantFoo    = $this->getConstantGenerator();
-        $methodOne      = $this->getMethodGenerator();
-        $methodTwo      = $this->getMethodGenerator();
+        $generator      = $this->getClassGenerator();
+        $methodOne      = $this->getMethodGenerator($generator->getIndention());
+        $methodTwo      = $this->getMethodGenerator($generator->getIndention());
         $propertyBar    = $this->getPropertyGenerator();
         $propertyFoo    = $this->getPropertyGenerator();
-        $generator      = $this->getClassGenerator();
 
         $constantBar->setName('BAR');
         $constantBar->setValue('\'foo\'');
