@@ -23,7 +23,7 @@ class FileGeneratorTest extends GeneratorTestCase
         $constantBar = $this->getConstantGenerator();
         $constantFoo = $this->getConstantGenerator();
         $generator = $this->getFileGenerator();
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
 
         $constantBar->setName('BAR');
         $constantBar->setValue('\'foo\'');
@@ -45,7 +45,7 @@ class FileGeneratorTest extends GeneratorTestCase
     public function testWithProperties()
     {
         $generator = $this->getFileGenerator();
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
         $propertyBar = $this->getPropertyGenerator();
         $propertyFoo = $this->getPropertyGenerator();
 
@@ -73,7 +73,7 @@ class FileGeneratorTest extends GeneratorTestCase
         $classBar = $this->getClassGenerator();
         $classFoo = $this->getClassGenerator();
         $generator = $this->getFileGenerator();
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
 
         $classBar->setName('bar');
         $classFoo->setName('foo');
@@ -97,7 +97,7 @@ class FileGeneratorTest extends GeneratorTestCase
     public function testWithMethods()
     {
         $generator = $this->getFileGenerator();
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
         $methodBar = $this->getMethodGenerator();
         $methodFoo = $this->getMethodGenerator();
 
@@ -134,8 +134,8 @@ class FileGeneratorTest extends GeneratorTestCase
             '//@todo implement',
         );
         $generator = $this->getFileGenerator();
-        $indention = $generator->getIndention();
 
+        $indention = $this->getIndention();
         $generator->addFileContent($content);
 
         $expectedContent = '<?php' . PHP_EOL .
@@ -154,7 +154,7 @@ class FileGeneratorTest extends GeneratorTestCase
             '//@todo implement',
         );
         $generator = $this->getFileGenerator();
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
         $methodBar = $this->getMethodGenerator();
         $methodFoo = $this->getMethodGenerator();
         $propertyBar = $this->getPropertyGenerator();

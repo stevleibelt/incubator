@@ -51,7 +51,7 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->addConstant($constantFoo);
         $generator->setName('UnitTest');
 
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
         $indention->increaseLevel();
         $expectedString =
             'trait UnitTest' . PHP_EOL .
@@ -60,7 +60,6 @@ class TraitGeneratorTest extends GeneratorTestCase
             '' . PHP_EOL .
             $indention . "const FOO = 'bar';" . PHP_EOL .
             '}';
-        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
@@ -82,7 +81,7 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->addProperty($propertyFoo);
         $generator->setName('UnitTest');
 
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
         $indention->increaseLevel();
         $expectedString =
             'trait UnitTest' . PHP_EOL .
@@ -91,7 +90,6 @@ class TraitGeneratorTest extends GeneratorTestCase
             '' . PHP_EOL .
             $indention . 'protected $foo = 42;' . PHP_EOL .
             '}';
-        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
@@ -111,7 +109,7 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->addMethod($methodTwo);
         $generator->setName('UnitTest');
 
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
         $indention->increaseLevel();
         $expectedString =
             'trait UnitTest' . PHP_EOL .
@@ -126,7 +124,6 @@ class TraitGeneratorTest extends GeneratorTestCase
             $indention . $indention . '//@todo implement' . PHP_EOL .
             $indention . '}' . PHP_EOL .
             '}';
-        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }
@@ -212,7 +209,7 @@ class TraitGeneratorTest extends GeneratorTestCase
         $generator->setDocumentation($documentation);
         $generator->setName('UnitTest');
 
-        $indention = $generator->getIndention();
+        $indention = $this->getIndention();
         $indention->increaseLevel();
         $expectedString =
             '/**' . PHP_EOL .
@@ -239,7 +236,6 @@ class TraitGeneratorTest extends GeneratorTestCase
             $indention . $indention . '//@todo implement' . PHP_EOL .
             $indention . '}' . PHP_EOL .
             '}';
-        $indention->decreaseLevel();
 
         $this->assertEquals($expectedString, $generator->generate());
     }

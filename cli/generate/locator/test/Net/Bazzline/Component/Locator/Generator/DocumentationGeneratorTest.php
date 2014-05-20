@@ -24,8 +24,6 @@ class DocumentationGeneratorTest extends GeneratorTestCase
     public function testWithNoPropertiesAndPrefix()
     {
         $generator = $this->getDocumentationGenerator();
-        $indention = $generator->getIndention();
-        $indention->increaseLevel();
 
         $this->assertEquals('', $generator->generate());
     }
