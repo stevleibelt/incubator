@@ -14,11 +14,24 @@ interface GeneratorInterface extends IndentionAwareInterface
 {
     public function clear();
 
+    public function __clone();
+
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
      */
     public function generate();
+
+    /**
+     * @return Indention
+     */
+    public function getIndention();
+
+    /**
+     * @param Indention $indention
+     * @return $this
+     */
+    public function setIndention(Indention $indention);
 
     /**
      * @return boolean

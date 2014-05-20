@@ -7,12 +7,23 @@
 
 namespace Net\Bazzline\Component\Locator\Generator;
 
+use Net\Bazzline\Component\Locator\Generator\Factory\ClassGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\DocumentationGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\MethodGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\PropertyGeneratorFactory;
+
 require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 $indention = new Indention();
 
-$class = new ClassGenerator($indention);
-$class->setDocumentation(new DocumentationGenerator($indention));
+//---- begin of factories
+$classFactory = new ClassGeneratorFactory();
+$documentationFactory = new DocumentationGeneratorFactory();
+$methodFactory = new MethodGeneratorFactory();
+$propertyFactory = new PropertyGeneratorFactory();
+
+$class = $classFactory->create($indention);
+$class->setDocumentation($documentationFactory->create($indention));
 $class->setName('ExampleDTO');
 
 $properties = array(
@@ -35,26 +46,26 @@ $properties = array(
 
 foreach ($properties as $value) {
     //---- begin of properties
-    $property = new PropertyGenerator($indention);
-    $property->setDocumentation(new DocumentationGenerator($indention));
+    $property = $propertyFactory->create($indention);
+    $property->setDocumentation($documentationFactory->create($indention));
     $property->setName($value['name']);
     if (!is_null($value['value'])) {
         $property->setValue('value');
     }
     $property->markAsPrivate();
-    $property->setDocumentation(new DocumentationGenerator($indention));
+    $property->setDocumentation($documentationFactory->create($indention));
     //---- end of properties
 
     //---- begin of getter methods
-    $getterMethod = new MethodGenerator($indention);
-    $getterMethod->setDocumentation(new DocumentationGenerator($indention));
+    $getterMethod = $methodFactory->create($indention);
+    $getterMethod->setDocumentation($documentationFactory->create($indention));
     $getterMethod->setName('get' . ucfirst($value['name']));
     $getterMethod->setBody(array('$this->' . $value['name'] . ' = $' . $value['name'] . ';'), $value['typeHint']);
     //---- end of getter methods
 
     //---- begin of setter methods
-    $setterMethod = new MethodGenerator($indention);
-    $setterMethod->setDocumentation(new DocumentationGenerator($indention));
+    $setterMethod = $methodFactory->create($indention);
+    $setterMethod->setDocumentation($documentationFactory->create($indention));
     $setterMethod->addParameter($value['name'], null, $value['typeHint']);
     $setterMethod->setName('set' . ucfirst($value['name']));
     $setterMethod->setBody(array('return $this->' . $value['name'] . ';'));

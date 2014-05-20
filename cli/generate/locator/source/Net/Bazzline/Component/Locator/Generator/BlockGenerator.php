@@ -19,6 +19,7 @@ class BlockGenerator extends AbstractContentGenerator
     /**
      * @param string|array|GeneratorInterface $content
      * @throws InvalidArgumentException
+     * @todo rename to addContent
      */
     public function add($content)
     {

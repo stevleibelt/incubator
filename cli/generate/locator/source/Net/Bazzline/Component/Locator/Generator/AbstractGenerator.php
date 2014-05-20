@@ -9,7 +9,6 @@ namespace Net\Bazzline\Component\Locator\Generator;
 /**
  * Class AbstractGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
- * @todo create rendering strategy to use this trigger for add blank line if content follows
  */
 abstract class AbstractGenerator implements GeneratorInterface
 {
@@ -17,16 +16,29 @@ abstract class AbstractGenerator implements GeneratorInterface
     private $canBeGenerated;
 
     /** @var BlockGenerator */
+    private $blockGenerator;
+
+    /** @var BlockGenerator */
     private $block;
 
-    /** @var string */
+    /** @var Indention */
     private $indention;
+
+    /** @var LineGenerator */
+    private $lineGenerator;
 
     /** @var array */
     private $properties = array();
 
-    public function __construct(Indention $indention)
+    /**
+     * @param Indention $indention
+     * @param BlockGenerator $blockGenerator
+     * @param LineGenerator $lineGenerator
+     */
+    public function __construct(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
     {
+        $this->blockGenerator = $blockGenerator;
+        $this->lineGenerator = $lineGenerator;
         $this->setIndention($indention);
         $this->clear();
     }
@@ -34,7 +46,6 @@ abstract class AbstractGenerator implements GeneratorInterface
     public function clear()
     {
         $this->properties = array();
-        //@todo clone
         $this->block = $this->getBlockGenerator();
         $this->block->setIndention($this->getIndention());
     }
@@ -54,6 +65,8 @@ abstract class AbstractGenerator implements GeneratorInterface
     final public function setIndention(Indention $indention)
     {
         $this->indention = $indention;
+        $this->blockGenerator->setIndention($indention);
+        $this->lineGenerator->setIndention($indention);
 
         return $this;
     }
@@ -180,7 +193,11 @@ abstract class AbstractGenerator implements GeneratorInterface
      */
     final protected function getBlockGenerator($content = null)
     {
-        $block = new BlockGenerator($this->getIndention(), $content);
+        $block = clone $this->blockGenerator;
+
+        if (!is_null($content)) {
+            $block->add($content);
+        }
 
         return $block;
     }
@@ -191,7 +208,11 @@ abstract class AbstractGenerator implements GeneratorInterface
      */
     final protected function getLineGenerator($content = null)
     {
-        $line = new LineGenerator($this->getIndention(), $content);
+        $line = clone $this->lineGenerator;
+
+        if (!is_null($content)) {
+            $line->add($content);
+        }
 
         return $line;
     }
