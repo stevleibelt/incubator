@@ -14,7 +14,7 @@ use Net\Bazzline\Component\Locator\Generator\LineGenerator;
  * Class AbstractGeneratorFactory
  * @package Net\Bazzline\Component\Locator\Generator\Factory
  */
-abstract class AbstractGeneratorFactory
+abstract class AbstractGeneratorFactory implements ContentFactoryInterface
 {
     /**
      * @var Indention
@@ -50,7 +50,7 @@ abstract class AbstractGeneratorFactory
      */
     final protected function getNewBlockGenerator(Indention $indention)
     {
-        return new BlockGenerator($indention);
+        return new BlockGenerator($this->getNewLineGenerator($indention), $indention);
     }
 
     /**

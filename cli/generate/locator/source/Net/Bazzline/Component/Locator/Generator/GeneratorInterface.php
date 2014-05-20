@@ -12,8 +12,14 @@ namespace Net\Bazzline\Component\Locator\Generator;
  */
 interface GeneratorInterface extends IndentionAwareInterface
 {
+    /**
+     * @return $this
+     */
     public function clear();
 
+    /**
+     * @return $this
+     */
     public function __clone();
 
     /**

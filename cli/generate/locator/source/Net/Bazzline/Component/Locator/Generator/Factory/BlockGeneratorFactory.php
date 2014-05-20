@@ -8,22 +8,36 @@ namespace Net\Bazzline\Component\Locator\Generator\Factory;
 
 use Net\Bazzline\Component\Locator\Generator\BlockGenerator;
 use Net\Bazzline\Component\Locator\Generator\Indention;
-use Net\Bazzline\Component\Locator\Generator\LineGenerator;
 
 /**
  * Class BlockGeneratorFactory
  * @package Net\Bazzline\Component\Locator\Generator\Factory
  */
-class BlockGeneratorFactory extends AbstractGeneratorFactory
+class BlockGeneratorFactory implements ContentFactoryInterface
 {
     /**
-     * @param Indention $indention
-     * @param BlockGenerator $blockGenerator
-     * @param LineGenerator $lineGenerator
-     * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
+     * @var LineGeneratorFactory
      */
-    protected function getNewGenerator(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
+    private $lineFactory;
+
+    /**
+     * @param Indention $indention
+     * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface|\Net\Bazzline\Component\Locator\Generator\BlockGenerator
+     */
+    public function create(Indention $indention)
     {
-        return new BlockGenerator($indention, $blockGenerator, $lineGenerator);
+        return new BlockGenerator($this->getLineFactory()->create($indention), $indention);
+    }
+
+    /**
+     * @return LineGeneratorFactory
+     */
+    private function getLineFactory()
+    {
+        if (is_null($this->lineFactory)) {
+            $this->lineFactory = new LineGeneratorFactory();
+        }
+
+        return $this->lineFactory;
     }
 }

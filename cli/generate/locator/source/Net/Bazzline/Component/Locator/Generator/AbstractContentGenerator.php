@@ -10,21 +10,16 @@ namespace Net\Bazzline\Component\Locator\Generator;
  * Class AbstractContentGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator
  */
-abstract class AbstractContentGenerator extends AbstractGenerator
+abstract class AbstractContentGenerator extends AbstractBasicGenerator
 {
-    public function __clone()
-    {
-        $this->clear();
-    }
-
     /**
      * @param Indention $indention
-     * @param string|array|GeneratorInterface $content
+     * @param null|string|array|GeneratorInterface $content
      * @throws InvalidArgumentException
      */
     public function __construct(Indention $indention, $content = null)
     {
-        parent::__construct($indention);
+        $this->setIndention($indention);
         if (!is_null($content)) {
             $this->add($content);
         }

@@ -10,7 +10,7 @@ namespace Net\Bazzline\Component\Locator\Generator;
  * Class AbstractGenerator
  * @package Net\Bazzline\Component\Locator\LocatorGenerator\Generator
  */
-abstract class AbstractGenerator implements GeneratorInterface
+abstract class AbstractGenerator extends AbstractBasicGenerator
 {
     /** @var boolean */
     private $canBeGenerated;
@@ -20,9 +20,6 @@ abstract class AbstractGenerator implements GeneratorInterface
 
     /** @var BlockGenerator */
     private $block;
-
-    /** @var Indention */
-    private $indention;
 
     /** @var LineGenerator */
     private $lineGenerator;
@@ -43,6 +40,9 @@ abstract class AbstractGenerator implements GeneratorInterface
         $this->clear();
     }
 
+    /**
+     * @return $this
+     */
     public function clear()
     {
         $this->properties = array();
@@ -51,11 +51,11 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @return Indention
+     * @return $this
      */
-    final public function getIndention()
+    public function __clone()
     {
-        return $this->indention;
+        $this->clear();
     }
 
     /**
@@ -64,7 +64,7 @@ abstract class AbstractGenerator implements GeneratorInterface
      */
     final public function setIndention(Indention $indention)
     {
-        $this->indention = $indention;
+        parent::setIndention($indention);
         $this->blockGenerator->setIndention($indention);
         $this->lineGenerator->setIndention($indention);
 
@@ -77,14 +77,6 @@ abstract class AbstractGenerator implements GeneratorInterface
     public function hasContent()
     {
         return $this->block->hasContent();
-    }
-
-    /**
-     * @return string
-     */
-    final public function __toString()
-    {
-        return $this->generate('');
     }
 
     /**

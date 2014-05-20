@@ -16,6 +16,20 @@ class BlockGenerator extends AbstractContentGenerator
     /** @var array|BlockGenerator[]|LineGenerator[] */
     private $content = array();
 
+    /** @var LineGenerator */
+    private $lineGenerator;
+
+    /**
+     * @param LineGenerator $lineGenerator
+     * @param Indention $indention
+     * @param null|string|array|GeneratorInterface $content
+     */
+    public function __construct(LineGenerator $lineGenerator, Indention $indention, $content = null)
+    {
+        $this->lineGenerator = $lineGenerator;
+        parent::__construct($indention, $content);
+    }
+
     /**
      * @param string|array|GeneratorInterface $content
      * @throws InvalidArgumentException
@@ -39,16 +53,17 @@ class BlockGenerator extends AbstractContentGenerator
     }
 
     /**
-     * @todo why not use AbstractGenerator::clear()?
+     * return $this
      */
     public function clear()
     {
         $this->content = array();
+
+        return $this;
     }
 
     /**
      * @return bool
-     * @todo why not use AbstractGenerator::hasContent()?
      */
     public function hasContent()
     {
@@ -88,5 +103,20 @@ class BlockGenerator extends AbstractContentGenerator
     public function count()
     {
         return (count($this->content));
+    }
+
+    /**
+     * @param null|string $content
+     * @return LineGenerator
+     */
+    final protected function getLineGenerator($content = null)
+    {
+        $line = clone $this->lineGenerator;
+
+        if (!is_null($content)) {
+            $line->add($content);
+        }
+
+        return $line;
     }
 }
