@@ -167,7 +167,9 @@ class BlockGeneratorTest extends GeneratorTestCase
     {
         $block = $this->getBlockGenerator();
         $indention = $block->getIndention();
-        $content = new BlockGenerator($indention, 'there is no foo without a bar');
+        $lineGenerator = $this->getLineGenerator();
+        $lineGenerator->setIndention($indention);
+        $content = new BlockGenerator($lineGenerator, $indention, 'there is no foo without a bar');
         $content->add('never ever');
         $block->add($content);
 
@@ -184,7 +186,9 @@ class BlockGeneratorTest extends GeneratorTestCase
     {
         $block = $this->getBlockGenerator();
         $indention = $block->getIndention();
-        $content = new BlockGenerator($indention, 'there is no foo without a bar');
+        $lineGenerator = $this->getLineGenerator();
+        $lineGenerator->setIndention($indention);
+        $content = new BlockGenerator($lineGenerator, $indention, 'there is no foo without a bar');
         $content->add('never ever');
         $block->add($content);
         $indention->increaseLevel();
