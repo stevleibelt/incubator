@@ -8,6 +8,10 @@ namespace Net\Bazzline\Component\Locator;
 
 use Exception;
 use Net\Bazzline\Component\Locator\Generator\ClassGenerator;
+use Net\Bazzline\Component\Locator\Generator\Factory\ClassGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\DocumentationGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\MethodGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\PropertyGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Indention;
 use Net\Bazzline\Component\Locator\Generator\MethodGenerator;
 use Net\Bazzline\Component\Locator\Generator\DocumentationGenerator;
@@ -84,26 +88,31 @@ array (
     private function createLocatorFile()
     {
         $this->indention = new Indention();
-        $class = new ClassGenerator($this->indention);
+        $classFactory = new ClassGeneratorFactory();
+        $documentationFactory = new DocumentationGeneratorFactory();
+        $methodFactory = new MethodGeneratorFactory();
+        $propertyFactory = new PropertyGeneratorFactory();
+
+        $class = $classFactory->create($this->indention);
         //@todo move into methods like: $class = $this->enrichWithDocumentation($class)
-        $documentation = $this->createNewDocumentationGenerator();
+        $documentation = $documentationFactory->create($this->indention);
         $documentation->setClass($this->configuration['class_name']);
         $documentation->setPackage($this->configuration['namespace']);
 
-        $factoryInstancePool = new PropertyGenerator($this->indention);
-        $factoryInstancePool->setDocumentation($this->createNewDocumentationGenerator());
+        $factoryInstancePool = $propertyFactory->create($this->indention);
+        $factoryInstancePool->setDocumentation($documentationFactory->create($this->indention));
         $factoryInstancePool->setName('factoryInstancePool');
         $factoryInstancePool->markAsPrivate();
         $factoryInstancePool->setValue('array()');
 
-        $sharedInstancePool = new PropertyGenerator($this->indention);
-        $sharedInstancePool->setDocumentation($this->createNewDocumentationGenerator());
+        $sharedInstancePool = $propertyFactory->create($this->indention);
+        $sharedInstancePool->setDocumentation($documentationFactory->create($this->indention));
         $sharedInstancePool->setName('sharedInstancePool');
         $sharedInstancePool->markAsPrivate();
         $sharedInstancePool->setValue('array()');
 
-        $isInInstancePool = new MethodGenerator($this->indention);
-        $isInInstancePool->setDocumentation($this->createNewDocumentationGenerator());
+        $isInInstancePool = $methodFactory->create($this->indention);
+        $isInInstancePool->setDocumentation($documentationFactory->create($this->indention));
         $isInInstancePool->setName('isInInstancePool');
         $isInInstancePool->addParameter('key', '', 'string');
         $isInInstancePool->addParameter('type', '', 'string');
@@ -159,12 +168,4 @@ array (
             }
         }
     }
-
-    /**
-     * @return DocumentationGenerator
-     */
-    private function createNewDocumentationGenerator()
-    {
-        return new DocumentationGenerator($this->indention);
-    }
-} 
+}

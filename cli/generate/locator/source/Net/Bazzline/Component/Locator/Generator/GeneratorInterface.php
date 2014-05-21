@@ -29,17 +29,6 @@ interface GeneratorInterface extends IndentionAwareInterface
     public function generate();
 
     /**
-     * @return Indention
-     */
-    public function getIndention();
-
-    /**
-     * @param Indention $indention
-     * @return $this
-     */
-    public function setIndention(Indention $indention);
-
-    /**
      * @return boolean
      */
     public function hasContent();
