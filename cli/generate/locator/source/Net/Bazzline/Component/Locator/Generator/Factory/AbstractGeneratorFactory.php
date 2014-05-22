@@ -21,45 +21,40 @@ abstract class AbstractGeneratorFactory implements ContentFactoryInterface
      */
     public function create()
     {
-        $indention = $this->getNewIndention();
+        $generator = $this->getGenerator();
 
-        return $this->getNewGenerator(
-            $indention,
-            $this->getNewBlockGenerator($indention),
-            $this->getNewLineGenerator($indention)
-        );
+        $generator->setBlockGenerator($this->getBlockGenerator());
+        $generator->setLineGenerator($this->getLineGenerator());
+        $generator->setIndention($this->getIndention());
+
+        return $generator;
     }
 
     /**
-     * @param Indention $indention
-     * @param BlockGenerator $blockGenerator
-     * @param LineGenerator $lineGenerator
-     * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
+     * @return \Net\Bazzline\Component\Locator\Generator\AbstractGenerator
      */
-    abstract protected function getNewGenerator(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator);
+    abstract protected function getGenerator();
 
     /**
-     * @param Indention $indention
      * @return BlockGenerator
      */
-    final protected function getNewBlockGenerator(Indention $indention)
+    final protected function getBlockGenerator()
     {
-        return new BlockGenerator($this->getNewLineGenerator($indention), $indention);
+        return new BlockGenerator($this->getLineGenerator(), $this->getIndention());
     }
 
     /**
-     * @param Indention $indention
      * @return LineGenerator
      */
-    final protected function getNewLineGenerator(Indention $indention)
+    final protected function getLineGenerator()
     {
-        return new LineGenerator($indention);
+        return new LineGenerator($this->getIndention());
     }
 
     /**
      * @return Indention
      */
-    protected function getNewIndention()
+    protected function getIndention()
     {
         return new Indention();
     }

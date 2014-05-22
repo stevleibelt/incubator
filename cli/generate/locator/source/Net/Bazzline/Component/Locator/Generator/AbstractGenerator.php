@@ -24,16 +24,8 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
     /** @var array */
     private $properties = array();
 
-    /**
-     * @param Indention $indention
-     * @param BlockGenerator $blockGenerator
-     * @param LineGenerator $lineGenerator
-     */
-    public function __construct(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
+    public function __construct()
     {
-        $this->setBlockGenerator($blockGenerator);
-        $this->setLineGenerator($lineGenerator);
-        $this->setIndention($indention);
         $this->properties = array();
     }
 

@@ -23,7 +23,7 @@ class TraitGeneratorFactory extends AbstractDocumentedGeneratorFactory
      * @param LineGenerator $lineGenerator
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
      */
-    protected function getNewGenerator(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
+    protected function getGenerator(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
     {
         return new TraitGenerator($indention, $blockGenerator, $lineGenerator);
     }
