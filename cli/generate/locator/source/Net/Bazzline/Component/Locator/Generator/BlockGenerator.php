@@ -11,7 +11,7 @@ namespace Net\Bazzline\Component\Locator\Generator;
  *
  * @package Net\Bazzline\Component\Locator\LocatorGenerator
  */
-class BlockGenerator extends AbstractContentGenerator
+class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDependentInterface
 {
     /** @var array|BlockGenerator[]|LineGenerator[] */
     private $content = array();
@@ -28,6 +28,17 @@ class BlockGenerator extends AbstractContentGenerator
     {
         $this->lineGenerator = $lineGenerator;
         parent::__construct($indention, $content);
+    }
+
+    /**
+     * @param LineGenerator $generator
+     * @return $this
+     */
+    public function setLineGenerator(LineGenerator $generator)
+    {
+        $this->lineGenerator = $generator;
+
+        return $this;
     }
 
     /**
