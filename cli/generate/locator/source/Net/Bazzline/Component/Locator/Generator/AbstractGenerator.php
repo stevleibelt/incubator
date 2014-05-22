@@ -47,7 +47,6 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
     {
         $this->properties = array();
         $this->block = $this->getBlockGenerator();
-        $this->block->setIndention($this->getIndention());
     }
 
     /**
