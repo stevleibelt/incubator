@@ -42,6 +42,18 @@ class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDe
     }
 
     /**
+     * @param Indention $indention
+     * @return $this
+     */
+    public function setIndention(Indention $indention)
+    {
+        parent::setIndention($indention);
+        $this->lineGenerator->setIndention($indention);
+
+        return $this;
+    }
+
+    /**
      * @param string|array|GeneratorInterface $content
      * @throws InvalidArgumentException
      * @todo rename to addContent

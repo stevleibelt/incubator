@@ -208,6 +208,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
     final protected function getBlockGenerator($content = null)
     {
         $block = clone $this->blockGenerator;
+        $block->setIndention($this->getIndention());
 
         if (!is_null($content)) {
             $block->add($content);
@@ -223,6 +224,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
     final protected function getLineGenerator($content = null)
     {
         $line = clone $this->lineGenerator;
+        $line->setIndention($this->getIndention());
 
         if (!is_null($content)) {
             $line->add($content);
