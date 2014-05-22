@@ -16,11 +16,18 @@ use Net\Bazzline\Component\Locator\Generator\LineGenerator;
 class LineGeneratorFactory implements ContentFactoryInterface
 {
     /**
-     * @param Indention $indention
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface|\Net\Bazzline\Component\Locator\Generator\LineGenerator
      */
-    public function create(Indention $indention)
+    public function create()
     {
-        return new LineGenerator($indention);
+        return new LineGenerator($this->getNewIndention());
+    }
+
+    /**
+     * @return Indention
+     */
+    private function getNewIndention()
+    {
+        return new Indention();
     }
 }

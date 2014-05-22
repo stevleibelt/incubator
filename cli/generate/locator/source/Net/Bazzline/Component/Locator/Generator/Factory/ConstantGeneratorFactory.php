@@ -19,15 +19,6 @@ class ConstantGeneratorFactory extends AbstractGeneratorFactory
 {
     /**
      * @param Indention $indention
-     * @return \Net\Bazzline\Component\Locator\Generator\ConstantGenerator
-     */
-    public function create(Indention $indention)
-    {
-        return parent::create($indention);
-    }
-
-    /**
-     * @param Indention $indention
      * @param BlockGenerator $blockGenerator
      * @param LineGenerator $lineGenerator
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface

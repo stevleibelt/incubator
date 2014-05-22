@@ -17,22 +17,16 @@ use Net\Bazzline\Component\Locator\Generator\LineGenerator;
 abstract class AbstractGeneratorFactory implements ContentFactoryInterface
 {
     /**
-     * @var Indention
-     */
-    private $indention;
-
-    /**
-     * @param Indention $indention
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
      */
-    public function create(Indention $indention)
+    public function create()
     {
-        $this->indention = $indention;
+        $indention = $this->getNewIndention();
 
         return $this->getNewGenerator(
-            $this->indention,
-            $this->getNewBlockGenerator($this->indention),
-            $this->getNewLineGenerator($this->indention)
+            $indention,
+            $this->getNewBlockGenerator($indention),
+            $this->getNewLineGenerator($indention)
         );
     }
 
@@ -60,5 +54,13 @@ abstract class AbstractGeneratorFactory implements ContentFactoryInterface
     final protected function getNewLineGenerator(Indention $indention)
     {
         return new LineGenerator($indention);
+    }
+
+    /**
+     * @return Indention
+     */
+    protected function getNewIndention()
+    {
+        return new Indention();
     }
 }

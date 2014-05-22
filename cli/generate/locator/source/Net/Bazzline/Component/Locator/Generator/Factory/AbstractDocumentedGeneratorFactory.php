@@ -14,12 +14,4 @@ use Net\Bazzline\Component\Locator\Generator\Indention;
  */
 abstract class AbstractDocumentedGeneratorFactory extends AbstractGeneratorFactory
 {
-    /**
-     * @param Indention $indention
-     * @return \Net\Bazzline\Component\Locator\Generator\AbstractDocumentedGenerator
-     */
-    public function create(Indention $indention)
-    {
-        return parent::create($indention);
-    }
 }

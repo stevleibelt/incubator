@@ -6,8 +6,6 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Factory;
 
-use Net\Bazzline\Component\Locator\Generator\Indention;
-
 /**
  * Interface ContentFactoryInterface
  * @package Net\Bazzline\Component\Locator\Generator\Factory
@@ -15,8 +13,7 @@ use Net\Bazzline\Component\Locator\Generator\Indention;
 interface ContentFactoryInterface
 {
     /**
-     * @param Indention $indention
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
      */
-    public function create(Indention $indention);
+    public function create();
 }

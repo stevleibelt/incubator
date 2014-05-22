@@ -18,9 +18,6 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
     /** @var BlockGenerator */
     private $blockGenerator;
 
-    /** @var BlockGenerator */
-    private $block;
-
     /** @var LineGenerator */
     private $lineGenerator;
 

@@ -21,12 +21,11 @@ class BlockGeneratorFactory implements ContentFactoryInterface
     private $lineFactory;
 
     /**
-     * @param Indention $indention
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface|\Net\Bazzline\Component\Locator\Generator\BlockGenerator
      */
-    public function create(Indention $indention)
+    public function create()
     {
-        return new BlockGenerator($this->getLineFactory()->create($indention), $indention);
+        return new BlockGenerator($this->getLineFactory()->create(), $this->getNewIndention());
     }
 
     /**
@@ -39,5 +38,13 @@ class BlockGeneratorFactory implements ContentFactoryInterface
         }
 
         return $this->lineFactory;
+    }
+
+    /**
+     * @return Indention
+     */
+    private function getNewIndention()
+    {
+        return new Indention();
     }
 }
