@@ -37,7 +37,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
         $this->setBlockGenerator($blockGenerator);
         $this->setLineGenerator($lineGenerator);
         $this->setIndention($indention);
-        $this->clear();
+        $this->properties = array();
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
     public function clear()
     {
         $this->properties = array();
-        $this->block = $this->getBlockGenerator();
+        $this->blockGenerator = $this->getBlockGenerator();
     }
 
     /**
@@ -97,7 +97,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
      */
     public function hasContent()
     {
-        return $this->block->hasContent();
+        return $this->blockGenerator->hasContent();
     }
 
     /**
@@ -163,7 +163,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
         if ($isIndented) {
             $this->getIndention()->decreaseLevel();
         }
-        $this->block->add($content);
+        $this->blockGenerator->add($content);
     }
 
     /**
@@ -187,7 +187,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
      */
     final protected function generateStringFromContent()
     {
-        return $this->block->generate();
+        return $this->blockGenerator->generate();
     }
 
     /**
