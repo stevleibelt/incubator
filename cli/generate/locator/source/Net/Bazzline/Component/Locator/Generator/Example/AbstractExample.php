@@ -6,6 +6,7 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Example;
 
+use Net\Bazzline\Component\Locator\Generator\Factory\BlockGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\ClassGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\DocumentationGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\LineGeneratorFactory;
@@ -23,6 +24,14 @@ abstract class AbstractExample
      * @return mixed
      */
     abstract function demonstrate();
+
+    /**
+     * @return BlockGeneratorFactory
+     */
+    final protected function getBlockGeneratorFactory()
+    {
+        return new BlockGeneratorFactory();
+    }
 
     /**
      * @return ClassGeneratorFactory
