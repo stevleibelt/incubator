@@ -82,17 +82,17 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $this->addGeneratorProperty('traits', $trait->getName());
     }
 
-    public function setIsAbstract()
+    public function markAsAbstract()
     {
         $this->addGeneratorProperty('abstract', true, false);
     }
 
-    public function setIsFinal()
+    public function markAsFinal()
     {
         $this->addGeneratorProperty('final', true, false);
     }
 
-    public function setIsInterface()
+    public function markAsInterface()
     {
         $this->addGeneratorProperty('interface', true, false);
     }

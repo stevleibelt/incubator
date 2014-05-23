@@ -21,7 +21,7 @@ class ClassGeneratorTest extends GeneratorTestCase
     public function testAsAbstract()
     {
         $generator = $this->getClassGenerator();
-        $generator->setIsAbstract();
+        $generator->markAsAbstract();
         $generator->setName('UnitTest');
 
         $expectedString =
@@ -35,7 +35,7 @@ class ClassGeneratorTest extends GeneratorTestCase
     public function testAsInterface()
     {
         $generator = $this->getClassGenerator();
-        $generator->setIsInterface();
+        $generator->markAsInterface();
         $generator->setName('UnitTest');
 
         $expectedString =
@@ -49,7 +49,7 @@ class ClassGeneratorTest extends GeneratorTestCase
     public function testAsFinal()
     {
         $generator = $this->getClassGenerator();
-        $generator->setIsFinal();
+        $generator->markAsFinal();
         $generator->setName('UnitTest');
 
         $expectedString =
