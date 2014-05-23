@@ -12,14 +12,10 @@ namespace Test\Net\Bazzline\Component\Locator\Generator;
  */
 class TraitGeneratorTest extends GeneratorTestCase
 {
-    /**
-     * @expectedException \Net\Bazzline\Component\Locator\Generator\RuntimeException
-     * @expectedExceptionMessage name is mandatory
-     */
     public function testWithNoProperties()
     {
         $generator = $this->getTraitGenerator();
-        $generator->generate();
+        $this->assertEquals('', $generator->generate());
     }
 
     public function testWithName()

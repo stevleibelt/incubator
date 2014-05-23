@@ -28,6 +28,24 @@ class MethodGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
+    public function testWithNoPropertiesAndNotDefaultIndention()
+    {
+        $indention = $this->getIndention();
+        $indention->setString('>-(0_o)-<');
+        $generator = $this->getMethodGenerator($indention);
+        $generator->setName('unittest');
+
+        $indention->increaseLevel();
+        $expectedString =
+            'function unittest()' . PHP_EOL .
+            '{' . PHP_EOL .
+            $indention . '//@todo implement' . PHP_EOL .
+            '}';
+        $indention->decreaseLevel();
+
+        $this->assertEquals($expectedString, $generator->generate());
+    }
+
     public function testMarkAsAbstract()
     {
         $generator = $this->getMethodGenerator();

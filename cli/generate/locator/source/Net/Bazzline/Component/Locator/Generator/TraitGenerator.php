@@ -60,14 +60,16 @@ class TraitGenerator extends AbstractDocumentedGenerator
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
+     * @todo implement exception throwing if mandatory parameter is missing
      */
     public function generate()
     {
-        if (is_null($this->getGeneratorProperty('name'))) {
-            throw new RuntimeException('name is mandatory');
-        }
-
         if ($this->canBeGenerated()) {
+            if (is_null($this->getGeneratorProperty('name'))) {
+                throw new RuntimeException('name is mandatory');
+            }
+
+            $this->resetContent();
             $this->generateDocumentation();
             $this->generateSignature();
             $this->generateBody();

@@ -62,9 +62,11 @@ class PropertyGenerator extends AbstractDocumentedGenerator
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
+     * @todo implement exception throwing if mandatory parameter is missing
      */
     public function generate()
     {
+        $this->resetContent();
         $documentation = $this->getGeneratorProperty('documentation');
         $isStatic = $this->getGeneratorProperty('static', false);
         $name = $this->getGeneratorProperty('name');

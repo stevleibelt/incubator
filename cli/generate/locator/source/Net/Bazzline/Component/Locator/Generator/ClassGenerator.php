@@ -111,10 +111,12 @@ class ClassGenerator extends AbstractDocumentedGenerator
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
+     * @todo implement exception throwing if mandatory parameter is missing
      */
     public function generate()
     {
         if ($this->canBeGenerated()) {
+            $this->resetContent();
             $this->generateNamespace();
             $this->generateUse();
             $this->generateDocumentation();

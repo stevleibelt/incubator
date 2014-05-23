@@ -35,7 +35,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
     public function clear()
     {
         $this->properties = array();
-        $this->blockGenerator = $this->getBlockGenerator();
+        $this->resetContent();
     }
 
     /**
@@ -240,5 +240,15 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
         reset($array);
 
         return $lastArrayKey;
+    }
+
+    /**
+     * @return $this
+     */
+    final protected function resetContent()
+    {
+        $this->blockGenerator = $this->getBlockGenerator();
+
+        return $this;
     }
 }

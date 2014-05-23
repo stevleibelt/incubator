@@ -105,10 +105,12 @@ class DocumentationGenerator extends AbstractGenerator
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
+     * @todo implement exception throwing if mandatory parameter is missing
      */
     public function generate()
     {
         if ($this->canBeGenerated()) {
+            $this->resetContent();
             $this->addContent('/**');
             $this->generateSees();
             $this->generateComments();

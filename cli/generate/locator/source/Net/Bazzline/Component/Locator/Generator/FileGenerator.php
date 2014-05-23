@@ -76,10 +76,12 @@ class FileGenerator extends AbstractDocumentedGenerator
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
+     * @todo implement exception throwing if mandatory parameter is missing
      */
     public function generate()
     {
         if ($this->canBeGenerated()) {
+            $this->resetContent();
             $this->addEmptyLine = false;
             $isExecutable = $this->getGeneratorProperty('is_executable', false);
             if ($isExecutable) {

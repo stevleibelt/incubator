@@ -34,10 +34,12 @@ class ConstantGenerator extends AbstractGenerator
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
+     * @todo implement exception throwing if mandatory parameter is missing
      */
     public function generate()
     {
         if ($this->canBeGenerated()) {
+            $this->resetContent();
             $name = $this->getGeneratorProperty('name');
             $value = $this->getGeneratorProperty('value');
 
