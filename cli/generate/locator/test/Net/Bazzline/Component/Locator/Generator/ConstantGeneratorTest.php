@@ -22,7 +22,7 @@ class ConstantGeneratorTest extends GeneratorTestCase
     {
         $generator = $this->getConstantGenerator();
         $generator->setName('UNIT_TEST');
-        $generator->setValue('\'foobar\'');
+        $generator->setValue('foobar');
 
         $expectedString = 'const UNIT_TEST = \'foobar\';';
 

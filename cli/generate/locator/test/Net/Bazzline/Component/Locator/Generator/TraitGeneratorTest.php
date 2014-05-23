@@ -39,9 +39,9 @@ class TraitGeneratorTest extends GeneratorTestCase
         $constantFoo    = $this->getConstantGenerator();
 
         $constantBar->setName('BAR');
-        $constantBar->setValue('\'foo\'');
+        $constantBar->setValue('foo');
         $constantFoo->setName('FOO');
-        $constantFoo->setValue('\'bar\'');
+        $constantFoo->setValue(42);
 
         $generator->addConstant($constantBar);
         $generator->addConstant($constantFoo);
@@ -52,9 +52,9 @@ class TraitGeneratorTest extends GeneratorTestCase
         $expectedString =
             'trait UnitTest' . PHP_EOL .
             '{' . PHP_EOL .
-            $indention . "const BAR = 'foo';" . PHP_EOL .
+            $indention . 'const BAR = \'foo\';' . PHP_EOL .
             '' . PHP_EOL .
-            $indention . "const FOO = 'bar';" . PHP_EOL .
+            $indention . 'const FOO = 42;' . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $generator->generate());
@@ -180,9 +180,9 @@ class TraitGeneratorTest extends GeneratorTestCase
         $propertyFoo    = $this->getPropertyGenerator();
 
         $constantBar->setName('BAR');
-        $constantBar->setValue('\'foo\'');
+        $constantBar->setValue('foo');
         $constantFoo->setName('FOO');
-        $constantFoo->setValue('\'bar\'');
+        $constantFoo->setValue(42);
         $documentation->setClass('UnitTest');
         $documentation->setPackage('Foo\Bar');
         $methodOne->setName('methodOne');
@@ -214,9 +214,9 @@ class TraitGeneratorTest extends GeneratorTestCase
             ' */' . PHP_EOL .
             'trait UnitTest' . PHP_EOL .
             '{' . PHP_EOL .
-            $indention . "const BAR = 'foo';" . PHP_EOL .
+            $indention . 'const BAR = \'foo\';' . PHP_EOL .
             '' . PHP_EOL .
-            $indention . "const FOO = 'bar';" . PHP_EOL .
+            $indention . 'const FOO = 42;' . PHP_EOL .
             '' . PHP_EOL .
             $indention . 'private $bar = 23;' . PHP_EOL .
             '' . PHP_EOL .

@@ -53,7 +53,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
     /**
      * @param ConstantGenerator $constant
      */
-    public function addClassConstant(ConstantGenerator $constant)
+    public function addConstant(ConstantGenerator $constant)
     {
         $this->addGeneratorProperty('constants', $constant);
     }
@@ -61,7 +61,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
     /**
      * @param PropertyGenerator $property
      */
-    public function addClassProperty(PropertyGenerator $property)
+    public function addProperty(PropertyGenerator $property)
     {
         $this->addGeneratorProperty('properties', $property);
     }
@@ -212,6 +212,17 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
+            if ($this->completeDocumentationAutomatically) {
+                $name       = $this->getGeneratorProperty('name');
+                $namespace  = $this->getGeneratorProperty('namespace');
+
+                if (!is_null($name)) {
+                    $documentation->setClass($name);
+                }
+                if (!is_null($namespace)) {
+                    $documentation->setPackage($namespace);
+                }
+            }
             if ($documentation->hasContent()) {
                 if ($this->addEmptyLine) {
                     $this->addContent('');

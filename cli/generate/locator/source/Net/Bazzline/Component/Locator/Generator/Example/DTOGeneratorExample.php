@@ -75,7 +75,7 @@ class DTOGeneratorExample extends AbstractExample
             $setterMethod->setBody(array('return $this->' . $value['name'] . ';'));
             //---- end of setter method
 
-            $class->addClassProperty($property);
+            $class->addProperty($property);
             $class->addMethod($getterMethod);
             $class->addMethod($setterMethod);
         }

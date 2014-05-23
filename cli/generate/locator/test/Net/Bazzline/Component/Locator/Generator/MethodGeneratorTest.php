@@ -49,7 +49,7 @@ class MethodGeneratorTest extends GeneratorTestCase
     public function testMarkAsAbstract()
     {
         $generator = $this->getMethodGenerator();
-        $generator->setIsAbstract();
+        $generator->markAsAbstract();
         $generator->setName('unittest');
 
         $expectedString = 'abstract function unittest();';

@@ -26,9 +26,9 @@ class FileGeneratorTest extends GeneratorTestCase
         $indention = $this->getIndention();
 
         $constantBar->setName('BAR');
-        $constantBar->setValue('\'foo\'');
+        $constantBar->setValue('foo');
         $constantFoo->setName('FOO');
-        $constantFoo->setValue('\'bar\'');
+        $constantFoo->setValue(42);
 
         $generator->addConstant($constantBar);
         $generator->addConstant($constantFoo);
@@ -37,7 +37,7 @@ class FileGeneratorTest extends GeneratorTestCase
             $indention . PHP_EOL .
             $indention . 'const BAR = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .
-            $indention . 'const FOO = \'bar\';';
+            $indention . 'const FOO = 42;';
 
         $this->assertEquals($expectedContent, $generator->generate());
     }
@@ -164,9 +164,9 @@ class FileGeneratorTest extends GeneratorTestCase
         $classBar->setName('bar');
         $classFoo->setName('foo');
         $constantBar->setName('BAR');
-        $constantBar->setValue('\'foo\'');
+        $constantBar->setValue('foo');
         $constantFoo->setName('FOO');
-        $constantFoo->setValue('\'bar\'');
+        $constantFoo->setValue(42);
         $methodBar->setName('bar');
         $methodBar->markAsPublic();
         $methodFoo->setName('foo');
@@ -198,7 +198,7 @@ class FileGeneratorTest extends GeneratorTestCase
             $indention . PHP_EOL .
             $indention . 'const BAR = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .
-            $indention . 'const FOO = \'bar\';' . PHP_EOL .
+            $indention . 'const FOO = 42;' . PHP_EOL .
             $indention . PHP_EOL .
             $indention . 'public $bar = \'foo\';' . PHP_EOL .
             $indention . PHP_EOL .

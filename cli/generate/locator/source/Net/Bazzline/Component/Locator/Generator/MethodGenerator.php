@@ -43,11 +43,6 @@ class MethodGenerator extends AbstractDocumentedGenerator
         return $this->getGeneratorProperty('body', null);
     }
 
-    public function setIsAbstract()
-    {
-        $this->addGeneratorProperty('abstract', true, false);
-    }
-
     /**
      * @param array $body
      * @param null|string|array $typeHintOfReturnValue
@@ -62,6 +57,11 @@ class MethodGenerator extends AbstractDocumentedGenerator
             $documentation = $this->getGeneratorProperty('documentation');
             $documentation->setReturn($typeHintOfReturnValue);
         }
+    }
+
+    public function markAsAbstract()
+    {
+        $this->addGeneratorProperty('abstract', true, false);
     }
 
     public function markAsHasNoBody()

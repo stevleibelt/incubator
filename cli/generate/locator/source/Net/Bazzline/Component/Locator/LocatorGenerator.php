@@ -137,8 +137,8 @@ array (
         $class->setName($this->configuration['class_name']);
         $class->setNamespace($this->configuration['namespace']);
         $class->setDocumentation($documentation);
-        $class->addClassProperty($factoryInstancePool);
-        $class->addClassProperty($sharedInstancePool);
+        $class->addProperty($factoryInstancePool);
+        $class->addProperty($sharedInstancePool);
         $class->addMethod($isInInstancePool);
 
         //create instance pooling methods

@@ -108,19 +108,19 @@ class ClassGeneratorTest extends GeneratorTestCase
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testWithClassConstants()
+    public function testWithConstants()
     {
         $generator      = $this->getClassGenerator();
         $constantBar    = $this->getConstantGenerator();
         $constantFoo    = $this->getConstantGenerator();
 
         $constantBar->setName('BAR');
-        $constantBar->setValue('\'foo\'');
+        $constantBar->setValue('foo');
         $constantFoo->setName('FOO');
-        $constantFoo->setValue('\'bar\'');
+        $constantFoo->setValue(42);
 
-        $generator->addClassConstant($constantBar);
-        $generator->addClassConstant($constantFoo);
+        $generator->addConstant($constantBar);
+        $generator->addConstant($constantFoo);
         $generator->setName('UnitTest');
 
         $indention = $this->getIndention();
@@ -130,13 +130,13 @@ class ClassGeneratorTest extends GeneratorTestCase
             '{' . PHP_EOL .
             $indention . "const BAR = 'foo';" . PHP_EOL .
             '' . PHP_EOL .
-            $indention . "const FOO = 'bar';" . PHP_EOL .
+            $indention . "const FOO = 42;" . PHP_EOL .
             '}';
 
         $this->assertEquals($expectedString, $generator->generate());
     }
 
-    public function testWithClassProperties()
+    public function testWithProperties()
     {
         $generator      = $this->getClassGenerator();
         $propertyBar    = $this->getPropertyGenerator();
@@ -149,8 +149,8 @@ class ClassGeneratorTest extends GeneratorTestCase
         $propertyFoo->setValue(42);
         $propertyFoo->markAsProtected();
 
-        $generator->addClassProperty($propertyBar);
-        $generator->addClassProperty($propertyFoo);
+        $generator->addProperty($propertyBar);
+        $generator->addProperty($propertyFoo);
         $generator->setName('UnitTest');
 
         $indention = $this->getIndention();
@@ -280,9 +280,9 @@ class ClassGeneratorTest extends GeneratorTestCase
         $propertyFoo    = $this->getPropertyGenerator();
 
         $constantBar->setName('BAR');
-        $constantBar->setValue('\'foo\'');
+        $constantBar->setValue('foo');
         $constantFoo->setName('FOO');
-        $constantFoo->setValue('\'bar\'');
+        $constantFoo->setValue(42);
 
         $documentation->setClass('UnitTest');
         $documentation->setPackage('Foo\Bar');
@@ -297,10 +297,10 @@ class ClassGeneratorTest extends GeneratorTestCase
         $propertyFoo->setValue(42);
         $propertyFoo->markAsProtected();
 
-        $generator->addClassConstant($constantBar);
-        $generator->addClassConstant($constantFoo);
-        $generator->addClassProperty($propertyBar);
-        $generator->addClassProperty($propertyFoo);
+        $generator->addConstant($constantBar);
+        $generator->addConstant($constantFoo);
+        $generator->addProperty($propertyBar);
+        $generator->addProperty($propertyFoo);
         $generator->addExtends('BarFoo');
         $generator->addExtends('FooBar');
         $generator->addImplements('BarFooInterface');
@@ -333,7 +333,7 @@ class ClassGeneratorTest extends GeneratorTestCase
             '{' . PHP_EOL .
             $indention . "const BAR = 'foo';" . PHP_EOL .
             '' . PHP_EOL .
-            $indention . "const FOO = 'bar';" . PHP_EOL .
+            $indention . "const FOO = 42;" . PHP_EOL .
             '' . PHP_EOL .
             $indention . 'private $bar = 23;' . PHP_EOL .
             '' . PHP_EOL .
