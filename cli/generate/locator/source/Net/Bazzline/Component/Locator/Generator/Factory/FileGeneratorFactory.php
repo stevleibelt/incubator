@@ -6,25 +6,28 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Factory;
 
-use Net\Bazzline\Component\Locator\Generator\BlockGenerator;
 use Net\Bazzline\Component\Locator\Generator\FileGenerator;
-use Net\Bazzline\Component\Locator\Generator\Indention;
-use Net\Bazzline\Component\Locator\Generator\LineGenerator;
 
 /**
  * Class FileGeneratorFactory
  * @package Net\Bazzline\Component\Locator\Generator\Factory
  */
-class FileGeneratorFactory extends AbstractDocumentedGeneratorFactory
+class FileGeneratorFactory extends AbstractGeneratorFactory
 {
     /**
-     * @param Indention $indention
-     * @param BlockGenerator $blockGenerator
-     * @param LineGenerator $lineGenerator
+     * This method is just there for type hinting
+     * @return \Net\Bazzline\Component\Locator\Generator\FileGenerator
+     */
+    public function create()
+    {
+        return parent::create();
+    }
+
+    /**
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
      */
-    protected function getGenerator(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
+    protected function getGenerator()
     {
-        return new FileGenerator($indention, $blockGenerator, $lineGenerator);
+        return new FileGenerator();
     }
 }

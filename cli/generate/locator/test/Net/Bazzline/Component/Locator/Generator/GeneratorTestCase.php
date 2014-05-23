@@ -73,8 +73,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getBlockGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }
@@ -87,9 +88,6 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
     {
         $generator = $this->getClassGeneratorFactory()->create();
 
-        if (is_null($indention)) {
-            $generator->setIndention($indention);
-        }
 
         return $generator;
     }
@@ -103,8 +101,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getConstantGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }
@@ -118,8 +117,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getFileGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }
@@ -133,8 +133,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getLineGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }
@@ -148,8 +149,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getMethodGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }
@@ -163,8 +165,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getDocumentationGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }
@@ -178,8 +181,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getPropertyGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }
@@ -193,8 +197,9 @@ class GeneratorTestCase extends PHPUnit_Framework_TestCase
         $generator = $this->getTraitGeneratorFactory()->create();
 
         if (is_null($indention)) {
-            $generator->setIndention($indention);
+            $indention = $this->getIndention();
         }
+        $generator->setIndention($indention);
 
         return $generator;
     }

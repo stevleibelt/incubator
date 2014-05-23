@@ -15,16 +15,22 @@ use Net\Bazzline\Component\Locator\Generator\LineGenerator;
  * Class ClassGeneratorFactory
  * @package Net\Bazzline\Component\Locator\Generator\Factory
  */
-class ClassGeneratorFactory extends AbstractDocumentedGeneratorFactory
+class ClassGeneratorFactory extends AbstractGeneratorFactory
 {
     /**
-     * @param Indention $indention
-     * @param BlockGenerator $blockGenerator
-     * @param LineGenerator $lineGenerator
+     * This method is just there for type hinting
+     * @return \Net\Bazzline\Component\Locator\Generator\ClassGenerator
+     */
+    public function create()
+    {
+        return parent::create();
+    }
+
+    /**
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
      */
-    protected function getGenerator(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
+    protected function getGenerator()
     {
-        return new ClassGenerator($indention, $blockGenerator, $lineGenerator);
+        return new ClassGenerator();
     }
 }

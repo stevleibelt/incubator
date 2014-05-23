@@ -6,10 +6,7 @@
 
 namespace Net\Bazzline\Component\Locator\Generator\Factory;
 
-use Net\Bazzline\Component\Locator\Generator\BlockGenerator;
 use Net\Bazzline\Component\Locator\Generator\ConstantGenerator;
-use Net\Bazzline\Component\Locator\Generator\Indention;
-use Net\Bazzline\Component\Locator\Generator\LineGenerator;
 
 /**
  * Class ConstantGeneratorFactory
@@ -18,13 +15,19 @@ use Net\Bazzline\Component\Locator\Generator\LineGenerator;
 class ConstantGeneratorFactory extends AbstractGeneratorFactory
 {
     /**
-     * @param Indention $indention
-     * @param BlockGenerator $blockGenerator
-     * @param LineGenerator $lineGenerator
+     * This method is just there for type hinting
+     * @return \Net\Bazzline\Component\Locator\Generator\ConstantGenerator
+     */
+    public function create()
+    {
+        return parent::create();
+    }
+
+    /**
      * @return \Net\Bazzline\Component\Locator\Generator\GeneratorInterface
      */
-    protected function getGenerator(Indention $indention, BlockGenerator $blockGenerator, LineGenerator $lineGenerator)
+    protected function getGenerator()
     {
-        return new ConstantGenerator($indention, $blockGenerator, $lineGenerator);
+        return new ConstantGenerator();
     }
 }
