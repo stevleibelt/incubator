@@ -8,6 +8,7 @@ namespace Net\Bazzline\Component\Locator\Generator\Example;
 
 use Net\Bazzline\Component\Locator\Generator\Factory\ClassGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\DocumentationGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\LineGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\PropertyGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Indention;
@@ -45,6 +46,14 @@ abstract class AbstractExample
     final protected function getIndention()
     {
         return new Indention();
+    }
+
+    /**
+     * @return LineGeneratorFactory
+     */
+    final protected function getLineGeneratorFactory()
+    {
+        return new LineGeneratorFactory();
     }
 
     /**

@@ -10,26 +10,24 @@ namespace Net\Bazzline\Component\Locator\Generator\Example;
 require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 /**
- * Class DTOGenerator
+ * Class DTOGeneratorExample
  * @package Net\Bazzline\Component\Locator\Generator\Example
  */
-class DTOGenerator extends AbstractExample
+class DTOGeneratorExample extends AbstractExample
 {
     /**
      * @return mixed
      */
     function demonstrate()
     {
-        $indention = $this->getIndention();
-
         //---- begin of factories
         $classFactory = $this->getClassGeneratorFactory();
         $documentationFactory = $this->getDocumentationGeneratorFactory();
         $methodFactory = $this->getMethodGeneratorFactory();
         $propertyFactory = $this->getPropertyGeneratorFactory();
 
-        $class = $classFactory->create($indention);
-        $class->setDocumentation($documentationFactory->create($indention));
+        $class = $classFactory->create();
+        $class->setDocumentation($documentationFactory->create());
         $class->setName('ExampleDTO');
 
         $properties = array(
@@ -52,26 +50,26 @@ class DTOGenerator extends AbstractExample
 
         foreach ($properties as $value) {
             //---- begin of properties
-            $property = $propertyFactory->create($indention);
-            $property->setDocumentation($documentationFactory->create($indention));
+            $property = $propertyFactory->create();
+            $property->setDocumentation($documentationFactory->create());
             $property->setName($value['name']);
             if (!is_null($value['value'])) {
                 $property->setValue('value');
             }
             $property->markAsPrivate();
-            $property->setDocumentation($documentationFactory->create($indention));
+            $property->setDocumentation($documentationFactory->create());
             //---- end of properties
 
             //---- begin of getter method
-            $getterMethod = $methodFactory->create($indention);
-            $getterMethod->setDocumentation($documentationFactory->create($indention));
+            $getterMethod = $methodFactory->create();
+            $getterMethod->setDocumentation($documentationFactory->create());
             $getterMethod->setName('get' . ucfirst($value['name']));
             $getterMethod->setBody(array('$this->' . $value['name'] . ' = $' . $value['name'] . ';'), $value['typeHint']);
             //---- end of getter method
 
             //---- begin of setter method
-            $setterMethod = $methodFactory->create($indention);
-            $setterMethod->setDocumentation($documentationFactory->create($indention));
+            $setterMethod = $methodFactory->create();
+            $setterMethod->setDocumentation($documentationFactory->create());
             $setterMethod->addParameter($value['name'], null, $value['typeHint']);
             $setterMethod->setName('set' . ucfirst($value['name']));
             $setterMethod->setBody(array('return $this->' . $value['name'] . ';'));
@@ -88,5 +86,5 @@ class DTOGenerator extends AbstractExample
     }
 }
 
-$example = new DTOGenerator();
+$example = new DTOGeneratorExample();
 $example->demonstrate();
