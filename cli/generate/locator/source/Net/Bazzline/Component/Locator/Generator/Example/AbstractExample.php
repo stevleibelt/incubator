@@ -8,10 +8,12 @@ namespace Net\Bazzline\Component\Locator\Generator\Example;
 
 use Net\Bazzline\Component\Locator\Generator\Factory\BlockGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\ClassGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\ConstantGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\DocumentationGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\LineGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Factory\PropertyGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator\Factory\TraitGeneratorFactory;
 use Net\Bazzline\Component\Locator\Generator\Indention;
 
 /**
@@ -39,6 +41,14 @@ abstract class AbstractExample
     final protected function getClassGeneratorFactory()
     {
         return new ClassGeneratorFactory();
+    }
+
+    /**
+     * @return ConstantGeneratorFactory
+     */
+    final protected function getConstantGeneratorFactory()
+    {
+        return new ConstantGeneratorFactory();
     }
 
     /**
@@ -79,5 +89,13 @@ abstract class AbstractExample
     final protected function getPropertyGeneratorFactory()
     {
         return new PropertyGeneratorFactory();
+    }
+
+    /**
+     * @return TraitGeneratorFactory
+     */
+    final protected function getTraitGeneratorFactory()
+    {
+        return new TraitGeneratorFactory();
     }
 } 

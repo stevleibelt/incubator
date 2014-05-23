@@ -16,6 +16,11 @@ use Net\Bazzline\Component\Locator\Generator\RuntimeException;
 class ClassGenerator extends AbstractDocumentedGenerator
 {
     /**
+     * @var boolean
+     */
+    private $addEmptyLine;
+
+    /**
      * @param string $className
      */
     public function addExtends($className)
@@ -116,6 +121,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
     public function generate()
     {
         if ($this->canBeGenerated()) {
+            $this->addEmptyLine = false;
             $this->resetContent();
             $this->generateNamespace();
             $this->generateUse();
@@ -129,7 +135,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
     private function generateBody()
     {
-        $addEmptyLine = false;
+        $this->addEmptyLine = false;
         $this->addContent('{');
         /** @var null|ConstantGenerator[] $constants */
         $constants = $this->getGeneratorProperty('constants');
@@ -142,10 +148,10 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
         if (is_array($traits)) {
             $this->addContent('use ' . implode(',', $traits) . ';', true);
-            $addEmptyLine = true;
+            $this->addEmptyLine = true;
         }
         if (is_array($constants)) {
-            if ($addEmptyLine) {
+            if ($this->addEmptyLine) {
                 $this->addContent('');
             }
             $lastArrayKey = $this->getLastArrayKey($constants);
@@ -155,10 +161,10 @@ class ClassGenerator extends AbstractDocumentedGenerator
                     $this->addContent('');
                 }
             }
-            $addEmptyLine = true;
+            $this->addEmptyLine = true;
         }
         if (is_array($properties)) {
-            if ($addEmptyLine) {
+            if ($this->addEmptyLine) {
                 $this->addContent('');
             }
             $lastArrayKey = $this->getLastArrayKey($properties);
@@ -168,10 +174,10 @@ class ClassGenerator extends AbstractDocumentedGenerator
                     $this->addContent('');
                 }
             }
-            $addEmptyLine = true;
+            $this->addEmptyLine = true;
         }
         if (is_array($methods)) {
-            if ($addEmptyLine) {
+            if ($this->addEmptyLine) {
                 $this->addContent('');
             }
             $lastArrayKey = $this->getLastArrayKey($methods);
@@ -184,6 +190,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
         }
 
         $this->addContent('}');
+        $this->addEmptyLine = false;
     }
 
     private function generateNamespace()
@@ -196,11 +203,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
                     'namespace ' . $namespace . ';'
                 )
             );
-            $this->addContent(
-                $this->getLineGenerator(
-                    ''
-                )
-            );
+            $this->addEmptyLine = true;
         }
     }
 
@@ -209,7 +212,13 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
-            $this->addGeneratorAsContent($documentation);
+            if ($documentation->hasContent()) {
+                if ($this->addEmptyLine) {
+                    $this->addContent('');
+                    $this->addEmptyLine = false;
+                }
+                $this->addGeneratorAsContent($documentation);
+            }
         }
     }
 
@@ -227,6 +236,11 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
         if (is_null($name)) {
             throw new RuntimeException('name is mandatory');
+        }
+
+        if ($this->addEmptyLine) {
+            $this->addContent('');
+            $this->addEmptyLine = false;
         }
 
         $line = $this->getLineGenerator();
@@ -248,6 +262,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
             $line->add(implode(',', $implements));
         }
         $this->addContent($line);
+        $this->addEmptyLine = true;
     }
 
     private function generateUse()
@@ -255,6 +270,10 @@ class ClassGenerator extends AbstractDocumentedGenerator
         $uses = $this->getGeneratorProperty('uses');
 
         if (is_array($uses)) {
+            if ($this->addEmptyLine) {
+                $this->addContent('');
+                $this->addEmptyLine = false;
+            }
             foreach ($uses as $use) {
                 $line = $this->getLineGenerator();
                 if (strlen($use['alias']) > 0) {
@@ -264,9 +283,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
                 }
                 $this->addContent($line);
             }
-            $line = $this->getLineGenerator();
-            $line->add('');
-            $this->addContent($line);
+            $this->addEmptyLine = true;
         }
     }
 }

@@ -86,7 +86,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
      */
     public function hasContent()
     {
-        return $this->blockGenerator->hasContent();
+        return (!empty($this->properties));
     }
 
     /**
