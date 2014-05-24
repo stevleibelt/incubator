@@ -53,12 +53,6 @@ class TraitGenerator extends AbstractDocumentedGenerator
     {
         $this->addGeneratorProperty('name', (string) $name, false);
 
-        if ($this->completeDocumentationAutomatically === true) {
-            /** @var DocumentationGenerator $documentation */
-            $documentation = $this->getGeneratorProperty('documentation');
-            $documentation->setClass($name);
-        }
-
         return $this;
     }
 
@@ -146,6 +140,13 @@ class TraitGenerator extends AbstractDocumentedGenerator
         $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
+            if ($this->completeDocumentationAutomatically === true) {
+                $name = $this->getGeneratorProperty('name');
+
+                if (is_string($name)) {
+                    $documentation->setClass($name);
+                }
+            }
             $this->addGeneratorAsContent($documentation);
         }
     }

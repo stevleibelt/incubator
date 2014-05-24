@@ -19,7 +19,6 @@ class ClassExample extends AbstractExample
      */
     function demonstrate()
     {
-        //@todo add "return $this" to all addProperty methods of each generator
         $blockFactory           = $this->getBlockGeneratorFactory();
         $classFactory           = $this->getClassGeneratorFactory();
         $constantFactory        = $this->getConstantGeneratorFactory();

@@ -158,6 +158,7 @@ class TraitGeneratorTest extends GeneratorTestCase
         $expectedString =
             '/**' . PHP_EOL .
             ' * Class UnitTest' . PHP_EOL .
+            ' *' . PHP_EOL .
             ' * @package Foo\Bar' . PHP_EOL .
             ' */' . PHP_EOL .
             'trait UnitTest' . PHP_EOL .
@@ -210,6 +211,7 @@ class TraitGeneratorTest extends GeneratorTestCase
         $expectedString =
             '/**' . PHP_EOL .
             ' * Class UnitTest' . PHP_EOL .
+            ' *' . PHP_EOL .
             ' * @package Foo\Bar' . PHP_EOL .
             ' */' . PHP_EOL .
             'trait UnitTest' . PHP_EOL .

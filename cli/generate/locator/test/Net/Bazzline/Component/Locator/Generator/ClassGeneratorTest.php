@@ -83,7 +83,7 @@ class ClassGeneratorTest extends GeneratorTestCase
         $generator->setName('UnitTest');
 
         $expectedString =
-            'class UnitTest implements \Bar\Foo,\Foo\Bar' . PHP_EOL .
+            'class UnitTest implements \Bar\Foo, \Foo\Bar' . PHP_EOL .
             '{' . PHP_EOL .
             '}';
 
@@ -241,6 +241,7 @@ class ClassGeneratorTest extends GeneratorTestCase
             '' . PHP_EOL .
             '/**' . PHP_EOL .
             ' * Class UnitTest' . PHP_EOL .
+            ' *' . PHP_EOL .
             ' * @package Foo\Bar' . PHP_EOL .
             ' */' . PHP_EOL .
             'class UnitTest' . PHP_EOL .
@@ -284,8 +285,6 @@ class ClassGeneratorTest extends GeneratorTestCase
         $constantFoo->setName('FOO');
         $constantFoo->setValue(42);
 
-        $documentation->setClass('UnitTest');
-        $documentation->setPackage('Foo\Bar');
         $methodOne->setName('methodOne');
         $methodOne->markAsPrivate();
         $methodTwo->setName('methodTwo');
@@ -327,9 +326,10 @@ class ClassGeneratorTest extends GeneratorTestCase
             '' . PHP_EOL .
             '/**' . PHP_EOL .
             ' * Class UnitTest' . PHP_EOL .
-            ' * @package Foo\Bar' . PHP_EOL .
+            ' *' . PHP_EOL .
+            ' * @package Baz' . PHP_EOL .
             ' */' . PHP_EOL .
-            'class UnitTest extends BarFoo,FooBar implements BarFooInterface,FooBarInterface' . PHP_EOL .
+            'class UnitTest extends BarFoo,FooBar implements BarFooInterface, FooBarInterface' . PHP_EOL .
             '{' . PHP_EOL .
             $indention . "const BAR = 'foo';" . PHP_EOL .
             '' . PHP_EOL .

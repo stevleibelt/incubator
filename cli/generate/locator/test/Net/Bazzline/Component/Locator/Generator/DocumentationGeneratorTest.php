@@ -182,6 +182,7 @@ class DocumentationGeneratorTest extends GeneratorTestCase
             ' * Foo' . PHP_EOL .
             ' * Bar' . PHP_EOL .
             ' * Class UnitTest' .  PHP_EOL .
+            ' *' . PHP_EOL .
             ' * @package Unit\Test' .  PHP_EOL .
             ' * @todo implement bar exception' . PHP_EOL .
             ' * @todo implement foo exception' . PHP_EOL .

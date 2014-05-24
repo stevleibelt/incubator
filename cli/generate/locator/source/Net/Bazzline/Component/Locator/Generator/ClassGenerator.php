@@ -322,7 +322,7 @@ class ClassGenerator extends AbstractDocumentedGenerator
         }
         if (is_array($implements)) {
             $line->add('implements');
-            $line->add(implode(',', $implements));
+            $line->add(implode(', ', $implements));
         }
         $this->addContent($line);
         $this->addEmptyLine = true;
