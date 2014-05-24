@@ -2,7 +2,7 @@
     "description": "Generates configuration based hard coded locator",
     "keywords": ["php", "locator", "configuration", "generator"],
     "license": "LGPLv3",
-    "name": "stevleibelt/php_component_locator",
+    "name": "net_bazzline/php_component_locator",
     "type": "library",
     "authors": [
         {
@@ -15,6 +15,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
+        "net_bazzline/php_component_code_generator": "dev-master",
         "symfony/console": "v2.4.3"
     },
     "require-dev": {

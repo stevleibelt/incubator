@@ -98,13 +98,3 @@ class Locator extends BaseLocator
 ```
 
 The BaseLocator is taking care of the instance pooling.
-
-# Thanks
-
-* [php-generator](https://github.com/nette/php-generator)
-* [simple-php-code-gen](https://github.com/gotohr/simple-php-code-gen)
-* [cg-library](https://github.com/schmittjoh/cg-library)
-* [sensio generator bundle](https://github.com/sensiolabs/SensioGeneratorBundle)
-* [php-ide-stub-generator](https://github.com/racztiborzoltan/php-ide-stub-generator)
-* [php-token-reflection](https://github.com/Andrewsville/PHP-Token-Reflection)
-* [code-generator](https://github.com/Speicher210/CodeGenerator)

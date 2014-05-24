@@ -7,15 +7,11 @@
 namespace Net\Bazzline\Component\Locator;
 
 use Exception;
-use Net\Bazzline\Component\Locator\Generator\ClassGenerator;
-use Net\Bazzline\Component\Locator\Generator\Factory\ClassGeneratorFactory;
-use Net\Bazzline\Component\Locator\Generator\Factory\DocumentationGeneratorFactory;
-use Net\Bazzline\Component\Locator\Generator\Factory\MethodGeneratorFactory;
-use Net\Bazzline\Component\Locator\Generator\Factory\PropertyGeneratorFactory;
-use Net\Bazzline\Component\Locator\Generator\Indention;
-use Net\Bazzline\Component\Locator\Generator\MethodGenerator;
-use Net\Bazzline\Component\Locator\Generator\DocumentationGenerator;
-use Net\Bazzline\Component\Locator\Generator\PropertyGenerator;
+use Net\Bazzline\Component\CodeGenerator\ClassGenerator;
+use Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory;
+use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
+use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
+use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
 
 /**
  * Class LocatorGenerator
@@ -24,14 +20,43 @@ use Net\Bazzline\Component\Locator\Generator\PropertyGenerator;
  */
 class LocatorGenerator
 {
-    /** @var array */
+    /**
+     * @var ClassGeneratorFactory
+     */
+    private $classFactory;
+
+    /**
+     * @var array
+     */
     private $configuration;
 
-    /** @var Indention */
-    private $indention;
+    /**
+     * @var DocumentationGeneratorFactory
+     */
+    private $documentationFactory;
 
-    /** @var string */
+    /**
+     * @var MethodGeneratorFactory
+     */
+    private $methodFactory;
+
+    /**
+     * @var PropertyGeneratorFactory
+     */
+    private $propertyFactory;
+
+    /**
+     * @var string
+     */
     private $outputPath;
+
+    public function __construct()
+    {
+        $this->classFactory = new ClassGeneratorFactory();
+        $this->documentationFactory = new DocumentationGeneratorFactory();
+        $this->methodFactory = new MethodGeneratorFactory();
+        $this->propertyFactory = new PropertyGeneratorFactory();
+    }
 
     /**
      * @param string $pathToConfigurationFile
@@ -87,32 +112,16 @@ array (
 */
     private function createLocatorFile()
     {
-        $this->indention = new Indention();
-        $classFactory = new ClassGeneratorFactory();
-        $documentationFactory = new DocumentationGeneratorFactory();
-        $methodFactory = new MethodGeneratorFactory();
-        $propertyFactory = new PropertyGeneratorFactory();
-
-        $class = $classFactory->create($this->indention);
+        $class = $this->classFactory->create();
         //@todo move into methods like: $class = $this->enrichWithDocumentation($class)
-        $documentation = $documentationFactory->create($this->indention);
+        $documentation = $this->documentationFactory->create();
         $documentation->setClass($this->configuration['class_name']);
         $documentation->setPackage($this->configuration['namespace']);
 
-        $factoryInstancePool = $propertyFactory->create($this->indention);
-        $factoryInstancePool->setDocumentation($documentationFactory->create($this->indention));
-        $factoryInstancePool->setName('factoryInstancePool');
-        $factoryInstancePool->markAsPrivate();
-        $factoryInstancePool->setValue('array()');
+        $class = $this->addPropertiesToClass($class);
 
-        $sharedInstancePool = $propertyFactory->create($this->indention);
-        $sharedInstancePool->setDocumentation($documentationFactory->create($this->indention));
-        $sharedInstancePool->setName('sharedInstancePool');
-        $sharedInstancePool->markAsPrivate();
-        $sharedInstancePool->setValue('array()');
-
-        $isInInstancePool = $methodFactory->create($this->indention);
-        $isInInstancePool->setDocumentation($documentationFactory->create($this->indention));
+        $isInInstancePool = $this->methodFactory->create();
+        $isInInstancePool->setDocumentation($this->documentationFactory->create());
         $isInInstancePool->setName('isInInstancePool');
         $isInInstancePool->addParameter('key', '', 'string');
         $isInInstancePool->addParameter('type', '', 'string');
@@ -137,8 +146,6 @@ array (
         $class->setName($this->configuration['class_name']);
         $class->setNamespace($this->configuration['namespace']);
         $class->setDocumentation($documentation);
-        $class->addProperty($factoryInstancePool);
-        $class->addProperty($sharedInstancePool);
         $class->addMethod($isInInstancePool);
 
         //create instance pooling methods
@@ -150,6 +157,28 @@ array (
         if (file_put_contents($this->outputPath . DIRECTORY_SEPARATOR . $this->configuration['file_name'], $content) === false) {
             throw new Exception('can not create new locator in "' . $this->outputPath . DIRECTORY_SEPARATOR . $this->configuration['file_name']);
         }
+    }
+
+    private function addPropertiesToClass(ClassGenerator $class)
+    {
+        $factoryInstancePool = $this->propertyFactory->create();
+
+        $factoryInstancePool->setDocumentation($this->documentationFactory->create());
+        $factoryInstancePool->setName('factoryInstancePool');
+        $factoryInstancePool->markAsPrivate();
+        $factoryInstancePool->setValue('array()');
+
+        $sharedInstancePool = $this->propertyFactory->create();
+
+        $sharedInstancePool->setDocumentation($this->documentationFactory->create());
+        $sharedInstancePool->setName('sharedInstancePool');
+        $sharedInstancePool->markAsPrivate();
+        $sharedInstancePool->setValue('array()');
+
+        $class->addProperty($factoryInstancePool);
+        $class->addProperty($sharedInstancePool);
+
+        return $class;
     }
 
     /**
