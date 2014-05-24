@@ -16,6 +16,7 @@ class DocumentationGenerator extends AbstractGenerator
 {
     /**
      * @var boolean
+     * @todo see if it is needed or of phpdoc says
      */
     private $addEmptyLine;
 

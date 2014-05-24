@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 class ParagraphExample extends AbstractExample
 {
     /**
-     * @return mixed
+     * @return string
      */
     function demonstrate()
     {

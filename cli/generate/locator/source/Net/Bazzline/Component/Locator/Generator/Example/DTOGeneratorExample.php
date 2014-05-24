@@ -16,7 +16,7 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 class DTOGeneratorExample extends AbstractExample
 {
     /**
-     * @return mixed
+     * @return string
      */
     function demonstrate()
     {
