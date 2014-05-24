@@ -17,46 +17,75 @@ class PropertyGenerator extends AbstractDocumentedGenerator
 {
     /**
      * @param string $typeHint
+     * @return $this
      */
     public function addTypeHint($typeHint)
     {
         $this->addGeneratorProperty('type_hints', (string) $typeHint);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsPrivate()
     {
         $this->addGeneratorProperty('visibility', 'private', false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsProtected()
     {
         $this->addGeneratorProperty('visibility', 'protected', false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsPublic()
     {
         $this->addGeneratorProperty('visibility', 'public', false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsStatic()
     {
         $this->addGeneratorProperty('static', true, false);
+
+        return $this;
     }
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->addGeneratorProperty('name', (string) $name, false);
+
+        return $this;
     }
 
     /**
      * @param string $value
+     * @return $this
      */
     public function setValue($value)
     {
         $this->addGeneratorProperty('value', (string) $value, false);
+
+        return $this;
     }
 
     /**

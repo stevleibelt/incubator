@@ -21,6 +21,7 @@ class LineGenerator extends AbstractContentGenerator
 
     /**
      * @param string|array|GeneratorInterface[]|AbstractContentGenerator[] $content
+     * @return $this
      * @throws InvalidArgumentException
      */
     public function add($content)
@@ -41,6 +42,8 @@ class LineGenerator extends AbstractContentGenerator
         } else {
             throw new InvalidArgumentException('content has to be string, an array or instance of AbstractContentGenerator');
         }
+
+        return $this;
     }
 
     /**

@@ -23,62 +23,83 @@ class ClassGenerator extends AbstractDocumentedGenerator
     /**
      * @param string $className
      * @param boolean $addToUse
+     * @return $this
      */
     public function addExtends($className, $addToUse = false)
     {
         $this->addGeneratorProperty('extends', (string) $className);
+
         if ($addToUse) {
             $this->addUse($className);
         }
+
+        return $this;
     }
 
     /**
      * @param string $interfaceName
      * @param boolean $addToUse
+     * @return $this
      */
     public function addImplements($interfaceName, $addToUse = false)
     {
         $this->addGeneratorProperty('implements', (string) $interfaceName);
+
         if ($addToUse) {
             $this->addUse($interfaceName);
         }
+
+        return $this;
     }
 
     /**
      * @param ConstantGenerator $constant
+     * @return $this
      */
     public function addConstant(ConstantGenerator $constant)
     {
         $this->addGeneratorProperty('constants', $constant);
+
+        return $this;
     }
 
     /**
      * @param MethodGenerator $method
+     * @return $this
      */
     public function addMethod(MethodGenerator $method)
     {
         $this->addGeneratorProperty('methods', $method);
+
+        return $this;
     }
 
     /**
      * @param PropertyGenerator $property
+     * @return $this
      */
     public function addProperty(PropertyGenerator $property)
     {
         $this->addGeneratorProperty('properties', $property);
+
+        return $this;
     }
 
     /**
      * @param TraitGenerator $trait
+     * @return $this
      */
     public function addTrait(TraitGenerator $trait)
     {
         $this->addGeneratorProperty('traits', $trait->getName());
+
+        return $this;
     }
 
     /**
      * @param string $fullQualifiedClassName
      * @param string $alias
+     * @return $this
      */
     public function addUse($fullQualifiedClassName, $alias = '')
     {
@@ -88,37 +109,60 @@ class ClassGenerator extends AbstractDocumentedGenerator
         );
 
         $this->addGeneratorProperty('uses', $use);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsAbstract()
     {
         $this->addGeneratorProperty('abstract', true, false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsFinal()
     {
         $this->addGeneratorProperty('final', true, false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsInterface()
     {
         $this->addGeneratorProperty('interface', true, false);
+
+        return $this;
     }
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->addGeneratorProperty('name', (string) $name, false);
+
+        return $this;
     }
 
     /**
      * @param string $namespace
+     * @return $this
      */
     public function setNamespace($namespace)
     {
         $this->addGeneratorProperty('namespace', (string) $namespace, false);
+
+        return $this;
     }
 
     /**

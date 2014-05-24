@@ -17,60 +17,82 @@ class FileGenerator extends AbstractDocumentedGenerator
 
     /**
      * @param ConstantGenerator $constant
+     * @return $this
      */
     public function addConstant(ConstantGenerator $constant)
     {
         $this->addGeneratorProperty('constants', $constant);
+
+        return $this;
     }
 
     /**
      * @param PropertyGenerator $property
+     * @return $this
      */
     public function addProperty(PropertyGenerator $property)
     {
         $this->addGeneratorProperty('properties', $property);
+
+        return $this;
     }
 
     /**
      * @param ClassGenerator $class
+     * @return $this
      */
     public function addClass(ClassGenerator $class)
     {
         $this->addGeneratorProperty('classes', $class);
+
+        return $this;
     }
 
     /**
      * @param MethodGenerator $method
+     * @return $this
      */
     public function addMethod(MethodGenerator $method)
     {
         $this->addGeneratorProperty('methods', $method);
+
+        return $this;
     }
 
     /**
      * @param TraitGenerator $trait
+     * @return $this
      */
     public function addTrait(TraitGenerator $trait)
     {
         $this->addGeneratorProperty('traits', $trait->getName());
+
+        return $this;
     }
 
     public function markAsExecutable()
     {
         $this->addGeneratorProperty('is_executable', true, false);
+
+        return $this;
     }
 
     /**
      * @param int|string|array $content
+     * @return $this
+     * @todo add support for Generator as type
      */
     public function addFileContent($content)
     {
         if (!is_array($content)) {
             $content = array($content);
         }
+
         foreach ($content as $partial) {
             $this->addGeneratorProperty('content', $partial);
         }
+
+        return $this;
     }
 
     /**

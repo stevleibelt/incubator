@@ -14,39 +14,52 @@ class TraitGenerator extends AbstractDocumentedGenerator
 {
     /**
      * @param ConstantGenerator $constant
+     * @return $this
      */
     public function addConstant(ConstantGenerator $constant)
     {
         $this->addGeneratorProperty('constants', $constant);
+
+        return $this;
     }
 
     /**
      * @param PropertyGenerator $property
+     * @return $this
      */
     public function addProperty(PropertyGenerator $property)
     {
         $this->addGeneratorProperty('properties', $property);
+
+        return $this;
     }
 
     /**
      * @param MethodGenerator $method
+     * @return $this
      */
     public function addMethod(MethodGenerator $method)
     {
         $this->addGeneratorProperty('methods', $method);
+
+        return $this;
     }
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->addGeneratorProperty('name', (string) $name, false);
+
         if ($this->completeDocumentationAutomatically === true) {
             /** @var DocumentationGenerator $documentation */
             $documentation = $this->getGeneratorProperty('documentation');
             $documentation->setClass($name);
         }
+
+        return $this;
     }
 
     /**

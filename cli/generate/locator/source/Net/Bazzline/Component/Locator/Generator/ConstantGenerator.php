@@ -17,21 +17,28 @@ class ConstantGenerator extends AbstractGenerator
 {
     /**
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->addGeneratorProperty('name', strtoupper($name), false);
+
+        return $this;
     }
 
     /**
      * @param string $value
+     * @return $this
      */
     public function setValue($value)
     {
         if (!is_numeric($value)) {
             $value = '\'' . (string) $value . '\'';
         }
+
         $this->addGeneratorProperty('value', $value, false);
+
+        return $this;
     }
 
     /**

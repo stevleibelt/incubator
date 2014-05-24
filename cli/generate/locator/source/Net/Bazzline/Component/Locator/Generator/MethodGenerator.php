@@ -17,6 +17,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
      * @param string $defaultValue
      * @param string $typeHint
      * @param bool $isReference
+     * @return $this
      */
     public function addParameter($name, $defaultValue = '', $typeHint = '', $isReference = false)
     {
@@ -28,6 +29,8 @@ class MethodGenerator extends AbstractDocumentedGenerator
         );
 
         $this->addGeneratorProperty('parameters', $parameter);
+
+        return $this;
     }
 
     /**
@@ -42,6 +45,7 @@ class MethodGenerator extends AbstractDocumentedGenerator
             'description'   => $description,
             'version'       => $version
         );
+
         $this->addGeneratorProperty('since_versions', $since);
 
         return $this;
@@ -58,55 +62,96 @@ class MethodGenerator extends AbstractDocumentedGenerator
     /**
      * @param string|array|LineGenerator|BlockGenerator $body
      * @param array $returnValueTypeHints
+     * @return $this
      */
     public function setBody($body, $returnValueTypeHints = array())
     {
         $this->addGeneratorProperty('body', $body, false);
         $this->addGeneratorProperty('has_body', true, false);
         $this->addGeneratorProperty('body_return_type_hints', $returnValueTypeHints);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsAbstract()
     {
         $this->addGeneratorProperty('abstract', true, false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsHasNoBody()
     {
         $this->addGeneratorProperty('has_body', false, false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsFinal()
     {
         $this->addGeneratorProperty('final', true, false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsPrivate()
     {
         $this->addGeneratorProperty('visibility', 'private', false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsProtected()
     {
         $this->addGeneratorProperty('visibility', 'protected', false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsPublic()
     {
         $this->addGeneratorProperty('visibility', 'public', false);
+
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function markAsStatic()
     {
         $this->addGeneratorProperty('static', true, false);
+
+        return $this;
     }
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->addGeneratorProperty('name', (string) $name, false);
+
+        return $this;
     }
 
     /**
