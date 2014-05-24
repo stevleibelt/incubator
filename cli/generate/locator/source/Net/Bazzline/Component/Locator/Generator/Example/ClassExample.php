@@ -27,7 +27,6 @@ class ClassExample extends AbstractExample
         $propertyFactory = $this->getPropertyGeneratorFactory();
         $traitFactory = $this->getTraitGeneratorFactory();
 
-        //@todo implement setAuthor, setSince to documentation
         //@todo implement documentation
         $myConstant = $constantFactory->create();
         $myConstant->setName('MY_CONSTANT');
@@ -51,8 +50,12 @@ class ClassExample extends AbstractExample
         $myTrait->setDocumentation($documentationFactory->create());
         $myTrait->setName('myTrait');
 
+        $classDocumentation = $documentationFactory->create();
+        $classDocumentation->setVersion('0.8.15', 'available since 2014-05-24');
+        $classDocumentation->setAuthor('stev leibelt', 'artodeto@bazzline.net');
+
         $myClass = $classFactory->create();
-        $myClass->setDocumentation($documentationFactory->create());
+        $myClass->setDocumentation($classDocumentation);
         $myClass->setNamespace('My\Namespace');
         $myClass->setName('MyClass');
         $myClass->markAsFinal();

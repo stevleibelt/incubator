@@ -37,33 +37,11 @@ class ClassGenerator extends AbstractDocumentedGenerator
     }
 
     /**
-     * @param string $fullQualifiedClassName
-     * @param string $alias
-     */
-    public function addUse($fullQualifiedClassName, $alias = '')
-    {
-        $use = array(
-            'alias' => $alias,
-            'name'  => $fullQualifiedClassName
-        );
-
-        $this->addGeneratorProperty('uses', $use);
-    }
-
-    /**
      * @param ConstantGenerator $constant
      */
     public function addConstant(ConstantGenerator $constant)
     {
         $this->addGeneratorProperty('constants', $constant);
-    }
-
-    /**
-     * @param PropertyGenerator $property
-     */
-    public function addProperty(PropertyGenerator $property)
-    {
-        $this->addGeneratorProperty('properties', $property);
     }
 
     /**
@@ -75,11 +53,33 @@ class ClassGenerator extends AbstractDocumentedGenerator
     }
 
     /**
+     * @param PropertyGenerator $property
+     */
+    public function addProperty(PropertyGenerator $property)
+    {
+        $this->addGeneratorProperty('properties', $property);
+    }
+
+    /**
      * @param TraitGenerator $trait
      */
     public function addTrait(TraitGenerator $trait)
     {
         $this->addGeneratorProperty('traits', $trait->getName());
+    }
+
+    /**
+     * @param string $fullQualifiedClassName
+     * @param string $alias
+     */
+    public function addUse($fullQualifiedClassName, $alias = '')
+    {
+        $use = array(
+            'alias' => $alias,
+            'name'  => $fullQualifiedClassName
+        );
+
+        $this->addGeneratorProperty('uses', $use);
     }
 
     public function markAsAbstract()
@@ -216,10 +216,10 @@ class ClassGenerator extends AbstractDocumentedGenerator
                 $name       = $this->getGeneratorProperty('name');
                 $namespace  = $this->getGeneratorProperty('namespace');
 
-                if (!is_null($name)) {
+                if (is_string($name)) {
                     $documentation->setClass($name);
                 }
-                if (!is_null($namespace)) {
+                if (is_string($namespace)) {
                     $documentation->setPackage($namespace);
                 }
             }

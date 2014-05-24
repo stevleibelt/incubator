@@ -36,6 +36,23 @@ class MethodGenerator extends AbstractDocumentedGenerator
     }
 
     /**
+     * @param float|string $version
+     * @param string $description
+     * @return $this
+     * @see http://www.phpdoc.org/docs/latest/for-users/phpdoc/tags/since.html
+     */
+    public function addSince($version, $description = '')
+    {
+        $since = array(
+            'description'   => $description,
+            'version'       => $version
+        );
+        $this->addGeneratorProperty('since_versions', $since);
+
+        return $this;
+    }
+
+    /**
      * @return null|array
      */
     public function getBody()
