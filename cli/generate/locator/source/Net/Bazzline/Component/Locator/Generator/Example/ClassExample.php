@@ -20,14 +20,14 @@ class ClassExample extends AbstractExample
     function demonstrate()
     {
         //@todo add "return $this" to all addProperty methods of each generator
-        $classFactory = $this->getClassGeneratorFactory();
-        $constantFactory = $this->getConstantGeneratorFactory();
-        $documentationFactory = $this->getDocumentationGeneratorFactory();
-        $methodFactory = $this->getMethodGeneratorFactory();
-        $propertyFactory = $this->getPropertyGeneratorFactory();
-        $traitFactory = $this->getTraitGeneratorFactory();
+        $blockFactory           = $this->getBlockGeneratorFactory();
+        $classFactory           = $this->getClassGeneratorFactory();
+        $constantFactory        = $this->getConstantGeneratorFactory();
+        $documentationFactory   = $this->getDocumentationGeneratorFactory();
+        $methodFactory          = $this->getMethodGeneratorFactory();
+        $propertyFactory        = $this->getPropertyGeneratorFactory();
+        $traitFactory           = $this->getTraitGeneratorFactory();
 
-        //@todo implement documentation
         $myConstant = $constantFactory->create();
         $myConstant->setName('MY_CONSTANT');
         $myConstant->setValue('foobar');
@@ -36,37 +36,46 @@ class ClassExample extends AbstractExample
         $myProperty->setDocumentation($documentationFactory->create());
         $myProperty->markAsProtected();
         $myProperty->setName('myProperty');
-        //@todo extend documentation with automatically type hint (default mixed)
-        $myProperty->setValue('12345678.90');
+        $myProperty->setValue(12345678.90);
+        $myProperty->addTypeHint('float');
 
         $myMethod = $methodFactory->create();
         $myMethod->setDocumentation($documentationFactory->create());
-        //@todo add markAsAbstract
         $myMethod->markAsPublic();
         $myMethod->markAsFinal();
         $myMethod->setName('myMethod');
+        $myMethod->addParameter('foo', null, 'Foo');
+        $myMethod->addParameter('bar', 'null', 'Bar');
+        $myMethodBody = $blockFactory->create();
+        $myMethodBody
+            ->add('$foobar = $foo->toString();')
+            ->add('')
+            ->add('if (!is_null($bar)) {')
+            ->startIndention()
+                ->add('$foobar .= $bar->toString();')
+            ->stopIndention()
+            ->add('}')
+            ->add('')
+            ->add('return $foobar');
+        $myMethod->setBody($myMethodBody, 'string');
 
         $myTrait = $traitFactory->create();
         $myTrait->setDocumentation($documentationFactory->create());
         $myTrait->setName('myTrait');
 
-        $classDocumentation = $documentationFactory->create();
-        $classDocumentation->setVersion('0.8.15', 'available since 2014-05-24');
-        $classDocumentation->setAuthor('stev leibelt', 'artodeto@bazzline.net');
-
         $myClass = $classFactory->create();
-        $myClass->setDocumentation($classDocumentation);
+        $myClass->setDocumentation($documentationFactory->create());
         $myClass->setNamespace('My\Namespace');
         $myClass->setName('MyClass');
         $myClass->markAsFinal();
-        //@todo extend documentation -> add use if "\" exists in extends and "isInSameNamespace" is false
-        $myClass->addExtends('Foo\Bar');
-        //@todo extend documentation -> add use if "\" exists in implements and "isInSameNamespace" is false
-        $myClass->addImplements('Bar\Foo');
+        $myClass->addExtends('Foo\Bar', true);
+        $myClass->addImplements('Bar\FooInterface', true);
         $myClass->addConstant($myConstant);
         $myClass->addMethod($myMethod);
         $myClass->addProperty($myProperty);
         $myClass->addTrait($myTrait);
+        $myClass->getDocumentation()->setAuthor('stev leibelt', 'artodeto@bazzline.net');
+        $myClass->getDocumentation()->setVersion('0.8.15', 'available since 2014-05-24');
 
         echo $myClass->generate() . PHP_EOL;
     }

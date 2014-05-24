@@ -148,6 +148,7 @@ abstract class AbstractGenerator extends AbstractBasicGenerator implements Block
                 $content = $this->getLineGenerator($content);
             }
         }
+        //@todo why? - take a look to BlockGenerator->generate(), strings are not supported
         $content = $content->generate();
         if ($isIndented) {
             $this->getIndention()->decreaseLevel();

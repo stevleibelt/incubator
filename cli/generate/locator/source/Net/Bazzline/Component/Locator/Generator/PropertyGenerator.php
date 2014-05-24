@@ -67,12 +67,12 @@ class PropertyGenerator extends AbstractDocumentedGenerator
     public function generate()
     {
         $this->resetContent();
-        $documentation = $this->getGeneratorProperty('documentation');
-        $isStatic = $this->getGeneratorProperty('static', false);
-        $name = $this->getGeneratorProperty('name');
-        $typeHints = $this->getGeneratorProperty('type_hints', array());
-        $value = $this->getGeneratorProperty('value');
-        $visibility = $this->getGeneratorProperty('visibility');
+        $documentation  = $this->getGeneratorProperty('documentation');
+        $isStatic       = $this->getGeneratorProperty('static', false);
+        $name           = $this->getGeneratorProperty('name');
+        $typeHints      = $this->getGeneratorProperty('type_hints', array());
+        $value          = $this->getGeneratorProperty('value');
+        $visibility     = $this->getGeneratorProperty('visibility');
 
         if (is_null($name)) {
             throw new RuntimeException('name is mandatory');

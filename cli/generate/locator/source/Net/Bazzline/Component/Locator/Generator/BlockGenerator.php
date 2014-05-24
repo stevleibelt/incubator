@@ -10,13 +10,23 @@ namespace Net\Bazzline\Component\Locator\Generator;
  * Class BlockGenerator
  *
  * @package Net\Bazzline\Component\Locator\LocatorGenerator
+ * @todo add helpers like "startWhile", "startIf" and so one
  */
 class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDependentInterface
 {
-    /** @var array|BlockGenerator[]|LineGenerator[] */
+    /**
+     * @var boolean
+     */
+    private $addIndented;
+
+    /**
+     * @var array|BlockGenerator[]|LineGenerator[]
+     */
     private $content = array();
 
-    /** @var LineGenerator */
+    /**
+     * @var LineGenerator
+     */
     private $lineGenerator;
 
     /**
@@ -26,6 +36,7 @@ class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDe
      */
     public function __construct(LineGenerator $lineGenerator, Indention $indention, $content = null)
     {
+        $this->addIndented = false;
         $this->lineGenerator = $lineGenerator;
         parent::__construct($indention, $content);
     }
@@ -54,14 +65,17 @@ class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDe
     }
 
     /**
-     * @param string|array|GeneratorInterface $content
+     * @param array|GeneratorInterface|string $content
+     * @return $this
      * @throws InvalidArgumentException
-     * @todo rename to addContent
+     * @todo rename to addContent, easy up this method by working on todo in generate method
      */
     public function add($content)
     {
+        $indention = ($this->addIndented) ? $this->getIndention()->toString() : '';
+
         if (is_string($content)) {
-            $lineOfContent = $this->getLineGenerator($content);
+            $lineOfContent = $this->getLineGenerator($indention . $content);
             $this->content[] = $lineOfContent;
         } else if (is_array($content)) {
             foreach ($content as $part) {
@@ -73,10 +87,12 @@ class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDe
         } else {
             throw new InvalidArgumentException('content has to be string, an array or instance of AbstractContentGenerator');
         }
+
+        return $this;
     }
 
     /**
-     * return $this
+     * @return $this
      */
     public function clear()
     {
@@ -96,6 +112,7 @@ class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDe
     /**
      * @throws InvalidArgumentException|RuntimeException
      * @return string
+     * @todo implement support for string|array beside AbstractContentGenerator in $this->content
      */
     public function generate()
     {
@@ -126,6 +143,30 @@ class BlockGenerator extends AbstractContentGenerator implements LineGeneratorDe
     public function count()
     {
         return (count($this->content));
+    }
+
+    /**
+     * @todo find better name
+     * @return $this
+     */
+    public function startIndention()
+    {
+        $this->addIndented = true;
+        $this->getIndention()->increaseLevel();
+
+        return $this;
+    }
+
+    /**
+     * @todo find better name
+     * @return $this
+     */
+    public function stopIndention()
+    {
+        $this->addIndented = false;
+        $this->getIndention()->decreaseLevel();
+
+        return $this;
     }
 
     /**

@@ -22,18 +22,26 @@ class ClassGenerator extends AbstractDocumentedGenerator
 
     /**
      * @param string $className
+     * @param boolean $addToUse
      */
-    public function addExtends($className)
+    public function addExtends($className, $addToUse = false)
     {
         $this->addGeneratorProperty('extends', (string) $className);
+        if ($addToUse) {
+            $this->addUse($className);
+        }
     }
 
     /**
      * @param string $interfaceName
+     * @param boolean $addToUse
      */
-    public function addImplements($interfaceName)
+    public function addImplements($interfaceName, $addToUse = false)
     {
         $this->addGeneratorProperty('implements', (string) $interfaceName);
+        if ($addToUse) {
+            $this->addUse($interfaceName);
+        }
     }
 
     /**

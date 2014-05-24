@@ -28,11 +28,6 @@ class MethodGenerator extends AbstractDocumentedGenerator
         );
 
         $this->addGeneratorProperty('parameters', $parameter);
-        if ($this->completeDocumentationAutomatically === true) {
-            /** @var DocumentationGenerator $documentation */
-            $documentation = $this->getGeneratorProperty('documentation');
-            $documentation->addParameter($name, array($typeHint));
-        }
     }
 
     /**
@@ -61,19 +56,14 @@ class MethodGenerator extends AbstractDocumentedGenerator
     }
 
     /**
-     * @param array $body
-     * @param null|string|array $typeHintOfReturnValue
+     * @param string|array|LineGenerator|BlockGenerator $body
+     * @param array $returnValueTypeHints
      */
-    public function setBody(array $body, $typeHintOfReturnValue = null)
+    public function setBody($body, $returnValueTypeHints = array())
     {
         $this->addGeneratorProperty('body', $body, false);
         $this->addGeneratorProperty('has_body', true, false);
-        if ((!is_null($typeHintOfReturnValue))
-            && ($this->completeDocumentationAutomatically === true)) {
-            /** @var DocumentationGenerator $documentation */
-            $documentation = $this->getGeneratorProperty('documentation');
-            $documentation->setReturn($typeHintOfReturnValue);
-        }
+        $this->addGeneratorProperty('body_return_type_hints', $returnValueTypeHints);
     }
 
     public function markAsAbstract()
@@ -136,19 +126,25 @@ class MethodGenerator extends AbstractDocumentedGenerator
 
     private function generateBody()
     {
-        $hasBody    = $this->getGeneratorProperty('has_body', true);
+        $body       = $this->getGeneratorProperty('body', array('//@todo implement'));
         $isAbstract = $this->getGeneratorProperty('abstract', false);
+        $hasBody    = $this->getGeneratorProperty('has_body', true);
 
         if (!$isAbstract
             && $hasBody) {
-            $this->addContent($this->getBlockGenerator('{'));
+            $this->addContent('{');
+            if (!($body instanceof BlockGenerator)
+                || !($body instanceof LineGenerator)) {
+                if (!is_array($body)) {
+                    $body = array($body);
+                }
+                $body = $this->getBlockGenerator($body);
+            }
             $this->addGeneratorAsContent(
-                $this->getBlockGenerator(
-                    $this->getGeneratorProperty('body', array('//@todo implement'))
-                ),
+                $body,
                 true
             );
-            $this->addContent($this->getBlockGenerator('}'));
+            $this->addContent('}');
         }
     }
 
@@ -157,6 +153,17 @@ class MethodGenerator extends AbstractDocumentedGenerator
         $documentation = $this->getGeneratorProperty('documentation');
 
         if ($documentation instanceof DocumentationGenerator) {
+            if ($this->completeDocumentationAutomatically === true) {
+                $parameters         = $this->getGeneratorProperty('parameters', array());
+                $returnTypeHints    = $this->getGeneratorProperty('body_return_type_hints');
+
+                foreach ($parameters as $parameter) {
+                    $documentation->addParameter($parameter['name'], $parameter['type_hint']);
+                }
+                if (is_array($returnTypeHints)) {
+                    $documentation->setReturn($returnTypeHints);
+                }
+            }
             $this->addGeneratorAsContent($documentation);
         }
     }
@@ -189,18 +196,24 @@ class MethodGenerator extends AbstractDocumentedGenerator
                 $line->add('static');
             }
 
-            $parameterLine = $this->getLineGenerator();
-            foreach ($parameters as $parameter) {
-                if ((strlen($parameter['type_hint']) > 0)
-                    && (!in_array($parameter['type_hint'], $this->getNotPrintableTypeHints()))) {
-                    $parameterLine->add($parameter['type_hint']);
-                }
-                $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);
-                if (strlen((string) $parameter['default_value']) > 0) {
-                    $parameterLine->add('= ' . (string) $parameter['default_value']);
+            $parametersLine = $this->getLineGenerator();
+            $parametersLine->setSeparator(', ');
+            if (is_array($parameters)) {
+                foreach ($parameters as $parameter) {
+                    $parameterLine = $this->getLineGenerator();
+                    if ((strlen($parameter['type_hint']) > 0)
+                        && (!in_array($parameter['type_hint'], $this->getNotPrintableTypeHints()))) {
+                        $parameterLine->add($parameter['type_hint']);
+                    }
+                    $parameterLine->add(($parameter['is_reference'] ? '&' : '') . '$' . $parameter['name']);
+                    if (strlen((string) $parameter['default_value']) > 0) {
+                        $parameterLine->add('= ' . (string) $parameter['default_value']);
+                    }
+                    $parametersLine->add($parameterLine);
                 }
             }
-            $line->add('function ' . $name . '(' . $parameterLine->generate() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
+
+            $line->add('function ' . $name . '(' . $parametersLine->generate() . ')' . ((($isAbstract) || (!$hasBody)) ? ';' : ''));
             $block = $this->getBlockGenerator($line);
             $this->addContent($block);
         }

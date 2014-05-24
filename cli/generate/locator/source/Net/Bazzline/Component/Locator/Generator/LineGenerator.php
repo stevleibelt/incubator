@@ -27,6 +27,8 @@ class LineGenerator extends AbstractContentGenerator
     {
         if (is_string($content)) {
             $this->content[] = $content;
+        } else if ($content instanceof LineGenerator) {
+            $this->content[] = $content->generate();
         } else if (is_array($content)) {
             foreach ($content as $part) {
                 $this->add($part);
