@@ -5,9 +5,9 @@
  * @since 2014-04-29
  */
 
-use Net\Bazzline\Component\Locator\LocatorGenerator;
+use Net\Bazzline\Component\Locator\FromConfigurationGenerator;
 
-require_once __DIR__ . '/../../../../../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 global $argc, $argv;
 
@@ -33,7 +33,7 @@ $outputPath = $cwd . DIRECTORY_SEPARATOR . $argv[2];
 $pathToConfigurationFile = $cwd . DIRECTORY_SEPARATOR . $argv[1];
 
 try {
-    $generator = new LocatorGenerator();
+    $generator = new FromConfigurationGenerator();
     $generator->setOutputPath($outputPath);
     $generator->setPathToConfigurationFile($pathToConfigurationFile);
     $generator->generate();
