@@ -1,0 +1,64 @@
+<?php
+#!/bin/php
+/**
+ * @author sleibelt
+ * @since 2014-04-29
+ */
+
+use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
+use Net\Bazzline\Component\Locator\Configuration;
+use Net\Bazzline\Component\Locator\ConfigurationAssembler\FromArrayAssembler;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+global $argc, $argv;
+
+$isNotCalledFromCommandLineInterface = (PHP_SAPI !== 'cli');
+
+$usageMessage = 'Usage: ' . PHP_EOL .
+    basename(__FILE__) . ' <path to configuration file>' . PHP_EOL;
+
+if ($isNotCalledFromCommandLineInterface) {
+    echo 'This script can only be called from the command line' . PHP_EOL .
+        $usageMessage;
+    exit(1);
+}
+
+if ($argc !== 2) {
+    echo 'called with invalid number of arguments' . PHP_EOL;
+    echo $usageMessage;
+    exit(1);
+}
+
+$cwd = getcwd();
+$pathToConfigurationFile = $cwd . DIRECTORY_SEPARATOR . $argv[1];
+
+try {
+    if (!is_file($pathToConfigurationFile)) {
+        throw new Exception(
+            'provided path "' . $pathToConfigurationFile . '" is not a file'
+        );
+    }
+    if (!is_readable($pathToConfigurationFile)) {
+        throw new Exception(
+            'file "' . $pathToConfigurationFile . '" is not readable'
+        );
+    }
+    $data = require_once $pathToConfigurationFile;
+
+    $assembler = new FromArrayAssembler();
+    $configuration = new Configuration();
+    $factory = new LocatorGeneratorFactory();
+    $generator = $factory->create();
+
+    $assembler->setConfiguration($configuration);
+    $assembler->assemble($data);
+
+    $generator->setConfiguration($assembler->getConfiguration());
+    $generator->generate();
+    echo 'locator written into "' . $configuration->getFilePath() . '"' . PHP_EOL;
+    exit(0);
+} catch (Exception $exception) {
+    echo $exception->getMessage() . PHP_EOL;
+    exit(1);
+}

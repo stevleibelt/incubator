@@ -6,7 +6,6 @@
 
 namespace Net\Bazzline\Component\Locator;
 
-use Exception;
 use Net\Bazzline\Component\CodeGenerator\ClassGenerator;
 use Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory;
@@ -14,7 +13,8 @@ use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
-use Net\Bazzline\Component\Locator\Configuration\ConfigurationInterface;
+use Net\Bazzline\Component\CodeGenerator\FileGenerator;
+use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface;
 
 /**
  * Class LocatorGenerator
@@ -34,7 +34,7 @@ class LocatorGenerator
     private $classFactory;
 
     /**
-     * @var ConfigurationInterface
+     * @var \Net\Bazzline\Component\Locator\Configuration
      */
     private $configuration;
 
@@ -49,6 +49,11 @@ class LocatorGenerator
     private $fileFactory;
 
     /**
+     * @var FileExsistStrategyInterface
+     */
+    private $fileExistsStrategy;
+
+    /**
      * @var MethodGeneratorFactory
      */
     private $methodFactory;
@@ -59,15 +64,10 @@ class LocatorGenerator
     private $propertyFactory;
 
     /**
-     * @var string
-     */
-    private $outputPath;
-
-    /**
-     * @param \Net\Bazzline\Component\Locator\Configuration\ConfigurationInterface $configuration
+     * @param \Net\Bazzline\Component\Locator\Configuration $configuration
      * @return $this
      */
-    public function setConfiguration($configuration)
+    public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
 
@@ -92,6 +92,17 @@ class LocatorGenerator
     public function setFileFactory($fileFactory)
     {
         $this->fileFactory = $fileFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param FileExistsStrategyInterface $strategy
+     * @return $this
+     */
+    public function setFileExistsStrategy(FileExistsStrategyInterface $strategy)
+    {
+        $this->fileExistsStrategy = $strategy;
 
         return $this;
     }
@@ -141,68 +152,41 @@ class LocatorGenerator
     }
 
     /**
-     * @param string $pathToConfigurationFile
-     * @throws Exception
-     */
-    public function setPathToConfigurationFile($pathToConfigurationFile)
-    {
-        if (!is_readable($pathToConfigurationFile)) {
-            throw new Exception('configuration file is not readable: "' . $pathToConfigurationFile . '"');
-        }
-        $configuration = require_once $pathToConfigurationFile;
-        //@todo implement configuration validation
-        if (!is_array($configuration)
-            || empty($configuration)) {
-            throw new Exception('configuration file has to be in the documented format');
-        }
-        $this->configuration = $configuration;
-    }
-
-    /**
-     * @param string $outputPath
-     * @throws Exception
-     */
-    public function setOutputPath($outputPath)
-    {
-        if (!is_writable($outputPath)) {
-            throw new Exception('output directory is not writable: "' . $outputPath . '"');
-        }
-        $this->outputPath = (string) $outputPath;
-    }
-
-    /**
-     * @throws Exception
+     * @throws RuntimeException
      */
     public function generate()
     {
         $this->moveOldLocatorFileIfExists();
         $this->createLocatorFile();
     }
-/*
-array (
-'shared_instance' =>
-array (
-'CookieManager' => 'Application\\Cookie\\CookieManager',
-'Database' => 'Application\\Service\\Factory\\DatabaseFactory',
-),
-'single_instance' =>
-array (
-'Lock' => 'Application\\Service\\Factory\\LockFileFactory',
-'LockAlias' => 'Application\\Service\\Factory\\LockFileFactory',
-),
-)
-*/
+
+    /**
+     * @throws RuntimeException
+     */
     private function createLocatorFile()
     {
         $file = $this->fileFactory->create();
 
         $class = $this->createLocatorClass();
-
         $file->addClass($class);
         $content = $file->generate();
 
-        if (file_put_contents($this->outputPath . DIRECTORY_SEPARATOR . $this->configuration['file_name'], $content) === false) {
-            throw new Exception('can not create new locator in "' . $this->outputPath . DIRECTORY_SEPARATOR . $this->configuration['file_name']);
+        $this->dumpToFile($content);
+    }
+
+    /**
+     * @param string $content
+     * @throws RuntimeException
+     */
+    private function dumpToFile($content)
+    {
+        $filePath = $this->configuration->getFilePath() . DIRECTORY_SEPARATOR .
+            $this->configuration->getFileName();
+
+        if (file_put_contents($filePath, $content) === false) {
+            throw new RuntimeException(
+                'can not create new locator in "' . $filePath . '"'
+            );
         }
     }
 
@@ -214,10 +198,12 @@ array (
         $class = $this->classFactory->create();
 
         $class->setDocumentation($this->documentationFactory->create());
-        $class->setName($this->configuration['class_name']);
-        $class->setNamespace($this->configuration['namespace']);
-        if (isset($this->configuration['parent_class_name'])) {
-            $class->addExtends($this->configuration['parent_class_name'], true);
+        $class->setName($this->configuration->getClassName());
+        if ($this->configuration->hasNamespace()) {
+            $class->setNamespace($this->configuration->getNamespace());
+        }
+        if ($this->configuration->hasParentClassName()) {
+            $class->addExtends($this->configuration->getParentClassName(), true);
         }
 
         $class = $this->addDocumentationToClass($class);
@@ -239,8 +225,8 @@ array (
     private function addDocumentationToClass(ClassGenerator $class)
     {
         $class->getDocumentation()
-            ->setClass($this->configuration['class_name'])
-            ->setPackage($this->configuration['namespace']);
+            ->setClass($this->configuration->getClassName())
+            ->setPackage($this->configuration->getNamespace());
 
         return $class;
     }
@@ -350,18 +336,23 @@ array (
     }
 
     /**
-     * @throws \Exception
+     * @throws RuntimeException
      */
     private function moveOldLocatorFileIfExists()
     {
-        $oldName = $this->configuration['file_name'];
-        $pathToOldLocatorFile = $this->outputPath;
-        if (file_exists($pathToOldLocatorFile . DIRECTORY_SEPARATOR . $oldName)) {
-            $oldNameAsArray = explode('.', $oldName);
-            $extension = array_pop($oldNameAsArray);
-            $newName = implode('.', $oldNameAsArray) . '.' . time() . '.' . $extension;
-            if (rename($pathToOldLocatorFile . DIRECTORY_SEPARATOR . $oldName, $pathToOldLocatorFile . DIRECTORY_SEPARATOR . $newName) === false) {
-                throw new Exception('old locator file with name "' . $oldName . '" already exists and can not be renamed to "' . $newName . '"');
+        $filePath = $this->configuration->getFilePath() . DIRECTORY_SEPARATOR .
+            $this->configuration->getFileName();
+
+        if (file_exists($filePath)) {
+            if ($this->fileExistsStrategy instanceof FileExistsStrategyInterface) {
+                $this->fileExistsStrategy
+                    ->setFileName($this->configuration->getFileName())
+                    ->setFilePath($this->configuration->getFilePath())
+                    ->execute();
+            } else {
+                throw new RuntimeException(
+                    'file "' . $filePath . '" already exists'
+                );
             }
         }
     }
