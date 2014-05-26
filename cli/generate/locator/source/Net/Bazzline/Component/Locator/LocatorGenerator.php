@@ -14,13 +14,14 @@ use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
+use Net\Bazzline\Component\Locator\Configuration\ConfigurationInterface;
 
 /**
- * Class FromConfigurationGenerator
+ * Class LocatorGenerator
  *
  * @package Net\Bazzline\Component\Locator
  */
-class FromConfigurationGenerator
+class LocatorGenerator
 {
     /**
      * @var BlockGeneratorFactory
@@ -33,7 +34,7 @@ class FromConfigurationGenerator
     private $classFactory;
 
     /**
-     * @var array
+     * @var ConfigurationInterface
      */
     private $configuration;
 
@@ -62,14 +63,81 @@ class FromConfigurationGenerator
      */
     private $outputPath;
 
-    public function __construct()
+    /**
+     * @param \Net\Bazzline\Component\Locator\Configuration\ConfigurationInterface $configuration
+     * @return $this
+     */
+    public function setConfiguration($configuration)
     {
-        $this->blockFactory         = new BlockGeneratorFactory();
-        $this->classFactory         = new ClassGeneratorFactory();
-        $this->documentationFactory = new DocumentationGeneratorFactory();
-        $this->fileFactory          = new FileGeneratorFactory();
-        $this->methodFactory        = new MethodGeneratorFactory();
-        $this->propertyFactory      = new PropertyGeneratorFactory();
+        $this->configuration = $configuration;
+
+        return $this;
+    }
+
+    /**
+     * @param \Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory $documentationFactory
+     * @return $this
+     */
+    public function setDocumentationFactory($documentationFactory)
+    {
+        $this->documentationFactory = $documentationFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param \Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory $fileFactory
+     * @return $this
+     */
+    public function setFileFactory($fileFactory)
+    {
+        $this->fileFactory = $fileFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param \Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory $methodFactory
+     * @return $this
+     */
+    public function setMethodFactory($methodFactory)
+    {
+        $this->methodFactory = $methodFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param \Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory $propertyFactory
+     * @return $this
+     */
+    public function setPropertyFactory($propertyFactory)
+    {
+        $this->propertyFactory = $propertyFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param \Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory $classFactory
+     * @return $this
+     */
+    public function setClassFactory($classFactory)
+    {
+        $this->classFactory = $classFactory;
+
+        return $this;
+    }
+
+    /**
+     * @param \Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory $blockFactory
+     * @return $this
+     */
+    public function setBlockFactory($blockFactory)
+    {
+        $this->blockFactory = $blockFactory;
+
+        return $this;
     }
 
     /**
