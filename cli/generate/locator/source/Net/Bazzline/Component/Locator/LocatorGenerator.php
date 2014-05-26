@@ -13,7 +13,6 @@ use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\FileGenerator;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface;
 
 /**
@@ -49,7 +48,7 @@ class LocatorGenerator
     private $fileFactory;
 
     /**
-     * @var FileExsistStrategyInterface
+     * @var FileExistsStrategyInterface
      */
     private $fileExistsStrategy;
 
