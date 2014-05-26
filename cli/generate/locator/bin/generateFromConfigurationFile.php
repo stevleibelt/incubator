@@ -8,6 +8,7 @@
 use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
 use Net\Bazzline\Component\Locator\Configuration;
 use Net\Bazzline\Component\Locator\ConfigurationAssembler\FromArrayAssembler;
+use Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -49,12 +50,16 @@ try {
     $assembler = new FromArrayAssembler();
     $configuration = new Configuration();
     $factory = new LocatorGeneratorFactory();
+    $fileExistsStrategy = new SuffixWithCurrentTimestampStrategy();
     $generator = $factory->create();
 
     $assembler->setConfiguration($configuration);
     $assembler->assemble($data);
 
+    $fileExistsStrategy->setCurrentTimeStamp(time());
+
     $generator->setConfiguration($assembler->getConfiguration());
+    $generator->setFileExistsStrategy($fileExistsStrategy);
     $generator->generate();
     echo 'locator written into "' . $configuration->getFilePath() . '"' . PHP_EOL;
     exit(0);
