@@ -10,12 +10,32 @@ return array(
     'file_path' => __DIR__,
     'namespace' => 'Application\Service',
     'parent_class_name' => 'BaseLocator',
-    'shared_instance' => array(
-        'CookieManager' => 'Application\Cookie\CookieManager',              //invokable instance, CookieManager can be created by using "$cookieManager = new CookieManager()"
-        'Database'      => 'Application\Service\Factory\DatabaseFactory'    //a factory takes care of creating the Database, depending on the php doc return annotation, either a class or an interface will be added to the created php doc, the factory has to implement a provided LocatorDependentInterface
-    ),
-    'single_instance' => array(
-        'Lock'      => 'Application\Service\Factory\LockFileFactory',
-        'LockAlias' => 'Application\Service\Factory\LockFileFactory'        //the key defines how the "get"-Method will be named
+    //default for "is_factory" is false
+    //default for "is_shared" is true
+    'instances' => array(
+        array(
+            'alias'         => 'ExampleUniqueInvokableInstance',
+            'class'         => 'Application\Model\ExampleUniqueInvokableInstance',
+            'is_factory'    => false,
+            'is_shared'     => false
+        ),
+        array(
+            'alias'         => 'ExampleUniqueFactorizedInstance',
+            'class'         => 'Application\Factory\ExampleUniqueFactorizedInstanceFactory',
+            'is_factory'    => true,
+            'is_shared'     => false
+        ),
+        array(
+            'alias'         => 'ExampleSharedInvokableInstance',
+            'class'         => 'Application\Model\ExampleSharedInvokableInstance',
+            'is_factory'    => false,
+            'is_shared'     => true
+        ),
+        array(
+            'alias'         => 'ExampleSharedFactorizedInstance',
+            'class'         => 'Application\Factory\ExampleSharedFactorizedInstanceFactory',
+            'is_factory'    => true,
+            'is_shared'     => true
+        )
     )
 );
