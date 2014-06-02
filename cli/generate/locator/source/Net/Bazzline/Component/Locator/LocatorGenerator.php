@@ -205,6 +205,7 @@ class LocatorGenerator
             $class->addExtends($this->configuration->getParentClassName(), true);
         }
 
+        $class->addImplements('\Net\Bazzline\Component\Locator\LocatorInterface');
         $class = $this->addDocumentationToClass($class);
         $class = $this->addPropertiesToClass($class);
         $class = $this->addMethodIsInInstancePoolToClass($class);
