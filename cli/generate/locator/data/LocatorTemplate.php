@@ -4,7 +4,13 @@
  * @since 2014-05-27
  */
 
-class LocatorTemplate
+use Net\Bazzline\Component\Locator\FactoryInterface;
+use Net\Bazzline\Component\Locator\LocatorInterface;
+
+/**
+ * Class LocatorTemplate
+ */
+class LocatorTemplate implements LocatorInterface
 {
     /**
      * @var array
