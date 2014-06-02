@@ -83,6 +83,7 @@ class LocatorTemplate implements LocatorInterface
     protected function fetchFromFactoryInstancePool($className)
     {
         if ($this->isNotInFactoryInstancePool($className)) {
+            /** @var FactoryInterface $factory */
             $factory = new $className();
             $factory->setLocator($this);
             $this->addToFactoryInstancePool($className, $factory);
