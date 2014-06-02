@@ -9,7 +9,14 @@ return array(
     'file_name' => 'Locator.php',
     'file_path' => __DIR__,
     'namespace' => 'Application\Service',
-    'parent_class_name' => 'BaseLocator',
+    //add use statements here
+    'uses' => array(),
+    //add classes here
+    'extends' => array(
+        'BaseLocator'
+    ),
+    //add interfaces here
+    'implements' => array(),
     //default for "is_factory" is false
     //default for "is_shared" is true
     'instances' => array(
