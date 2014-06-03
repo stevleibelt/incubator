@@ -5,9 +5,8 @@
  */
 
 return array(
-    'class_name' => 'Locator',
-    'file_name' => 'Locator.php',
-    'file_path' => __DIR__,
+    'name' => 'Locator',
+    'output_path' => __DIR__,
     'namespace' => 'Application\Service',
     //add use statements here
     'uses' => array(),
