@@ -5,17 +5,10 @@
  */
 
 return array(
-    'name' => 'Locator',
-    'output_path' => __DIR__,
-    'namespace' => 'Application\Service',
-    //add use statements here
-    'uses' => array(),
     //add classes here
     'extends' => array(
         'BaseLocator'
     ),
-    //add interfaces here
-    'implements' => array(),
     //default for "is_factory" is false
     //default for "is_shared" is true
     'instances' => array(
@@ -43,5 +36,12 @@ return array(
             'is_factory'    => true,
             'is_shared'     => true
         )
-    )
+    ),
+    //add interfaces here
+    'implements' => array(),
+    'name' => 'Locator',    //determines file name as well as php class name
+    'namespace' => 'Application\Service',
+    'file_path' => __DIR__,
+    //add use statements here
+    'uses' => array()
 );

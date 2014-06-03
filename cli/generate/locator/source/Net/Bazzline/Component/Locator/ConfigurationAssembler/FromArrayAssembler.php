@@ -33,9 +33,9 @@ class FromArrayAssembler extends AbstractAssembler
 
         //set strings
         $configuration
-            ->setClassName($data['class_name'])
-            ->setFileName($data['file_name'])
+            ->setName($data['class_name'])
             ->setFilePath($data['file_path'])
+            ->setName($data['name'])
             ->setNamespace($data['namespace'])
             ->setParentClassName($data['parent_class_name']);
 
@@ -71,8 +71,8 @@ class FromArrayAssembler extends AbstractAssembler
 
         $mandatoryKeysToExpectedTyp = array(
             'class_name'        => 'string',
-            'file_name'         => 'string',
             'file_path'         => 'string',
+            'name'              => 'string',
             'namespace'         => 'string',
             'parent_class_name' => 'string',
             'shared_instance'   => 'array',

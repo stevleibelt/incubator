@@ -13,19 +13,24 @@ namespace Net\Bazzline\Component\Locator;
 class Configuration
 {
     /**
-     * @var string
+     * @var array
      */
-    private $className;
+    private $extends = array();
+
+    /**
+     * @var array
+     */
+    private $instances = array();
+
+    /**
+     * @var array
+     */
+    private $implements = array();
 
     /**
      * @var string
      */
-    private $fileName;
-
-    /**
-     * @var string
-     */
-    private $filePath;
+    private $name;
 
     /**
      * @var string
@@ -35,33 +40,28 @@ class Configuration
     /**
      * @var string
      */
-    private $parentClassName;
+    private $filePath;
 
     /**
      * @var array
      */
-    private $sharedInstances = array();
-
-    /**
-     * @var array
-     */
-    private $singleInstances = array();
+    private $uses = array();
 
     /**
      * @return null|string
      */
-    public function getClassName()
+    public function getName()
     {
-        return $this->className;
+        return $this->name;
     }
 
     /**
      * @param string $name
      * @return $this
      */
-    public function setClassName($name)
+    public function setName($name)
     {
-        $this->className = $name;
+        $this->name = (string) $name;
 
         return $this;
     }
@@ -71,18 +71,7 @@ class Configuration
      */
     public function getFileName()
     {
-        return $this->fileName;
-    }
-
-    /**
-     * @param string $name
-     * @return $this
-     */
-    public function setFileName($name)
-    {
-        $this->fileName = $name;
-
-        return $this;
+        return (is_string($this->name)) ? $this->name . '.php' : null;
     }
 
     /**
@@ -132,40 +121,13 @@ class Configuration
     }
 
     /**
-     * @return null|string
-     */
-    public function getParentClassName()
-    {
-        return $this->parentClassName;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function hasParentClassName()
-    {
-        return (is_string($this->parentClassName));
-    }
-
-    /**
-     * @param string $name
-     * @return $this
-     */
-    public function setParentClassName($name)
-    {
-        $this->parentClassName = $name;
-
-        return $this;
-    }
-
-    /**
      * @param string $fullQualifiedClassName
      * @param string $alias
      * @return $this
      */
     public function addSharedInstance($fullQualifiedClassName, $alias = '')
     {
-        $this->sharedInstances[] = array(
+        $this->instances[] = array(
             'alias' => $alias,
             'name'  => $fullQualifiedClassName
         );
@@ -176,9 +138,9 @@ class Configuration
     /**
      * @return array
      */
-    public function getSharedInstances()
+    public function getInstances()
     {
-        return $this->sharedInstances;
+        return $this->instances;
     }
 
     /**
@@ -186,7 +148,7 @@ class Configuration
      */
     public function hasSharedInstances()
     {
-        return (!empty($this->sharedInstances));
+        return (!empty($this->instances));
     }
 
     /**
@@ -196,7 +158,7 @@ class Configuration
      */
     public function addSingleInstance($fullQualifiedClassName, $alias = '')
     {
-        $this->singleInstances[] = array(
+        $this->implements[] = array(
             'alias' => $alias,
             'name'  => $fullQualifiedClassName
         );
@@ -207,9 +169,9 @@ class Configuration
     /**
      * @return array
      */
-    public function getSingleInstances()
+    public function getImplements()
     {
-        return $this->singleInstances;
+        return $this->implements;
     }
 
     /**
@@ -217,6 +179,6 @@ class Configuration
      */
     public function hasSingleInstances()
     {
-        return (!empty($this->singleInstances));
+        return (!empty($this->implements));
     }
 }

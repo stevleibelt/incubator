@@ -197,7 +197,7 @@ class LocatorGenerator
         $class = $this->classFactory->create();
 
         $class->setDocumentation($this->documentationFactory->create());
-        $class->setName($this->configuration->getClassName());
+        $class->setName($this->configuration->getName());
         if ($this->configuration->hasNamespace()) {
             $class->setNamespace($this->configuration->getNamespace());
         }
@@ -225,7 +225,7 @@ class LocatorGenerator
     private function addDocumentationToClass(ClassGenerator $class)
     {
         $class->getDocumentation()
-            ->setClass($this->configuration->getClassName())
+            ->setClass($this->configuration->getName())
             ->setPackage($this->configuration->getNamespace());
 
         return $class;
