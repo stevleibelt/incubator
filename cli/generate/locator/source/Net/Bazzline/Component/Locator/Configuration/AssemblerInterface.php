@@ -4,13 +4,13 @@
  * @since 2014-05-26 
  */
 
-namespace Net\Bazzline\Component\Locator\ConfigurationAssembler;
+namespace Net\Bazzline\Component\Locator\Configuration;
 
 use Net\Bazzline\Component\Locator\Configuration;
 
 /**
  * Interface AssemblerInterface
- * @package Net\Bazzline\Component\Locator\ConfigurationAssembler
+ * @package Net\Bazzline\Component\Locator\Configuration
  */
 interface AssemblerInterface
 {

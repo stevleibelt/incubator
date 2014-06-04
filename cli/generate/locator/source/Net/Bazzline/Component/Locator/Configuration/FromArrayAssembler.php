@@ -4,58 +4,73 @@
  * @since 2014-05-26 
  */
 
-namespace Net\Bazzline\Component\Locator\ConfigurationAssembler;
+namespace Net\Bazzline\Component\Locator\Configuration;
 
 /**
  * Class FromArrayAssembler
- * @package Net\Bazzline\Component\Locator\ConfigurationAssembler
+ * @package Net\Bazzline\Component\Locator\Configuration
  */
 class FromArrayAssembler extends AbstractAssembler
 {
     /**
      * @param mixed $data
-     * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    public function assemble($data)
-    {
-        $this->validateData($data);
-        $this->map($data);
-    }
-
-    /**
-     * @param array $data
-     * @throws RuntimeException
-     */
-    private function map(array $data)
+    protected function map($data)
     {
         $configuration = $this->getConfiguration();
 
         //set strings
         $configuration
-            ->setName($data['class_name'])
             ->setFilePath($data['file_path'])
             ->setName($data['name'])
-            ->setNamespace($data['namespace'])
-            ->setParentClassName($data['parent_class_name']);
+            ->setNamespace($data['namespace']);
 
         //set arrays
-        foreach ($data['shared_instance'] as $alias => $fullQualifiedClassName) {
-            $configuration->addInstance($fullQualifiedClassName, $alias);
+        foreach ($data['extends'] as $className) {
+            $configuration->addExtends($className);
         }
 
-        foreach ($data['single_instance'] as $alias => $fullQualifiedClassName) {
-            $configuration->addImplements($fullQualifiedClassName, $alias);
+        foreach ($data['instances'] as $key => $instance) {
+            if (!isset($instance['class'])) {
+                throw new RuntimeException(
+                    'instance entry with key "' . $key . '" needs to have a key "class"'
+                );
+            }
+
+            $alias = (isset($instance['alias'])) ? $instance['alias'] : '';
+            $class = $instance['class'];
+            $isFactory = (isset($instance['is_factory'])) ? $instance['is_factory'] : false;
+            $isShared = (isset($instance['is_shared'])) ? $instance['is_shared'] : true;
+
+            $configuration->addInstance($class, $isFactory, $isShared, $alias);
+        }
+
+        foreach ($data['implements'] as $interfaceName) {
+            $configuration->addImplements($interfaceName);
+        }
+
+        foreach ($data['uses'] as $key => $uses) {
+            if (!isset($uses['class'])) {
+                throw new RuntimeException(
+                    'use entry with key "' . $key . '" needs to have a key "class"'
+                );
+            }
+
+            $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
+            $class = $uses['class'];
+
+            $configuration->addUses($class, $alias);
         }
 
         $this->setConfiguration($configuration);
     }
 
     /**
-     * @param $data
+     * @param mixed $data
      * @throws InvalidArgumentException
      */
-    private function validateData($data)
+    protected function validateData($data)
     {
         if (!is_array($data)) {
             throw new InvalidArgumentException(
@@ -70,13 +85,13 @@ class FromArrayAssembler extends AbstractAssembler
         }
 
         $mandatoryKeysToExpectedTyp = array(
-            'class_name'        => 'string',
+            'extends'           => 'array',
             'file_path'         => 'string',
+            'instances'         => 'array',
+            'implements'        => 'array',
             'name'              => 'string',
             'namespace'         => 'string',
-            'parent_class_name' => 'string',
-            'shared_instance'   => 'array',
-            'single_instance'   => 'array'
+            'uses'              => 'array'
         );
 
         foreach ($mandatoryKeysToExpectedTyp as $mandatoryKey => $expectedType) {

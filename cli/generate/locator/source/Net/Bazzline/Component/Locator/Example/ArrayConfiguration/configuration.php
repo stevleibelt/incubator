@@ -5,18 +5,17 @@
  */
 
 return array(
-    //add classes here
+    //add class names here, depending on entries in use section, full qualified or not
     'extends' => array(
         'BaseLocator'
     ),
-    //default for "is_factory" is false
-    //default for "is_shared" is true
-    //format: array('alias' => <string>, 'name' => <string>, 'is_factory' => <boolean>, 'is_shared' => <boolean>)
+    //file path where files will be generated
+    'file_path' => __DIR__,
+    //format: array(['alias' => <string>], 'name' => <string>, ['is_factory' => <boolean>], ['is_shared' => <boolean>])
     'instances' => array(
         array(
             'alias'         => 'ExampleUniqueInvokableInstance',
             'class'         => 'Application\Model\ExampleUniqueInvokableInstance',
-            'is_factory'    => false,
             'is_shared'     => false
         ),
         array(
@@ -28,26 +27,22 @@ return array(
         array(
             'alias'         => 'ExampleSharedInvokableInstance',
             'class'         => 'Application\Model\ExampleSharedInvokableInstance',
-            'is_factory'    => false,
-            'is_shared'     => true
         ),
         array(
             'alias'         => 'ExampleSharedFactorizedInstance',
             'class'         => 'Application\Factory\ExampleSharedFactorizedInstanceFactory',
             'is_factory'    => true,
-            'is_shared'     => true
         )
     ),
-    //add interface names here
+    //add interface names here, depending on entries in use section, full qualified or not
     'implements' => array(
         'My\Full\QualifiedInterface',
         'MyInterface'
     ),
     'name' => 'Locator',    //determines file name as well as php class name
     'namespace' => 'Application\Service',
-    'file_path' => __DIR__,
     //add use statements here
-    //format: array('alias' => <string>, 'name' => <string>)
+    //format: array(['alias' => <string>], 'name' => <string>)
     'uses' => array(
         array(
             'alias' => 'MyInterface',

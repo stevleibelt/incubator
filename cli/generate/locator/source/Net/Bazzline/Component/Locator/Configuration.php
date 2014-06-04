@@ -40,6 +40,11 @@ class Configuration
     /**
      * @var string
      */
+    private $fileName;
+
+    /**
+     * @var string
+     */
     private $filePath;
 
     /**
@@ -62,6 +67,7 @@ class Configuration
     public function setName($name)
     {
         $this->name = (string) $name;
+        $this->fileName = $this->name . '.php';
 
         return $this;
     }
@@ -71,7 +77,7 @@ class Configuration
      */
     public function getFileName()
     {
-        return (is_string($this->name)) ? $this->name . '.php' : null;
+        return $this->fileName;
     }
 
     /**
@@ -88,7 +94,7 @@ class Configuration
      */
     public function setFilePath($path)
     {
-        $this->filePath = $path;
+        $this->filePath = (string) $path;
 
         return $this;
     }
@@ -115,7 +121,7 @@ class Configuration
      */
     public function setNamespace($namespace)
     {
-        $this->namespace = $namespace;
+        $this->namespace = (string) $namespace;
 
         return $this;
     }
@@ -127,13 +133,13 @@ class Configuration
      * @param string $alias
      * @return $this
      */
-    public function addInstance($class, $isFactory = false, $isShared = false,$alias = '')
+    public function addInstance($class, $isFactory, $isShared, $alias)
     {
         $this->instances[] = array(
-            'alias'         => $alias,
-            'class'         => $class,
-            'is_factory'    => $isFactory,
-            'is_shared'     => $isShared
+            'alias'         => (string) $alias,
+            'class'         => (string) $class,
+            'is_factory'    => (bool) $isFactory,
+            'is_shared'     => (bool) $isShared
         );
 
         return $this;
@@ -188,7 +194,7 @@ class Configuration
      */
     public function addExtends($className)
     {
-        $this->extends[] = $className;
+        $this->extends[] = (string) $className;
 
         return $this;
     }
@@ -214,11 +220,11 @@ class Configuration
      * @param string $alias
      * @return $this
      */
-    public function addUses($fullQualifiedClassName, $alias = '')
+    public function addUses($fullQualifiedClassName, $alias)
     {
         $this->uses[] = array(
-            'alias' => $alias,
-            'name'  => $fullQualifiedClassName
+            'alias' => (string) $alias,
+            'name'  => (string) $fullQualifiedClassName
         );
 
         return $this;

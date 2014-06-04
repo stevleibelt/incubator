@@ -4,11 +4,11 @@
  * @since 2014-05-26 
  */
 
-namespace Net\Bazzline\Component\Locator\ConfigurationAssembler;
+namespace Net\Bazzline\Component\Locator\Configuration;
 
 /**
  * Class FromPropelSchemaXmlFileAssembler
- * @package Net\Bazzline\Component\Locator\ConfigurationAssembler
+ * @package Net\Bazzline\Component\Locator\Configuration
  */
 class FromPropelSchemaXmlFileAssembler extends AbstractAssembler
 {

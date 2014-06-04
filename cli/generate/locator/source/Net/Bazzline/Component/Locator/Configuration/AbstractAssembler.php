@@ -4,13 +4,13 @@
  * @since 2014-05-26 
  */
 
-namespace Net\Bazzline\Component\Locator\ConfigurationAssembler;
+namespace Net\Bazzline\Component\Locator\Configuration;
 
 use Net\Bazzline\Component\Locator\Configuration;
 
 /**
  * Class AbstractAssembler
- * @package Net\Bazzline\Component\Locator\ConfigurationAssembler
+ * @package Net\Bazzline\Component\Locator\Configuration
  */
 abstract class AbstractAssembler implements AssemblerInterface
 {
@@ -23,7 +23,7 @@ abstract class AbstractAssembler implements AssemblerInterface
      * @return Configuration
      * @throws RuntimeException
      */
-    public function getConfiguration()
+    final public function getConfiguration()
     {
         if (is_null($this->configuration)) {
             throw new RuntimeException(
@@ -38,10 +38,33 @@ abstract class AbstractAssembler implements AssemblerInterface
      * @param Configuration $configuration
      * @return $this
      */
-    public function setConfiguration(Configuration $configuration)
+    final public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
 
         return $this;
     }
+
+    /**
+     * @param mixed $data
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     */
+    final public function assemble($data)
+    {
+        $this->validateData($data);
+        $this->map($data);
+    }
+
+    /**
+     * @param mixed $data
+     * @throws RuntimeException
+     */
+    abstract protected function map($data);
+
+    /**
+     * @param mixed $data
+     * @throws InvalidArgumentException
+     */
+    abstract protected function validateData($data);
 }
