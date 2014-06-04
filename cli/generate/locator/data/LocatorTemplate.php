@@ -78,11 +78,18 @@ class LocatorTemplate implements LocatorInterface
 
     /**
      * @param string $className
+     * @throws InvalidArgumentException
      * @return FactoryInterface
      */
     protected function fetchFromFactoryInstancePool($className)
     {
         if ($this->isNotInFactoryInstancePool($className)) {
+            if (!class_exists($className)) {
+                throw new InvalidArgumentException(
+                    'factory class "' . $className . '" does not exist'
+                );
+            }
+
             /** @var FactoryInterface $factory */
             $factory = new $className();
             $factory->setLocator($this);
@@ -123,11 +130,18 @@ class LocatorTemplate implements LocatorInterface
 
     /**
      * @param string $className
+     * @throws InvalidArgumentException
      * @return mixed|stdClass
      */
     protected function fetchFromSharedInstancePool($className)
     {
         if ($this->isNotInFactoryInstancePool($className)) {
+            if (!class_exists($className)) {
+                throw new InvalidArgumentException(
+                    'class "' . $className . '" does not exist'
+                );
+            }
+
             $instance = new $className();
             $this->addToFactoryInstancePool($className, $instance);
         }
