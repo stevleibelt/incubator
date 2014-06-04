@@ -11,6 +11,7 @@ return array(
     ),
     //default for "is_factory" is false
     //default for "is_shared" is true
+    //format: array('alias' => <string>, 'name' => <string>, 'is_factory' => <boolean>, 'is_shared' => <boolean>)
     'instances' => array(
         array(
             'alias'         => 'ExampleUniqueInvokableInstance',
@@ -37,11 +38,20 @@ return array(
             'is_shared'     => true
         )
     ),
-    //add interfaces here
-    'implements' => array(),
+    //add interface names here
+    'implements' => array(
+        'My\Full\QualifiedInterface',
+        'MyInterface'
+    ),
     'name' => 'Locator',    //determines file name as well as php class name
     'namespace' => 'Application\Service',
     'file_path' => __DIR__,
     //add use statements here
-    'uses' => array()
+    //format: array('alias' => <string>, 'name' => <string>)
+    'uses' => array(
+        array(
+            'alias' => 'MyInterface',
+            'name'  => 'My\OtherInterface'
+        )
+    )
 );

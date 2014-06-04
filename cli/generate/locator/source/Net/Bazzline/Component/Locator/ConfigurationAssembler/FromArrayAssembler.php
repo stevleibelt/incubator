@@ -41,11 +41,11 @@ class FromArrayAssembler extends AbstractAssembler
 
         //set arrays
         foreach ($data['shared_instance'] as $alias => $fullQualifiedClassName) {
-            $configuration->addSharedInstance($fullQualifiedClassName, $alias);
+            $configuration->addInstance($fullQualifiedClassName, $alias);
         }
 
         foreach ($data['single_instance'] as $alias => $fullQualifiedClassName) {
-            $configuration->addSingleInstance($fullQualifiedClassName, $alias);
+            $configuration->addImplements($fullQualifiedClassName, $alias);
         }
 
         $this->setConfiguration($configuration);

@@ -121,15 +121,19 @@ class Configuration
     }
 
     /**
-     * @param string $fullQualifiedClassName
+     * @param string $class
+     * @param bool $isFactory
+     * @param bool $isShared
      * @param string $alias
      * @return $this
      */
-    public function addSharedInstance($fullQualifiedClassName, $alias = '')
+    public function addInstance($class, $isFactory = false, $isShared = false,$alias = '')
     {
         $this->instances[] = array(
-            'alias' => $alias,
-            'name'  => $fullQualifiedClassName
+            'alias'         => $alias,
+            'class'         => $class,
+            'is_factory'    => $isFactory,
+            'is_shared'     => $isShared
         );
 
         return $this;
@@ -146,22 +150,18 @@ class Configuration
     /**
      * @return boolean
      */
-    public function hasSharedInstances()
+    public function hasInstances()
     {
         return (!empty($this->instances));
     }
 
     /**
-     * @param string $fullQualifiedClassName
-     * @param string $alias
+     * @param string $interfaceName
      * @return $this
      */
-    public function addSingleInstance($fullQualifiedClassName, $alias = '')
+    public function addImplements($interfaceName)
     {
-        $this->implements[] = array(
-            'alias' => $alias,
-            'name'  => $fullQualifiedClassName
-        );
+        $this->implements[] = $interfaceName;
 
         return $this;
     }
@@ -177,8 +177,68 @@ class Configuration
     /**
      * @return boolean
      */
-    public function hasSingleInstances()
+    public function hasImplements()
     {
         return (!empty($this->implements));
     }
+
+    /**
+     * @param string $className
+     * @return $this
+     */
+    public function addExtends($className)
+    {
+        $this->extends[] = $className;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasExtends()
+    {
+        return (!empty($this->extends));
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtends()
+    {
+        return $this->extends;
+    }
+
+    /**
+     * @param string $fullQualifiedClassName
+     * @param string $alias
+     * @return $this
+     */
+    public function addUses($fullQualifiedClassName, $alias = '')
+    {
+        $this->uses[] = array(
+            'alias' => $alias,
+            'name'  => $fullQualifiedClassName
+        );
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasUses()
+    {
+        return (!empty($this->uses));
+    }
+
+    /**
+     * @return array
+     */
+    public function getUses()
+    {
+        return $this->uses;
+    }
+
+
 }
