@@ -192,7 +192,7 @@ class Configuration
      * @param string $className
      * @return $this
      */
-    public function set($className)
+    public function setExtends($className)
     {
         $this->extends = (string) $className;
 

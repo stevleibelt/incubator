@@ -28,7 +28,7 @@ class FromArrayAssembler extends AbstractAssembler
 
         //set arrays
         foreach ($data['extends'] as $className) {
-            $configuration->addExtends($className);
+            $configuration->setExtends($className);
         }
 
         foreach ($data['instances'] as $key => $instance) {
