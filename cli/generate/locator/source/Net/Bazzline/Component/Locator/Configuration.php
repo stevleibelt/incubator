@@ -13,9 +13,9 @@ namespace Net\Bazzline\Component\Locator;
 class Configuration
 {
     /**
-     * @var array
+     * @var string
      */
-    private $extends = array();
+    private $extends;
 
     /**
      * @var array
@@ -30,7 +30,7 @@ class Configuration
     /**
      * @var string
      */
-    private $name;
+    private $className;
 
     /**
      * @var string
@@ -55,19 +55,19 @@ class Configuration
     /**
      * @return null|string
      */
-    public function getName()
+    public function getClassName()
     {
-        return $this->name;
+        return $this->className;
     }
 
     /**
      * @param string $name
      * @return $this
      */
-    public function setName($name)
+    public function setClassName($name)
     {
-        $this->name = (string) $name;
-        $this->fileName = $this->name . '.php';
+        $this->className = (string) $name;
+        $this->fileName = $this->className . '.php';
 
         return $this;
     }
@@ -127,17 +127,17 @@ class Configuration
     }
 
     /**
-     * @param string $class
+     * @param string $className
      * @param bool $isFactory
      * @param bool $isShared
      * @param string $alias
      * @return $this
      */
-    public function addInstance($class, $isFactory, $isShared, $alias)
+    public function addInstance($className, $isFactory, $isShared, $alias)
     {
         $this->instances[] = array(
             'alias'         => (string) $alias,
-            'class'         => (string) $class,
+            'class_name'    => (string) $className,
             'is_factory'    => (bool) $isFactory,
             'is_shared'     => (bool) $isShared
         );
@@ -192,9 +192,9 @@ class Configuration
      * @param string $className
      * @return $this
      */
-    public function addExtends($className)
+    public function set($className)
     {
-        $this->extends[] = (string) $className;
+        $this->extends = (string) $className;
 
         return $this;
     }
@@ -204,11 +204,11 @@ class Configuration
      */
     public function hasExtends()
     {
-        return (!empty($this->extends));
+        return (is_string($this->extends));
     }
 
     /**
-     * @return array
+     * @return null|string
      */
     public function getExtends()
     {
@@ -216,15 +216,15 @@ class Configuration
     }
 
     /**
-     * @param string $fullQualifiedClassName
+     * @param string $className
      * @param string $alias
      * @return $this
      */
-    public function addUses($fullQualifiedClassName, $alias)
+    public function addUses($className, $alias)
     {
         $this->uses[] = array(
-            'alias' => (string) $alias,
-            'name'  => (string) $fullQualifiedClassName
+            'alias'         => (string) $alias,
+            'class_name'    => (string) $className
         );
 
         return $this;

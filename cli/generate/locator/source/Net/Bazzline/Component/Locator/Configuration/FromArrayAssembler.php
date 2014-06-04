@@ -22,8 +22,8 @@ class FromArrayAssembler extends AbstractAssembler
 
         //set strings
         $configuration
+            ->setClassName($data['class_name'])
             ->setFilePath($data['file_path'])
-            ->setName($data['name'])
             ->setNamespace($data['namespace']);
 
         //set arrays
@@ -32,14 +32,14 @@ class FromArrayAssembler extends AbstractAssembler
         }
 
         foreach ($data['instances'] as $key => $instance) {
-            if (!isset($instance['class'])) {
+            if (!isset($instance['class_name'])) {
                 throw new RuntimeException(
-                    'instance entry with key "' . $key . '" needs to have a key "class"'
+                    'instance entry with key "' . $key . '" needs to have a key "class_name"'
                 );
             }
 
             $alias = (isset($instance['alias'])) ? $instance['alias'] : '';
-            $class = $instance['class'];
+            $class = $instance['class_name'];
             $isFactory = (isset($instance['is_factory'])) ? $instance['is_factory'] : false;
             $isShared = (isset($instance['is_shared'])) ? $instance['is_shared'] : true;
 
@@ -51,14 +51,14 @@ class FromArrayAssembler extends AbstractAssembler
         }
 
         foreach ($data['uses'] as $key => $uses) {
-            if (!isset($uses['class'])) {
+            if (!isset($uses['class_name'])) {
                 throw new RuntimeException(
-                    'use entry with key "' . $key . '" needs to have a key "class"'
+                    'use entry with key "' . $key . '" needs to have a key "class_name"'
                 );
             }
 
             $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
-            $class = $uses['class'];
+            $class = $uses['class_name'];
 
             $configuration->addUses($class, $alias);
         }
@@ -85,11 +85,11 @@ class FromArrayAssembler extends AbstractAssembler
         }
 
         $mandatoryKeysToExpectedTyp = array(
+            'class_name'        => 'string',
             'extends'           => 'array',
             'file_path'         => 'string',
             'instances'         => 'array',
             'implements'        => 'array',
-            'name'              => 'string',
             'namespace'         => 'string',
             'uses'              => 'array'
         );

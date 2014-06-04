@@ -197,12 +197,12 @@ class LocatorGenerator
         $class = $this->classFactory->create();
 
         $class->setDocumentation($this->documentationFactory->create());
-        $class->setName($this->configuration->getName());
+        $class->setName($this->configuration->getClassName());
         if ($this->configuration->hasNamespace()) {
             $class->setNamespace($this->configuration->getNamespace());
         }
-        if ($this->configuration->hasParentClassName()) {
-            $class->addExtends($this->configuration->getParentClassName(), true);
+        if ($this->configuration->hasExtends()) {
+            $class->addExtends($this->configuration->getExtends(), true);
         }
 
         $class->addImplements('\Net\Bazzline\Component\Locator\LocatorInterface');
@@ -225,7 +225,7 @@ class LocatorGenerator
     private function addDocumentationToClass(ClassGenerator $class)
     {
         $class->getDocumentation()
-            ->setClass($this->configuration->getName())
+            ->setClass($this->configuration->getClassName())
             ->setPackage($this->configuration->getNamespace());
 
         return $class;

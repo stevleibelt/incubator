@@ -61,6 +61,7 @@ try {
     $generator->setConfiguration($assembler->getConfiguration());
     $generator->setFileExistsStrategy($fileExistsStrategy);
     $generator->generate();
+
     echo 'locator written into "' . $configuration->getFilePath() . '"' . PHP_EOL;
     exit(0);
 } catch (Exception $exception) {
