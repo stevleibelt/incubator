@@ -210,6 +210,12 @@ class LocatorGenerator
         $class = $this->addPropertiesToClass($class);
 
         //create instance pooling methods
+        //---- begin of factory instance pooling
+        $class = $this->addMethodToFetchFromFactoryInstancePool($class);
+        $class = $this->addMethodToAddToFactoryInstancePool($class);
+        $class = $this->addMethodToGetFromFactoryInstancePool($class);
+        $class = $this->addMethodIsNotInFactoryInstancePool($class);
+        //---- end of factory instance pooling
         //---- begin of shared instance pooling
         $class = $this->addMethodToFetchFromSharedInstancePool($class);
         $class = $this->addMethodToAddToSharedInstancePool($class);
@@ -219,6 +225,46 @@ class LocatorGenerator
         //create method for shared_instance
         //create method for single_instance
 
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodToFetchFromFactoryInstancePool(ClassGenerator $class)
+    {
+        //@todo
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodToAddToFactoryInstancePool(ClassGenerator $class)
+    {
+        //@todo
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodToGetFromFactoryInstancePool(ClassGenerator $class)
+    {
+        //@todo
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodIsNotInFactoryInstancePool(ClassGenerator $class)
+    {
+        //@todo
         return $class;
     }
 
