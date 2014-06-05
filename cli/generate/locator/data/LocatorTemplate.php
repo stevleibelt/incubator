@@ -122,10 +122,13 @@ class LocatorTemplate implements LocatorInterface
     /**
      * @param string $className
      * @param object $instance
+     * @return $this
      */
     protected function addToSharedInstancePool($className, $instance)
     {
         $this->sharedInstancePool[$className] = $instance;
+
+        return $this;
     }
 
     /**

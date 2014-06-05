@@ -208,12 +208,129 @@ class LocatorGenerator
         $class->addImplements('\Net\Bazzline\Component\Locator\LocatorInterface');
         $class = $this->addDocumentationToClass($class);
         $class = $this->addPropertiesToClass($class);
-        $class = $this->addMethodIsInInstancePoolToClass($class);
-        $class = $this->addMethodGetFactoryToClass($class);
 
         //create instance pooling methods
+        //---- begin of shared instance pooling
+        $class = $this->addMethodToFetchFromSharedInstancePool($class);
+        $class = $this->addMethodToAddToSharedInstancePool($class);
+        $class = $this->addMethodToGetFromSharedInstancePool($class);
+        $class = $this->addMethodIsNotInSharedInstancePool($class);
+        //---- end of shared instance pooling
         //create method for shared_instance
         //create method for single_instance
+
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodIsNotInSharedInstancePool(ClassGenerator $class)
+    {
+        $body = $this->blockFactory->create();
+        $method = $this->methodFactory->create();
+
+        $method->setDocumentation($this->documentationFactory->create());
+        $method->setName('isNotInSharedInstancePool');
+        $method->addParameter('className', null, 'string');
+
+        $body
+            ->add('return (!isset($this->sharedInstancePool[$className]));');
+
+        $method->setBody($body, array('bool'));
+
+        $class->addMethod($method);
+
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodToGetFromSharedInstancePool(ClassGenerator $class)
+    {
+        $body = $this->blockFactory->create();
+        $method = $this->methodFactory->create();
+
+        $method->setDocumentation($this->documentationFactory->create());
+        $method->setName('getFromSharedInstancePool');
+        $method->addParameter('className', null, 'string');
+
+        $body
+            ->add('return $this->sharedInstancePool[$className];');
+
+        $method->setBody($body, array('mixed', 'stdClass'));
+
+        $class->addMethod($method);
+
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodToFetchFromSharedInstancePool(ClassGenerator $class)
+    {
+        $body = $this->blockFactory->create();
+        $method = $this->methodFactory->create();
+
+        $method->setDocumentation($this->documentationFactory->create());
+        $method->setName('fetchFromSharedInstancePool');
+        $method->addParameter('className', null, 'string');
+        $method->addParameter('instance', null, 'object');
+
+        $body
+            ->add('if ($this->isNotInFactoryInstancePool($className)) {')
+            ->startIndention()
+                ->add('if (!class_exists($className)) {')
+                ->startIndention()
+                    ->add('throw new InvalidArgumentException(')
+                    ->startIndention()
+                        ->add('\'class "\' . $className . \'" does not exist\'')
+                    ->stopIndention()
+                    ->add(');')
+                ->stopIndention()
+                ->add('}')
+                ->add('')
+                ->add('$instance = new $className();')
+                ->add('$this->addToFactoryInstancePool($className, $instance);')
+            ->stopIndention()
+            ->add('}')
+            ->add('')
+            ->add('return $this->getFromSharedInstancePool($className);');
+
+        $method->setBody($body, array('mixed', 'stdClass'));
+
+        $class->addMethod($method);
+
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @return ClassGenerator
+     */
+    private function addMethodToAddToSharedInstancePool(ClassGenerator $class)
+    {
+        $body = $this->blockFactory->create();
+        $method = $this->methodFactory->create();
+
+        $method->setDocumentation($this->documentationFactory->create());
+        $method->setName('addToSharedInstancePool');
+        $method->addParameter('className', null, 'string');
+        $method->addParameter('instance', null, 'object');
+
+        $body
+            ->add('$this->sharedInstancePool[$className] = $instance;')
+            ->add('')
+            ->add('return $this;');
+
+        $method->setBody($body, array('$this'));
+
+        $class->addMethod($method);
 
         return $class;
     }
@@ -227,78 +344,6 @@ class LocatorGenerator
         $class->getDocumentation()
             ->setClass($this->configuration->getClassName())
             ->setPackage($this->configuration->getNamespace());
-
-        return $class;
-    }
-
-    private function addMethodGetFactoryToClass(ClassGenerator $class)
-    {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
-
-        $method->setDocumentation($this->documentationFactory->create());
-        $method->setName('getFactory');
-        $method->addParameter('className', null, 'string');
-
-        $body
-            ->add('$key = md5($className);')
-            ->add('')
-            ->add('if ($this->isInInstancePool($className) {')
-            ->startIndention()
-                ->add('$factory = $this->factoryInstancePool[$className];')
-            ->stopIndention()
-            ->add('} else {')
-            ->startIndention()
-                ->add('$factory = new $className();')
-                ->add('$this->factoryInstancePool[$className] = $factory;')
-            ->stopIndention()
-            ->add('}')
-            ->add('')
-            ->add('return $factory;');
-
-        $method->setBody($body, array('FactoryInterface'));
-
-        $class->addMethod($method);
-
-        return $class;
-    }
-
-    /**
-     * @param ClassGenerator $class
-     * @return ClassGenerator
-     */
-    private function addMethodIsInInstancePoolToClass(ClassGenerator $class)
-    {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
-
-        $method->setDocumentation($this->documentationFactory->create());
-        $method->setName('isInInstancePool');
-        $method->addParameter('key', '', 'string');
-        $method->addParameter('type', '', 'string');
-
-        $body->add('switch ($type) {')
-            ->startIndention()
-                ->add('case \'factory\':')
-                ->startIndention()
-                    ->add('return (isset($this->factoryInstancePool[$key]));')
-                    ->add('break;')
-                ->stopIndention()
-                ->add('case \'shared\':')
-                ->startIndention()
-                    ->add('return (isset($this->sharedInstancePool[$key]));')
-                    ->add('break;')
-                ->stopIndention()
-                ->add('default:')
-                ->startIndention()
-                    ->add('return (isset($this->defaultInstancePool[$key]));')
-                    ->add('break')
-                ->stopIndention()
-            ->stopIndention()
-            ->add('}');
-        $method->setBody($body);
-
-        $class->addMethod($method);
 
         return $class;
     }

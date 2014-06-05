@@ -7,3 +7,4 @@
 * add generated unittest
 * add schema.xml for propel schemal with namespace
 * implement validation of used interface- or class names by adding "autoloader class path"
+* implement instance pooling creation on if needed
