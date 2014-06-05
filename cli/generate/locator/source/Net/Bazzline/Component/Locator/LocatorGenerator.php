@@ -202,7 +202,7 @@ class LocatorGenerator
             $class->setNamespace($this->configuration->getNamespace());
         }
         if ($this->configuration->hasExtends()) {
-            $class->addExtends($this->configuration->getExtends(), true);
+            $class->setExtends($this->configuration->getExtends(), true);
         }
 
         $class->addImplements('\Net\Bazzline\Component\Locator\LocatorInterface');
