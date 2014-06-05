@@ -62,7 +62,7 @@ try {
     $generator->setFileExistsStrategy($fileExistsStrategy);
     $generator->generate();
 
-    echo 'locator written into "' . $configuration->getFilePath() . '"' . PHP_EOL;
+    echo 'locator written into "' . realpath($configuration->getFilePath()) . '"' . PHP_EOL;
     exit(0);
 } catch (Exception $exception) {
     echo $exception->getMessage() . PHP_EOL;
