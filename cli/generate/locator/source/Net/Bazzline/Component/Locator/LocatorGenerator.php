@@ -155,8 +155,10 @@ class LocatorGenerator
      */
     public function generate()
     {
-        $this->moveOldLocatorFileIfExists();
+        $this->moveOldLocatorFileIfExists($this->configuration, $this->fileExistsStrategy);
         $this->createLocatorFile();
+        $this->moveOldFactoryInterfaceFileIfExists($this->configuration, $this->fileExistsStrategy);
+        $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration, $this->fileExistsStrategy);
     }
 
     /**
@@ -227,24 +229,25 @@ class LocatorGenerator
             }
         }
 
-        $class = $this->addDocumentationToClass($class);
-        $class = $this->addPropertiesToClass($class);
+        $class = $this->addDocumentationToClass($class, $this->configuration);
+        $class = $this->addPropertiesToClass($class, $this->documentationFactory, $this->propertyFactory);
 
         //public methods
+        //extend injection token todo
         $class = $this->addGetInstanceMethods($class, $this->configuration);
 
         //protected methods
-        $class = $this->addMethodToFetchFromFactoryInstancePool($class);
-        $class = $this->addMethodToFetchFromSharedInstancePool($class);
+        $class = $this->addMethodToFetchFromFactoryInstancePool($class, $this->configuration);
+        $class = $this->addMethodToFetchFromSharedInstancePool($class, $this->configuration);
 
         //private methods
-        $class = $this->addMethodToAddToFactoryInstancePool($class);
-        $class = $this->addMethodToGetFromFactoryInstancePool($class);
-        $class = $this->addMethodIsNotInFactoryInstancePool($class);
+        $class = $this->addMethodToAddToFactoryInstancePool($class, $this->configuration);
+        $class = $this->addMethodToGetFromFactoryInstancePool($class, $this->configuration);
+        $class = $this->addMethodIsNotInFactoryInstancePool($class, $this->configuration);
 
-        $class = $this->addMethodToAddToSharedInstancePool($class);
-        $class = $this->addMethodToGetFromSharedInstancePool($class);
-        $class = $this->addMethodIsNotInSharedInstancePool($class);
+        $class = $this->addMethodToAddToSharedInstancePool($class, $this->configuration);
+        $class = $this->addMethodToGetFromSharedInstancePool($class, $this->configuration);
+        $class = $this->addMethodIsNotInSharedInstancePool($class, $this->configuration);
 
         return $class;
     }
@@ -549,32 +552,35 @@ class LocatorGenerator
 
     /**
      * @param ClassGenerator $class
+     * @param Configuration $configuration
      * @return ClassGenerator
      */
-    private function addDocumentationToClass(ClassGenerator $class)
+    private function addDocumentationToClass(ClassGenerator $class, Configuration $configuration)
     {
         $class->getDocumentation()
-            ->setClass($this->configuration->getClassName())
-            ->setPackage($this->configuration->getNamespace());
+            ->setClass($configuration->getClassName())
+            ->setPackage($configuration->getNamespace());
 
         return $class;
     }
 
     /**
      * @param ClassGenerator $class
+     * @param DocumentationGeneratorFactory $documentationGeneratorFactory
+     * @param PropertyGeneratorFactory $propertyGeneratorFactory
      * @return ClassGenerator
      */
-    private function addPropertiesToClass(ClassGenerator $class)
+    private function addPropertiesToClass(ClassGenerator $class, DocumentationGeneratorFactory $documentationGeneratorFactory, PropertyGeneratorFactory $propertyGeneratorFactory)
     {
-        $factoryInstancePool = $this->propertyFactory->create();
-        $sharedInstancePool = $this->propertyFactory->create();
+        $factoryInstancePool = $propertyGeneratorFactory->create();
+        $sharedInstancePool = $propertyGeneratorFactory->create();
 
-        $factoryInstancePool->setDocumentation($this->documentationFactory->create());
+        $factoryInstancePool->setDocumentation($documentationGeneratorFactory->create());
         $factoryInstancePool->setName('factoryInstancePool');
         $factoryInstancePool->markAsPrivate();
         $factoryInstancePool->setValue('array()');
 
-        $sharedInstancePool->setDocumentation($this->documentationFactory->create());
+        $sharedInstancePool->setDocumentation($documentationGeneratorFactory->create());
         $sharedInstancePool->setName('sharedInstancePool');
         $sharedInstancePool->markAsPrivate();
         $sharedInstancePool->setValue('array()');
@@ -586,22 +592,51 @@ class LocatorGenerator
     }
 
     /**
+     * @param Configuration $configuration
+     * @param FileExistsStrategyInterface $fileExistsStrategy
      * @throws RuntimeException
      */
-    private function moveOldLocatorFileIfExists()
+    private function moveOldLocatorFileIfExists(Configuration $configuration, FileExistsStrategyInterface $fileExistsStrategy)
     {
-        $filePath = $this->configuration->getFilePath() . DIRECTORY_SEPARATOR .
-            $this->configuration->getFileName();
+        $this->moveOldFileIfExists($configuration->getFilePath(), $configuration->getFileName());
+    }
 
-        if (file_exists($filePath)) {
+    /**
+     * @param Configuration $configuration
+     * @param FileExistsStrategyInterface $fileExistsStrategy
+     */
+    private function moveOldFactoryInterfaceFileIfExists(Configuration $configuration, FileExistsStrategyInterface $fileExistsStrategy)
+    {
+        $this->moveOldFileIfExists($configuration->getFilePath(), 'FactoryInterface.php');
+    }
+
+    /**
+     * @param Configuration $configuration
+     * @param FileExistsStrategyInterface $fileExistsStrategy
+     */
+    private function moveOldInvalidArgumentExceptionFileIfExists(Configuration $configuration, FileExistsStrategyInterface $fileExistsStrategy)
+    {
+        $this->moveOldFileIfExists($configuration->getFilePath(), 'InvalidArgumentException.php');
+    }
+
+    /**
+     * @param string $filePath
+     * @param string $fileName
+     * @throws RuntimeException
+     */
+    private function moveOldFileIfExists($filePath, $fileName)
+    {
+        $fullQualifiedFilePath = $filePath . DIRECTORY_SEPARATOR . $fileName;
+
+        if (file_exists($fullQualifiedFilePath)) {
             if ($this->fileExistsStrategy instanceof FileExistsStrategyInterface) {
                 $this->fileExistsStrategy
-                    ->setFileName($this->configuration->getFileName())
-                    ->setFilePath($this->configuration->getFilePath())
+                    ->setFileName($fileName)
+                    ->setFilePath($filePath)
                     ->execute();
             } else {
                 throw new RuntimeException(
-                    'file "' . $filePath . '" already exists'
+                    'file "' . $fullQualifiedFilePath . '" already exists'
                 );
             }
         }
