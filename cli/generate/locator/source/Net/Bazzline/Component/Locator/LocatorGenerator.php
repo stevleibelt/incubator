@@ -471,14 +471,8 @@ class LocatorGenerator
      */
     private function addPropertiesToClass(ClassGenerator $class)
     {
-        $defaultInstancePool = $this->propertyFactory->create();
         $factoryInstancePool = $this->propertyFactory->create();
         $sharedInstancePool = $this->propertyFactory->create();
-
-        $defaultInstancePool->setDocumentation($this->documentationFactory->create());
-        $defaultInstancePool->setName('defaultInstancePool');
-        $defaultInstancePool->markAsPrivate();
-        $defaultInstancePool->setValue('array()');
 
         $factoryInstancePool->setDocumentation($this->documentationFactory->create());
         $factoryInstancePool->setName('factoryInstancePool');
@@ -490,7 +484,6 @@ class LocatorGenerator
         $sharedInstancePool->markAsPrivate();
         $sharedInstancePool->setValue('array()');
 
-        $class->addProperty($defaultInstancePool);
         $class->addProperty($factoryInstancePool);
         $class->addProperty($sharedInstancePool);
 
