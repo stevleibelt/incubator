@@ -16,22 +16,22 @@ return array(
     'instances' => array(
         array(
             'alias'         => 'ExampleUniqueInvokableInstance',
-            'class_name'    => 'Application\Model\ExampleUniqueInvokableInstance',
+            'class_name'    => '\Application\Model\ExampleUniqueInvokableInstance',
             'is_shared'     => false
         ),
         array(
             'alias'         => 'ExampleUniqueFactorizedInstance',
-            'class_name'    => 'Application\Factory\ExampleUniqueFactorizedInstanceFactory',
+            'class_name'    => '\Application\Factory\ExampleUniqueFactorizedInstanceFactory',
             'is_factory'    => true,
             'is_shared'     => false
         ),
         array(
             'alias'         => 'ExampleSharedInvokableInstance',
-            'class_name'    => 'Application\Model\ExampleSharedInvokableInstance',
+            'class_name'    => '\Application\Model\ExampleSharedInvokableInstance',
         ),
         array(
             'alias'         => 'ExampleSharedFactorizedInstance',
-            'class_name'    => 'Application\Factory\ExampleSharedFactorizedInstanceFactory',
+            'class_name'    => '\Application\Factory\ExampleSharedFactorizedInstanceFactory',
             'is_factory'    => true,
         )
     ),

@@ -6,9 +6,12 @@
 
 namespace Net\Bazzline\Component\Locator;
 
+use Net\Bazzline\Component\Locator\Configuration\Instance;
+use Net\Bazzline\Component\Locator\Configuration\Uses;
+
 /**
  * Interface Configuration
- * @package Net\Bazzline\Component\Locator\Configuration
+ * @package Net\Bazzline\Component\Locator\Configuration\Assembler
  */
 class Configuration
 {
@@ -135,18 +138,20 @@ class Configuration
      */
     public function addInstance($className, $isFactory, $isShared, $alias)
     {
-        $this->instances[] = array(
-            'alias'         => (string) $alias,
-            'class_name'    => (string) $className,
-            'is_factory'    => (bool) $isFactory,
-            'is_shared'     => (bool) $isShared
-        );
+        $instance = $this->getNewInstance();
+
+        $instance->setAlias($alias);
+        $instance->setClassName($className);
+        $instance->setIsFactory($isFactory);
+        $instance->setIsShared($isShared);
+
+        $this->instances[] = $instance;
 
         return $this;
     }
 
     /**
-     * @return array
+     * @return array|Instance[]
      */
     public function getInstances()
     {
@@ -222,10 +227,12 @@ class Configuration
      */
     public function addUses($className, $alias)
     {
-        $this->uses[] = array(
-            'alias'         => (string) $alias,
-            'class_name'    => (string) $className
-        );
+        $uses = $this->getNewUses();
+
+        $uses->setAlias($alias);
+        $uses->setClassName($className);
+
+        $this->uses[] = $uses;
 
         return $this;
     }
@@ -239,12 +246,26 @@ class Configuration
     }
 
     /**
-     * @return array
+     * @return array|Uses[]
      */
     public function getUses()
     {
         return $this->uses;
     }
 
+    /**
+     * @return Uses
+     */
+    private function getNewUses()
+    {
+        return new Uses();
+    }
 
+    /**
+     * @return Instance
+     */
+    private function getNewInstance()
+    {
+        return new Instance();
+    }
 }

@@ -7,7 +7,7 @@
 
 use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
 use Net\Bazzline\Component\Locator\Configuration;
-use Net\Bazzline\Component\Locator\Configuration\FromArrayAssembler;
+use Net\Bazzline\Component\Locator\Configuration\Assembler\FromArrayAssembler;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy;
 
 require_once __DIR__ . '/../vendor/autoload.php';

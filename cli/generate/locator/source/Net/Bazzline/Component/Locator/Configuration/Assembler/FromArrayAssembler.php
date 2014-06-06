@@ -4,11 +4,11 @@
  * @since 2014-05-26 
  */
 
-namespace Net\Bazzline\Component\Locator\Configuration;
+namespace Net\Bazzline\Component\Locator\Configuration\Assembler;
 
 /**
  * Class FromArrayAssembler
- * @package Net\Bazzline\Component\Locator\Configuration
+ * @package Net\Bazzline\Component\Locator\Configuration\Assembler
  */
 class FromArrayAssembler extends AbstractAssembler
 {

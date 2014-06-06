@@ -198,11 +198,17 @@ class LocatorGenerator
 
         $class->setDocumentation($this->documentationFactory->create());
         $class->setName($this->configuration->getClassName());
+
         if ($this->configuration->hasNamespace()) {
             $class->setNamespace($this->configuration->getNamespace());
         }
         if ($this->configuration->hasExtends()) {
             $class->setExtends($this->configuration->getExtends(), true);
+        }
+        if ($this->configuration->hasUses()) {
+            foreach ($this->configuration->getUses() as $use) {
+                $class->addUse($use->getClassName(), $use->getAlias());
+            }
         }
 
         $class->addImplements('\Net\Bazzline\Component\Locator\LocatorInterface');
@@ -222,8 +228,67 @@ class LocatorGenerator
         $class = $this->addMethodToGetFromSharedInstancePool($class);
         $class = $this->addMethodIsNotInSharedInstancePool($class);
         //---- end of shared instance pooling
-        //create method for shared_instance
-        //create method for single_instance
+        $class = $this->addGetInstanceMethods($class, $this->configuration);
+
+        return $class;
+    }
+
+    /**
+     * @param ClassGenerator $class
+     * @param Configuration $configuration
+     * @return ClassGenerator
+     */
+    private function addGetInstanceMethods(ClassGenerator $class, Configuration $configuration)
+    {
+        if ($configuration->hasInstances()) {
+            foreach ($configuration->getInstances() as $instance) {
+                $body = $this->blockFactory->create();
+                $method = $this->methodFactory->create();
+
+                if ($instance->hasAlias()) {
+                    $methodName = $instance->getAlias();
+                } else {
+                    $methodName = (str_replace('\\', '' , $instance->getClassName()));
+                }
+                $methodName = 'get' . ucfirst($methodName);
+
+                $method->setDocumentation($this->documentationFactory->create());
+                $method->setName($methodName);
+
+                $isUniqueInvokableInstance = ((!$instance->isFactory()) && (!$instance->isShared()));
+                $isUniqueInvokableFactorizedInstance = (($instance->isFactory()) && (!$instance->isShared()));
+                $isSharedInvokableInstance = ((!$instance->isFactory()) && ($instance->isShared()));
+                $isSharedInvokableFactorizedInstance = (($instance->isFactory()) && ($instance->isShared()));
+
+                if ($isUniqueInvokableInstance) {
+                    $body
+                        ->add('return new ' . $instance->getClassName() . '();');
+                } else if ($isUniqueInvokableFactorizedInstance) {
+                    $body
+                        ->add('return $this->fetchFromFactoryInstancePool(\'' . $instance->getClassName() . '\')->create();');
+                } else if ($isSharedInvokableInstance) {
+                    $body
+                        ->add('return $this->fetchFromSharedInstancePool(\'' . $instance->getClassName() . '\');');
+                } else if ($isSharedInvokableFactorizedInstance) {
+                    $body
+                        ->add('$className = \'' . $instance->getClassName() . '\';')
+                        ->add('')
+                        ->add('if ($this->isNotInSharedInstancePool($className)) {')
+                        ->startIndention()
+                            ->add('$factoryClassName = \'' . $instance->getClassName() . '\';')
+                            ->add('$factory = $this->fetchFromFactoryInstancePool($factoryClassName);')
+                            ->add('$this->addToSharedInstancePool($className, $factory->create());')
+                        ->stopIndention()
+                        ->add('}')
+                        ->add('')
+                        ->add('return $this->fetchFromSharedInstancePool($className);');
+                }
+
+                $method->setBody($body, array($instance->getClassName()));
+
+                $class->addMethod($method);
+            }
+        }
 
         return $class;
     }
