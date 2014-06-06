@@ -11,10 +11,12 @@ Take a Look to [configuration file](https://github.com/stevleibelt/incubator/blo
 
 ### How To Create
 
-    cd <component root directory>
-    php bin/generateFromArrayFile.php source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php
-    ls data/
-    vim data/FromArrayConfigurationFileLocator.php
+```shell
+cd <component root directory>
+php bin/generateFromArrayFile.php source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php
+ls data/
+vim data/FromArrayConfigurationFileLocator.php
+```
 
 ### Generated Code
 
