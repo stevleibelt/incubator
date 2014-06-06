@@ -5,7 +5,7 @@
  */
 
 return array(
-    'class_name' => 'MyLocator',    //determines file name as well as php class name
+    'class_name' => 'FromArrayConfigurationFileLocator',    //determines file name as well as php class name
     //add class names here, depending on entries in use section, full qualified or not
     'extends' => array(
         'BaseLocator'
@@ -37,7 +37,7 @@ return array(
     ),
     //add interface names here, depending on entries in use section, full qualified or not
     'implements' => array(
-        'My\Full\QualifiedInterface',
+        '\My\Full\QualifiedInterface',
         'MyInterface'
     ),
     'namespace' => 'Application\Service',
@@ -47,6 +47,10 @@ return array(
         array(
             'alias'         => 'MyInterface',
             'class_name'    => 'My\OtherInterface'
+        ),
+        array(
+            'alias'         => 'BaseLocator',
+            'class_name'    => 'Application\Locator\BaseLocator'
         )
     )
 );

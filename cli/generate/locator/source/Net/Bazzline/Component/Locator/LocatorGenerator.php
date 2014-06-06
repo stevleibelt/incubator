@@ -166,8 +166,19 @@ class LocatorGenerator
     {
         $file = $this->fileFactory->create();
 
+        $file->addFileContent(
+            array(
+                '/**',
+                ' * @author Net\Bazzline\Component\Locator',
+                ' * @since ' . date('Y-m-d'),
+                ' */'
+            )
+        );
+
         $class = $this->createLocatorClass();
+
         $file->addClass($class);
+
         $content = $file->generate();
 
         $this->dumpToFile($content);
@@ -203,32 +214,37 @@ class LocatorGenerator
             $class->setNamespace($this->configuration->getNamespace());
         }
         if ($this->configuration->hasExtends()) {
-            $class->setExtends($this->configuration->getExtends(), true);
+            $class->setExtends($this->configuration->getExtends());
         }
         if ($this->configuration->hasUses()) {
             foreach ($this->configuration->getUses() as $use) {
                 $class->addUse($use->getClassName(), $use->getAlias());
             }
         }
+        if ($this->configuration->hasImplements()) {
+            foreach ($this->configuration->getImplements() as $interfaceName) {
+                $class->addImplements($interfaceName);
+            }
+        }
 
-        $class->addImplements('\Net\Bazzline\Component\Locator\LocatorInterface');
         $class = $this->addDocumentationToClass($class);
         $class = $this->addPropertiesToClass($class);
 
-        //create instance pooling methods
-        //---- begin of factory instance pooling
+        //public methods
+        $class = $this->addGetInstanceMethods($class, $this->configuration);
+
+        //protected methods
         $class = $this->addMethodToFetchFromFactoryInstancePool($class);
+        $class = $this->addMethodToFetchFromSharedInstancePool($class);
+
+        //private methods
         $class = $this->addMethodToAddToFactoryInstancePool($class);
         $class = $this->addMethodToGetFromFactoryInstancePool($class);
         $class = $this->addMethodIsNotInFactoryInstancePool($class);
-        //---- end of factory instance pooling
-        //---- begin of shared instance pooling
-        $class = $this->addMethodToFetchFromSharedInstancePool($class);
+
         $class = $this->addMethodToAddToSharedInstancePool($class);
         $class = $this->addMethodToGetFromSharedInstancePool($class);
         $class = $this->addMethodIsNotInSharedInstancePool($class);
-        //---- end of shared instance pooling
-        $class = $this->addGetInstanceMethods($class, $this->configuration);
 
         return $class;
     }
@@ -254,6 +270,7 @@ class LocatorGenerator
 
                 $method->setDocumentation($this->documentationFactory->create());
                 $method->setName($methodName);
+                $method->markAsPublic();
 
                 $isUniqueInvokableInstance = ((!$instance->isFactory()) && (!$instance->isShared()));
                 $isUniqueInvokableFactorizedInstance = (($instance->isFactory()) && (!$instance->isShared()));
@@ -277,6 +294,7 @@ class LocatorGenerator
                         ->startIndention()
                             ->add('$factoryClassName = \'' . $instance->getClassName() . '\';')
                             ->add('$factory = $this->fetchFromFactoryInstancePool($factoryClassName);')
+                            ->add('')
                             ->add('$this->addToSharedInstancePool($className, $factory->create());')
                         ->stopIndention()
                         ->add('}')
@@ -305,6 +323,8 @@ class LocatorGenerator
         $method->setDocumentation($this->documentationFactory->create());
         $method->setName('fetchFromFactoryInstancePool');
         $method->addParameter('className', null, 'string');
+        $method->markAsProtected();
+        $method->markAsFinal();
 
         $body
             ->add('if ($this->isNotInFactoryInstancePool($className)) {')
@@ -329,6 +349,7 @@ class LocatorGenerator
             ->add('return $this->getFromFactoryInstancePool($className);');
 
         $method->setBody($body, array('FactoryInterface'));
+        $method->getDocumentation()->addThrows('InvalidArgumentException');
 
         $class->addMethod($method);
 
@@ -348,6 +369,7 @@ class LocatorGenerator
         $method->setName('addToFactoryInstancePool');
         $method->addParameter('className', null, 'string');
         $method->addParameter('factory', null, 'FactoryInterface');
+        $method->markAsPrivate();
 
         $body
             ->add('$this->factoryInstancePool[$className] = $factory;')
@@ -372,11 +394,12 @@ class LocatorGenerator
         $method->setDocumentation($this->documentationFactory->create());
         $method->setName('getFromFactoryInstancePool');
         $method->addParameter('className', null, 'string');
+        $method->markAsPrivate();
 
         $body
             ->add('return $this->factoryInstancePool[$className];');
 
-        $method->setBody($body, array('FactoryInterface'));
+        $method->setBody($body, array('null', 'FactoryInterface'));
 
         $class->addMethod($method);
         return $class;
@@ -394,11 +417,12 @@ class LocatorGenerator
         $method->setDocumentation($this->documentationFactory->create());
         $method->setName('isNotInFactoryInstancePool');
         $method->addParameter('className', null, 'string');
+        $method->markAsPrivate();
 
         $body
             ->add('return (!isset($this->factoryInstancePool[$className]));');
 
-        $method->setBody($body, array('bool'));
+        $method->setBody($body, array('boolean'));
 
         $class->addMethod($method);
 
@@ -417,11 +441,12 @@ class LocatorGenerator
         $method->setDocumentation($this->documentationFactory->create());
         $method->setName('isNotInSharedInstancePool');
         $method->addParameter('className', null, 'string');
+        $method->markAsPrivate();
 
         $body
             ->add('return (!isset($this->sharedInstancePool[$className]));');
 
-        $method->setBody($body, array('bool'));
+        $method->setBody($body, array('boolean'));
 
         $class->addMethod($method);
 
@@ -440,11 +465,12 @@ class LocatorGenerator
         $method->setDocumentation($this->documentationFactory->create());
         $method->setName('getFromSharedInstancePool');
         $method->addParameter('className', null, 'string');
+        $method->markAsPrivate();
 
         $body
             ->add('return $this->sharedInstancePool[$className];');
 
-        $method->setBody($body, array('mixed', 'object'));
+        $method->setBody($body, array('null', 'object'));
 
         $class->addMethod($method);
 
@@ -463,6 +489,8 @@ class LocatorGenerator
         $method->setDocumentation($this->documentationFactory->create());
         $method->setName('fetchFromSharedInstancePool');
         $method->addParameter('className', null, 'string');
+        $method->markAsProtected();
+        $method->markAsFinal();
 
         $body
             ->add('if ($this->isNotInFactoryInstancePool($className)) {')
@@ -484,7 +512,8 @@ class LocatorGenerator
             ->add('')
             ->add('return $this->getFromSharedInstancePool($className);');
 
-        $method->setBody($body, array('null', 'object'));
+        $method->setBody($body, array('object'));
+        $method->getDocumentation()->addThrows('InvalidArgumentException');
 
         $class->addMethod($method);
 
@@ -504,6 +533,7 @@ class LocatorGenerator
         $method->setName('addToSharedInstancePool');
         $method->addParameter('className', null, 'string');
         $method->addParameter('instance', null, 'object');
+        $method->markAsPrivate();
 
         $body
             ->add('$this->sharedInstancePool[$className] = $instance;')

@@ -3,98 +3,92 @@
 Inspired by an [php usergroup meetup](http://artodeto.bazzline.net/archives/525-Social-Human-Architecture-for-Beginners-and-the-Flip-Side-of-Dependency-Injection-PHPUGHH.html), I started thinking about this configured locators around the web (especially with their generic "->get('foo')" interfaces.
 Thats why I this project should lead to an locator, that can be configured as known but will be generated like propel is doing it with their classes. The benefit is the working code completion on your ide and you can see what the locator is doing instead of hoping it.
 
-# Configruation File Example
+# Example
 
-```php
-return array(
-    'class_name' => 'Locator',
-    'file_name' => 'Locator.php',
-    'namespace' => 'Application\Service',
-    'parent_class_name' => 'BaseLocator',
-    'shared_instance' => array(
-        'CookieManager' => 'Application\Cookie\CookieManager',              //invokable instance, CookieManager can be created by using "$cookieManager = new CookieManager()"
-        'Database'      => 'Application\Service\Factory\DatabaseFactory'    //a factory takes care of creating the Database, depending on the php doc return annotation, either a class or an interface will be added to the created php doc, the factory has to implement a provided LocatorDependentInterface
-    ),
-    'single_instance' => array(
-        'Lock'      => 'Application\Service\Factory\LockFileFactory',
-        'LockAlias' => 'Application\Service\Factory\LockFileFactory'        //the key defines how the "get"-Method will be named
-    )
-);
-```
+## Array Configuration File
 
-# Generated Locator Example Code
+Take a Look to [configuration file](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php).
+
+### How To Create
+
+    cd <component root directory>
+    php bin/generateFromArrayFile.php source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php
+    ls data/
+    vim data/FromArrayConfigurationFileLocator.php
+
+### Generated Code
 
 ```php
 <?php
 /**
- * @author Net\Bazzline\Component\Locator\Generator
- * @since 2014-04-24
+ * @author Net\Bazzline\Component\Locator
+ * @since 2014-06-07
  */
 
-use Application\Cookie\CookieManager;
-use Application\Service\Factory\DatabaseFactory;
-use Application\Service\Factory\LockFileFactory;
+namespace Application\Service;
+
+use My\OtherInterface as MyInterface;
+use Application\Locator\BaseLocator as BaseLocator;
 
 /**
- * Class Locator
+ * Class FromArrayConfigurationFileLocator
+ *
  * @package Application\Service
  */
-class Locator extends BaseLocator
+class FromArrayConfigurationFileLocator extends BaseLocator implements \My\Full\QualifiedInterface, MyInterface
 {
-    //@todo add map for "instance pooling hash key to class" that the BaseLocator can use.
+    /**
+     * @var $factoryInstancePool
+     */
+    private $factoryInstancePool = array();
+
+    /**
+     * @var $sharedInstancePool
+     */
     private $sharedInstancePool = array();
 
     /**
-     * @return Application\Cookie\CookieManager
+     * @return \Application\Model\ExampleUniqueInvokableInstance
      */
-    public function getCookieManager()
+    public function getExampleUniqueInvokableInstance()
     {
-        return $this->fetchFromInstancePool('Application\Cookie\CookieManager');
+        return new \Application\Model\ExampleUniqueInvokableInstance();
     }
 
     /**
-     * @return Application\Database\DatabaseInterface
+     * @return \Application\Factory\ExampleUniqueFactorizedInstanceFactory
      */
-    public function getDatabase()
+    public function getExampleUniqueFactorizedInstance()
     {
-        $factory = $this->fetchFactoryFromInstancePool('Application\Service\Factory\DatabaseFactory');
-
-        return $factory->create();
+        return $this->fetchFromFactoryInstancePool('\Application\Factory\ExampleUniqueFactorizedInstanceFactory')->create();
     }
 
     /**
-     * @return Application\Lock\LockInterface
+     * @return \Application\Model\ExampleSharedInvokableInstance
      */
-    public function getLock()
+    public function getExampleSharedInvokableInstance()
     {
-        return $this->fetchFromFactory('Application\Service\Factory\LockFileFactory')->create();  //factory is stored in an instance pool
+        return $this->fetchFromSharedInstancePool('\Application\Model\ExampleSharedInvokableInstance');
     }
 
     /**
-     * @return Application\Lock\LockInterface
+     * @return \Application\Factory\ExampleSharedFactorizedInstanceFactory
      */
-    public function getLockAlias()
+    public function getExampleSharedFactorizedInstance()
     {
-        return $this->fetchFromFactory('Application\Service\Factory\LockFileFactory')->create();  //factory is stored in an instance pool
-    }
+        $className = '\Application\Factory\ExampleSharedFactorizedInstanceFactory';
 
+        if ($this->isNotInSharedInstancePool($className)) {
+            $factoryClassName = '\Application\Factory\ExampleSharedFactorizedInstanceFactory';
+            $factory = $this->fetchFromFactoryInstancePool($factoryClassName);
 
-    protected function fetchFactoryFromInstancePool($className)
-    {
-        if (!class_exists($className)) {
-            throw new InvalidArgumentException('factory "' . $className . '" does not exist.');
+            $this->addToSharedInstancePool($className, $factory->create());
         }
 
-        //@todo use hashing to create a straight keymap
-        if (!isset($this->factoryInstancePool[$className])) {
-            $factory = new $className();
-            $factory->setLocator($this);
-            $this->factoryInstancePool[$className] = $factory;
-        }
-
-        return $this->factoryInstancePool[$className];
+        return $this->fetchFromSharedInstancePool($className);
     }
+    //... code for internal methods
 }
 ```
 
-The BaseLocator is taking care of the instance pooling.
+The Locator is taking care of the instance pooling.
