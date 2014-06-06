@@ -38,7 +38,7 @@ class FromArrayAssembler extends AbstractAssembler
                 );
             }
 
-            $alias = (isset($instance['alias'])) ? $instance['alias'] : '';
+            $alias = (isset($instance['alias'])) ? $instance['alias'] : null;
             $class = $instance['class_name'];
             $isFactory = (isset($instance['is_factory'])) ? $instance['is_factory'] : false;
             $isShared = (isset($instance['is_shared'])) ? $instance['is_shared'] : true;

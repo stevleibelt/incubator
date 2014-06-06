@@ -37,7 +37,9 @@ class Instance
      */
     public function setAlias($alias)
     {
-        $this->alias = (string) $alias;
+        if (!is_null($alias)) {
+            $this->alias = (string) $alias;
+        }
     }
 
     /**
