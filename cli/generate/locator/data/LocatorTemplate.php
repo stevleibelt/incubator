@@ -69,11 +69,14 @@ class LocatorTemplate implements LocatorInterface
     //---- begin of factory instance pool
     /**
      * @param string $className
-     * @param object $factory
+     * @param FactoryInterface $factory
+     * @return $this
      */
-    protected function addToFactoryInstancePool($className, $factory)
+    protected function addToFactoryInstancePool($className, FactoryInterface $factory)
     {
         $this->factoryInstancePool[$className] = $factory;
+
+        return $this;
     }
 
     /**
