@@ -7,7 +7,7 @@
 
 use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
 use Net\Bazzline\Component\Locator\Configuration;
-use Net\Bazzline\Component\Locator\Configuration\Assembler\FromArrayAssembler;
+use Net\Bazzline\Component\Locator\Configuration\Assembler\FromPropelSchemaXmlFileAssembler;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -17,7 +17,7 @@ global $argc, $argv;
 $isNotCalledFromCommandLineInterface = (PHP_SAPI !== 'cli');
 
 $usageMessage = 'Usage: ' . PHP_EOL .
-    basename(__FILE__) . ' <path to configuration file>' . PHP_EOL;
+    basename(__FILE__) . ' <path to configuration file> <path to schema.xml>' . PHP_EOL;
 
 if ($isNotCalledFromCommandLineInterface) {
     echo 'This script can only be called from the command line' . PHP_EOL .
@@ -25,7 +25,7 @@ if ($isNotCalledFromCommandLineInterface) {
     exit(1);
 }
 
-if ($argc !== 2) {
+if ($argc !== 3) {
     echo 'called with invalid number of arguments' . PHP_EOL;
     echo $usageMessage;
     exit(1);
@@ -33,6 +33,7 @@ if ($argc !== 2) {
 
 $cwd = getcwd();
 $pathToConfigurationFile = $cwd . DIRECTORY_SEPARATOR . $argv[1];
+$pathToSchemaXml = $cwd . DIRECTORY_SEPARATOR . $argv[2];
 
 try {
     if (!is_file($pathToConfigurationFile)) {
@@ -45,9 +46,12 @@ try {
             'file "' . $pathToConfigurationFile . '" is not readable'
         );
     }
-    $data = require_once $pathToConfigurationFile;
+    $data = array(
+        'configuration_file'    => require_once $pathToConfigurationFile,
+        'schema_xml'            => require_once $pathToSchemaXml
+    );
 
-    $assembler = new FromArrayAssembler();
+    $assembler = new FromPropelSchemaXmlFileAssembler();
     $configuration = new Configuration();
     $factory = new LocatorGeneratorFactory();
     $fileExistsStrategy = new SuffixWithCurrentTimestampStrategy();

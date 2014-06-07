@@ -67,4 +67,38 @@ abstract class AbstractAssembler implements AssemblerInterface
      * @throws InvalidArgumentException
      */
     abstract protected function validateData($data);
+
+    /**
+     * @param array $data
+     * @param array $mandatoryKeysToExpectedValueType
+     * @throws InvalidArgumentException
+     */
+    final protected function validateDataWithMandatoryKeysAndExpectedValueType(array $data, array $mandatoryKeysToExpectedValueType)
+    {
+        foreach ($mandatoryKeysToExpectedValueType as $mandatoryKey => $expectedType) {
+            if (!isset($data[$mandatoryKey])) {
+                throw new InvalidArgumentException(
+                    'data array must contain content for key "' . $mandatoryKey . '"'
+                );
+            }
+            $exceptionMessage = 'value of key "' . $mandatoryKey . '" must be of type "' . $expectedType . '"';
+
+            switch ($expectedType) {
+                case 'array':
+                    if (!is_array($data[$mandatoryKey])) {
+                        throw new InvalidArgumentException(
+                            $exceptionMessage
+                        );
+                    }
+                    break;
+                case 'string':
+                    if (!is_string($data[$mandatoryKey])) {
+                        throw new InvalidArgumentException(
+                            $exceptionMessage
+                        );
+                    }
+                    break;
+            }
+        }
+    }
 }

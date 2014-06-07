@@ -85,7 +85,7 @@ class FromArrayAssembler extends AbstractAssembler
             );
         }
 
-        $mandatoryKeysToExpectedTyp = array(
+        $mandatoryKeysToExpectedValueTyp = array(
             'class_name'        => 'string',
             'extends'           => 'array',
             'file_path'         => 'string',
@@ -95,30 +95,9 @@ class FromArrayAssembler extends AbstractAssembler
             'uses'              => 'array'
         );
 
-        foreach ($mandatoryKeysToExpectedTyp as $mandatoryKey => $expectedType) {
-            if (!isset($data[$mandatoryKey])) {
-                throw new InvalidArgumentException(
-                    'data array must contain content for key "' . $mandatoryKey . '"'
-                );
-            }
-            $exceptionMessage = 'value of key "' . $mandatoryKey . '" must be of type "' . $expectedType . '"';
-
-            switch ($expectedType) {
-                case 'array':
-                    if (!is_array($data[$mandatoryKey])) {
-                        throw new InvalidArgumentException(
-                            $exceptionMessage
-                        );
-                    }
-                    break;
-                case 'string':
-                    if (!is_string($data[$mandatoryKey])) {
-                        throw new InvalidArgumentException(
-                            $exceptionMessage
-                        );
-                    }
-                    break;
-            }
-        }
+        $this->validateDataWithMandatoryKeysAndExpectedValueType(
+            $data,
+            $mandatoryKeysToExpectedValueTyp
+        );
     }
 }
