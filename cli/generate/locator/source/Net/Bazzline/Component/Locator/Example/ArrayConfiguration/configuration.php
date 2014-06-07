@@ -40,6 +40,8 @@ return array(
         '\My\Full\QualifiedInterface',
         'MyInterface'
     ),
+    //prefix for the instance fetching
+    'method_prefix' => 'get',
     'namespace' => 'Application\Service',
     //add use statements here
     //format: array(['alias' => <string>], 'class_name' => <string>)

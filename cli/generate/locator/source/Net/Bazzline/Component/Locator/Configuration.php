@@ -43,6 +43,11 @@ class Configuration
     /**
      * @var string
      */
+    private $methodPrefix;
+
+    /**
+     * @var string
+     */
     private $fileName;
 
     /**
@@ -127,6 +132,25 @@ class Configuration
         $this->namespace = (string) $namespace;
 
         return $this;
+    }
+
+    /**
+     * @param string $methodPrefix
+     * @return $this
+     */
+    public function setMethodPrefix($methodPrefix)
+    {
+        $this->methodPrefix = (string) $methodPrefix;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMethodPrefix()
+    {
+        return $this->methodPrefix;
     }
 
     /**

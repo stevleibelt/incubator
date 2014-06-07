@@ -391,7 +391,7 @@ class LocatorGenerator
                 } else {
                     $methodName = (str_replace('\\', '' , $instance->getClassName()));
                 }
-                $methodName = 'get' . ucfirst($methodName);
+                $methodName = $configuration->getMethodPrefix() . ucfirst($methodName);
 
                 $method->setDocumentation($this->documentationFactory->create());
                 $method->setName($methodName);
