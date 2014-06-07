@@ -318,7 +318,7 @@ class LocatorGenerator
             $class->setNamespace($this->configuration->getNamespace());
         }
 
-        $class->addUse('\InvalidArgumentException', 'ParentClass');
+        $class->addUse('InvalidArgumentException', 'ParentClass');
         $class->setExtends('ParentClass');
 
         return $class;
