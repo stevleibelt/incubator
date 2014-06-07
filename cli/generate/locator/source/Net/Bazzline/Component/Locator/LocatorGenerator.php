@@ -13,6 +13,7 @@ use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
+use Net\Bazzline\Component\CodeGenerator\FileGenerator;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface;
 
 /**
@@ -156,17 +157,26 @@ class LocatorGenerator
     public function generate()
     {
         $this->moveOldLocatorFileIfExists($this->configuration, $this->fileExistsStrategy);
-        $this->createLocatorFile();
+        $this->createLocatorFile($this->configuration, $this->fileFactory->create());
+
         $this->moveOldFactoryInterfaceFileIfExists($this->configuration, $this->fileExistsStrategy);
-        $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration, $this->fileExistsStrategy);
+        $this->createFactoryInterfaceFile($this->configuration, $this->fileFactory->create());
+
+        if ($this->configuration->hasNamespace()) {
+            $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration, $this->fileExistsStrategy);
+            $this->createInvalidArgumentExceptionFile($this->configuration, $this->fileFactory->create());
+        }
     }
 
     /**
+     * @param Configuration $configuration
+     * @param FileGenerator $file
      * @throws RuntimeException
      */
-    private function createLocatorFile()
+    private function createLocatorFile(Configuration $configuration, FileGenerator $file)
     {
-        $file = $this->fileFactory->create();
+        $fullQualifiedPathName = $configuration->getFilePath() .
+            DIRECTORY_SEPARATOR . $configuration->getFileName();
 
         $file->addFileContent(
             array(
@@ -177,29 +187,141 @@ class LocatorGenerator
             )
         );
 
-        $class = $this->createLocatorClass();
+        $locator = $this->createLocatorClass();
 
-        $file->addClass($class);
+        $file->addClass($locator);
 
         $content = $file->generate();
 
-        $this->dumpToFile($content);
+        $this->dumpToFile($fullQualifiedPathName, $content);
     }
 
     /**
+     * @param Configuration $configuration
+     * @param FileGenerator $file
+     * @throws RuntimeException
+     */
+    private function createFactoryInterfaceFile(Configuration $configuration, FileGenerator $file)
+    {
+        $fullQualifiedPathName = $configuration->getFilePath() .
+            DIRECTORY_SEPARATOR . 'FactoryInterface.php';
+
+        $file->addFileContent(
+            array(
+                '/**',
+                ' * @author Net\Bazzline\Component\Locator',
+                ' * @since ' . date('Y-m-d'),
+                ' */'
+            )
+        );
+
+        $factoryInterface = $this->createFactoryInterface();
+
+        $file->addClass($factoryInterface);
+
+        $content = $file->generate();
+
+        $this->dumpToFile($fullQualifiedPathName, $content);
+    }
+
+    /**
+     * @param Configuration $configuration
+     * @param FileGenerator $file
+     * @throws RuntimeException
+     */
+    private function createInvalidArgumentExceptionFile(Configuration $configuration, FileGenerator $file)
+    {
+        $fullQualifiedPathName = $configuration->getFilePath() .
+            DIRECTORY_SEPARATOR . 'InvalidArgumentException.php';
+
+        $file->addFileContent(
+            array(
+                '/**',
+                ' * @author Net\Bazzline\Component\Locator',
+                ' * @since ' . date('Y-m-d'),
+                ' */'
+            )
+        );
+
+        $invalidArgumentException = $this->createInvalidArgumentExceptionClass();
+
+        $file->addClass($invalidArgumentException);
+
+        $content = $file->generate();
+
+        $this->dumpToFile($fullQualifiedPathName, $content);
+    }
+
+    /**
+     * @param string $fullQualifiedFileName
      * @param string $content
      * @throws RuntimeException
      */
-    private function dumpToFile($content)
+    private function dumpToFile($fullQualifiedFileName, $content)
     {
-        $filePath = $this->configuration->getFilePath() . DIRECTORY_SEPARATOR .
-            $this->configuration->getFileName();
-
-        if (file_put_contents($filePath, $content) === false) {
+        if (file_put_contents($fullQualifiedFileName, $content) === false) {
             throw new RuntimeException(
-                'can not create new locator in "' . $filePath . '"'
+                'can not create "' . $fullQualifiedFileName . '" or write content'
             );
         }
+    }
+
+    /**
+     * @return ClassGenerator
+     */
+    private function createFactoryInterface()
+    {
+        $class = $this->classFactory->create();
+
+        $class->markAsInterface();
+        $class->setDocumentation($this->documentationFactory->create());
+        $class->setName('FactoryInterface');
+
+        //@tod put into separate method
+        if ($this->configuration->hasNamespace()) {
+            $class->setNamespace($this->configuration->getNamespace());
+        }
+
+        $setLocator = $this->methodFactory->create();
+        $setLocator->setDocumentation($this->documentationFactory->create());
+        $setLocator->setName('setLocator');
+        $setLocator->addParameter('locator', null, $this->configuration->getClassName());
+        $setLocator->markAsPublic();
+        $setLocator->markAsHasNoBody();
+        $setLocator->getDocumentation()->setReturn(array('$this'));
+
+        $create = $this->methodFactory->create();
+        $create->setDocumentation($this->documentationFactory->create());
+        $create->setName('create');
+        $create->markAsPublic();
+        $create->markAsHasNoBody();
+        $create->getDocumentation()->setReturn(array('null', 'object'));
+
+        $class->addMethod($setLocator);
+        $class->addMethod($create);
+
+        return $class;
+    }
+
+    /**
+     * @return ClassGenerator
+     */
+    private function createInvalidArgumentExceptionClass()
+    {
+        $class = $this->classFactory->create();
+
+        $class->setDocumentation($this->documentationFactory->create());
+        $class->setName('InvalidArgumentException');
+
+        //@tod put into separate method
+        if ($this->configuration->hasNamespace()) {
+            $class->setNamespace($this->configuration->getNamespace());
+        }
+
+        $class->addUse('\InvalidArgumentException', 'ParentClass');
+        $class->setExtends('ParentClass');
+
+        return $class;
     }
 
     /**

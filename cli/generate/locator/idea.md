@@ -5,6 +5,11 @@ Inspired by an [php usergroup meetup](http://artodeto.bazzline.net/archives/525-
 That's why this project should lead to a locator, that can be configured as known but will be generated like propel is doing it with their classes.
 The benefit is working code completion with your ide and "you can see what the locator is doing instead of hoping it".
 
+# Behaviour
+
+* creates a FactoryInterface file
+* creates a InvalidArgumentException if a namespace is given
+
 # Example
 
 ## Array Configuration File
