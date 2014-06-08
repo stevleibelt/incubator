@@ -20,6 +20,7 @@ return array(
     //prefix for the instance fetching
     'method_prefix' => 'create',
     'namespace' => 'Application\Service',
+    'path_to_schema_xml' => __DIR__ . '/schema.xml',
     //add use statements here
     //format: array(['alias' => <string>], 'class_name' => <string>)
     'uses' => array(

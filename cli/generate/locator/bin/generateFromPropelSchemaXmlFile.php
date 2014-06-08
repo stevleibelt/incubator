@@ -17,7 +17,7 @@ global $argc, $argv;
 $isNotCalledFromCommandLineInterface = (PHP_SAPI !== 'cli');
 
 $usageMessage = 'Usage: ' . PHP_EOL .
-    basename(__FILE__) . ' <path to configuration file> <path to schema.xml>' . PHP_EOL;
+    basename(__FILE__) . ' <path to configuration file>' . PHP_EOL;
 
 if ($isNotCalledFromCommandLineInterface) {
     echo 'This script can only be called from the command line' . PHP_EOL .
@@ -25,15 +25,14 @@ if ($isNotCalledFromCommandLineInterface) {
     exit(1);
 }
 
-if ($argc !== 3) {
+if ($argc !== 2) {
     echo 'called with invalid number of arguments' . PHP_EOL;
     echo $usageMessage;
     exit(1);
 }
 
 $cwd = getcwd();
-$pathToConfigurationFile = $cwd . DIRECTORY_SEPARATOR . $argv[1];
-$pathToSchemaXml = $cwd . DIRECTORY_SEPARATOR . $argv[2];
+$pathToConfigurationFile = realpath($cwd . DIRECTORY_SEPARATOR . $argv[1]);
 
 try {
     if (!is_file($pathToConfigurationFile)) {
@@ -41,15 +40,14 @@ try {
             'provided path "' . $pathToConfigurationFile . '" is not a file'
         );
     }
+
     if (!is_readable($pathToConfigurationFile)) {
         throw new Exception(
             'file "' . $pathToConfigurationFile . '" is not readable'
         );
     }
-    $data = array(
-        'configuration_file'    => require_once $pathToConfigurationFile,
-        'schema_xml'            => require_once $pathToSchemaXml
-    );
+
+    $data = require_once $pathToConfigurationFile;
 
     $assembler = new FromPropelSchemaXmlFileAssembler();
     $configuration = new Configuration();

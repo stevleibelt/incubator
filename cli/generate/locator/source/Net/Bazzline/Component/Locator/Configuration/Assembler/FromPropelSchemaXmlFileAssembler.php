@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Locator\Configuration\Assembler;
 
+use XMLReader;
+
 /**
  * Class FromPropelSchemaXmlFileAssembler
  * @package Net\Bazzline\Component\Locator\Configuration\Assembler
@@ -19,29 +21,47 @@ class FromPropelSchemaXmlFileAssembler extends AbstractAssembler
     protected function map($data)
     {
         $configuration = $this->getConfiguration();
-        $configurationFileData = $data['configuration_file'];
-        $schemaXmlData = $data['schema_xml'];
+        $pathToSchemaXml = realpath($data['path_to_schema_xml']);
+
+        if (!is_file($pathToSchemaXml)) {
+            throw new RuntimeException(
+                'provided schema xml path "' . $pathToSchemaXml . '" is not a file'
+            );
+        }
+
+        if (!is_readable($pathToSchemaXml)) {
+            throw new RuntimeException(
+                'file "' . $pathToSchemaXml . '" is not readable'
+            );
+        }
 
         //set strings
         $configuration
-            ->setClassName($configurationFileData['class_name'])
-            ->setFilePath($configurationFileData['file_path'])
-            ->setMethodPrefix($configurationFileData['method_prefix'])
-            ->setNamespace($configurationFileData['namespace']);
+            ->setClassName($data['class_name'])
+            ->setFilePath($data['file_path'])
+            ->setMethodPrefix($data['method_prefix'])
+            ->setNamespace($data['namespace']);
 
         //set arrays
-        foreach ($configurationFileData['extends'] as $className) {
+        foreach ($data['extends'] as $className) {
             $configuration->setExtends($className);
         }
 
         //@todo implement instance adding
-echo var_export($schemaXmlData, true) . PHP_EOL;
+        $reader = new XMLReader();
+        $reader->open($pathToSchemaXml);
 
-        foreach ($configurationFileData['implements'] as $interfaceName) {
+        while ($reader->read()) {
+            $node = $reader->expand();
+            echo var_export($node, true) . PHP_EOL;
+        }
+        $reader->close();
+
+        foreach ($data['implements'] as $interfaceName) {
             $configuration->addImplements($interfaceName);
         }
 
-        foreach ($configurationFileData['uses'] as $key => $uses) {
+        foreach ($data['uses'] as $key => $uses) {
             if (!isset($uses['class_name'])) {
                 throw new RuntimeException(
                     'use entry with key "' . $key . '" needs to have a key "class_name"'
@@ -53,7 +73,7 @@ echo var_export($schemaXmlData, true) . PHP_EOL;
 
             $configuration->addUses($class, $alias);
         }
-
+exit('----') . PHP_EOL;
         $this->setConfiguration($configuration);
     }
 
@@ -76,27 +96,18 @@ echo var_export($schemaXmlData, true) . PHP_EOL;
         }
 
         $mandatoryKeysToExpectedValueTyp = array(
-            'configuration_file'    => 'array',
-            'schema_xml'            => 'array'
+            'class_name'            => 'string',
+            'extends'               => 'array',
+            'file_path'             => 'string',
+            'implements'            => 'array',
+            'namespace'             => 'string',
+            'path_to_schema_xml'    => 'string',
+            'uses'                  => 'array'
         );
 
         $this->validateDataWithMandatoryKeysAndExpectedValueType(
             $data,
             $mandatoryKeysToExpectedValueTyp
-        );
-
-        $mandatoryConfigurationFileKeysToExpectedValueTyp = array(
-            'class_name'        => 'string',
-            'extends'           => 'array',
-            'file_path'         => 'string',
-            'implements'        => 'array',
-            'namespace'         => 'string',
-            'uses'              => 'array'
-        );
-
-        $this->validateDataWithMandatoryKeysAndExpectedValueType(
-            $data['configuration_file'],
-            $mandatoryConfigurationFileKeysToExpectedValueTyp
         );
     }
 }
