@@ -51,29 +51,48 @@ class FromPropelSchemaXmlFileAssembler extends AbstractAssembler
         $reader = new XMLReader();
         $reader->open($pathToSchemaXml);
 
-        $databaseNamespace = '';
+        $hasRootNamespace = false;
         $name = '';
         $namespace = '';
-        $package = '';
         $phpName = '';
+        $rootNamespace = '';
 
         while ($reader->read()) {
-            switch ($reader->nodeType) {
-                case XMLREADER::ELEMENT:
-                    if ($reader->name === 'database') {
-                        $databaseNamespace = $reader->getAttribute('namespace');
+            if ($reader->nodeType === XMLREADER::ELEMENT) {
+                $isTableNode = false;
+
+                if ($reader->name === 'database') {
+                    $rootNamespace = $reader->getAttribute('namespace');
+                    if (strlen($rootNamespace) > 0) {
+                        $hasRootNamespace = true;
                     }
-                    if ($reader->name === 'table') {
-                        $name = $reader->getAttribute('name');
-                        $namespace = $reader->getAttribute('namespace');
-                        $package = $reader->getAttribute('package');
-                        $phpName = $reader->getAttribute('phpName');
+                }
+   
+                if ($reader->name === 'table') {
+                    $alias = '';
+                    $class = '';
+                    $isTableNode = true;
+                    $namespace = $reader->getAttribute('namespace');
+                    $phpName = $reader->getAttribute('phpName');
+                    $tableName = $reader->getAttribute('name');
+
+                    $name = (strlen($phpName) > 0) ? $phpName : $tableName;
+
+                    if ($hasRootNamespace) {
+                        $class .= $rootNamespace . '\\';
                     }
-                    echo 'database namespace: ' . $databaseNamespace . PHP_EOL;
-                    echo 'name: ' . $name . PHP_EOL;
-                    echo 'namespace: ' . $namespace . PHP_EOL;
-                    echo 'package: ' . $package . PHP_EOL;
-                    echo 'php name: ' . $phpName . PHP_EOL;
+                    if (strlen($namespace) > 0) {
+                        $class .= $namespace . '\\';
+                    }
+                    if (strlen($phpName)) {
+                        $alias = $phpName;
+                    }
+                    $tableNameAsArray = explode('_', $tableName);
+                    array_walk($tableNameAsArray, function (&$value) { $value = ucfirst($value); });
+                    $class .= implode('', $tableNameAsArray);
+
+                    $configuration->addInstance($class, false, false, $alias);
+                }
             }
         }
         $reader->close();
@@ -94,7 +113,7 @@ class FromPropelSchemaXmlFileAssembler extends AbstractAssembler
 
             $configuration->addUses($class, $alias);
         }
-exit('----') . PHP_EOL;
+
         $this->setConfiguration($configuration);
     }
 
