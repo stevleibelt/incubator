@@ -1,6 +1,5 @@
 # ToDos
 
-* add schema.xml for propel schemal with namespace
 * add generated unittest
 * write about configuration properties
 * write about file exists strategy

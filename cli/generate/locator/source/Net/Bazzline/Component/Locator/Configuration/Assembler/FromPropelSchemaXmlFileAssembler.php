@@ -90,8 +90,11 @@ class FromPropelSchemaXmlFileAssembler extends AbstractAssembler
                     $tableNameAsArray = explode('_', $tableName);
                     array_walk($tableNameAsArray, function (&$value) { $value = ucfirst($value); });
                     $class .= implode('', $tableNameAsArray);
+                    $queryAlias = (strlen($alias) > 0) ? $alias . 'Query' : '';
+                    $queryClass = $class . 'Query';
 
                     $configuration->addInstance($class, false, false, $alias);
+                    $configuration->addInstance($queryClass, false, false, $queryAlias);
                 }
             }
         }
