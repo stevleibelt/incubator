@@ -9,10 +9,10 @@ namespace Net\Bazzline\Component\Locator\Configuration\Assembler;
 use XMLReader;
 
 /**
- * Class FromPropelSchemaXmlFileAssembler
+ * Class FromPropelSchemaXmlAssembler
  * @package Net\Bazzline\Component\Locator\Configuration\Assembler
  */
-class FromPropelSchemaXmlFileAssembler extends AbstractAssembler
+class FromPropelSchemaXmlAssembler extends AbstractAssembler
 {
     /**
      * @param mixed $data

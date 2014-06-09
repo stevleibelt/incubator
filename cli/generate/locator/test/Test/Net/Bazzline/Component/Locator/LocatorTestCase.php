@@ -52,11 +52,11 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Configuration\Assembler\FromPropelSchemaXmlFileAssembler
+     * @return Configuration\Assembler\FromPropelSchemaXmlAssembler
      */
     public function getFromPropelSchemaXmlAssembler()
     {
-        return new Configuration\Assembler\FromPropelSchemaXmlFileAssembler();
+        return new Configuration\Assembler\FromPropelSchemaXmlAssembler();
     }
     //----end of configuration assembler namespace
 

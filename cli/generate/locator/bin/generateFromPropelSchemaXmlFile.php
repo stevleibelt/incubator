@@ -7,7 +7,7 @@
 
 use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
 use Net\Bazzline\Component\Locator\Configuration;
-use Net\Bazzline\Component\Locator\Configuration\Assembler\FromPropelSchemaXmlFileAssembler;
+use Net\Bazzline\Component\Locator\Configuration\Assembler\FromPropelSchemaXmlAssembler;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -49,7 +49,7 @@ try {
 
     $data = require_once $pathToConfigurationFile;
 
-    $assembler = new FromPropelSchemaXmlFileAssembler();
+    $assembler = new FromPropelSchemaXmlAssembler();
     $configuration = new Configuration();
     $factory = new LocatorGeneratorFactory();
     $fileExistsStrategy = new SuffixWithCurrentTimestampStrategy();
