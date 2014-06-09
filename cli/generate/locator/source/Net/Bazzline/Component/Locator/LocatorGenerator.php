@@ -159,8 +159,10 @@ class LocatorGenerator
         $this->moveOldLocatorFileIfExists($this->configuration, $this->fileExistsStrategy);
         $this->createLocatorFile($this->configuration, $this->fileFactory->create());
 
-        $this->moveOldFactoryInterfaceFileIfExists($this->configuration, $this->fileExistsStrategy);
-        $this->createFactoryInterfaceFile($this->configuration, $this->fileFactory->create());
+        if ($this->configuration->hasFactoryInstances()) {
+            $this->moveOldFactoryInterfaceFileIfExists($this->configuration, $this->fileExistsStrategy);
+            $this->createFactoryInterfaceFile($this->configuration, $this->fileFactory->create());
+        }
 
         if ($this->configuration->hasNamespace()) {
             $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration, $this->fileExistsStrategy);
@@ -359,17 +361,26 @@ class LocatorGenerator
         $class = $this->addGetInstanceMethods($class, $this->configuration);
 
         //protected methods
-        $class = $this->addMethodToFetchFromFactoryInstancePool($class, $this->configuration);
-        $class = $this->addMethodToFetchFromSharedInstancePool($class, $this->configuration);
+        if ($this->configuration->hasFactoryInstances()) {
+            $class = $this->addMethodToFetchFromFactoryInstancePool($class, $this->configuration);
+        }
+
+        if ($this->configuration->hasSharedInstances()) {
+            $class = $this->addMethodToFetchFromSharedInstancePool($class, $this->configuration);
+        }
 
         //private methods
-        $class = $this->addMethodToAddToFactoryInstancePool($class, $this->configuration);
-        $class = $this->addMethodToGetFromFactoryInstancePool($class, $this->configuration);
-        $class = $this->addMethodIsNotInFactoryInstancePool($class, $this->configuration);
+        if ($this->configuration->hasFactoryInstances()) {
+            $class = $this->addMethodToAddToFactoryInstancePool($class, $this->configuration);
+            $class = $this->addMethodToGetFromFactoryInstancePool($class, $this->configuration);
+            $class = $this->addMethodIsNotInFactoryInstancePool($class, $this->configuration);
+        }
 
-        $class = $this->addMethodToAddToSharedInstancePool($class, $this->configuration);
-        $class = $this->addMethodToGetFromSharedInstancePool($class, $this->configuration);
-        $class = $this->addMethodIsNotInSharedInstancePool($class, $this->configuration);
+        if ($this->configuration->hasSharedInstances()) {
+            $class = $this->addMethodToAddToSharedInstancePool($class, $this->configuration);
+            $class = $this->addMethodToGetFromSharedInstancePool($class, $this->configuration);
+            $class = $this->addMethodIsNotInSharedInstancePool($class, $this->configuration);
+        }
 
         return $class;
     }

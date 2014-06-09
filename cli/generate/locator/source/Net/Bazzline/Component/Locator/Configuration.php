@@ -36,6 +36,16 @@ class Configuration
     private $className;
 
     /**
+     * @var bool
+     */
+    private $hasFactoryInstances = false;
+
+    /**
+     * @var bool
+     */
+    private $hasSharedInstances = false;
+
+    /**
      * @var string
      */
     private $namespace;
@@ -164,6 +174,14 @@ class Configuration
     {
         $instance = $this->getNewInstance();
 
+        if ($isFactory) {
+            $this->hasFactoryInstances = true;
+        }
+
+        if ($isShared) {
+            $this->hasSharedInstances = true;
+        }
+
         $instance->setAlias($alias);
         $instance->setClassName($className);
         $instance->setIsFactory($isFactory);
@@ -188,6 +206,22 @@ class Configuration
     public function hasInstances()
     {
         return (!empty($this->instances));
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFactoryInstances()
+    {
+        return $this->hasFactoryInstances;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSharedInstances()
+    {
+        return $this->hasSharedInstances;
     }
 
     /**
