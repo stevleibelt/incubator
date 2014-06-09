@@ -51,9 +51,30 @@ class FromPropelSchemaXmlFileAssembler extends AbstractAssembler
         $reader = new XMLReader();
         $reader->open($pathToSchemaXml);
 
+        $databaseNamespace = '';
+        $name = '';
+        $namespace = '';
+        $package = '';
+        $phpName = '';
+
         while ($reader->read()) {
-            $node = $reader->expand();
-            echo var_export($node, true) . PHP_EOL;
+            switch ($reader->nodeType) {
+                case XMLREADER::ELEMENT:
+                    if ($reader->name === 'database') {
+                        $databaseNamespace = $reader->getAttribute('namespace');
+                    }
+                    if ($reader->name === 'table') {
+                        $name = $reader->getAttribute('name');
+                        $namespace = $reader->getAttribute('namespace');
+                        $package = $reader->getAttribute('package');
+                        $phpName = $reader->getAttribute('phpName');
+                    }
+                    echo 'database namespace: ' . $databaseNamespace . PHP_EOL;
+                    echo 'name: ' . $name . PHP_EOL;
+                    echo 'namespace: ' . $namespace . PHP_EOL;
+                    echo 'package: ' . $package . PHP_EOL;
+                    echo 'php name: ' . $phpName . PHP_EOL;
+            }
         }
         $reader->close();
 
