@@ -20,6 +20,7 @@ use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterfac
  * Class LocatorGenerator
  *
  * @package Net\Bazzline\Component\Locator
+ * @todo refactor methods to inject all needed properties instead of using private/protected ones
  */
 class LocatorGenerator
 {
@@ -156,6 +157,18 @@ class LocatorGenerator
      */
     public function generate()
     {
+        if (!is_dir($this->configuration->getFilePath())) {
+            throw new RuntimeException(
+                'provided path "' . $this->configuration->getFilePath() . '" is not a directory'
+            );
+        }
+
+        if (!is_writable($this->configuration->getFilePath())) {
+            throw new RuntimeException(
+                'provided directory "' . $this->configuration->getFilePath() . '" is not writable'
+            );
+        }
+
         $this->moveOldLocatorFileIfExists($this->configuration, $this->fileExistsStrategy);
         $this->createLocatorFile($this->configuration, $this->fileFactory->create());
 
