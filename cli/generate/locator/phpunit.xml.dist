@@ -10,7 +10,7 @@
          stopOnSkipped="false">
 
     <testsuites>
-        <testsuite name="Array Merger Test Suite">
+        <testsuite name="Locator Component Test Suite">
             <directory>test/</directory>
         </testsuite>
     </testsuites>

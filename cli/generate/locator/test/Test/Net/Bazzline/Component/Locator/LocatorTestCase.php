@@ -44,6 +44,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     //----end of configuration namespace
     //----begin of configuration assembler namespace
     /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Locator\Configuration\Assembler\AbstractAssembler
+     */
+    public function getAbstractAssembler()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\Configuration\Assembler\AbstractAssembler');
+    }
+
+    /**
      * @return Configuration\Assembler\FromArrayAssembler
      */
     public function getFromArrayAssembler()
