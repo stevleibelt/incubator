@@ -1,5 +1,7 @@
 # ToDos
 
+* remove instance pool properties if no methods are generated
+* add classes to use statement if they have a different namespace (schema.xml database namespace differs from locator namespace)
 * write about configuration properties
 * write about file exists strategy
 * add "verify" method to configuration that throws an error if not all mandatory parameters are set
