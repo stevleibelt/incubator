@@ -25,21 +25,26 @@ class Instance
     /**
      * @var boolean
      */
-    private $isFactory;
+    private $isFactory = false;
 
     /**
      * @var boolean
      */
-    private $isShared;
+    private $isShared = true;
 
     /**
      * @param string $alias
+     * @return $this
      */
     public function setAlias($alias)
     {
-        if (!is_null($alias)) {
+        $alias = trim((string) $alias);
+
+        if (strlen($alias) > 0) {
             $this->alias = (string) $alias;
         }
+
+        return $this;
     }
 
     /**
@@ -55,16 +60,18 @@ class Instance
      */
     public function hasAlias()
     {
-        return ((is_string($this->alias))
-            && (strlen($this->alias) > 0));
+        return (is_string($this->alias));
     }
 
     /**
      * @param string $className
+     * @return $this
      */
     public function setClassName($className)
     {
         $this->className = (string) $className;
+
+        return $this;
     }
 
     /**
@@ -85,10 +92,13 @@ class Instance
 
     /**
      * @param boolean $isFactory
+     * @return $this
      */
     public function setIsFactory($isFactory)
     {
         $this->isFactory = (boolean) $isFactory;
+
+        return $this;
     }
 
     /**
@@ -101,9 +111,12 @@ class Instance
 
     /**
      * @param boolean $isShared
+     * @return $this
      */
     public function setIsShared($isShared)
     {
         $this->isShared = (boolean) $isShared;
+
+        return $this;
     }
 }

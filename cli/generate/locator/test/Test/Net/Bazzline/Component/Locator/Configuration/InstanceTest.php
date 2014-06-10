@@ -14,23 +14,86 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  */
 class InstanceTest extends LocatorTestCase
 {
-    public function testAlias()
+    public function testWithInvalidAlias()
     {
-        $this->markTestIncomplete();
+        $instance = $this->getInstance();
+        $alias = '';
+
+        $this->assertFalse($instance->hasAlias());
+        $this->assertNull($instance->getAlias());
+        $this->assertEquals(
+            $instance,
+            $instance->setAlias($alias)
+        );
+        $this->assertFalse($instance->hasAlias());
+        $this->assertNull($instance->getAlias());
+    }
+
+    public function testWithValidAlias()
+    {
+        $instance = $this->getInstance();
+        $alias = 'foo';
+
+        $this->assertFalse($instance->hasAlias());
+        $this->assertNull($instance->getAlias());
+        $this->assertEquals(
+            $instance,
+            $instance->setAlias($alias)
+        );
+        $this->assertTrue($instance->hasAlias());
+        $this->assertEquals(
+            $alias,
+            $instance->getAlias()
+        );
     }
 
     public function testClassName()
     {
-        $this->markTestIncomplete();
+        $instance = $this->getInstance();
+        $className = 'foo';
+
+        $this->assertNull($instance->getClassName());
+        $this->assertEquals(
+            $instance,
+            $instance->setClassName($className)
+        );
+        $this->assertEquals(
+            $className,
+            $instance->getClassName()
+        );
     }
 
     public function testIsFactory()
     {
-        $this->markTestIncomplete();
+        $instance = $this->getInstance();
+
+        $this->assertFalse($instance->isFactory());
+        $this->assertEquals(
+            $instance,
+            $instance->setIsFactory(true)
+        );
+        $this->assertTrue($instance->isFactory());
+        $this->assertEquals(
+            $instance,
+            $instance->setIsFactory(false)
+        );
+        $this->assertFalse($instance->isFactory());
     }
 
     public function testIsShared()
     {
-        $this->markTestIncomplete();
+        $instance = $this->getInstance();
+
+        $this->assertTrue($instance->isShared());
+        $this->assertEquals(
+            $instance,
+            $instance->setIsShared(true)
+        );
+        $this->assertTrue($instance->isShared());
+        $this->assertEquals(
+            $instance,
+            $instance->setIsShared(false)
+        );
+        $this->assertFalse($instance->isShared());
     }
 }
