@@ -24,10 +24,13 @@ class Uses
 
     /**
      * @param string $alias
+     * @return $this
      */
     public function setAlias($alias)
     {
         $this->alias = (string) $alias;
+
+        return $this;
     }
 
     /**
@@ -40,10 +43,13 @@ class Uses
 
     /**
      * @param string $className
+     * @return $this
      */
     public function setClassName($className)
     {
         $this->className = (string) $className;
+
+        return $this;
     }
 
     /**
