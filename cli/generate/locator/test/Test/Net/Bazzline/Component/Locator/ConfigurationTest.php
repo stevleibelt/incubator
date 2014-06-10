@@ -15,121 +15,312 @@ class ConfigurationTest extends LocatorTestCase
     public function testGetClassName()
     {
         $configuration = $this->getConfiguration();
+
+        $this->assertNull($configuration->getClassName());
     }
 
     public function testSetClassName()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $className = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->setClassName($className)
+        );
+        $this->assertEquals($className, $configuration->getClassName());
     }
 
     public function testGetFileName()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+
+        $this->assertNull($configuration->getFilePath());
     }
 
     public function testGetFilePath()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+
+        $this->assertNull($configuration->getFilePath());
     }
 
     public function testSetFilePath()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $filePath = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->setFilePath($filePath)
+        );
+        $this->assertEquals(
+            $filePath,
+            $configuration->getFilePath()
+        );
     }
 
     public function testGetNamespace()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $namespace = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->setNamespace($namespace)
+        );
+        $this->assertEquals(
+            $namespace,
+            $configuration->getNamespace()
+        );
     }
 
     public function testHasNamespace()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $invalidNamespace = '';
+        $validNamespace = 'foo';
+
+        $this->assertFalse($configuration->hasNamespace());
+
+        $configuration->setNamespace($invalidNamespace);
+        $this->assertFalse($configuration->hasNamespace());
+
+        $configuration->setNamespace($validNamespace);
+        $this->assertTrue($configuration->hasNamespace());
     }
 
     public function testSetNamespace()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $namespace = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->setNamespace($namespace)
+        );
     }
 
     public function testSetMethodPrefix()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $methodPrefix = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->setMethodPrefix($methodPrefix)
+        );
     }
 
     public function testGetMethodPrefix()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $methodPrefix = 'foo';
+
+        $this->assertNull($configuration->getMethodPrefix());
+
+        $configuration->setMethodPrefix($methodPrefix);
+        $this->assertEquals(
+            $methodPrefix,
+            $configuration->getMethodPrefix()
+        );
     }
 
     public function testAddInstance()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $alias = 'bar';
+        $className = 'foo';
+        $isFactory = true;
+        $isShared = true;
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->addInstance(
+                $className, $isFactory, $isShared, $alias
+            )
+        );
     }
 
     public function testGetInstances()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $alias = 'bar';
+        $className = 'foo';
+        $isFactory = true;
+        $isShared = true;
+
+        $this->assertEmpty($configuration->getInstances());
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->addInstance(
+                $className, $isFactory, $isShared, $alias
+            )
+        );
+
+        $this->assertNotEmpty($configuration->getInstances());
+        $this->assertCount(1, $configuration->getInstances());
     }
 
     public function testHasInstances()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+
+        $alias = 'bar';
+        $className = 'foo';
+        $isFactory = true;
+        $isShared = true;
+
+        $this->assertFalse($configuration->hasInstances());
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->addInstance(
+                $className, $isFactory, $isShared, $alias
+            )
+        );
+
+        $this->assertTrue($configuration->hasInstances());
     }
 
     public function testHasFactoryInstances()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+
+        $alias = 'bar';
+        $className = 'foo';
+        $isFactory = true;
+        $isShared = false;
+
+        $this->assertFalse($configuration->hasFactoryInstances());
+
+        $configuration->addInstance(
+            $className, $isFactory, $isShared, $alias
+        );
+
+        $this->assertTrue($configuration->hasFactoryInstances());
     }
 
     public function testHasSharedInstances()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+
+        $alias = 'bar';
+        $className = 'foo';
+        $isFactory = false;
+        $isShared = true;
+
+        $this->assertFalse($configuration->hasSharedInstances());
+
+        $configuration->addInstance(
+            $className, $isFactory, $isShared, $alias
+        );
+
+        $this->assertTrue($configuration->hasSharedInstances());
     }
 
     public function testAddImplements()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $interfaceName = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->addImplements($interfaceName)
+        );
     }
 
     public function testGetImplements()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $interfaceName = 'foo';
+
+        $this->assertEmpty($configuration->getImplements());
+
+        $configuration->addImplements($interfaceName);
+        $this->assertNotEmpty($configuration->getImplements());
+        $this->assertCount(1, $configuration->getImplements());
     }
 
     public function testHasImplements()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $interfaceName = 'foo';
+
+        $this->assertFalse($configuration->hasImplements());
+
+        $configuration->addImplements($interfaceName);
+        $this->assertTrue($configuration->hasImplements());
     }
 
     public function testSetExtends()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $parentClassName = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->setExtends($parentClassName)
+        );
     }
 
     public function testHasExtends()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $parentClassName = 'foo';
+
+        $this->assertFalse($configuration->hasExtends());
+
+        $configuration->setExtends($parentClassName);
+        $this->assertTrue($configuration->hasExtends());
     }
 
     public function testGetExtends()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $parentClassName = 'foo';
+
+        $this->assertNull($configuration->getExtends());
+
+        $configuration->setExtends($parentClassName);
+        $this->assertEquals(
+            $parentClassName,
+            $configuration->getExtends()
+        );
     }
 
     public function testAddUses()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $className = 'foo';
+
+        $this->assertEquals(
+            $configuration,
+            $configuration->addUses($className)
+        );
     }
 
     public function testHasUses()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
+        $className = 'foo';
+
+        $this->assertFalse($configuration->hasUses());
+
+        $configuration->addUses($className);
+        $this->assertTrue($configuration->hasUses());
     }
 
     public function testGetUses()
     {
-        $this->markTestIncomplete();
-    }
+        $configuration = $this->getConfiguration();
+        $className = 'foo';
 
+        $this->assertEmpty($configuration->getUses());
+
+        $configuration->addUses($className);
+        $this->assertNotEmpty($configuration->getUses());
+        $this->assertCount(1, $configuration->getUses());
+    }
 }

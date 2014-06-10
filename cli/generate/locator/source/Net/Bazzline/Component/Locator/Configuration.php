@@ -139,7 +139,11 @@ class Configuration
      */
     public function setNamespace($namespace)
     {
-        $this->namespace = (string) $namespace;
+        $namespace = trim((string) $namespace);
+
+        if (strlen($namespace) > 0) {
+            $this->namespace = $namespace;
+        }
 
         return $this;
     }
