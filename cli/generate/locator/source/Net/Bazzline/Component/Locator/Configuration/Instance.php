@@ -55,7 +55,8 @@ class Instance
      */
     public function hasAlias()
     {
-        return (is_string($this->alias));
+        return ((is_string($this->alias))
+            && (strlen($this->alias) > 0));
     }
 
     /**
