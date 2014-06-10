@@ -1,6 +1,5 @@
 # ToDos
 
-* add "file_exists_strategy" to configuration to set this dynamically
 * write about configuration properties
 * write about file exists strategy
 * add "verify" method to configuration that throws an error if not all mandatory parameters are set
