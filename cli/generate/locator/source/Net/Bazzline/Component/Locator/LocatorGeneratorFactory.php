@@ -26,12 +26,12 @@ class LocatorGeneratorFactory
     {
         $generator = new LocatorGenerator();
         $generator
-            ->setBlockFactory(new BlockGeneratorFactory())
-            ->setClassFactory(new ClassGeneratorFactory())
-            ->setDocumentationFactory(new DocumentationGeneratorFactory())
-            ->setFileFactory(new FileGeneratorFactory())
-            ->setMethodFactory(new MethodGeneratorFactory())
-            ->setPropertyFactory(new PropertyGeneratorFactory());
+            ->setBlockGeneratorFactory(new BlockGeneratorFactory())
+            ->setClassGeneratorFactory(new ClassGeneratorFactory())
+            ->setDocumentationGeneratorFactory(new DocumentationGeneratorFactory())
+            ->setFileGeneratorFactory(new FileGeneratorFactory())
+            ->setMethodGeneratorFactory(new MethodGeneratorFactory())
+            ->setPropertyGeneratorFactory(new PropertyGeneratorFactory());
 
         return $generator;
     }

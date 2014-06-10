@@ -14,7 +14,7 @@ class ConfigurationTest extends LocatorTestCase
 {
     public function testGetClassName()
     {
-        $this->markTestIncomplete();
+        $configuration = $this->getConfiguration();
     }
 
     public function testSetClassName()

@@ -79,7 +79,7 @@ class LocatorGenerator
      * @param \Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory $documentationFactory
      * @return $this
      */
-    public function setDocumentationFactory($documentationFactory)
+    public function setDocumentationGeneratorFactory($documentationFactory)
     {
         $this->documentationFactory = $documentationFactory;
 
@@ -90,7 +90,7 @@ class LocatorGenerator
      * @param \Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory $fileFactory
      * @return $this
      */
-    public function setFileFactory($fileFactory)
+    public function setFileGeneratorFactory($fileFactory)
     {
         $this->fileFactory = $fileFactory;
 
@@ -112,7 +112,7 @@ class LocatorGenerator
      * @param \Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory $methodFactory
      * @return $this
      */
-    public function setMethodFactory($methodFactory)
+    public function setMethodGeneratorFactory($methodFactory)
     {
         $this->methodFactory = $methodFactory;
 
@@ -123,7 +123,7 @@ class LocatorGenerator
      * @param \Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory $propertyFactory
      * @return $this
      */
-    public function setPropertyFactory($propertyFactory)
+    public function setPropertyGeneratorFactory($propertyFactory)
     {
         $this->propertyFactory = $propertyFactory;
 
@@ -134,7 +134,7 @@ class LocatorGenerator
      * @param \Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory $classFactory
      * @return $this
      */
-    public function setClassFactory($classFactory)
+    public function setClassGeneratorFactory($classFactory)
     {
         $this->classFactory = $classFactory;
 
@@ -145,7 +145,7 @@ class LocatorGenerator
      * @param \Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory $blockFactory
      * @return $this
      */
-    public function setBlockFactory($blockFactory)
+    public function setBlockGeneratorFactory($blockFactory)
     {
         $this->blockFactory = $blockFactory;
 

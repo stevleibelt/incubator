@@ -12,23 +12,23 @@ namespace Test\Net\Bazzline\Component\Locator;
  */
 class LocatorGeneratorTest extends LocatorTestCase
 {
-    public function testSetBlockFactory()
+    public function testSetBlockGeneratorFactory()
     {
         $generator = $this->getLocatorGenerator();
 
         $this->assertEquals(
             $generator,
-            $generator->setBlockFactory($this->getBlockGeneratorFactory())
+            $generator->setBlockGeneratorFactory($this->getBlockGeneratorFactory())
         );
     }
 
-    public function testSetClassFactory()
+    public function testSetClassGeneratorFactory()
     {
         $generator = $this->getLocatorGenerator();
 
         $this->assertEquals(
             $generator,
-            $generator->setClassFactory($this->getClassGeneratorFactory())
+            $generator->setClassGeneratorFactory($this->getClassGeneratorFactory())
         );
     }
 
@@ -42,23 +42,23 @@ class LocatorGeneratorTest extends LocatorTestCase
         );
     }
 
-    public function testSetDocumentationFactory()
+    public function testSetDocumentationGeneratorFactory()
     {
         $generator = $this->getLocatorGenerator();
 
         $this->assertEquals(
             $generator,
-            $generator->setDocumentationFactory($this->getDocumentationGeneratorFactory())
+            $generator->setDocumentationGeneratorFactory($this->getDocumentationGeneratorFactory())
         );
     }
 
-    public function testSetFileFactory()
+    public function testSetFileGeneratorFactory()
     {
         $generator = $this->getLocatorGenerator();
 
         $this->assertEquals(
             $generator,
-            $generator->setFileFactory($this->getFileGeneratorFactory())
+            $generator->setFileGeneratorFactory($this->getFileGeneratorFactory())
         );
     }
 
@@ -72,23 +72,23 @@ class LocatorGeneratorTest extends LocatorTestCase
         );
     }
 
-    public function testSetMethodFactory()
+    public function testSetMethodGeneratorFactory()
     {
         $generator = $this->getLocatorGenerator();
 
         $this->assertEquals(
             $generator,
-            $generator->setMethodFactory($this->getMethodGeneratorFactory())
+            $generator->setMethodGeneratorFactory($this->getMethodGeneratorFactory())
         );
     }
 
-    public function testSetPropertyFactory()
+    public function testSetPropertyGeneratorFactory()
     {
         $generator = $this->getLocatorGenerator();
 
         $this->assertEquals(
             $generator,
-            $generator->setPropertyFactory($this->getPropertyGeneratorFactory())
+            $generator->setPropertyGeneratorFactory($this->getPropertyGeneratorFactory())
         );
     }
 
