@@ -20,7 +20,7 @@ Take a Look to [configuration file](https://github.com/stevleibelt/incubator/blo
 
 ```shell
 cd <component root directory>
-php bin/generateFromArrayFile.php source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php
+php bin/generateLocator.php source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php
 ls data/
 vim data/FromArrayConfigurationFileLocator.php
 ```

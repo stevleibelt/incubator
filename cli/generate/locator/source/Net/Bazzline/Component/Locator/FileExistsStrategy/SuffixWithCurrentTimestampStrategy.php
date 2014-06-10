@@ -12,6 +12,11 @@ namespace Net\Bazzline\Component\Locator\FileExistsStrategy;
  */
 class SuffixWithCurrentTimestampStrategy extends AbstractStrategy
 {
+    public function __construct()
+    {
+        $this->currentTimeStamp = time();
+    }
+
     /**
      * @var int
      */

@@ -1,14 +1,12 @@
 <?php
 #!/bin/php
 /**
- * @author sleibelt
- * @since 2014-04-29
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2014-06-10 
  */
 
-use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
 use Net\Bazzline\Component\Locator\Configuration;
-use Net\Bazzline\Component\Locator\Configuration\Assembler\FromArrayAssembler;
-use Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy;
+use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -32,31 +30,60 @@ if ($argc !== 2) {
 }
 
 $cwd = getcwd();
-$pathToConfigurationFile = $cwd . DIRECTORY_SEPARATOR . $argv[1];
+$pathToConfigurationFile = realpath($cwd . DIRECTORY_SEPARATOR . $argv[1]);
 
 try {
+    //----begin of validation
     if (!is_file($pathToConfigurationFile)) {
         throw new Exception(
             'provided path "' . $pathToConfigurationFile . '" is not a file'
         );
     }
+
     if (!is_readable($pathToConfigurationFile)) {
         throw new Exception(
             'file "' . $pathToConfigurationFile . '" is not readable'
         );
     }
+
     $data = require_once $pathToConfigurationFile;
 
-    $assembler = new FromArrayAssembler();
+    if (!isset($data['assembler'])) {
+        throw new Exception(
+            'data array must contain content for key "assembler"'
+        );
+    }
+
+    if (!class_exists($data['assembler'])) {
+        throw new Exception(
+            'provided assembler "' . $data['assembler'] . '" does not exist'
+        );
+    }
+
+    if (!isset($data['file_exists_strategy'])) {
+        throw new Exception(
+            'data array must contain content for key "file_exists_strategy"'
+        );
+    }
+
+    if (!class_exists($data['file_exists_strategy'])) {
+        throw new Exception(
+            'provided file exists strategy "' . $data['file_exists_strategy'] . '" does not exist'
+        );
+    }
+    //----end of validation
+    /**
+     * @var \Net\Bazzline\Component\Locator\Configuration\Assembler\AssemblerInterface $assembler
+     * @var \Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface $fileExistsStrategy
+     */
+    $assembler = new $data['assembler']();
     $configuration = new Configuration();
     $factory = new LocatorGeneratorFactory();
-    $fileExistsStrategy = new SuffixWithCurrentTimestampStrategy();
+    $fileExistsStrategy = new $data['file_exists_strategy']();
     $generator = $factory->create();
 
     $assembler->setConfiguration($configuration);
     $assembler->assemble($data);
-
-    $fileExistsStrategy->setCurrentTimeStamp(time());
 
     $generator->setConfiguration($assembler->getConfiguration());
     $generator->setFileExistsStrategy($fileExistsStrategy);
