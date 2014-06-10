@@ -52,15 +52,11 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
         $reader->open($pathToSchemaXml);
 
         $hasRootNamespace = false;
-        $name = '';
-        $namespace = '';
-        $phpName = '';
+        $locatorNamespace = $data['namespace'];
         $rootNamespace = '';
 
         while ($reader->read()) {
             if ($reader->nodeType === XMLREADER::ELEMENT) {
-                $isTableNode = false;
-
                 if ($reader->name === 'database') {
                     $rootNamespace = $reader->getAttribute('namespace');
                     if (strlen($rootNamespace) > 0) {
@@ -69,31 +65,41 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
                 }
    
                 if ($reader->name === 'table') {
-                    $class = '';
-                    $isTableNode = true;
+                    $className = '';
                     $namespace = $reader->getAttribute('namespace');
                     $phpName = $reader->getAttribute('phpName');
                     $tableName = $reader->getAttribute('name');
-
-                    $name = (strlen($phpName) > 0) ? $phpName : $tableName;
+                    $tableNamespace = '';
 
                     if ($hasRootNamespace) {
-                        $class .= $rootNamespace . '\\';
+                        $tableNamespace .= $rootNamespace . '\\';
                     }
+
                     if (strlen($namespace) > 0) {
-                        $class .= $namespace . '\\';
+                        $tableNamespace .= $namespace . '\\';
                     }
+
                     if (strlen($phpName) > 0) {
-                        $class = $phpName;
+                        $className = $phpName;
                     } else {
                         $tableNameAsArray = explode('_', $tableName);
                         array_walk($tableNameAsArray, function (&$value) { $value = ucfirst($value); });
-                        $class .= implode('', $tableNameAsArray);
+                        $className .= implode('', $tableNameAsArray);
                     }
-                    $queryClass = $class . 'Query';
 
-                    $configuration->addInstance($class, false, false, null);
-                    $configuration->addInstance($queryClass, false, false, null);
+                    if (strlen($tableNamespace) > 0) {
+                        $className = $tableNamespace . '\\' . $className;
+                    }
+
+                    $queryClassName = $className . 'Query';
+
+                    $configuration->addInstance($className, false, false, null);
+                    $configuration->addInstance($queryClassName, false, false, null);
+
+                    if ($locatorNamespace !== $tableNamespace) {
+                        $configuration->addUses($className);
+                        $configuration->addUses($queryClassName);
+                    }
                 }
             }
         }
@@ -111,9 +117,9 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
             }
 
             $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
-            $class = $uses['class_name'];
+            $className = $uses['class_name'];
 
-            $configuration->addUses($class, $alias);
+            $configuration->addUses($className, $alias);
         }
 
         $this->setConfiguration($configuration);

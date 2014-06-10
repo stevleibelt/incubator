@@ -1,6 +1,5 @@
 # ToDos
 
-* remove instance pool properties if no methods are generated
 * add "file_exists_strategy" to configuration to set this dynamically
 * write about configuration properties
 * write about file exists strategy

@@ -718,21 +718,27 @@ class LocatorGenerator
      */
     private function addPropertiesToClass(ClassGenerator $class, DocumentationGeneratorFactory $documentationGeneratorFactory, PropertyGeneratorFactory $propertyGeneratorFactory)
     {
-        $factoryInstancePool = $propertyGeneratorFactory->create();
-        $sharedInstancePool = $propertyGeneratorFactory->create();
+        if ($this->configuration->hasFactoryInstances()) {
+            $factoryInstancePool = $propertyGeneratorFactory->create();
 
-        $factoryInstancePool->setDocumentation($documentationGeneratorFactory->create());
-        $factoryInstancePool->setName('factoryInstancePool');
-        $factoryInstancePool->markAsPrivate();
-        $factoryInstancePool->setValue('array()');
+            $factoryInstancePool->setDocumentation($documentationGeneratorFactory->create());
+            $factoryInstancePool->setName('factoryInstancePool');
+            $factoryInstancePool->markAsPrivate();
+            $factoryInstancePool->setValue('array()');
 
-        $sharedInstancePool->setDocumentation($documentationGeneratorFactory->create());
-        $sharedInstancePool->setName('sharedInstancePool');
-        $sharedInstancePool->markAsPrivate();
-        $sharedInstancePool->setValue('array()');
+            $class->addProperty($factoryInstancePool);
+        }
 
-        $class->addProperty($factoryInstancePool);
-        $class->addProperty($sharedInstancePool);
+        if ($this->configuration->hasSharedInstances()) {
+            $sharedInstancePool = $propertyGeneratorFactory->create();
+
+            $sharedInstancePool->setDocumentation($documentationGeneratorFactory->create());
+            $sharedInstancePool->setName('sharedInstancePool');
+            $sharedInstancePool->markAsPrivate();
+            $sharedInstancePool->setValue('array()');
+
+            $class->addProperty($sharedInstancePool);
+        }
 
         return $class;
     }

@@ -283,7 +283,7 @@ class Configuration
      * @param string $alias
      * @return $this
      */
-    public function addUses($className, $alias)
+    public function addUses($className, $alias = '')
     {
         $uses = $this->getNewUses();
 
