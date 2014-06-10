@@ -14,13 +14,13 @@ The benefit is working code completion with your ide and "you can see what the l
 
 ## Array Configuration File
 
-Take a Look to [configuration file](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php).
+Take a Look to [configuration file](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/example/ArrayConfiguration/configuration.php).
 
 ### How To Create
 
 ```shell
 cd <component root directory>
-php bin/generateLocator.php source/Net/Bazzline/Component/Locator/Example/ArrayConfiguration/configuration.php
+php bin/generateLocator.php example/ArrayConfiguration/configuration.php
 ls data/
 vim data/FromArrayConfigurationFileLocator.php
 ```
