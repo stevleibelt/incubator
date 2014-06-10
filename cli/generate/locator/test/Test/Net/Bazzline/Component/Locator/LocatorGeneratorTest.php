@@ -12,48 +12,93 @@ namespace Test\Net\Bazzline\Component\Locator;
  */
 class LocatorGeneratorTest extends LocatorTestCase
 {
-    public function testSetConfiguration()
+    public function testSetBlockFactory()
     {
-        $this->markTestIncomplete();
-    }
+        $generator = $this->getLocatorGenerator();
 
-    public function testSetDocumentationFactory()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testSetFileFactory()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testSetFileExistsStrategy()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testSetMethodFactory()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testSetPropertyFactory()
-    {
-        $this->markTestIncomplete();
+        $this->assertEquals(
+            $generator,
+            $generator->setBlockFactory($this->getBlockGeneratorFactory())
+        );
     }
 
     public function testSetClassFactory()
     {
-        $this->markTestIncomplete();
+        $generator = $this->getLocatorGenerator();
+
+        $this->assertEquals(
+            $generator,
+            $generator->setClassFactory($this->getClassGeneratorFactory())
+        );
     }
 
-    public function testSetBlockFactory()
+    public function testSetConfiguration()
     {
-        $this->markTestIncomplete();
+        $generator = $this->getLocatorGenerator();
+
+        $this->assertEquals(
+            $generator,
+            $generator->setConfiguration($this->getConfiguration())
+        );
+    }
+
+    public function testSetDocumentationFactory()
+    {
+        $generator = $this->getLocatorGenerator();
+
+        $this->assertEquals(
+            $generator,
+            $generator->setDocumentationFactory($this->getDocumentationGeneratorFactory())
+        );
+    }
+
+    public function testSetFileFactory()
+    {
+        $generator = $this->getLocatorGenerator();
+
+        $this->assertEquals(
+            $generator,
+            $generator->setFileFactory($this->getFileGeneratorFactory())
+        );
+    }
+
+    public function testSetFileExistsStrategy()
+    {
+        $generator = $this->getLocatorGenerator();
+
+        $this->assertEquals(
+            $generator,
+            $generator->setFileExistsStrategy($this->getDeleteStrategy())
+        );
+    }
+
+    public function testSetMethodFactory()
+    {
+        $generator = $this->getLocatorGenerator();
+
+        $this->assertEquals(
+            $generator,
+            $generator->setMethodFactory($this->getMethodGeneratorFactory())
+        );
+    }
+
+    public function testSetPropertyFactory()
+    {
+        $generator = $this->getLocatorGenerator();
+
+        $this->assertEquals(
+            $generator,
+            $generator->setPropertyFactory($this->getPropertyGeneratorFactory())
+        );
     }
 
     public function testGenerate()
     {
         $this->markTestIncomplete();
+        //setup vfs
+        //inject needed mocks
+        //@todo refactor test above and replace real classes with mocks
+        //generate locator
+        //compare with heredoc written expected file content
     }
 }
