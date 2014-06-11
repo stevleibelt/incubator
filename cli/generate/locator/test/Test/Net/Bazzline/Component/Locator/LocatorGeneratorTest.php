@@ -96,9 +96,11 @@ class LocatorGeneratorTest extends LocatorTestCase
     {
         $this->markTestIncomplete();
         //setup vfs
+        //create configuration
+        //define mocks with all "shouldReceive" calls
         //inject needed mocks
         //@todo refactor test above and replace real classes with mocks
         //generate locator
-        //compare with heredoc written expected file content
+        //try to create testCases to easy up testing multiple configurations (with namespace, without, etc.)
     }
 }
