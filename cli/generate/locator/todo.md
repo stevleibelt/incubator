@@ -1,5 +1,6 @@
 # ToDos
 
+* add return value in instance section to overwrite generated return property (needed for factories)
 * add unittests
 * write about configuration properties
 * write about file exists strategy
