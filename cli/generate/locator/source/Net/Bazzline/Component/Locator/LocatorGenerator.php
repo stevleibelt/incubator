@@ -177,7 +177,8 @@ class LocatorGenerator
             $this->createFactoryInterfaceFile($this->configuration, $this->fileFactory->create());
         }
 
-        if ($this->configuration->hasNamespace()) {
+        if (($this->configuration->hasFactoryInstances())
+            || ($this->configuration->hasSharedInstances())) {
             $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration, $this->fileExistsStrategy);
             $this->createInvalidArgumentExceptionFile($this->configuration, $this->fileFactory->create());
         }
