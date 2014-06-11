@@ -1,9 +1,42 @@
 # Locator Generator
 
-Inspired by an [php usergroup meetup](http://artodeto.bazzline.net/archives/525-Social-Human-Architecture-for-Beginners-and-the-Flip-Side-of-Dependency-Injection-PHPUGHH.html), I started thinking about this configured locators around the web (especially with their generic "->get('foo')" methods.
+# Why
 
-That's why this project should lead to a locator, that can be configured as known but will be generated like propel is doing it with their classes.
-The benefit is working code completion with your ide and "you can see what the locator is doing instead of hoping it".
+* don't like "serviceLocator->get('foo')" (inexplicit API) calls
+* like the configurable approach of some service locators out there
+* inspired by a [php usergroup](http://artodeto.bazzline.net/archives/525-Social-Human-Architecture-for-Beginners-and-the-Flip-Side-of-Dependency-Injection-PHPUGHH.html) presentation called "[the flipside of dependency injection](http://thephp.cc/dates/2014/phpughh/the-flip-side-of-dependency-injection)" i'Ve seen "i'm not alone"
+* generated code is easy debug- and understandable (no magic inside)
+
+# How
+
+* a task specific configuration assembler creates a unified configuration object
+* unified configuration object is injected into the locator generator
+* the locator generator creates needed files
+* a file exists strategy can take care how to deal with existing files
+
+# Good and Bad
+
+## Good
+
+* on way of calling the locator generator "php bin/generateLocator.php <path to configuration file>"
+* shipped with two configuration assemblers
+    * FromArrayAssembler
+        * FromPropelSchemaXmlAssembler
+        * can be extended by implementing the "AssemblerInterface"
+* shipped with two file exists strategies
+    * DeleteStrategy
+        * SuffixWithCurrentTimestampStrategy
+        * can be extended by implementing the "FileExistsStrategyInterface"
+* assembler and file exists strategy are runtime variables
+* uses separate [component](https://github.com/stevleibelt/php_component_code_generator) for php code generation
+* took only a few hours to write the "FromPropelSchemaXmlAssembler"
+
+## Bad
+
+* still an incubator project
+* missing tests
+* missing features
+* relying on [beta component](https://github.com/stevleibelt/php_component_code_generator)
 
 # Behaviour
 
