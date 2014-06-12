@@ -21,6 +21,7 @@ use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterfac
  *
  * @package Net\Bazzline\Component\Locator
  * @todo refactor methods to inject all needed properties instead of using private/protected ones
+ * @todo split generation into three generators (LocatorGenerator, FactoryInterfaceGenerator, InvalidArgumentExceptionGenerator), rename this one to "Generator"
  */
 class LocatorGenerator
 {
@@ -409,7 +410,12 @@ class LocatorGenerator
         if ($configuration->hasInstances()) {
             foreach ($configuration->getInstances() as $instance) {
                 $body = $this->blockFactory->create();
+                $isUniqueInvokableInstance = ((!$instance->isFactory()) && (!$instance->isShared()));
+                $isUniqueInvokableFactorizedInstance = (($instance->isFactory()) && (!$instance->isShared()));
+                $isSharedInvokableInstance = ((!$instance->isFactory()) && ($instance->isShared()));
+                $isSharedInvokableFactorizedInstance = (($instance->isFactory()) && ($instance->isShared()));
                 $method = $this->methodFactory->create();
+                $returnValue = ($instance->hasReturnValue()) ? $instance->getReturnValue() : $instance->getClassName();
 
                 if ($instance->hasAlias()) {
                     $methodName = $instance->getAlias();
@@ -421,11 +427,6 @@ class LocatorGenerator
                 $method->setDocumentation($this->documentationFactory->create());
                 $method->setName($methodName);
                 $method->markAsPublic();
-
-                $isUniqueInvokableInstance = ((!$instance->isFactory()) && (!$instance->isShared()));
-                $isUniqueInvokableFactorizedInstance = (($instance->isFactory()) && (!$instance->isShared()));
-                $isSharedInvokableInstance = ((!$instance->isFactory()) && ($instance->isShared()));
-                $isSharedInvokableFactorizedInstance = (($instance->isFactory()) && ($instance->isShared()));
 
                 if ($isUniqueInvokableInstance) {
                     $body
@@ -452,7 +453,7 @@ class LocatorGenerator
                         ->add('return $this->fetchFromSharedInstancePool($className);');
                 }
 
-                $method->setBody($body, array($instance->getClassName()));
+                $method->setBody($body, array($returnValue));
 
                 $class->addMethod($method);
             }

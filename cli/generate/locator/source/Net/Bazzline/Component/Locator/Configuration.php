@@ -171,10 +171,11 @@ class Configuration
      * @param string $className
      * @param bool $isFactory
      * @param bool $isShared
+     * @param string $returnValue
      * @param string $alias
      * @return $this
      */
-    public function addInstance($className, $isFactory, $isShared, $alias)
+    public function addInstance($className, $isFactory, $isShared, $returnValue, $alias)
     {
         $instance = $this->getNewInstance();
 
@@ -190,6 +191,7 @@ class Configuration
         $instance->setClassName($className);
         $instance->setIsFactory($isFactory);
         $instance->setIsShared($isShared);
+        $instance->setReturnValue($returnValue);
 
         $this->instances[] = $instance;
 

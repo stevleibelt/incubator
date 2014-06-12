@@ -133,11 +133,12 @@ class ConfigurationTest extends LocatorTestCase
         $className = 'foo';
         $isFactory = true;
         $isShared = true;
+        $returnValue = 'string';
 
         $this->assertEquals(
             $configuration,
             $configuration->addInstance(
-                $className, $isFactory, $isShared, $alias
+                $className, $isFactory, $isShared, $returnValue, $alias
             )
         );
     }
@@ -149,13 +150,14 @@ class ConfigurationTest extends LocatorTestCase
         $className = 'foo';
         $isFactory = true;
         $isShared = true;
+        $returnValue = 'string';
 
         $this->assertEmpty($configuration->getInstances());
 
         $this->assertEquals(
             $configuration,
             $configuration->addInstance(
-                $className, $isFactory, $isShared, $alias
+                $className, $isFactory, $isShared, $returnValue, $alias
             )
         );
 
@@ -171,13 +173,14 @@ class ConfigurationTest extends LocatorTestCase
         $className = 'foo';
         $isFactory = true;
         $isShared = true;
+        $returnValue = 'string';
 
         $this->assertFalse($configuration->hasInstances());
 
         $this->assertEquals(
             $configuration,
             $configuration->addInstance(
-                $className, $isFactory, $isShared, $alias
+                $className, $isFactory, $isShared, $returnValue, $alias
             )
         );
 
@@ -192,11 +195,12 @@ class ConfigurationTest extends LocatorTestCase
         $className = 'foo';
         $isFactory = true;
         $isShared = false;
+        $returnValue = 'string';
 
         $this->assertFalse($configuration->hasFactoryInstances());
 
         $configuration->addInstance(
-            $className, $isFactory, $isShared, $alias
+            $className, $isFactory, $isShared, $returnValue, $alias
         );
 
         $this->assertTrue($configuration->hasFactoryInstances());
@@ -210,11 +214,12 @@ class ConfigurationTest extends LocatorTestCase
         $className = 'foo';
         $isFactory = false;
         $isShared = true;
+        $returnValue = 'string';
 
         $this->assertFalse($configuration->hasSharedInstances());
 
         $configuration->addInstance(
-            $className, $isFactory, $isShared, $alias
+            $className, $isFactory, $isShared, $returnValue, $alias
         );
 
         $this->assertTrue($configuration->hasSharedInstances());

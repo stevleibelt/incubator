@@ -96,4 +96,34 @@ class InstanceTest extends LocatorTestCase
         );
         $this->assertFalse($instance->isShared());
     }
+
+    public function testWithInvalidReturnValue()
+    {
+        $instance = $this->getInstance();
+        $returnValue = '';
+
+        $this->assertFalse($instance->hasReturnValue());
+        $this->assertNull($instance->getReturnValue());
+        $this->assertEquals(
+            $instance,
+            $instance->setReturnValue($returnValue)
+        );
+        $this->assertFalse($instance->hasReturnValue());
+        $this->assertNull($instance->getReturnValue());
+    }
+
+    public function testWithValidReturnValue()
+    {
+        $instance = $this->getInstance();
+        $returnValue = 'foo';
+
+        $this->assertFalse($instance->hasReturnValue());
+        $this->assertNull($instance->getReturnValue());
+        $this->assertEquals(
+            $instance,
+            $instance->setReturnValue($returnValue)
+        );
+        $this->assertTrue($instance->hasReturnValue());
+        $this->assertEquals($returnValue, $instance->getReturnValue());
+    }
 }

@@ -25,16 +25,18 @@ return array(
             'alias'         => 'UniqueFactorizedInstance',
             'class_name'    => '\Application\Factory\ExampleUniqueFactorizedInstanceFactory',
             'is_factory'    => true,
-            'is_shared'     => false
+            'is_shared'     => false,
+            'return_value'  => '\Application\Model\ExampleUniqueFactorizedInstance'
         ),
         array(
             'alias'         => 'SharedInvokableInstance',
-            'class_name'    => '\Application\Model\ExampleSharedInvokableInstance',
+            'class_name'    => '\Application\Model\ExampleSharedInvokableInstance'
         ),
         array(
             'alias'         => 'SharedFactorizedInstance',
             'class_name'    => '\Application\Factory\ExampleSharedFactorizedInstanceFactory',
             'is_factory'    => true,
+            'return_value'  => '\Application\Model\ExampleSharedFactorizedInstance'
         )
     ),
     //add interface names here, depending on entries in use section, full qualified or not

@@ -33,6 +33,11 @@ class Instance
     private $isShared = true;
 
     /**
+     * @var string
+     */
+    private $returnValue;
+
+    /**
      * @param string $alias
      * @return $this
      */
@@ -116,6 +121,36 @@ class Instance
     public function setIsShared($isShared)
     {
         $this->isShared = (boolean) $isShared;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnValue()
+    {
+        return $this->returnValue;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasReturnValue()
+    {
+        return (!is_null($this->returnValue));
+    }
+
+    /**
+     * @param string $returnValue
+     * @return $this
+     */
+    public function setReturnValue($returnValue)
+    {
+        if ((is_string($returnValue))
+            && (strlen($returnValue) > 0)) {
+            $this->returnValue = $returnValue;
+        }
 
         return $this;
     }

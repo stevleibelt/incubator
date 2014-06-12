@@ -90,11 +90,12 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
                     if (strlen($tableNamespace) > 0) {
                         $className = $tableNamespace . '\\' . $className;
                     }
+                    $className = str_replace('\\\\', '\\', $className);
 
                     $queryClassName = $className . 'Query';
 
-                    $configuration->addInstance($className, false, false, null);
-                    $configuration->addInstance($queryClassName, false, false, null);
+                    $configuration->addInstance($className, false, false, $className, null);
+                    $configuration->addInstance($queryClassName, false, false, $className, null);
 
                     if ($locatorNamespace !== $tableNamespace) {
                         $configuration->addUses($className);
@@ -117,7 +118,7 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
             }
 
             $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
-            $className = $uses['class_name'];
+            $className = str_replace('\\\\', '\\', $uses['class_name']);
 
             $configuration->addUses($className, $alias);
         }
