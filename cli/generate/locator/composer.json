@@ -3,6 +3,9 @@
     "keywords": ["php", "locator", "configuration", "generator"],
     "license": "LGPLv3",
     "name": "net_bazzline/php_component_locator",
+    "bin": [
+        "bin/generateLocator.php"
+    ],
     "type": "library",
     "authors": [
         {
