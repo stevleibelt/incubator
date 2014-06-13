@@ -7,11 +7,7 @@
 namespace Net\Bazzline\Component\Locator;
 
 use Net\Bazzline\Component\CodeGenerator\ClassGenerator;
-use Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\FileGenerator;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface;
@@ -23,136 +19,8 @@ use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterfac
  * @todo refactor methods to inject all needed properties instead of using private/protected ones
  * @todo split generation into three generators (LocatorGenerator, FactoryInterfaceGenerator, InvalidArgumentExceptionGenerator), rename this one to "Generator"
  */
-class LocatorGenerator
+class LocatorGenerator extends AbstractGenerator
 {
-    /**
-     * @var BlockGeneratorFactory
-     */
-    private $blockFactory;
-
-    /**
-     * @var ClassGeneratorFactory
-     */
-    private $classFactory;
-
-    /**
-     * @var \Net\Bazzline\Component\Locator\Configuration
-     */
-    private $configuration;
-
-    /**
-     * @var DocumentationGeneratorFactory
-     */
-    private $documentationFactory;
-
-    /**
-     * @var FileGeneratorFactory
-     */
-    private $fileFactory;
-
-    /**
-     * @var FileExistsStrategyInterface
-     */
-    private $fileExistsStrategy;
-
-    /**
-     * @var MethodGeneratorFactory
-     */
-    private $methodFactory;
-
-    /**
-     * @var PropertyGeneratorFactory
-     */
-    private $propertyFactory;
-
-    /**
-     * @param \Net\Bazzline\Component\Locator\Configuration $configuration
-     * @return $this
-     */
-    public function setConfiguration(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory $documentationFactory
-     * @return $this
-     */
-    public function setDocumentationGeneratorFactory($documentationFactory)
-    {
-        $this->documentationFactory = $documentationFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory $fileFactory
-     * @return $this
-     */
-    public function setFileGeneratorFactory($fileFactory)
-    {
-        $this->fileFactory = $fileFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param FileExistsStrategyInterface $strategy
-     * @return $this
-     */
-    public function setFileExistsStrategy(FileExistsStrategyInterface $strategy)
-    {
-        $this->fileExistsStrategy = $strategy;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory $methodFactory
-     * @return $this
-     */
-    public function setMethodGeneratorFactory($methodFactory)
-    {
-        $this->methodFactory = $methodFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory $propertyFactory
-     * @return $this
-     */
-    public function setPropertyGeneratorFactory($propertyFactory)
-    {
-        $this->propertyFactory = $propertyFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory $classFactory
-     * @return $this
-     */
-    public function setClassGeneratorFactory($classFactory)
-    {
-        $this->classFactory = $classFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory $blockFactory
-     * @return $this
-     */
-    public function setBlockGeneratorFactory($blockFactory)
-    {
-        $this->blockFactory = $blockFactory;
-
-        return $this;
-    }
-
     /**
      * @throws RuntimeException
      */
@@ -171,17 +39,17 @@ class LocatorGenerator
         }
 
         $this->moveOldLocatorFileIfExists($this->configuration, $this->fileExistsStrategy);
-        $this->createLocatorFile($this->configuration, $this->fileFactory->create());
+        $this->createLocatorFile($this->configuration, $this->fileGeneratorFactory->create());
 
         if ($this->configuration->hasFactoryInstances()) {
             $this->moveOldFactoryInterfaceFileIfExists($this->configuration, $this->fileExistsStrategy);
-            $this->createFactoryInterfaceFile($this->configuration, $this->fileFactory->create());
+            $this->createFactoryInterfaceFile($this->configuration, $this->fileGeneratorFactory->create());
         }
 
         if (($this->configuration->hasFactoryInstances())
             || ($this->configuration->hasSharedInstances())) {
             $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration, $this->fileExistsStrategy);
-            $this->createInvalidArgumentExceptionFile($this->configuration, $this->fileFactory->create());
+            $this->createInvalidArgumentExceptionFile($this->configuration, $this->fileGeneratorFactory->create());
         }
     }
 
@@ -288,10 +156,10 @@ class LocatorGenerator
      */
     private function createFactoryInterface()
     {
-        $class = $this->classFactory->create();
+        $class = $this->classGeneratorFactory->create();
 
         $class->markAsInterface();
-        $class->setDocumentation($this->documentationFactory->create());
+        $class->setDocumentation($this->documentationGeneratorFactory->create());
         $class->setName('FactoryInterface');
 
         //@tod put into separate method
@@ -299,16 +167,16 @@ class LocatorGenerator
             $class->setNamespace($this->configuration->getNamespace());
         }
 
-        $setLocator = $this->methodFactory->create();
-        $setLocator->setDocumentation($this->documentationFactory->create());
+        $setLocator = $this->methodGeneratorFactory->create();
+        $setLocator->setDocumentation($this->documentationGeneratorFactory->create());
         $setLocator->setName('setLocator');
         $setLocator->addParameter('locator', null, $this->configuration->getClassName());
         $setLocator->markAsPublic();
         $setLocator->markAsHasNoBody();
         $setLocator->getDocumentation()->setReturn(array('$this'));
 
-        $create = $this->methodFactory->create();
-        $create->setDocumentation($this->documentationFactory->create());
+        $create = $this->methodGeneratorFactory->create();
+        $create->setDocumentation($this->documentationGeneratorFactory->create());
         $create->setName('create');
         $create->markAsPublic();
         $create->markAsHasNoBody();
@@ -325,9 +193,9 @@ class LocatorGenerator
      */
     private function createInvalidArgumentExceptionClass()
     {
-        $class = $this->classFactory->create();
+        $class = $this->classGeneratorFactory->create();
 
-        $class->setDocumentation($this->documentationFactory->create());
+        $class->setDocumentation($this->documentationGeneratorFactory->create());
         $class->setName('InvalidArgumentException');
 
         //@tod put into separate method
@@ -346,9 +214,9 @@ class LocatorGenerator
      */
     private function createLocatorClass()
     {
-        $class = $this->classFactory->create();
+        $class = $this->classGeneratorFactory->create();
 
-        $class->setDocumentation($this->documentationFactory->create());
+        $class->setDocumentation($this->documentationGeneratorFactory->create());
         $class->setName($this->configuration->getClassName());
 
         if ($this->configuration->hasNamespace()) {
@@ -369,7 +237,7 @@ class LocatorGenerator
         }
 
         $class = $this->addDocumentationToClass($class, $this->configuration);
-        $class = $this->addPropertiesToClass($class, $this->documentationFactory, $this->propertyFactory);
+        $class = $this->addPropertiesToClass($class, $this->documentationGeneratorFactory, $this->propertyGeneratorFactory);
 
         //public methods
         //extend injection token todo
@@ -409,12 +277,12 @@ class LocatorGenerator
     {
         if ($configuration->hasInstances()) {
             foreach ($configuration->getInstances() as $instance) {
-                $body = $this->blockFactory->create();
+                $body = $this->blockGeneratorFactory->create();
                 $isUniqueInvokableInstance = ((!$instance->isFactory()) && (!$instance->isShared()));
                 $isUniqueInvokableFactorizedInstance = (($instance->isFactory()) && (!$instance->isShared()));
                 $isSharedInvokableInstance = ((!$instance->isFactory()) && ($instance->isShared()));
                 $isSharedInvokableFactorizedInstance = (($instance->isFactory()) && ($instance->isShared()));
-                $method = $this->methodFactory->create();
+                $method = $this->methodGeneratorFactory->create();
                 $returnValue = ($instance->hasReturnValue()) ? $instance->getReturnValue() : $instance->getClassName();
 
                 if ($instance->hasAlias()) {
@@ -424,7 +292,7 @@ class LocatorGenerator
                 }
                 $methodName = $configuration->getMethodPrefix() . ucfirst($methodName);
 
-                $method->setDocumentation($this->documentationFactory->create());
+                $method->setDocumentation($this->documentationGeneratorFactory->create());
                 $method->setName($methodName);
                 $method->markAsPublic();
 
@@ -468,10 +336,10 @@ class LocatorGenerator
      */
     private function addMethodToFetchFromFactoryInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('fetchFromFactoryInstancePool');
         $method->addParameter('className', null, 'string');
         $method->markAsProtected();
@@ -513,10 +381,10 @@ class LocatorGenerator
      */
     private function addMethodToAddToFactoryInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('addToFactoryInstancePool');
         $method->addParameter('className', null, 'string');
         $method->addParameter('factory', null, 'FactoryInterface');
@@ -539,10 +407,10 @@ class LocatorGenerator
      */
     private function addMethodToGetFromFactoryInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('getFromFactoryInstancePool');
         $method->addParameter('className', null, 'string');
         $method->markAsPrivate();
@@ -562,10 +430,10 @@ class LocatorGenerator
      */
     private function addMethodIsNotInFactoryInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('isNotInFactoryInstancePool');
         $method->addParameter('className', null, 'string');
         $method->markAsPrivate();
@@ -586,10 +454,10 @@ class LocatorGenerator
      */
     private function addMethodIsNotInSharedInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('isNotInSharedInstancePool');
         $method->addParameter('className', null, 'string');
         $method->markAsPrivate();
@@ -610,10 +478,10 @@ class LocatorGenerator
      */
     private function addMethodToGetFromSharedInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('getFromSharedInstancePool');
         $method->addParameter('className', null, 'string');
         $method->markAsPrivate();
@@ -634,10 +502,10 @@ class LocatorGenerator
      */
     private function addMethodToFetchFromSharedInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('fetchFromSharedInstancePool');
         $method->addParameter('className', null, 'string');
         $method->markAsProtected();
@@ -677,10 +545,10 @@ class LocatorGenerator
      */
     private function addMethodToAddToSharedInstancePool(ClassGenerator $class)
     {
-        $body = $this->blockFactory->create();
-        $method = $this->methodFactory->create();
+        $body = $this->blockGeneratorFactory->create();
+        $method = $this->methodGeneratorFactory->create();
 
-        $method->setDocumentation($this->documentationFactory->create());
+        $method->setDocumentation($this->documentationGeneratorFactory->create());
         $method->setName('addToSharedInstancePool');
         $method->addParameter('className', null, 'string');
         $method->addParameter('instance', null, 'object');
@@ -771,28 +639,5 @@ class LocatorGenerator
     private function moveOldInvalidArgumentExceptionFileIfExists(Configuration $configuration, FileExistsStrategyInterface $fileExistsStrategy)
     {
         $this->moveOldFileIfExists($configuration->getFilePath(), 'InvalidArgumentException.php');
-    }
-
-    /**
-     * @param string $filePath
-     * @param string $fileName
-     * @throws RuntimeException
-     */
-    private function moveOldFileIfExists($filePath, $fileName)
-    {
-        $fullQualifiedFilePath = $filePath . DIRECTORY_SEPARATOR . $fileName;
-
-        if (file_exists($fullQualifiedFilePath)) {
-            if ($this->fileExistsStrategy instanceof FileExistsStrategyInterface) {
-                $this->fileExistsStrategy
-                    ->setFileName($fileName)
-                    ->setFilePath($filePath)
-                    ->execute();
-            } else {
-                throw new RuntimeException(
-                    'file "' . $fullQualifiedFilePath . '" already exists'
-                );
-            }
-        }
     }
 }
