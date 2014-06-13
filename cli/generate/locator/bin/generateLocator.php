@@ -6,7 +6,7 @@
  */
 
 use Net\Bazzline\Component\Locator\Configuration;
-use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
+use Net\Bazzline\Component\Locator\GeneratorFactory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -78,7 +78,7 @@ try {
      */
     $assembler = new $data['assembler']();
     $configuration = new Configuration();
-    $factory = new LocatorGeneratorFactory();
+    $factory = new GeneratorFactory();
     $fileExistsStrategy = new $data['file_exists_strategy']();
     $generator = $factory->create();
 

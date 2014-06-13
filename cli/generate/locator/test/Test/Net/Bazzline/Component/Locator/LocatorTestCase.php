@@ -16,8 +16,8 @@ use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
 use Net\Bazzline\Component\Locator\Configuration;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\DeleteStrategy;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy;
-use Net\Bazzline\Component\Locator\LocatorGenerator;
-use Net\Bazzline\Component\Locator\LocatorGeneratorFactory;
+use Net\Bazzline\Component\Locator\Generator;
+use Net\Bazzline\Component\Locator\GeneratorFactory;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -102,19 +102,19 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return LocatorGenerator
+     * @return Generator
      */
     protected function getLocatorGenerator()
     {
-        return new LocatorGenerator();
+        return new Generator();
     }
 
     /**
-     * @return LocatorGeneratorFactory
+     * @return GeneratorFactory
      */
     protected function getLocatorGeneratorFactory()
     {
-        return new LocatorGeneratorFactory();
+        return new GeneratorFactory();
     }
     //----end of locator namespace
 
