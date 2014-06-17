@@ -38,17 +38,17 @@ class Generator extends AbstractGenerator
             );
         }
 
-        $this->moveOldLocatorFileIfExists($this->configuration, $this->fileExistsStrategy);
+        $this->moveOldLocatorFileIfExists($this->configuration);
         $this->createLocatorFile($this->configuration, $this->fileGeneratorFactory->create());
 
         if ($this->configuration->hasFactoryInstances()) {
-            $this->moveOldFactoryInterfaceFileIfExists($this->configuration, $this->fileExistsStrategy);
+            $this->moveOldFactoryInterfaceFileIfExists($this->configuration);
             $this->createFactoryInterfaceFile($this->configuration, $this->fileGeneratorFactory->create());
         }
 
         if (($this->configuration->hasFactoryInstances())
             || ($this->configuration->hasSharedInstances())) {
-            $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration, $this->fileExistsStrategy);
+            $this->moveOldInvalidArgumentExceptionFileIfExists($this->configuration);
             $this->createInvalidArgumentExceptionFile($this->configuration, $this->fileGeneratorFactory->create());
         }
     }
@@ -615,28 +615,25 @@ class Generator extends AbstractGenerator
 
     /**
      * @param Configuration $configuration
-     * @param FileExistsStrategyInterface $fileExistsStrategy
      * @throws RuntimeException
      */
-    private function moveOldLocatorFileIfExists(Configuration $configuration, FileExistsStrategyInterface $fileExistsStrategy)
+    private function moveOldLocatorFileIfExists(Configuration $configuration)
     {
         $this->moveOldFileIfExists($configuration->getFilePath(), $configuration->getFileName());
     }
 
     /**
      * @param Configuration $configuration
-     * @param FileExistsStrategyInterface $fileExistsStrategy
      */
-    private function moveOldFactoryInterfaceFileIfExists(Configuration $configuration, FileExistsStrategyInterface $fileExistsStrategy)
+    private function moveOldFactoryInterfaceFileIfExists(Configuration $configuration)
     {
         $this->moveOldFileIfExists($configuration->getFilePath(), 'FactoryInterface.php');
     }
 
     /**
      * @param Configuration $configuration
-     * @param FileExistsStrategyInterface $fileExistsStrategy
      */
-    private function moveOldInvalidArgumentExceptionFileIfExists(Configuration $configuration, FileExistsStrategyInterface $fileExistsStrategy)
+    private function moveOldInvalidArgumentExceptionFileIfExists(Configuration $configuration)
     {
         $this->moveOldFileIfExists($configuration->getFilePath(), 'InvalidArgumentException.php');
     }
