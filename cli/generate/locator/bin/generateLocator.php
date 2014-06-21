@@ -48,15 +48,15 @@ try {
 
     $data = require_once $pathToConfigurationFile;
 
-    if (!isset($data['assembler'])) {
+    if (!isset($data['assembler_factory'])) {
         throw new Exception(
-            'data array must contain content for key "assembler"'
+            'data array must contain content for key "assembler_factory"'
         );
     }
 
-    if (!class_exists($data['assembler'])) {
+    if (!class_exists($data['assembler_factory'])) {
         throw new Exception(
-            'provided assembler "' . $data['assembler'] . '" does not exist'
+            'provided assembler "' . $data['assembler_factory'] . '" does not exist'
         );
     }
 
@@ -73,14 +73,17 @@ try {
     }
     //----end of validation
     /**
+     * @var \Net\Bazzline\Component\Locator\Configuration\Assembler\AssemblerFactoryInterface $assemblerFactory
      * @var \Net\Bazzline\Component\Locator\Configuration\Assembler\AssemblerInterface $assembler
      * @var \Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface $fileExistsStrategy
      */
-    $assembler = new $data['assembler']();
+    $assemblerFactory = new $data['assembler_factory']();
     $configuration = new Configuration();
-    $factory = new GeneratorFactory();
     $fileExistsStrategy = new $data['file_exists_strategy']();
-    $generator = $factory->create();
+    $generatorFactory = new GeneratorFactory();
+
+    $assembler = $assemblerFactory->create();
+    $generator = $generatorFactory->create();
 
     $assembler->setConfiguration($configuration);
     $assembler->assemble($data);

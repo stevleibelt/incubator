@@ -7,6 +7,10 @@
 namespace Net\Bazzline\Component\Locator\Configuration\Assembler;
 
 use Net\Bazzline\Component\Locator\Configuration;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromFactoryInstancePoolBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\NewInstanceBuilder;
 
 /**
  * Class AbstractAssembler
@@ -18,6 +22,26 @@ abstract class AbstractAssembler implements AssemblerInterface
      * @var Configuration
      */
     private $configuration;
+
+    /**
+     * @var FetchFromFactoryInstancePoolBuilder
+     */
+    private $fetchFromFactoryInstancePoolBuilder;
+
+    /**
+     * @var FetchFromSharedInstancePoolBuilder
+     */
+    private $fetchFromSharedInstancePoolBuilder;
+
+    /**
+     * @var FetchFromSharedInstancePoolOrCreateByFactoryBuilder
+     */
+    private $fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+
+    /**
+     * @var NewInstanceBuilder
+     */
+    private $newInstanceBuilder;
 
     /**
      * @return Configuration
@@ -46,12 +70,57 @@ abstract class AbstractAssembler implements AssemblerInterface
     }
 
     /**
+     * @param FetchFromFactoryInstancePoolBuilder $fetchFromFactoryInstancePoolBuilder
+     * @return $this
+     */
+    public function setFetchFromFactoryInstancePoolBuilder(FetchFromFactoryInstancePoolBuilder $fetchFromFactoryInstancePoolBuilder)
+    {
+        $this->fetchFromFactoryInstancePoolBuilder = $fetchFromFactoryInstancePoolBuilder;
+
+        return $this;
+    }
+
+    /**
+     * @param FetchFromSharedInstancePoolBuilder $fetchFromSharedInstancePoolBuilder
+     * @return $this
+     */
+    public function setFetchFromSharedInstancePoolBuilder(FetchFromSharedInstancePoolBuilder $fetchFromSharedInstancePoolBuilder)
+    {
+        $this->fetchFromSharedInstancePoolBuilder = $fetchFromSharedInstancePoolBuilder;
+
+        return $this;
+    }
+
+    /**
+     * @param FetchFromSharedInstancePoolOrCreateByFactoryBuilder $fetchFromSharedInstancePoolOrCreateByFactoryBuilder
+     * @return $this
+     */
+    public function setFetchFromSharedInstancePoolOrCreateByFactoryBuilder(FetchFromSharedInstancePoolOrCreateByFactoryBuilder $fetchFromSharedInstancePoolOrCreateByFactoryBuilder)
+    {
+        $this->fetchFromSharedInstancePoolOrCreateByFactoryBuilder = $fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+
+        return $this;
+    }
+
+    /**
+     * @param NewInstanceBuilder $newInstanceBuilder
+     * @return $this
+     */
+    public function setNewInstanceBuilder(NewInstanceBuilder $newInstanceBuilder)
+    {
+        $this->newInstanceBuilder = $newInstanceBuilder;
+
+        return $this;
+    }
+
+    /**
      * @param mixed $data
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
     final public function assemble($data)
     {
+        $this->assertMandatoryProperties();
         $this->validateData($data);
         $this->map($data);
     }
@@ -67,6 +136,38 @@ abstract class AbstractAssembler implements AssemblerInterface
      * @throws InvalidArgumentException
      */
     abstract protected function validateData($data);
+
+    /**
+     * @return FetchFromFactoryInstancePoolBuilder
+     */
+    protected function getNewFetchFromFactoryInstancePoolBuilder()
+    {
+        return clone $this->fetchFromFactoryInstancePoolBuilder;
+    }
+
+    /**
+     * @return FetchFromSharedInstancePoolBuilder
+     */
+    protected function getFetchFromSharedInstancePoolBuilder()
+    {
+        return clone $this->fetchFromSharedInstancePoolBuilder;
+    }
+
+    /**
+     * @return FetchFromSharedInstancePoolOrCreateByFactoryBuilder
+     */
+    protected function getFetchFromSharedInstancePoolOrCreateByFactoryBuilder()
+    {
+        return clone $this->fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+    }
+
+    /**
+     * @return NewInstanceBuilder
+     */
+    protected function getNewInstanceBuilder()
+    {
+        return clone $this->newInstanceBuilder;
+    }
 
     /**
      * @param array $data
@@ -98,6 +199,28 @@ abstract class AbstractAssembler implements AssemblerInterface
                         );
                     }
                     break;
+            }
+        }
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    private function assertMandatoryProperties()
+    {
+        $propertyNames = array(
+            'configuration',
+            'fetchFromFactoryInstancePoolBuilder',
+            'fetchFromSharedInstancePoolBuilder',
+            'fetchFromSharedInstancePoolOrCreateByFactoryBuilder',
+            'newInstanceBuilder'
+        );
+
+        foreach ($propertyNames as $propertyName) {
+            if (is_null($this->configuration)) {
+                throw new RuntimeException(
+                    $propertyName . ' is mandatory'
+                );
             }
         }
     }

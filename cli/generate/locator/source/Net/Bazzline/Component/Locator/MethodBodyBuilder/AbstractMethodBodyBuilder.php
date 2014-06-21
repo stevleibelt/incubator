@@ -19,6 +19,11 @@ abstract class AbstractMethodBodyBuilder implements MethodBodyBuilderInterface
      */
     protected $instance;
 
+    public function __clone()
+    {
+        $this->instance = null;
+    }
+
     /**
      * @param Instance $instance
      * @return $this

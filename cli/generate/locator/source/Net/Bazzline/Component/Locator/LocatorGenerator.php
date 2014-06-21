@@ -479,6 +479,7 @@ class LocatorGenerator extends AbstractGenerator
             $isSharedInvokableInstance = ((!$instance->isFactory()) && ($instance->isShared()));
             $isSharedInvokableFactorizedInstance = (($instance->isFactory()) && ($instance->isShared()));
             $method = $methodGeneratorFactory->create();
+            $methodBuilder = $instance->getMethodBodyBuilder();
             $returnValue = ($instance->hasReturnValue()) ? $instance->getReturnValue() : $instance->getClassName();
 
             if ($instance->hasAlias()) {
@@ -492,16 +493,22 @@ class LocatorGenerator extends AbstractGenerator
             $method->setName($methodName);
             $method->markAsPublic();
 
+            $body = $methodBuilder->build($body);
+
             if ($isUniqueInvokableInstance) {
+                //@todo replace by NewInstance builder
                 $body
                     ->add('return new ' . $instance->getClassName() . '();');
             } else if ($isUniqueInvokableFactorizedInstance) {
+                //@todo replace by FetchFromFactoryInstancePool builder
                 $body
                     ->add('return $this->fetchFromFactoryInstancePool(\'' . $instance->getClassName() . '\')->create();');
             } else if ($isSharedInvokableInstance) {
+                //@todo replace by FetchFromSharedInstancePoolBuilder
                 $body
                     ->add('return $this->fetchFromSharedInstancePool(\'' . $instance->getClassName() . '\');');
             } else if ($isSharedInvokableFactorizedInstance) {
+                //@todo replace by FetchFromSharedInstancePoolOrCreateByFactoryBuilder
                 //@todo does it make sense to store the factory in the instance
                 //  pool since we are using it only once?
                 $body

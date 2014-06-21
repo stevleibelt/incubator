@@ -1,7 +1,7 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2014-06-12 
+ * @since 2014-06-13 
  */
 
 namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
@@ -9,10 +9,10 @@ namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
 use Net\Bazzline\Component\CodeGenerator\BlockGenerator;
 
 /**
- * Class PropelQueryCreateBuilder
+ * Class NewInstanceBuilder
  * @package Net\Bazzline\Component\Locator\MethodBodyBuilder
  */
-class PropelQueryCreateBuilder extends AbstractMethodBodyBuilder
+class NewInstanceBuilder extends AbstractMethodBodyBuilder
 {
     /**
      * @param BlockGenerator $body
@@ -23,7 +23,8 @@ class PropelQueryCreateBuilder extends AbstractMethodBodyBuilder
     {
         $this->assertMandatoryParameters();
 
-        $body->add('return ' . $this->instance->getClassName() . '::create();');
+        $body
+            ->add('return new ' . $this->instance->getClassName() . '();');
 
         return $body;
     }
