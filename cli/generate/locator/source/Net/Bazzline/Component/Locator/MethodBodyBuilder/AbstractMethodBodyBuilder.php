@@ -27,8 +27,6 @@ abstract class AbstractMethodBodyBuilder implements MethodBodyBuilderInterface
         $this->instance = $instance;
     }
 
-
-
     /**
      * @param array $parameters
      * @throws RuntimeException
@@ -44,4 +42,4 @@ abstract class AbstractMethodBodyBuilder implements MethodBodyBuilderInterface
             }
         }
     }
-} 
+}

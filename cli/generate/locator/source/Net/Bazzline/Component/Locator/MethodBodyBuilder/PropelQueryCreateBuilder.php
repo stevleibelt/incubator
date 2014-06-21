@@ -25,6 +25,8 @@ class PropelQueryCreateBuilder extends AbstractMethodBodyBuilder
 
         $body->add('return ' . $this->instance->getClassName() . ':create();');
 
+
+
         return $body;
     }
 }
