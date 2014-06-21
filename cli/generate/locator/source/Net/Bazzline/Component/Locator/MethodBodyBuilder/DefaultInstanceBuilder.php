@@ -9,10 +9,10 @@ namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
 use Net\Bazzline\Component\CodeGenerator\BlockGenerator;
 
 /**
- * Class InstanceBuilder
+ * Class DefaultInstanceBuilder
  * @package Net\Bazzline\Component\Locator\MethodBodyBuilder
  */
-class InstanceBuilder extends AbstractMethodBodyBuilder
+class DefaultInstanceBuilder extends AbstractMethodBodyBuilder
 {
     /**
      * @param BlockGenerator $body
