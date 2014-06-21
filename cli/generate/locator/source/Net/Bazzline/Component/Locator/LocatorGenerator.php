@@ -493,7 +493,7 @@ class LocatorGenerator extends AbstractGenerator
             $method->setName($methodName);
             $method->markAsPublic();
 
-            $body = $methodBuilder->build($body);
+            //$body = $methodBuilder->build($body);
 
             if ($isUniqueInvokableInstance) {
                 //@todo replace by NewInstance builder
