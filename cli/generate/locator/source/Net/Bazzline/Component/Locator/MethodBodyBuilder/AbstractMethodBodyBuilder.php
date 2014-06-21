@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
 
+use Net\Bazzline\Component\Locator\Configuration\Instance;
+
 /**
  * Class AbstractMethodBodyBuilder
  * @package Net\Bazzline\Component\Locator\MethodBodyBuilder
@@ -13,10 +15,25 @@ namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
 abstract class AbstractMethodBodyBuilder implements MethodBodyBuilderInterface
 {
     /**
+     * @var Instance
+     */
+    protected $instance;
+
+    /**
+     * @param Instance $instance
+     */
+    public function setInstance(Instance $instance)
+    {
+        $this->instance = $instance;
+    }
+
+
+
+    /**
      * @param array $parameters
      * @throws RuntimeException
      */
-    protected function assertMandatoryParameters(array $parameters)
+    protected function assertMandatoryParameters(array $parameters = array('instance'))
     {
         foreach ($parameters as $parameter) {
             if (!isset($this->$parameter)

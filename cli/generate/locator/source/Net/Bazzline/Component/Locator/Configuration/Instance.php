@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Locator\Configuration;
 
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\MethodBodyBuilderInterface;
+
 /**
  * Class Instance
  * @package Net\Bazzline\Component\Locator\Configuration
@@ -31,6 +33,11 @@ class Instance
      * @var boolean
      */
     private $isShared = true;
+
+    /**
+     * @var MethodBodyBuilderInterface
+     */
+    private $methodBodyBuilder;
 
     /**
      * @var string
@@ -123,6 +130,22 @@ class Instance
         $this->isShared = (boolean) $isShared;
 
         return $this;
+    }
+
+    /**
+     * @param \Net\Bazzline\Component\Locator\MethodBodyBuilder\MethodBodyBuilderInterface $methodBodyBuilder
+     */
+    public function setMethodBodyBuilder(MethodBodyBuilderInterface $methodBodyBuilder)
+    {
+        $this->methodBodyBuilder = $methodBodyBuilder;
+    }
+
+    /**
+     * @return \Net\Bazzline\Component\Locator\MethodBodyBuilder\MethodBodyBuilderInterface
+     */
+    public function getMethodBodyBuilder()
+    {
+        return $this->methodBodyBuilder;
     }
 
     /**

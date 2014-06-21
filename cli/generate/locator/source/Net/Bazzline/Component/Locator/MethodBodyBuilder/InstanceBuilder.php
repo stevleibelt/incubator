@@ -15,34 +15,15 @@ use Net\Bazzline\Component\CodeGenerator\BlockGenerator;
 class InstanceBuilder extends AbstractMethodBodyBuilder
 {
     /**
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @param string $className
-     * @todo or simple inject "instance object"?
-     */
-    public function setClassName($className)
-    {
-        if ((is_string($className))
-            && (strlen($className) > 0)) {
-            $this->className = $className;
-        }
-    }
-
-
-
-    /**
      * @param BlockGenerator $body
      * @return BlockGenerator
      * @throws RuntimeException
      */
     public function build(BlockGenerator $body)
     {
-        $this->assertMandatoryParameters(array('className'));
+        $this->assertMandatoryParameters();
 
-        $body->add('return new ' . $this->className . '();');
+        $body->add('return new ' . $this->instance->getClassName() . '();');
 
         return $body;
     }
