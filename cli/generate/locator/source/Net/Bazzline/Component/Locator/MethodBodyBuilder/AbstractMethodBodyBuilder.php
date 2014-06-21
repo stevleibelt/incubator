@@ -21,10 +21,13 @@ abstract class AbstractMethodBodyBuilder implements MethodBodyBuilderInterface
 
     /**
      * @param Instance $instance
+     * @return $this
      */
     public function setInstance(Instance $instance)
     {
         $this->instance = $instance;
+
+        return $this;
     }
 
     /**

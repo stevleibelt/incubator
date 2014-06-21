@@ -138,6 +138,7 @@ class Instance
     public function setMethodBodyBuilder(MethodBodyBuilderInterface $methodBodyBuilder)
     {
         $this->methodBodyBuilder = $methodBodyBuilder;
+        $this->methodBodyBuilder->setInstance($this);
     }
 
     /**

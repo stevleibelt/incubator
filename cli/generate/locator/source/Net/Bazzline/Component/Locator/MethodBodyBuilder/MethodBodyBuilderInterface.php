@@ -7,6 +7,7 @@
 namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
 
 use Net\Bazzline\Component\CodeGenerator\BlockGenerator;
+use Net\Bazzline\Component\Locator\Configuration\Instance;
 
 /**
  * Interface MethodBodyBuilderInterface
@@ -14,6 +15,12 @@ use Net\Bazzline\Component\CodeGenerator\BlockGenerator;
  */
 interface MethodBodyBuilderInterface
 {
+    /**
+     * @param Instance $instance
+     * @return $this
+     */
+    public function setInstance(Instance $instance);
+
     /**
      * @param BlockGenerator $body
      * @return BlockGenerator
