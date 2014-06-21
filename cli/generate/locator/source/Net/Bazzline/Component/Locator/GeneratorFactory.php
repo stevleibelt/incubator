@@ -26,6 +26,10 @@ class GeneratorFactory
     {
         $generator = new Generator();
 
+        $factoryInterfaceGenerator = new FactoryInterfaceGenerator();
+        $invalidArgumentExceptionGenerator = new InvalidArgumentExceptionGenerator();
+        $locatorGenerator = new LocatorGenerator();
+
         $blockGeneratorFactory = new BlockGeneratorFactory();
         $classGeneratorFactory = new ClassGeneratorFactory();
         $documentationGeneratorFactory = new DocumentationGeneratorFactory();
@@ -33,13 +37,29 @@ class GeneratorFactory
         $methodGeneratorFactory = new MethodGeneratorFactory();
         $propertyGeneratorFactory = new PropertyGeneratorFactory();
 
-        $generator
+        $factoryInterfaceGenerator
+            ->setClassGeneratorFactory($classGeneratorFactory)
+            ->setDocumentationGeneratorFactory($documentationGeneratorFactory)
+            ->setFileGeneratorFactory($fileGeneratorFactory)
+            ->setMethodGeneratorFactory($methodGeneratorFactory);
+
+        $invalidArgumentExceptionGenerator
+            ->setClassGeneratorFactory($classGeneratorFactory)
+            ->setDocumentationGeneratorFactory($documentationGeneratorFactory)
+            ->setFileGeneratorFactory($fileGeneratorFactory);
+
+        $locatorGenerator
             ->setBlockGeneratorFactory($blockGeneratorFactory)
             ->setClassGeneratorFactory($classGeneratorFactory)
             ->setDocumentationGeneratorFactory($documentationGeneratorFactory)
             ->setFileGeneratorFactory($fileGeneratorFactory)
             ->setMethodGeneratorFactory($methodGeneratorFactory)
             ->setPropertyGeneratorFactory($propertyGeneratorFactory);
+
+        $generator
+            ->setFactoryInterfaceGenerator($factoryInterfaceGenerator)
+            ->setInvalidArgumentExceptionGenerator($invalidArgumentExceptionGenerator)
+            ->setLocatorGenerator($locatorGenerator);
 
         return $generator;
     }

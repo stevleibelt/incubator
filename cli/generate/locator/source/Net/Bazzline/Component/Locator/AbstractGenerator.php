@@ -6,12 +6,6 @@
 
 namespace Net\Bazzline\Component\Locator;
 
-use Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
-use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface;
 
 /**
@@ -21,44 +15,14 @@ use Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterfac
 abstract class AbstractGenerator implements GeneratorInterface
 {
     /**
-     * @var BlockGeneratorFactory
-     */
-    protected $blockGeneratorFactory;
-
-    /**
-     * @var ClassGeneratorFactory
-     */
-    protected $classGeneratorFactory;
-
-    /**
      * @var \Net\Bazzline\Component\Locator\Configuration
      */
     protected $configuration;
 
     /**
-     * @var DocumentationGeneratorFactory
-     */
-    protected $documentationGeneratorFactory;
-
-    /**
-     * @var FileGeneratorFactory
-     */
-    protected $fileGeneratorFactory;
-
-    /**
      * @var FileExistsStrategyInterface
      */
     protected $fileExistsStrategy;
-
-    /**
-     * @var MethodGeneratorFactory
-     */
-    protected $methodGeneratorFactory;
-
-    /**
-     * @var PropertyGeneratorFactory
-     */
-    protected $propertyGeneratorFactory;
 
     /**
      * @param \Net\Bazzline\Component\Locator\Configuration $configuration
@@ -72,78 +36,12 @@ abstract class AbstractGenerator implements GeneratorInterface
     }
 
     /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory $documentationFactory
-     * @return $this
-     */
-    public function setDocumentationGeneratorFactory($documentationFactory)
-    {
-        $this->documentationGeneratorFactory = $documentationFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory $fileFactory
-     * @return $this
-     */
-    public function setFileGeneratorFactory($fileFactory)
-    {
-        $this->fileGeneratorFactory = $fileFactory;
-
-        return $this;
-    }
-
-    /**
      * @param FileExistsStrategyInterface $strategy
      * @return $this
      */
     public function setFileExistsStrategy(FileExistsStrategyInterface $strategy)
     {
         $this->fileExistsStrategy = $strategy;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory $methodFactory
-     * @return $this
-     */
-    public function setMethodGeneratorFactory($methodFactory)
-    {
-        $this->methodGeneratorFactory = $methodFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory $propertyFactory
-     * @return $this
-     */
-    public function setPropertyGeneratorFactory($propertyFactory)
-    {
-        $this->propertyGeneratorFactory = $propertyFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory $classFactory
-     * @return $this
-     */
-    public function setClassGeneratorFactory($classFactory)
-    {
-        $this->classGeneratorFactory = $classFactory;
-
-        return $this;
-    }
-
-    /**
-     * @param \Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory $blockFactory
-     * @return $this
-     */
-    public function setBlockGeneratorFactory($blockFactory)
-    {
-        $this->blockGeneratorFactory = $blockFactory;
 
         return $this;
     }
@@ -168,6 +66,20 @@ abstract class AbstractGenerator implements GeneratorInterface
                     'file "' . $fullQualifiedFilePath . '" already exists'
                 );
             }
+        }
+    }
+
+    /**
+     * @param string $fullQualifiedFileName
+     * @param string $content
+     * @throws RuntimeException
+     */
+    protected function dumpToFile($fullQualifiedFileName, $content)
+    {
+        if (file_put_contents($fullQualifiedFileName, $content) === false) {
+            throw new RuntimeException(
+                'can not create "' . $fullQualifiedFileName . '" or write content'
+            );
         }
     }
 }
