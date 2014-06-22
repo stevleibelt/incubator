@@ -7,10 +7,6 @@
 namespace Net\Bazzline\Component\Locator\Configuration\Assembler;
 
 use Net\Bazzline\Component\Locator\Configuration;
-use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromFactoryInstancePoolBuilder;
-use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolBuilder;
-use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolOrCreateByFactoryBuilder;
-use Net\Bazzline\Component\Locator\MethodBodyBuilder\NewInstanceBuilder;
 
 /**
  * Class AbstractAssembler
@@ -22,26 +18,6 @@ abstract class AbstractAssembler implements AssemblerInterface
      * @var Configuration
      */
     private $configuration;
-
-    /**
-     * @var FetchFromFactoryInstancePoolBuilder
-     */
-    private $fetchFromFactoryInstancePoolBuilder;
-
-    /**
-     * @var FetchFromSharedInstancePoolBuilder
-     */
-    private $fetchFromSharedInstancePoolBuilder;
-
-    /**
-     * @var FetchFromSharedInstancePoolOrCreateByFactoryBuilder
-     */
-    private $fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
-
-    /**
-     * @var NewInstanceBuilder
-     */
-    private $newInstanceBuilder;
 
     /**
      * @return Configuration
@@ -65,50 +41,6 @@ abstract class AbstractAssembler implements AssemblerInterface
     final public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
-
-        return $this;
-    }
-
-    /**
-     * @param FetchFromFactoryInstancePoolBuilder $fetchFromFactoryInstancePoolBuilder
-     * @return $this
-     */
-    public function setFetchFromFactoryInstancePoolBuilder(FetchFromFactoryInstancePoolBuilder $fetchFromFactoryInstancePoolBuilder)
-    {
-        $this->fetchFromFactoryInstancePoolBuilder = $fetchFromFactoryInstancePoolBuilder;
-
-        return $this;
-    }
-
-    /**
-     * @param FetchFromSharedInstancePoolBuilder $fetchFromSharedInstancePoolBuilder
-     * @return $this
-     */
-    public function setFetchFromSharedInstancePoolBuilder(FetchFromSharedInstancePoolBuilder $fetchFromSharedInstancePoolBuilder)
-    {
-        $this->fetchFromSharedInstancePoolBuilder = $fetchFromSharedInstancePoolBuilder;
-
-        return $this;
-    }
-
-    /**
-     * @param FetchFromSharedInstancePoolOrCreateByFactoryBuilder $fetchFromSharedInstancePoolOrCreateByFactoryBuilder
-     * @return $this
-     */
-    public function setFetchFromSharedInstancePoolOrCreateByFactoryBuilder(FetchFromSharedInstancePoolOrCreateByFactoryBuilder $fetchFromSharedInstancePoolOrCreateByFactoryBuilder)
-    {
-        $this->fetchFromSharedInstancePoolOrCreateByFactoryBuilder = $fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
-
-        return $this;
-    }
-
-    /**
-     * @param NewInstanceBuilder $newInstanceBuilder
-     * @return $this
-     */
-    public function setNewInstanceBuilder(NewInstanceBuilder $newInstanceBuilder)
-    {
-        $this->newInstanceBuilder = $newInstanceBuilder;
 
         return $this;
     }
@@ -138,11 +70,21 @@ abstract class AbstractAssembler implements AssemblerInterface
     abstract protected function validateData($data);
 
     /**
+     * @param Configuration\Instance $instance
+     * @return Configuration\Instance
+     */
+    protected function addBuilderToInstance(Configuration\Instance $instance)
+    {
+
+        return $instance;
+    }
+
+    /**
      * @return FetchFromFactoryInstancePoolBuilder
      */
-    protected function getNewFetchFromFactoryInstancePoolBuilder()
+    protected function getFetchFromFactoryInstancePoolBuilder()
     {
-        return clone $this->fetchFromFactoryInstancePoolBuilder;
+        return $this->fetchFromFactoryInstancePoolBuilder;
     }
 
     /**
@@ -150,7 +92,7 @@ abstract class AbstractAssembler implements AssemblerInterface
      */
     protected function getFetchFromSharedInstancePoolBuilder()
     {
-        return clone $this->fetchFromSharedInstancePoolBuilder;
+        return $this->fetchFromSharedInstancePoolBuilder;
     }
 
     /**
@@ -158,7 +100,7 @@ abstract class AbstractAssembler implements AssemblerInterface
      */
     protected function getFetchFromSharedInstancePoolOrCreateByFactoryBuilder()
     {
-        return clone $this->fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+        return $this->fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
     }
 
     /**
@@ -166,7 +108,7 @@ abstract class AbstractAssembler implements AssemblerInterface
      */
     protected function getNewInstanceBuilder()
     {
-        return clone $this->newInstanceBuilder;
+        return $this->newInstanceBuilder;
     }
 
     /**

@@ -8,6 +8,11 @@ namespace Net\Bazzline\Component\Locator;
 
 use Net\Bazzline\Component\Locator\Configuration\Instance;
 use Net\Bazzline\Component\Locator\Configuration\Uses;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromFactoryInstancePoolBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\MethodBodyBuilderInterface;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\NewInstanceBuilder;
 
 /**
  * Interface Configuration
@@ -36,6 +41,21 @@ class Configuration
     private $className;
 
     /**
+     * @var FetchFromFactoryInstancePoolBuilder
+     */
+    private $fetchFromFactoryInstancePoolBuilder;
+
+    /**
+     * @var FetchFromSharedInstancePoolBuilder
+     */
+    private $fetchFromSharedInstancePoolBuilder;
+
+    /**
+     * @var FetchFromSharedInstancePoolOrCreateByFactoryBuilder
+     */
+    private $fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+
+    /**
      * @var bool
      */
     private $hasFactoryInstances = false;
@@ -51,9 +71,19 @@ class Configuration
     private $namespace;
 
     /**
+     * @var NewInstanceBuilder
+     */
+    private $newInstanceBuilder;
+
+    /**
      * @var string
      */
     private $methodPrefix;
+
+    /**
+     * @var array
+     */
+    private $methodBodyBuilderInstancePool = array();
 
     /**
      * @var string
@@ -173,9 +203,11 @@ class Configuration
      * @param bool $isShared
      * @param string $returnValue
      * @param string $alias
+     * @param null|string $methodBodyBuilderClassName
      * @return $this
+     * @throws RuntimeException
      */
-    public function addInstance($className, $isFactory, $isShared, $returnValue, $alias)
+    public function addInstance($className, $isFactory, $isShared, $returnValue, $alias, $methodBodyBuilderClassName = null)
     {
         $instance = $this->getNewInstance();
 
@@ -192,6 +224,14 @@ class Configuration
         $instance->setIsFactory($isFactory);
         $instance->setIsShared($isShared);
         $instance->setReturnValue($returnValue);
+
+        if (!is_null($methodBodyBuilderClassName)) {
+            $methodBodyBuilder = $this->fetchFromMethodBodyBuilderInstancePool($methodBodyBuilderClassName);
+            $methodBodyBuilder->setInstance($instance);
+            $instance->setMethodBodyBuilder($methodBodyBuilder);
+        } else {
+            $instance = $this->tryToDetermineMethodBodyBuilder($instance);
+        }
 
         $this->instances[] = $instance;
 
@@ -318,6 +358,50 @@ class Configuration
     }
 
     /**
+     * @param FetchFromFactoryInstancePoolBuilder $fetchFromFactoryInstancePoolBuilder
+     * @return $this
+     */
+    public function setFetchFromFactoryInstancePoolBuilder(FetchFromFactoryInstancePoolBuilder $fetchFromFactoryInstancePoolBuilder)
+    {
+        $this->fetchFromFactoryInstancePoolBuilder = $fetchFromFactoryInstancePoolBuilder;
+
+        return $this;
+    }
+
+    /**
+     * @param FetchFromSharedInstancePoolBuilder $fetchFromSharedInstancePoolBuilder
+     * @return $this
+     */
+    public function setFetchFromSharedInstancePoolBuilder(FetchFromSharedInstancePoolBuilder $fetchFromSharedInstancePoolBuilder)
+    {
+        $this->fetchFromSharedInstancePoolBuilder = $fetchFromSharedInstancePoolBuilder;
+
+        return $this;
+    }
+
+    /**
+     * @param FetchFromSharedInstancePoolOrCreateByFactoryBuilder $fetchFromSharedInstancePoolOrCreateByFactoryBuilder
+     * @return $this
+     */
+    public function setFetchFromSharedInstancePoolOrCreateByFactoryBuilder(FetchFromSharedInstancePoolOrCreateByFactoryBuilder $fetchFromSharedInstancePoolOrCreateByFactoryBuilder)
+    {
+        $this->fetchFromSharedInstancePoolOrCreateByFactoryBuilder = $fetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+
+        return $this;
+    }
+
+    /**
+     * @param NewInstanceBuilder $newInstanceBuilder
+     * @return $this
+     */
+    public function setNewInstanceBuilder(NewInstanceBuilder $newInstanceBuilder)
+    {
+        $this->newInstanceBuilder = $newInstanceBuilder;
+
+        return $this;
+    }
+
+    /**
      * @return Uses
      */
     private function getNewUses()
@@ -331,5 +415,65 @@ class Configuration
     private function getNewInstance()
     {
         return new Instance();
+    }
+
+    /**
+     * @param Instance $instance
+     * @return Instance
+     * @throws RuntimeException
+     */
+    private function tryToDetermineMethodBodyBuilder(Instance $instance)
+    {
+        $isUniqueInvokableInstance = ((!$instance->isFactory()) && (!$instance->isShared()));
+        $isUniqueInvokableFactorizedInstance = (($instance->isFactory()) && (!$instance->isShared()));
+        $isSharedInvokableInstance = ((!$instance->isFactory()) && ($instance->isShared()));
+        $isSharedInvokableFactorizedInstance = (($instance->isFactory()) && ($instance->isShared()));
+
+        if ($isUniqueInvokableInstance) {
+            $instance->setMethodBodyBuilder($this->newInstanceBuilder);
+        } else if ($isUniqueInvokableFactorizedInstance) {
+            $instance->setMethodBodyBuilder($this->fetchFromFactoryInstancePoolBuilder);
+        } else if ($isSharedInvokableInstance) {
+            $instance->setMethodBodyBuilder($this->fetchFromSharedInstancePoolBuilder);
+        } else if ($isSharedInvokableFactorizedInstance) {
+            $instance->setMethodBodyBuilder($this->fetchFromSharedInstancePoolOrCreateByFactoryBuilder);
+        } else {
+            throw new RuntimeException(
+                'could not determine method body builder for instance.' . PHP_EOL .
+                'please set a method_body_builder for following instance: ' . PHP_EOL .
+                var_export($instance, true)
+            );
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @param $methodBodyBuilderClassName
+     * @return \Net\Bazzline\Component\Locator\MethodBodyBuilder\MethodBodyBuilderInterface
+     * @throws RuntimeException
+     */
+    private function fetchFromMethodBodyBuilderInstancePool($methodBodyBuilderClassName)
+    {
+        $key = sha1($methodBodyBuilderClassName);
+
+        if (!isset($this->methodBodyBuilderInstancePool[$key])) {
+            if (class_exists($methodBodyBuilderClassName)) {
+                $methodBodyBuilder = new $methodBodyBuilderClassName();
+                if (!$methodBodyBuilder instanceof MethodBodyBuilderInterface) {
+                    throw new RuntimeException(
+                        'provided method body builder class name "' . $methodBodyBuilderClassName .
+                        '" does not implements MethodBodyBuilderInterface'
+                    );
+                }
+                $this->methodBodyBuilderInstancePool[$key] = $methodBodyBuilder;
+            } else {
+                throw new RuntimeException(
+                    'provided method_body_builder_class_name "' . $methodBodyBuilderClassName . '" does not exists'
+                );
+            }
+        }
+
+        return $this->methodBodyBuilderInstancePool[$key];
     }
 }
