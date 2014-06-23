@@ -66,6 +66,11 @@ class Configuration
     private $hasSharedInstances = false;
 
     /**
+     * @var Instance
+     */
+    private $instance;
+
+    /**
      * @var string
      */
     private $namespace;
@@ -98,7 +103,12 @@ class Configuration
     /**
      * @var array
      */
-    private $uses = array();
+    private $useCollection = array();
+
+    /**
+     * @var Uses
+     */
+    private $uses;
 
     /**
      * @return null|string
@@ -143,6 +153,28 @@ class Configuration
     public function setFilePath($path)
     {
         $this->filePath = (string) $path;
+
+        return $this;
+    }
+
+    /**
+     * @param Instance $instance
+     * @return $this
+     */
+    public function setInstance(Instance $instance)
+    {
+        $this->instance = $instance;
+
+        return $this;
+    }
+
+    /**
+     * @param Uses $uses
+     * @return $this
+     */
+    public function setUses(Uses $uses)
+    {
+        $this->uses = $uses;
 
         return $this;
     }
@@ -336,7 +368,7 @@ class Configuration
         $uses->setAlias($alias);
         $uses->setClassName($className);
 
-        $this->uses[] = $uses;
+        $this->useCollection[] = $uses;
 
         return $this;
     }
@@ -346,15 +378,15 @@ class Configuration
      */
     public function hasUses()
     {
-        return (!empty($this->uses));
+        return (!empty($this->useCollection));
     }
 
     /**
      * @return array|Uses[]
      */
-    public function getUses()
+    public function getUseCollection()
     {
-        return $this->uses;
+        return $this->useCollection;
     }
 
     /**
@@ -406,7 +438,7 @@ class Configuration
      */
     private function getNewUses()
     {
-        return new Uses();
+        return clone $this->uses;
     }
 
     /**
@@ -414,7 +446,7 @@ class Configuration
      */
     private function getNewInstance()
     {
-        return new Instance();
+        return clone $this->instance;
     }
 
     /**

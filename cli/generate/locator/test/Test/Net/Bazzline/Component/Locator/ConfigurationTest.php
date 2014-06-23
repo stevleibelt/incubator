@@ -322,10 +322,10 @@ class ConfigurationTest extends LocatorTestCase
         $configuration = $this->getConfiguration();
         $className = 'foo';
 
-        $this->assertEmpty($configuration->getUses());
+        $this->assertEmpty($configuration->getUseCollection());
 
         $configuration->addUses($className);
-        $this->assertNotEmpty($configuration->getUses());
-        $this->assertCount(1, $configuration->getUses());
+        $this->assertNotEmpty($configuration->getUseCollection());
+        $this->assertCount(1, $configuration->getUseCollection());
     }
 }

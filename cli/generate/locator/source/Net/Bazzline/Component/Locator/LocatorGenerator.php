@@ -215,7 +215,7 @@ class LocatorGenerator extends AbstractGenerator
         }
 
         if ($configuration->hasUses()) {
-            foreach ($configuration->getUses() as $use) {
+            foreach ($configuration->getUseCollection() as $use) {
                 $classGenerator->addUse($use->getClassName(), $use->getAlias());
             }
         }
