@@ -5,7 +5,7 @@
  */
 
 return array(
-    'assembler_factory' => '\Net\Bazzline\Component\Locator\Configuration\Assembler\FromPropelSchemaXmlAssemblerFactory',
+    'assembler' => '\Net\Bazzline\Component\Locator\Configuration\Assembler\FromPropelSchemaXmlAssemblerFactory',
     'class_name' => 'FromPropelSchemaXmlLocator',    //determines file name as well as php class name
     //add class names here, depending on entries in use section, full qualified or not
     'extends' => array(

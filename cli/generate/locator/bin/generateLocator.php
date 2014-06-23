@@ -5,7 +5,7 @@
  * @since 2014-06-10 
  */
 
-use Net\Bazzline\Component\Locator\Configuration;
+use Net\Bazzline\Component\Locator\ConfigurationFactory;
 use Net\Bazzline\Component\Locator\GeneratorFactory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -73,16 +73,15 @@ try {
     }
     //----end of validation
     /**
-     * @var \Net\Bazzline\Component\Locator\Configuration\Assembler\AssemblerFactoryInterface $assemblerFactory
      * @var \Net\Bazzline\Component\Locator\Configuration\Assembler\AssemblerInterface $assembler
      * @var \Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface $fileExistsStrategy
      */
-    $assemblerFactory = new $data['assembler_factory']();
-    $configuration = new Configuration();
+    $assembler = new $data['assembler']();
+    $configurationFactory = new ConfigurationFactory();
     $fileExistsStrategy = new $data['file_exists_strategy']();
     $generatorFactory = new GeneratorFactory();
 
-    $assembler = $assemblerFactory->create();
+    $configuration = $configurationFactory->create();
     $generator = $generatorFactory->create();
 
     $assembler->setConfiguration($configuration);
