@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Locator;
 
+use Net\Bazzline\Component\Locator\Configuration\Instance;
+use Net\Bazzline\Component\Locator\Configuration\Uses;
 use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromFactoryInstancePoolBuilder;
 use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolBuilder;
 use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolOrCreateByFactoryBuilder;
@@ -28,6 +30,9 @@ class ConfigurationFactory
         $configuration->setFetchFromSharedInstancePoolBuilder(new FetchFromSharedInstancePoolBuilder());
         $configuration->setFetchFromSharedInstancePoolOrCreateByFactoryBuilder(new FetchFromSharedInstancePoolOrCreateByFactoryBuilder());
         $configuration->setNewInstanceBuilder(new NewInstanceBuilder());
+
+        $configuration->setInstance(new Instance());
+        $configuration->setUses(new Uses());
 
         return $configuration;
     }
