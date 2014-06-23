@@ -48,15 +48,15 @@ try {
 
     $data = require_once $pathToConfigurationFile;
 
-    if (!isset($data['assembler_factory'])) {
+    if (!isset($data['assembler'])) {
         throw new Exception(
-            'data array must contain content for key "assembler_factory"'
+            'data array must contain content for key "assembler"'
         );
     }
 
-    if (!class_exists($data['assembler_factory'])) {
+    if (!class_exists($data['assembler'])) {
         throw new Exception(
-            'provided assembler "' . $data['assembler_factory'] . '" does not exist'
+            'provided assembler "' . $data['assembler'] . '" does not exist'
         );
     }
 
