@@ -32,6 +32,7 @@
 ## Good
 
 * on way of calling the locator generator "php bin/generateLocator.php <path to configuration file>"
+* assembler, method builder and file exists strategy are configuration based runtime variables
 * highly configurable
     * each configuration file needs to be a simple php array
     * mandatory array keys are
@@ -70,21 +71,20 @@
             * uses <array> (can be empty)
         * optional array keys
             * method_prefix
-    * implement the [AssemblerInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Configuration/Assembler/AssemblerInterface.php) to write your own Assembler
+    * implement the [AssemblerInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Configuration/Assembler/AssemblerInterface.php) to write your own assembler
 * shipped with two file exists strategies
     * DeleteStrategy
-        * SuffixWithCurrentTimestampStrategy
-        * can be extended by implementing the "FileExistsStrategyInterface"
-* assembler and file exists strategy are runtime variables
-* uses separate [component](https://github.com/stevleibelt/php_component_code_generator) for php code generation
-* took only a few hours to write the "FromPropelSchemaXmlAssembler"
-* shipped with five [method body builder](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/MethodBodyBuilder/MethodBodyBuilderInterface.php) implementations
+    * SuffixWithCurrentTimestampStrategy
+    * implement the [FileExistsStrategyInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/FileExistsStrategy/FileExistsStrategyInterface.php) to write your own strategy
+* shipped with five [method body builder](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/MethodBodyBuilder) implementations
     * FetchFromFactoryInstancePoolBuilder used internally by the generated locator
     * FetchFromSharedInstancePoolBuilder used internally by the generated locator
     * FetchFromSharedInstancePoolOrCreateByFactoryBuilder used internally by the generated locator
     * NewInstanceBuilder used internally by the generated locator
     * PropelQueryCreateBuilder as an example to use your own method body builder
     * [ValidatedInstanceCreationBuilder](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/example/ArrayConfiguration/ValidatedInstanceCreationBuilder.php) as an additional example how to use the power of the method body builder support to generate own instance creation code
+    * implement the [MethodBodyBuilderInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/MethodBodyBuilder/MethodBodyBuilderInterface.php) to write your own method body builder
+* uses separate [component](https://github.com/stevleibelt/php_component_code_generator) for php code generation
 
 ## Bad
 
