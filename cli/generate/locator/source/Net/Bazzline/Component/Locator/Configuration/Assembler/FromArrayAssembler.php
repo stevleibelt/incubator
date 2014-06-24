@@ -24,8 +24,11 @@ class FromArrayAssembler extends AbstractAssembler
         $configuration
             ->setClassName($data['class_name'])
             ->setFilePath($data['file_path'])
-            ->setMethodPrefix($data['method_prefix'])
             ->setNamespace($data['namespace']);
+
+        if (isset($data['method_prefix'])) {
+            $configuration->setMethodPrefix($data['method_prefix']);
+        }
 
         //set arrays
         foreach ($data['extends'] as $className) {

@@ -14,15 +14,63 @@
 * the locator generator creates needed files
 * a file exists strategy can take care how to deal with existing files
 
+# Terms
+
+* Assembler
+    * implements the [AssemblerInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Configuration/Assembler/AssemblerInterface.php)
+    * implements the way the [Configuration](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Configuration.php) is filled with data
+* MethodBodyBuilder
+    * implements the [MethodBodyBuilderInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/MethodBodyBuilder/MethodBodyBuilderInterface.php)
+    * provides a way to extend a instance creation method body
+    * provides a way to extend the method documentation
+* FileExistsStrategy
+    * implements the [FileExistsStrategyInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/FileExistsStrategy/FileExistsStrategyInterface.php)
+    * provides a way to deal with the fact a generated file exists already
+
 # Good and Bad
 
 ## Good
 
 * on way of calling the locator generator "php bin/generateLocator.php <path to configuration file>"
-* shipped with two configuration assemblers
+* highly configurable
+    * each configuration file needs to be a simple php array
+    * mandatory array keys are
+        * assembler
+        * file_exists_strategy
+    * optional array key is
+        * boostrap_file
+    * rest of configuration is based on the given assembler
+* shipped with two [assembler](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Configuration/Assembler) implementations
     * FromArrayAssembler
-        * FromPropelSchemaXmlAssembler
-        * can be extended by implementing the "AssemblerInterface"
+        * mandatory array keys
+            * class_name <string>
+            * extends <array> (can be empty)
+            * file_path <string>
+            * instances <array> (can be empty)
+            * implements <array> (can be empty)
+            * namespace <string> (can be empty)
+            * uses <array> (can be empty)
+        * optional array keys
+            * instances
+                * alias <string>
+                * is_factory <boolean>
+                * is_shared <boolean>
+                * method_body_builder <string>
+            * method_prefix <string>
+            * uses
+                * alias <string>
+    * FromPropelSchemaXmlAssembler
+        * mandatory array keys
+            * class_name <string>
+            * extends <array> (can be empty)
+            * file_path <string>
+            * implements <array> (can be empty)
+            * namespace <string> (can be empty)
+            * path_to_schema_xml <string>
+            * uses <array> (can be empty)
+        * optional array keys
+            * method_prefix
+    * implement the [AssemblerInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Configuration/Assembler/AssemblerInterface.php) to write your own Assembler
 * shipped with two file exists strategies
     * DeleteStrategy
         * SuffixWithCurrentTimestampStrategy
@@ -30,6 +78,13 @@
 * assembler and file exists strategy are runtime variables
 * uses separate [component](https://github.com/stevleibelt/php_component_code_generator) for php code generation
 * took only a few hours to write the "FromPropelSchemaXmlAssembler"
+* shipped with five [method body builder](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/MethodBodyBuilder/MethodBodyBuilderInterface.php) implementations
+    * FetchFromFactoryInstancePoolBuilder used internally by the generated locator
+    * FetchFromSharedInstancePoolBuilder used internally by the generated locator
+    * FetchFromSharedInstancePoolOrCreateByFactoryBuilder used internally by the generated locator
+    * NewInstanceBuilder used internally by the generated locator
+    * PropelQueryCreateBuilder as an example to use your own method body builder
+    * [ValidatedInstanceCreationBuilder](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/example/ArrayConfiguration/ValidatedInstanceCreationBuilder.php) as an additional example how to use the power of the method body builder support to generate own instance creation code
 
 ## Bad
 
