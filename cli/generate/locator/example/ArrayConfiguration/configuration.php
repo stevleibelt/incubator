@@ -6,6 +6,7 @@
 
 return array(
     'assembler' => '\Net\Bazzline\Component\Locator\Configuration\Assembler\FromArrayAssembler',
+    'bootstrap_file' => __DIR__ . '/boostrap.php',
     'class_name' => 'FromArrayConfigurationFileLocator',    //determines file name as well as php class name
     //add class names here, depending on entries in use section, full qualified or not
     'extends' => array(
@@ -14,7 +15,7 @@ return array(
     'file_exists_strategy' => '\Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy',
     //file path where files will be generated
     'file_path' => __DIR__ . '/../../data',
-    //format: array(['alias' => <string>], 'name' => <string>, ['is_factory' => <boolean>], ['is_shared' => <boolean>])
+    //format: array(['alias' => <string>], 'name' => <string>, ['is_factory' => <boolean>], ['is_shared' => <boolean>], ['method_body_builder'] => <string>)
     'instances' => array(
         array(
             'alias'         => 'UniqueInvokableInstance',
@@ -37,6 +38,11 @@ return array(
             'class_name'    => '\Application\Factory\ExampleSharedFactorizedInstanceFactory',
             'is_factory'    => true,
             'return_value'  => '\Application\Model\ExampleSharedFactorizedInstance'
+        ),
+        array(
+            'alias'                 => 'ValidatedInvokableInstance',
+            'class_name'            => '\Application\Model\ExampleValidatedInvokableInstance',
+            'method_body_builder'   => '\ValidatedInstanceCreationBuilder'
         )
     ),
     //add interface names here, depending on entries in use section, full qualified or not

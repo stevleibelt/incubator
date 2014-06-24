@@ -474,9 +474,14 @@ class LocatorGenerator extends AbstractGenerator
     {
         foreach ($configuration->getInstances() as $instance) {
             $body = $blockGeneratorFactory->create();
+            $documentation = $documentationGeneratorFactory->create();
             $method = $methodGeneratorFactory->create();
             $methodBuilder = $instance->getMethodBodyBuilder();
             $returnValue = ($instance->hasReturnValue()) ? $instance->getReturnValue() : $instance->getClassName();
+
+            $body = $methodBuilder->build($body);
+            $documentation = $methodBuilder->extend($documentation);
+            $method->setBody($body, array($returnValue));
 
             if ($instance->hasAlias()) {
                 $methodName = $instance->getAlias();
@@ -485,12 +490,9 @@ class LocatorGenerator extends AbstractGenerator
             }
             $methodName = $configuration->getMethodPrefix() . ucfirst($methodName);
 
-            $method->setDocumentation($documentationGeneratorFactory->create());
+            $method->setDocumentation($documentation);
             $method->setName($methodName);
             $method->markAsPublic();
-
-            $body = $methodBuilder->build($body);
-            $method->setBody($body, array($returnValue));
 
             $classGenerator->addMethod($method);
         }

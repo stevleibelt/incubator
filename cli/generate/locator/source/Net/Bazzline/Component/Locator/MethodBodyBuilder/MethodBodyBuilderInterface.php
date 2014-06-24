@@ -7,6 +7,7 @@
 namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
 
 use Net\Bazzline\Component\CodeGenerator\BlockGenerator;
+use Net\Bazzline\Component\CodeGenerator\DocumentationGenerator;
 use Net\Bazzline\Component\Locator\Configuration\Instance;
 
 /**
@@ -27,4 +28,10 @@ interface MethodBodyBuilderInterface
      * @throws RuntimeException
      */
     public function build(BlockGenerator $body);
+
+    /**
+     * @param DocumentationGenerator $documentation
+     * @return DocumentationGenerator
+     */
+    public function extend(DocumentationGenerator $documentation);
 } 

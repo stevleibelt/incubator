@@ -43,9 +43,10 @@ class FromArrayAssembler extends AbstractAssembler
             $class = $instance['class_name'];
             $isFactory = (isset($instance['is_factory'])) ? $instance['is_factory'] : false;
             $isShared = (isset($instance['is_shared'])) ? $instance['is_shared'] : true;
+            $methodBodyBuilder = (isset($instance['method_body_builder'])) ? $instance['method_body_builder'] : null;
             $returnValue = (isset($instance['return_value'])) ? $instance['return_value'] : $class;
 
-            $configuration->addInstance($class, $isFactory, $isShared, $returnValue, $alias);
+            $configuration->addInstance($class, $isFactory, $isShared, $returnValue, $alias, $methodBodyBuilder);
         }
 
         foreach ($data['implements'] as $interfaceName) {

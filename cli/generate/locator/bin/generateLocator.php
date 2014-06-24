@@ -71,7 +71,24 @@ try {
             'provided file exists strategy "' . $data['file_exists_strategy'] . '" does not exist'
         );
     }
+
+    if ($data['bootstrap_file']) {
+        if (!file_exists($data['bootstrap_file'])) {
+            throw new Exception(
+                'provided bootstrap file "' . $data['bootstrap_file'] . '" does not exist'
+            );
+        }
+
+        if (!is_readable($data['bootstrap_file'])) {
+            throw new Exception(
+                'provided bootstrap file "' . $data['bootstrap_file'] . '" is not readable'
+            );
+        }
+
+        require_once $data['bootstrap_file'];
+    }
     //----end of validation
+
     /**
      * @var \Net\Bazzline\Component\Locator\Configuration\Assembler\AssemblerInterface $assembler
      * @var \Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface $fileExistsStrategy

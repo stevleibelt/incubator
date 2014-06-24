@@ -6,6 +6,7 @@
 
 namespace Net\Bazzline\Component\Locator\MethodBodyBuilder;
 
+use Net\Bazzline\Component\CodeGenerator\DocumentationGenerator;
 use Net\Bazzline\Component\Locator\Configuration\Instance;
 
 /**
@@ -33,6 +34,15 @@ abstract class AbstractMethodBodyBuilder implements MethodBodyBuilderInterface
         $this->instance = $instance;
 
         return $this;
+    }
+
+    /**
+     * @param DocumentationGenerator $documentation
+     * @return DocumentationGenerator
+     */
+    public function extend(DocumentationGenerator $documentation)
+    {
+        return $documentation;
     }
 
     /**
