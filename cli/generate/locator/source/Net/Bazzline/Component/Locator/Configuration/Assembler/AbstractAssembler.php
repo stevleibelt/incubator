@@ -70,16 +70,6 @@ abstract class AbstractAssembler implements AssemblerInterface
     abstract protected function validateData($data);
 
     /**
-     * @param Configuration\Instance $instance
-     * @return Configuration\Instance
-     */
-    protected function addBuilderToInstance(Configuration\Instance $instance)
-    {
-
-        return $instance;
-    }
-
-    /**
      * @param array $data
      * @param array $mandatoryKeysToExpectedValueType
      * @throws InvalidArgumentException

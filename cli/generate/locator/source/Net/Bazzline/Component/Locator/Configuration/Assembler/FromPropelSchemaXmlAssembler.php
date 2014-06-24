@@ -51,8 +51,12 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
         $reader = new XMLReader();
         $reader->open($pathToSchemaXml);
 
+        $columnClassMethodBodyBuilder = (isset($data['column_class_method_body_builder']))
+            ? $data['column_class_method_body_builder'] : null;
         $hasRootNamespace = false;
         $locatorNamespace = $data['namespace'];
+        $queryClassMethodBodyBuilder = (isset($data['query_class_method_body_builder']))
+            ? $data['query_class_method_body_builder'] : null;
         $rootNamespace = '';
 
         while ($reader->read()) {
@@ -94,8 +98,8 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
 
                     $queryClassName = $className . 'Query';
 
-                    $configuration->addInstance($className, false, false, $className, null);
-                    $configuration->addInstance($queryClassName, false, false, $className, null);
+                    $configuration->addInstance($className, false, false, $className, null, $columnClassMethodBodyBuilder);
+                    $configuration->addInstance($queryClassName, false, false, $className, null, $queryClassMethodBodyBuilder);
 
                     if ($locatorNamespace !== $tableNamespace) {
                         $configuration->addUses($className);

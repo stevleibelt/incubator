@@ -19,6 +19,10 @@ return array(
         '\My\Full\QualifiedInterface',
         'MyInterface'
     ),
+    //method builder that is used for normal propel class instantiation
+    'column_class_method_body_builder' => '\Net\Bazzline\Component\Locator\MethodBodyBuilder\NewInstanceBuilder',
+    //method builder that is used for query propel class instantiation
+    'query_class_method_body_builder' => '\Net\Bazzline\Component\Locator\MethodBodyBuilder\PropelQueryCreateBuilder',
     //prefix for the instance fetching
     'method_prefix' => 'create',
     'namespace' => 'Application\Service',
