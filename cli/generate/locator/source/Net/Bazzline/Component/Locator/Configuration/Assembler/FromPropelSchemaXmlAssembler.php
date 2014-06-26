@@ -153,17 +153,25 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
 
         $mandatoryKeysToExpectedValueTyp = array(
             'class_name'            => 'string',
+            'file_path'             => 'string'
+        );
+
+        $this->validateDataWithMandatoryKeysAndExpectedValueType(
+            $data,
+            $mandatoryKeysToExpectedValueTyp
+        );
+
+        $optionalKeysToExpectedValueTyp = array(
             'extends'               => 'array',
-            'file_path'             => 'string',
             'implements'            => 'array',
             'namespace'             => 'string',
             'path_to_schema_xml'    => 'string',
             'uses'                  => 'array'
         );
 
-        $this->validateDataWithMandatoryKeysAndExpectedValueType(
+        $this->validateDataWithOptionalKeysAndExpectedValueTypeOrSetExpectedValueAsDefault(
             $data,
-            $mandatoryKeysToExpectedValueTyp
+            $optionalKeysToExpectedValueTyp
         );
     }
 }

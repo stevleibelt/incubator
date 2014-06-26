@@ -71,34 +71,74 @@ abstract class AbstractAssembler implements AssemblerInterface
 
     /**
      * @param array $data
-     * @param array $mandatoryKeysToExpectedValueType
+     * @param array $keysToExpectedValueType
      * @throws InvalidArgumentException
      */
-    final protected function validateDataWithMandatoryKeysAndExpectedValueType(array $data, array $mandatoryKeysToExpectedValueType)
+    final protected function validateDataWithMandatoryKeysAndExpectedValueType(array $data, array $keysToExpectedValueType)
     {
-        foreach ($mandatoryKeysToExpectedValueType as $mandatoryKey => $expectedType) {
-            if (!isset($data[$mandatoryKey])) {
+        foreach ($keysToExpectedValueType as $key => $expectedType) {
+            if (!isset($data[$key])) {
                 throw new InvalidArgumentException(
-                    'data array must contain content for key "' . $mandatoryKey . '"'
+                    'data array must contain content for key "' . $key . '"'
                 );
             }
-            $exceptionMessage = 'value of key "' . $mandatoryKey . '" must be of type "' . $expectedType . '"';
+            $exceptionMessage = 'value of key "' . $key . '" must be of type "' . $expectedType . '"';
 
             switch ($expectedType) {
                 case 'array':
-                    if (!is_array($data[$mandatoryKey])) {
+                    if (!is_array($data[$key])) {
                         throw new InvalidArgumentException(
                             $exceptionMessage
                         );
                     }
                     break;
                 case 'string':
-                    if (!is_string($data[$mandatoryKey])) {
+                    if (!is_string($data[$key])) {
                         throw new InvalidArgumentException(
                             $exceptionMessage
                         );
                     }
                     break;
+            }
+        }
+    }
+
+    /**
+     * @param array $data
+     * @param array $keysToExpectedValueType
+     * @throws InvalidArgumentException
+     */
+    final protected function validateDataWithOptionalKeysAndExpectedValueTypeOrSetExpectedValueAsDefault(array $data, array $keysToExpectedValueType)
+    {
+        foreach ($keysToExpectedValueType as $key => $expectedType) {
+            if (isset($data[$key])) {
+                $exceptionMessage = 'value of key "' . $key . '" must be of type "' . $expectedType . '" when set';
+
+                switch ($expectedType) {
+                    case 'array':
+                        if (!is_array($data[$key])) {
+                            throw new InvalidArgumentException(
+                                $exceptionMessage
+                            );
+                        }
+                        break;
+                    case 'string':
+                        if (!is_string($data[$key])) {
+                            throw new InvalidArgumentException(
+                                $exceptionMessage
+                            );
+                        }
+                        break;
+                }
+            } else {
+                switch ($expectedType) {
+                    case 'array':
+                        $data[$key] = array();
+                        break;
+                    case 'string':
+                        $data[$key] = '';
+                        break;
+                }
             }
         }
     }

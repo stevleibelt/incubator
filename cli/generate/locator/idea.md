@@ -45,32 +45,30 @@
     * FromArrayAssembler
         * mandatory array keys
             * class_name <string>
-            * extends <array> (can be empty)
             * file_path <string>
-            * instances <array> (can be empty)
-            * implements <array> (can be empty)
-            * namespace <string> (can be empty)
-            * uses <array> (can be empty)
         * optional array keys
-            * instances
+            * extends <array> (can be empty)
+            * implements <array> (can be empty)
+            * instances <array> (can be empty)
                 * alias <string>
                 * is_factory <boolean>
                 * is_shared <boolean>
                 * method_body_builder <string>
             * method_prefix <string>
-            * uses
+            * namespace <string> (can be empty)
+            * uses <array> (can be empty)
                 * alias <string>
     * FromPropelSchemaXmlAssembler
         * mandatory array keys
             * class_name <string>
-            * extends <array> (can be empty)
             * file_path <string>
+        * optional array keys
+            * extends <array> (can be empty)
             * implements <array> (can be empty)
+            * method_prefix
             * namespace <string> (can be empty)
             * path_to_schema_xml <string>
             * uses <array> (can be empty)
-        * optional array keys
-            * method_prefix
     * implement the [AssemblerInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/Configuration/Assembler/AssemblerInterface.php) to write your own assembler
 * shipped with two file exists strategies
     * DeleteStrategy

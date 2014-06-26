@@ -92,17 +92,25 @@ class FromArrayAssembler extends AbstractAssembler
 
         $mandatoryKeysToExpectedValueTyp = array(
             'class_name'        => 'string',
+            'file_path'         => 'string'
+        );
+
+        $this->validateDataWithMandatoryKeysAndExpectedValueType(
+            $data,
+            $mandatoryKeysToExpectedValueTyp
+        );
+
+        $optionalKeysToExpectedValueTyp = array(
             'extends'           => 'array',
-            'file_path'         => 'string',
             'instances'         => 'array',
             'implements'        => 'array',
             'namespace'         => 'string',
             'uses'              => 'array'
         );
 
-        $this->validateDataWithMandatoryKeysAndExpectedValueType(
+        $this->validateDataWithOptionalKeysAndExpectedValueTypeOrSetExpectedValueAsDefault(
             $data,
-            $mandatoryKeysToExpectedValueTyp
+            $optionalKeysToExpectedValueTyp
         );
     }
 }
