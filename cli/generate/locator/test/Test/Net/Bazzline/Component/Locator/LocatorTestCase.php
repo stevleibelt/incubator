@@ -14,10 +14,17 @@ use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
 use Net\Bazzline\Component\Locator\Configuration;
+use Net\Bazzline\Component\Locator\FactoryInterfaceGenerator;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\DeleteStrategy;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy;
 use Net\Bazzline\Component\Locator\Generator;
 use Net\Bazzline\Component\Locator\GeneratorFactory;
+use Net\Bazzline\Component\Locator\InvalidArgumentExceptionGenerator;
+use Net\Bazzline\Component\Locator\LocatorGenerator;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromFactoryInstancePoolBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolOrCreateByFactoryBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\NewInstanceBuilder;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -98,13 +105,38 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration();
+        $configuration = new Configuration();
+
+        $configuration->setFetchFromFactoryInstancePoolBuilder($this->getFetchFromFactoryInstancePoolBuilder());
+        $configuration->setFetchFromSharedInstancePoolBuilder($this->getFetchFromSharedInstancePoolBuilder());
+        $configuration->setFetchFromSharedInstancePoolOrCreateByFactoryBuilder($this->getFetchFromSharedInstancePoolOrCreateByFactoryBuilder());
+        $configuration->setInstance($this->getInstance());
+        $configuration->setNewInstanceBuilder($this->getNewInstanceBuilder());
+        $configuration->setUses($this->getUses());
+
+        return $configuration;
+    }
+
+    /**
+     * @return FactoryInterfaceGenerator
+     */
+    protected function getFactoryInterfaceGenerator()
+    {
+        return new FactoryInterfaceGenerator();
+    }
+
+    /**
+     * @return InvalidArgumentExceptionGenerator
+     */
+    protected function getInvalidArgumentExceptionGenerator()
+    {
+        return new InvalidArgumentExceptionGenerator();
     }
 
     /**
      * @return Generator
      */
-    protected function getLocatorGenerator()
+    protected function getGenerator()
     {
         return new Generator();
     }
@@ -112,9 +144,17 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     /**
      * @return GeneratorFactory
      */
-    protected function getLocatorGeneratorFactory()
+    protected function getGeneratorFactory()
     {
         return new GeneratorFactory();
+    }
+
+    /**
+     * @return LocatorGenerator
+     */
+    protected function getLocatorGenerator()
+    {
+        return new LocatorGenerator();
     }
     //----end of locator namespace
 
@@ -170,4 +210,38 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
         return new PropertyGeneratorFactory();
     }
     //----end of generator factory
+
+    //----begin of MethodBodyBuilder
+    /**
+     * @return FetchFromFactoryInstancePoolBuilder
+     */
+    protected function getFetchFromFactoryInstancePoolBuilder()
+    {
+        return new FetchFromFactoryInstancePoolBuilder();
+    }
+
+    /**
+     * @return FetchFromSharedInstancePoolBuilder
+     */
+    protected function getFetchFromSharedInstancePoolBuilder()
+    {
+        return new FetchFromSharedInstancePoolBuilder();
+    }
+
+    /**
+     * @return FetchFromSharedInstancePoolOrCreateByFactoryBuilder
+     */
+    protected function getFetchFromSharedInstancePoolOrCreateByFactoryBuilder()
+    {
+        return new FetchFromSharedInstancePoolOrCreateByFactoryBuilder();
+    }
+
+    /**
+     * @return NewInstanceBuilder
+     */
+    protected function getNewInstanceBuilder()
+    {
+        return new NewInstanceBuilder();
+    }
+    //----end of MethodBodyBuilder
 }
