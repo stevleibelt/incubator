@@ -87,8 +87,6 @@
 ## Bad
 
 * still an incubator project
-* missing tests
-* missing features
 * relying on [beta component](https://github.com/stevleibelt/php_component_code_generator)
 
 # Behaviour
@@ -187,3 +185,8 @@ class FromArrayConfigurationFileLocator extends BaseLocator implements \My\Full\
 ```
 
 The Locator is taking care of the instance pooling.
+
+# Todo
+
+* missing tests
+* missing features
