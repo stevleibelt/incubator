@@ -6,17 +6,17 @@
 
 namespace Net\Bazzline\Component\BatchJob;
 
-use Net\Bazzline\Component\BatchJob\Manager\ConfigurationDependentInterface;
-use Net\Bazzline\Component\BatchJob\Manager\ManagerConfiguration;
+use Net\Bazzline\Component\BatchJob\Manager\Configuration\DependentInterface;
+use Net\Bazzline\Component\BatchJob\Manager\Configuration;
 
 /**
  * Class Manager
  * @package Net\Bazzline\Component\BatchJob
  */
-class Manager implements CallableStrategyDependentInterface, ExecutableInterface, ConfigurationDependentInterface
+class Manager implements CallableStrategyDependentInterface, ExecutableInterface, DependentInterface
 {
     /**
-     * @var ManagerConfiguration
+     * @var Configuration
      */
     private $configuration;
 
@@ -37,10 +37,10 @@ class Manager implements CallableStrategyDependentInterface, ExecutableInterface
     }
 
     /**
-     * @param ManagerConfiguration $configuration
+     * @param Configuration $configuration
      * @return $this
      */
-    public function setManagerConfiguration(ManagerConfiguration $configuration)
+    public function setManagerConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
 
