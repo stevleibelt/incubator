@@ -77,7 +77,7 @@ class Manager implements CallableStrategyDependentInterface, ExecutableInterface
                 $batchJob->setChunkId($chunkId);
                 $couldAcquireChunk = $batchJob->acquireChunk();
                 if ($couldAcquireChunk) {
-                    $this->callableStrategy->call($batchJob);
+                    $this->callableStrategy->call($entry);
                 } else {
                     $iterator = $maximumNumberOfRunningBatchJobs;
                 }

@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\BatchJob;
 
+use Net\Bazzline\Component\BatchJob\Manager\Configuration\BatchJobEntry;
+
 /**
  * Interface CallableStrategyInterface
  * @package Net\Bazzline\Component\BatchJob
@@ -14,9 +16,9 @@ interface CallableStrategyInterface
 {
     /**
      * @param string $factoryName
-     * @param null|int $chunkSize
-     * @param null|int $chunkId
+     * @param int|string $chunkId
+     * @param int $chunkSize
      * @throws RuntimeException
      */
-    public function call($factoryName, $chunkSize = null, $chunkId = null);
+    public function call($factoryName, $chunkId, $chunkSize);
 } 
