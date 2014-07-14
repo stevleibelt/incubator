@@ -4,13 +4,13 @@
  * @since 2014-07-13 
  */
 
-namespace Net\Bazzline\Component\BatchJob;
+namespace Net\Bazzline\Component\BatchJob\Manager;
 
 /**
- * Interface ManagerConfigurationDependentInterface
+ * Interface ConfigurationDependentInterface
  * @package Net\Bazzline\Component\BatchJob
  */
-interface ManagerConfigurationDependentInterface
+interface ConfigurationDependentInterface
 {
     /**
      * @param ManagerConfiguration $configuration

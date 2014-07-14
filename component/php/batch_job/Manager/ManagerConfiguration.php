@@ -4,7 +4,7 @@
  * @since 2014-07-13 
  */
 
-namespace Net\Bazzline\Component\BatchJob;
+namespace Net\Bazzline\Component\BatchJob\Manager;
 
 /**
  * Class ManagerConfiguration

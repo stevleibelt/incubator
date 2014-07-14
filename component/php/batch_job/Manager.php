@@ -6,11 +6,14 @@
 
 namespace Net\Bazzline\Component\BatchJob;
 
+use Net\Bazzline\Component\BatchJob\Manager\ConfigurationDependentInterface;
+use Net\Bazzline\Component\BatchJob\Manager\ManagerConfiguration;
+
 /**
  * Class Manager
  * @package Net\Bazzline\Component\BatchJob
  */
-class Manager implements CallableStrategyDependentInterface, ExecutableInterface, ManagerConfigurationDependentInterface
+class Manager implements CallableStrategyDependentInterface, ExecutableInterface, ConfigurationDependentInterface
 {
     /**
      * @var ManagerConfiguration
@@ -49,10 +52,15 @@ class Manager implements CallableStrategyDependentInterface, ExecutableInterface
      */
     public function execute()
     {
+        $batchJobEntries = $this->configuration->getBatchJobEntries();
         // TODO: Implement execute() method.
         //the configuration has to take care about all callable batch jobs and factories
         //the manager iterates over the attached factories and calls the create
         //  method and acquires chunks until no chunk is available or the
         //  maximum number of chunks is reach
+
+        foreach ($batchJobEntries as $batchJobEntry) {
+
+        }
     }
 }
