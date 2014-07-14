@@ -18,5 +18,5 @@ interface DependentInterface
      * @param Configuration $configuration
      * @return $this
      */
-    public function setManagerConfiguration(Configuration $configuration);
+    public function setConfiguration(Configuration $configuration);
 } 

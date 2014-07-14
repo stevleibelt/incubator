@@ -35,14 +35,12 @@ interface ChunkableInterface
     public function setChunkSize($size);
 
     /**
-     * @return $this
-     * @throws NoChunkAvailableException|RuntimeException
+     * @return bool
      */
     public function acquireChunk();
 
     /**
-     * @return $this
-     * @throws RuntimeException
+     * @return bool
      */
     public function releaseChunk();
 }

@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\BatchJob\Manager\Configuration;
 
+use Net\Bazzline\Component\BatchJob\BatchJobFactoryInterface;
+
 /**
  * Class BatchJobEntry
  * @package Net\Bazzline\Component\BatchJob\Manager
@@ -23,7 +25,7 @@ class BatchJobEntry
     private $minimumNumberOfThreads;
 
     /**
-     * @var string
+     * @var BatchJobFactoryInterface
      */
     private $factory;
 
@@ -66,10 +68,10 @@ class BatchJobEntry
     }
 
     /**
-     * @param string $factory
+     * @param BatchJobFactoryInterface $factory
      * @return $this
      */
-    public function setFactory($factory)
+    public function setFactory(BatchJobFactoryInterface $factory)
     {
         $this->factory = $factory;
 
@@ -77,7 +79,7 @@ class BatchJobEntry
     }
 
     /**
-     * @return null|string
+     * @return null|BatchJobFactoryInterface
      */
     public function getFactory()
     {

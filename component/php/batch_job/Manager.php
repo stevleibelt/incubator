@@ -16,14 +16,19 @@ use Net\Bazzline\Component\BatchJob\Manager\Configuration;
 class Manager implements CallableStrategyDependentInterface, ExecutableInterface, DependentInterface
 {
     /**
+     * @var CallableStrategyInterface
+     */
+    private $callableStrategy;
+
+    /**
      * @var Configuration
      */
     private $configuration;
 
     /**
-     * @var CallableStrategyInterface
+     * @var int
      */
-    private $callableStrategy;
+    private $currentTimestamp;
 
     /**
      * @param CallableStrategyInterface $strategy
@@ -40,7 +45,7 @@ class Manager implements CallableStrategyDependentInterface, ExecutableInterface
      * @param Configuration $configuration
      * @return $this
      */
-    public function setManagerConfiguration(Configuration $configuration)
+    public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
 
@@ -48,19 +53,35 @@ class Manager implements CallableStrategyDependentInterface, ExecutableInterface
     }
 
     /**
+     * @param int $currentTimestamp
+     */
+    public function setCurrentTimestamp($currentTimestamp)
+    {
+        $this->currentTimestamp = $currentTimestamp;
+    }
+
+    /**
      * @throws RuntimeException
      */
     public function execute()
     {
-        $batchJobEntries = $this->configuration->getBatchJobEntries();
-        // TODO: Implement execute() method.
-        //the configuration has to take care about all callable batch jobs and factories
-        //the manager iterates over the attached factories and calls the create
-        //  method and acquires chunks until no chunk is available or the
-        //  maximum number of chunks is reach
+        $entries = $this->configuration->getBatchJobEntries();
 
-        foreach ($batchJobEntries as $batchJobEntry) {
+        foreach ($entries as $entry) {
+            $batchJob = $entry->getFactory()->create();
+            $maximumNumberOfRunningBatchJobs = $entry->getMaximumNumberOfThreads();
 
+            for ($iterator = 0; $iterator < $maximumNumberOfRunningBatchJobs; ++$iterator) {
+                $chunkId = $this->currentTimestamp . '' . $iterator;
+
+                $batchJob->setChunkId($chunkId);
+                $couldAcquireChunk = $batchJob->acquireChunk();
+                if ($couldAcquireChunk) {
+                    $this->callableStrategy->call($batchJob);
+                } else {
+                    $iterator = $maximumNumberOfRunningBatchJobs;
+                }
+            }
         }
     }
 }
