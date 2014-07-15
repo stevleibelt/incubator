@@ -68,6 +68,11 @@ class Manager implements CallableStrategyDependentInterface, ExecutableInterface
         $entries = $this->configuration->getBatchJobEntries();
 
         foreach ($entries as $entry) {
+            //@todo
+            //do not use factories, use clone instead to prevent defining a factory interface
+            // that can not used everywhere
+            //remove "minimum number of threads" and replace "maximum number of threads" with
+            // "number of forks"
             $batchJob = $entry->getFactory()->create();
             $maximumNumberOfRunningBatchJobs = $entry->getMaximumNumberOfThreads();
 
