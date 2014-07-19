@@ -32,3 +32,4 @@ hamburg (1)
 
 * [example for asp.net](https://thetagcloud.codeplex.com/)
 * [how to write pcmanfm extensions](http://wiki.lxde.org/en/Extension_modules_for_LibFM)
+# [how to write spacefm extensions](https://github.com/IgnorantGuru/spacefm/wiki/Plugins)
