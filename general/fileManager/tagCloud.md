@@ -27,3 +27,8 @@ eating (2)
 links (2)
 bangkok (1)
 hamburg (1)
+
+# links
+
+* [example for asp.net](https://thetagcloud.codeplex.com/)
+* [how to write pcmanfm extensions](http://wiki.lxde.org/en/Extension_modules_for_LibFM)
