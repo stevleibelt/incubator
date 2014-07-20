@@ -11,11 +11,11 @@
     * taking care of optional memory limit
     * taking care of maximal number of sub processes
 
-* SubProcess
+* Thread
     * the stupid simple sub process that works on a well defined task
     * implements posix signal handling
 
-* Task
+* AbstractTask
     * implements the unique logic a sub process should execute
 
 ## Additional Ideas
