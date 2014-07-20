@@ -87,7 +87,6 @@
 ## Bad
 
 * still an incubator project
-* relying on [beta component](https://github.com/stevleibelt/php_component_code_generator)
 
 # Behaviour
 
