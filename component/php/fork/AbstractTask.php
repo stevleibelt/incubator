@@ -12,4 +12,24 @@ namespace Net\Bazzline\Component\Fork;
  */
 abstract class AbstractTask implements ExecutableInterface
 {
+    /**
+     * @var int
+     */
+    private $parentProcessId;
+
+    /**
+     * @param int $parentProcessId
+     */
+    public function setParentProcessId($parentProcessId)
+    {
+        $this->parentProcessId = $parentProcessId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getParentProcessId()
+    {
+        return $this->parentProcessId;
+    }
 }

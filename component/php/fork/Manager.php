@@ -40,11 +40,6 @@ class Manager implements ExecutableInterface
     /**
      * @var int
      */
-    private $parentProcessId;
-
-    /**
-     * @var int
-     */
     private $processId;
 
     /**
@@ -86,7 +81,6 @@ class Manager implements ExecutableInterface
 
         //set values for mandatory properties
         $this->areThereOpenTasksLeft = false;
-        $this->parentProcessId = posix_getppid();
         $this->processId = posix_getpid();
         $this->tasks = array();
         $this->threads = array();
@@ -98,6 +92,7 @@ class Manager implements ExecutableInterface
      */
     public function addTask(AbstractTask $task)
     {
+        $task->setParentProcessId($this->processId);
         $this->tasks[] = $task;
         $this->areThereOpenTasksLeft = true;
 
@@ -105,32 +100,61 @@ class Manager implements ExecutableInterface
     }
 
     /**
+     * @param int $maximumBytesOfMemoryUsage
+     */
+    public function setMaximumBytesOfMemoryUsage($maximumBytesOfMemoryUsage)
+    {
+        $this->maximumBytesOfMemoryUsage = (int) $maximumBytesOfMemoryUsage;
+    }
+
+    /**
+     * @param int $maximumNumberOfThreads
+     */
+    public function setMaximumNumberOfThreads($maximumNumberOfThreads)
+    {
+        $this->maximumNumberOfThreads = (int) $maximumNumberOfThreads;
+    }
+
+    /**
+     * @param int $maximumSecondsOfRunTime
+     */
+    public function setMaximumSecondsOfRunTime($maximumSecondsOfRunTime)
+    {
+        $this->maximumSecondsOfRunTime = (int) $maximumSecondsOfRunTime;
+    }
+
+    /**
+     * @param int $numberOfMicrosecondsToCheckThreadStatus
+     */
+    public function setNumberOfMicrosecondsToCheckThreadStatus($numberOfMicrosecondsToCheckThreadStatus)
+    {
+        $this->numberOfMicrosecondsToCheckThreadStatus = (int) $numberOfMicrosecondsToCheckThreadStatus;
+    }
+
+    /**
      * @throws RuntimeException
      */
     public function execute()
     {
-        if ($this->iAmTheParent()) {
-            //dispatch event pre execute
+        //dispatch event pre execute
+        while ($this->areThereOpenTasksLeft) {
+            $task = $this->getOpenTask();
+            //dispatch event pre start thread
+            // TODO: Implement execute() method.
+            $this->startThread($task);
+            //dispatch event post start thread
+        }
 
-            while ($this->areThereOpenTasksLeft) {
-                $task = $this->getOpenTask();
-                //dispatch event pre start thread
-                // TODO: Implement execute() method.
-                $this->startThread($task);
-                //dispatch event post start thread
-            }
-
-            while (!(empty($this->threads))) {
-                foreach ($this->threads as $processId => $data) {
-                    if ($this->hasThreadFinished($processId)) {
-                        //dispatch event thread has finished with data
-                        unset($this->threads[$processId]);
-                    }
+        while (!(empty($this->threads))) {
+            foreach ($this->threads as $processId => $data) {
+                if ($this->hasThreadFinished($processId)) {
+                    //dispatch event thread has finished with data
+                    unset($this->threads[$processId]);
                 }
             }
-
-            //dispatch event post execute
         }
+
+        //dispatch event post execute
     }
 
     /**
@@ -193,14 +217,6 @@ class Manager implements ExecutableInterface
         }
 
         return ($result !== 0);
-    }
-
-    /**
-     * @return bool
-     */
-    private function iAmTheParent()
-    {
-        return ($this->parentProcessId === $this->parentProcessId);
     }
 
     /**

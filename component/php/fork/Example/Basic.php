@@ -25,7 +25,7 @@ class ExampleTask extends \Net\Bazzline\Component\Fork\AbstractTask
      */
     public function execute()
     {
-        $identifier = 'task (' . posix_getpid() . ')';
+        $identifier = 'task (' . posix_getpid() . ' / ' . $this->getParentProcessId() . ')';
         $startTime = time();
 
         echo $identifier . ' says hello' . PHP_EOL;
