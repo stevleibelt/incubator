@@ -138,23 +138,43 @@ class Manager implements ExecutableInterface
     {
         //dispatch event pre execute
         while ($this->areThereOpenTasksLeft) {
-            $task = $this->getOpenTask();
-            //dispatch event pre start thread
-            // TODO: Implement execute() method.
-            $this->startThread($task);
-            //dispatch event post start thread
-        }
-
-        while (!(empty($this->threads))) {
-            foreach ($this->threads as $processId => $data) {
-                if ($this->hasThreadFinished($processId)) {
-                    //dispatch event thread has finished with data
-                    unset($this->threads[$processId]);
-                }
+            //----
+            if ($this->isMaximumNumberOfThreadsReached()) {
+                $this->updateNumberOfRunningThreads();
+                $this->sleep();
+            } else {
+                $task = $this->getOpenTask();
+                //dispatch event pre start thread
+                // TODO: Implement execute() method.
+                $this->startThread($task);
+                //dispatch event post start thread
             }
         }
 
+        while ($this->notAllThreadsAreFinished()) {
+            $this->updateNumberOfRunningThreads();
+            $this->sleep();
+        }
+
         //dispatch event post execute
+    }
+
+    /**
+     * @return bool
+     */
+    private function notAllThreadsAreFinished()
+    {
+        return ($this->countNumberOfThreads() !== 0);
+    }
+
+    private function updateNumberOfRunningThreads()
+    {
+        foreach ($this->threads as $processId => $data) {
+            if ($this->hasThreadFinished($processId)) {
+                //dispatch event thread has finished with data
+                unset($this->threads[$processId]);
+            }
+        }
     }
 
     /**
@@ -212,11 +232,13 @@ class Manager implements ExecutableInterface
                     '" returned statusCode code "' . $statusCode . '"'
                 );
             }
+
+            $threadHasFinished = ($result === $processId);
         } else {
-            $result = 0;
+            $threadHasFinished = true;
         }
 
-        return ($result !== 0);
+        return $threadHasFinished;
     }
 
     /**

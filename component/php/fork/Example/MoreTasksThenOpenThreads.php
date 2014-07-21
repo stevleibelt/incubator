@@ -1,7 +1,7 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2014-07-20 
+ * @since 2014-07-21
  */
 
 //@todo replace with autoloader when own project
@@ -38,6 +38,8 @@ class ExampleTask extends \Net\Bazzline\Component\Fork\AbstractTask
 }
 
 $manager = new \Net\Bazzline\Component\Fork\Manager();
+
+$manager->setMaximumNumberOfThreads(4);
 $totalNumberOfTasks = 7;
 
 for ($iterator = 0; $iterator < $totalNumberOfTasks; ++$iterator) {
