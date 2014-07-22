@@ -13,9 +13,24 @@ namespace Net\Bazzline\Component\Fork;
 class Manager implements ExecutableInterface
 {
     /**
+     * @var array
+     */
+    private $abortedTasks;
+
+    /**
      * @var bool
      */
     private $areThereOpenTasksLeft;
+
+    /**
+     * @var array
+     */
+    private $finishedTasks;
+
+    /**
+     * @var int
+     */
+    private $initialMemoryUsageInBytes;
 
     /**
      * @var int
@@ -35,7 +50,22 @@ class Manager implements ExecutableInterface
     /**
      * @var int
      */
+    private $minimumDistanceInBytesBeforeReachingMemoryLimit;
+
+    /**
+     * @var int
+     */
+    private $minimumDistanceInSecondsBeforeReachingTimeLimit;
+
+    /**
+     * @var int
+     */
     private $numberOfMicrosecondsToCheckThreadStatus;
+
+    /**
+     * @var array
+     */
+    private $openTasks;
 
     /**
      * @var int
@@ -45,7 +75,12 @@ class Manager implements ExecutableInterface
     /**
      * @var array
      */
-    private $tasks;
+    private $runningTasks;
+
+    /**
+     * @var int
+     */
+    private $startTime;
 
     /**
      * @var array
@@ -74,15 +109,21 @@ class Manager implements ExecutableInterface
         declare(ticks = 10);
 
         //set default values for optional properties
-        $this->maximumBytesOfMemoryUsage = 1073741824;  //1 * 8 * 1024 * 1024 = 128 MB
-        $this->maximumNumberOfThreads = 16;
-        $this->maximumSecondsOfRunTime = 3600;  //1 * 60 * 60 = 1 hour
-        $this->numberOfMicrosecondsToCheckThreadStatus = 100;
+        $this->setMaximumBytesOfMemoryUsage(1073741824);    //1 * 8 * 1024 * 1024 = 128 MB
+        $this->setMaximumNumberOfThreads(16);
+        $this->setMaximumSecondsOfRunTime(3600);  //1 * 60 * 60 = 1 hour
+        $this->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second
 
         //set values for mandatory properties
+        $this->abortedTasks = array();
         $this->areThereOpenTasksLeft = false;
+        $this->finishedTasks = array();
+        //@todo calculate minimumDistance[...]Limit in setter methods
+        $this->minimumDistanceInBytesBeforeReachingMemoryLimit = 65536; //1 * 6 * 1024 * 8 = 8 MB
+        $this->minimumDistanceInSecondsBeforeReachingTimeLimit = 2;
+        $this->openTasks = array();
         $this->processId = posix_getpid();
-        $this->tasks = array();
+        $this->runningTasks = array();
         $this->threads = array();
     }
 
@@ -93,7 +134,7 @@ class Manager implements ExecutableInterface
     public function addTask(AbstractTask $task)
     {
         $task->setParentProcessId($this->processId);
-        $this->tasks[] = $task;
+        $this->openTasks[] = $task;
         $this->areThereOpenTasksLeft = true;
 
         return $this;
@@ -136,18 +177,25 @@ class Manager implements ExecutableInterface
      */
     public function execute()
     {
+        $this->initialMemoryUsageInBytes = memory_get_usage(true);
+        $this->startTime = time();
+
         //dispatch event pre execute
         while ($this->areThereOpenTasksLeft) {
-            //----
-            if ($this->isMaximumNumberOfThreadsReached()) {
-                $this->updateNumberOfRunningThreads();
-                $this->sleep();
+            if ($this->isTimeLimitReached()) {
+                $this->stopAllThreads();
+            } else if ($this->isMemoryLimitReached()) {
+                $this->stopNewestThread();
             } else {
-                $task = $this->getOpenTask();
-                //dispatch event pre start thread
-                // TODO: Implement execute() method.
-                $this->startThread($task);
-                //dispatch event post start thread
+                if ($this->isMaximumNumberOfThreadsReached()) {
+                    $this->updateNumberOfRunningThreads();
+                    $this->sleep();
+                } else {
+                    $task = $this->getOpenTask();
+                    //dispatch event pre start thread
+                    $this->startThread($task);
+                    //dispatch event post start thread
+                }
             }
         }
 
@@ -172,6 +220,7 @@ class Manager implements ExecutableInterface
         foreach ($this->threads as $processId => $data) {
             if ($this->hasThreadFinished($processId)) {
                 //dispatch event thread has finished with data
+                $this->moveTaskFromRunningToFinished($processId);
                 unset($this->threads[$processId]);
             }
         }
@@ -184,7 +233,6 @@ class Manager implements ExecutableInterface
     private function startThread(AbstractTask $task)
     {
         $time = time();
-        $memoryUsage = memory_get_usage(true);
         $processId = pcntl_fork();
 
         if ($processId < 0) {
@@ -199,19 +247,49 @@ class Manager implements ExecutableInterface
             //parent
             //$processId > 0
             $this->threads[$processId] = array(
-                //really needed?
-                'memoryUsage' => $memoryUsage,
-                'time' => $time,
+                'startTime' => $time,
             );
+            $this->runningTasks[$processId] = $task;
         }
     }
 
+    /**
+     * @param $processId
+     */
     private function stopThread($processId)
     {
+        //dispatch event stop thread -> data('process_id' => $processId)
         if ($processId > 0) {
             if (isset($this->threads[$processId])) {
                 posix_kill($processId, SIGTERM);
             }
+        }
+    }
+
+    private function stopNewestThread()
+    {
+        $newestProcessId = null;
+        $newestStartTime = 0;
+
+        foreach ($this->threads as $processId => $startTime) {
+            if ($startTime > $newestStartTime) {
+                $newestProcessId = $processId;
+            }
+        }
+
+        if (!is_null($newestProcessId)) {
+            //dispatch event newest thread
+            $this->stopThread($newestProcessId);
+            $this->moveTaskFromRunningToAborted($newestProcessId);
+        }
+    }
+
+    private function stopAllThreads()
+    {
+        //dispatch event stop all threads
+        foreach ($this->threads as $processId => $startTime) {
+            $this->stopThread($processId);
+            $this->moveTaskFromRunningToAborted($processId);
         }
     }
 
@@ -267,12 +345,54 @@ class Manager implements ExecutableInterface
      */
     private function getOpenTask()
     {
-        $task = array_shift($this->tasks);
+        $task = array_shift($this->openTasks);
 
-        if (empty($this->tasks)) {
+        if (empty($this->openTasks)) {
             $this->areThereOpenTasksLeft = false;
         }
 
         return $task;
+    }
+
+    /**
+     * @param $processId
+     */
+    private function moveTaskFromRunningToAborted($processId)
+    {
+        $this->abortedTasks[$processId] = $this->runningTasks[$processId];
+        unset($this->runningTasks[$processId]);
+    }
+
+    /**
+     * @param $processId
+     */
+    private function moveTaskFromRunningToFinished($processId)
+    {
+        $this->finishedTasks[$processId] = $this->runningTasks[$processId];
+        unset($this->runningTasks[$processId]);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isTimeLimitReached()
+    {
+        return false;
+        $isReached = (($this->startTime + $this->maximumSecondsOfRunTime) >=
+            (time() + $this->minimumDistanceInSecondsBeforeReachingTimeLimit));
+
+        return $isReached;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isMemoryLimitReached()
+    {
+        return false;
+        $isReached = (($this->initialMemoryUsageInBytes + $this->maximumBytesOfMemoryUsage) >=
+            (memory_get_usage(true) + $this->minimumDistanceInBytesBeforeReachingMemoryLimit));
+
+        return $isReached;
     }
 }
