@@ -12,10 +12,19 @@ namespace Net\Bazzline\Component\Fork;
  */
 abstract class AbstractTask implements ExecutableInterface
 {
+    const STATUS_ABORTED = 2;
+    const STATUS_FINISHED = 1;
+    const STATUS_NOT_FINISHED = 0;
+
     /**
      * @var int
      */
     private $parentProcessId;
+
+    /**
+     * @var int
+     */
+    private $status = self::STATUS_NOT_FINISHED;
 
     /**
      * @param int $parentProcessId
@@ -31,5 +40,39 @@ abstract class AbstractTask implements ExecutableInterface
     public function getParentProcessId()
     {
         return $this->parentProcessId;
+    }
+
+    /**
+     * @return int
+     */
+    public function isAborted()
+    {
+        return ($this->status === self::STATUS_ABORTED);
+    }
+
+    /**
+     * @return int
+     */
+    public function isFinished()
+    {
+        return ($this->status === self::STATUS_FINISHED);
+    }
+
+    /**
+     * @return int
+     */
+    public function isNotFinished()
+    {
+        return ($this->status = self::STATUS_NOT_FINISHED);
+    }
+
+    public function markAsAborted()
+    {
+        $this->status = self::STATUS_ABORTED;
+    }
+
+    public function markAsFinished()
+    {
+        $this->status = self::STATUS_FINISHED;
     }
 }
