@@ -10,6 +10,7 @@ $files = array(
     'RuntimeException.php',
     'AbstractTask.php',
     'MemoryLimitManager.php',
+    'TaskManager.php',
     'TimeLimitManager.php',
     'Manager.php'
 );

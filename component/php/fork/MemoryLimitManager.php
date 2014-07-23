@@ -69,6 +69,14 @@ class MemoryLimitManager
     }
 
     /**
+     * @param int $gigaBytes
+     */
+    public function setBufferInGigaBytes($gigaBytes)
+    {
+        $this->setBufferInMegaBytes((1024 * $gigaBytes));
+    }
+
+    /**
      * @param int $bytes
      */
     public function setMaximumInBytes($bytes)
@@ -90,6 +98,14 @@ class MemoryLimitManager
     public function setMaximumInMegaBytes($megaBytes)
     {
         $this->setMaximumInKiloBytes((1024 * $megaBytes));
+    }
+
+    /**
+     * @param int $gigaBytes
+     */
+    public function setMaximumInGigaBytes($gigaBytes)
+    {
+        $this->setMaximumInGigaBytes((1024 * $gigaBytes));
     }
 
     /**

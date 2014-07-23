@@ -30,16 +30,6 @@ class Manager implements ExecutableInterface
     /**
      * @var int
      */
-    private $initialMemoryUsageInBytes;
-
-    /**
-     * @var int
-     */
-    private $maximumBytesOfMemoryUsage;
-
-    /**
-     * @var int
-     */
     private $maximumNumberOfThreads;
 
     /**
@@ -83,6 +73,11 @@ class Manager implements ExecutableInterface
     private $startTime;
 
     /**
+     * @var TaskManager
+     */
+    private $taskManager;
+
+    /**
      * @var TimeLimitManager
      */
     private $timeLimitManager;
@@ -116,6 +111,7 @@ class Manager implements ExecutableInterface
         //@todo they have to be injected while object creation
         //@todo create a factory for manager creation
         $this->memoryLimitManager = new MemoryLimitManager();
+        $this->taskManager = new TaskManager();
         $this->timeLimitManager = new TimeLimitManager();
 
         //set default values for optional properties
@@ -151,11 +147,27 @@ class Manager implements ExecutableInterface
     }
 
     /**
-     * @param int $maximumBytesOfMemoryUsage
+     * @return MemoryLimitManager
      */
-    public function setMaximumBytesOfMemoryUsage($maximumBytesOfMemoryUsage)
+    public function getMemoryLimitManager()
     {
-        $this->maximumBytesOfMemoryUsage = (int) $maximumBytesOfMemoryUsage;
+        return $this->memoryLimitManager;
+    }
+
+    /**
+     * @return TaskLimitManager
+     */
+    public function getTaskManager()
+    {
+        return $this->taskManager;
+    }
+
+    /**
+     * @return TimeLimitManager
+     */
+    public function getTimeLimitManager()
+    {
+        return $this->timeLimitManager;
     }
 
     /**
@@ -187,7 +199,6 @@ class Manager implements ExecutableInterface
      */
     public function execute()
     {
-        $this->initialMemoryUsageInBytes = memory_get_usage(true);
         $this->startTime = time();
 
         //dispatch event pre execute
