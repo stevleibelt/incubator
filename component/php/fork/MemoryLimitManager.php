@@ -110,6 +110,14 @@ class MemoryLimitManager
     }
 
     /**
+     * @return int
+     */
+    public function getBufferedMaximumInBytes()
+    {
+        return ($this->maximumInBytes - $this->bufferInBytes);
+    }
+
+    /**
      * @return bool
      */
     public function isLimitReached()

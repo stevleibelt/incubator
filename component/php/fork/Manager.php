@@ -160,7 +160,7 @@ class Manager implements ExecutableInterface
         while ($this->taskManager->areThereOpenTasksLeft()) {
             if ($this->timeLimitManager->isLimitReached()) {
                 $this->stopAllThreads();
-            } else if ($this->memoryLimitManager->isLimitReached()) {
+            } else if ($this->isMaximumMemoryLimitOfWholeThreadsReached()) {
                 $this->stopNewestThread();
                 $this->sleep();
             } else {
@@ -181,7 +181,7 @@ class Manager implements ExecutableInterface
         while ($this->notAllThreadsAreFinished()) {
             if ($this->timeLimitManager->isLimitReached()) {
                 $this->stopAllThreads();
-            } else if ($this->memoryLimitManager->isLimitReached()) {
+            } else if ($this->isMaximumMemoryLimitOfWholeThreadsReached()) {
                 $this->stopNewestThread();
                 $this->sleep();
             } else {
@@ -336,6 +336,30 @@ class Manager implements ExecutableInterface
     private function isMaximumNumberOfThreadsReached()
     {
         return ($this->countNumberOfThreads() >= $this->maximumNumberOfThreads);
+    }
+
+    private function isMaximumMemoryLimitOfWholeThreadsReached()
+    {
+        $currentMemoryUsage = memory_get_usage(true);
+
+        foreach ($this->threads as $processId => $data) {
+            $return = 0;
+            exec('ps -p ' . $processId . ' -o rss', $return);
+
+            if (isset($return[1])) {
+                //non-swapped physical memory in kilo bytes
+                $currentMemoryUsage += ($return[0] * 1024);
+            }
+        }
+
+echo 'number of threads ' . count($this->threads) . PHP_EOL;
+echo 'memory usage ' . (memory_get_usage(true)) . PHP_EOL;
+echo 'buffered maximum ' . ($this->memoryLimitManager->getBufferedMaximumInBytes() / (1024 * 1024)) . PHP_EOL;
+        $isReached = $currentMemoryUsage >= $this->memoryLimitManager->getBufferedMaximumInBytes();
+
+echo 'is reached ' . var_export($isReached, true) . PHP_EOL;
+
+        return $isReached;
     }
 
     private function sleep()
