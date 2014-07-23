@@ -24,6 +24,7 @@ class MemoryLimitManager
 
     public function __construct()
     {
+        //@todo implement dealing with memory_limit of -1
         $currentMemoryLimit = trim(ini_get('memory_limit'));
         $unitIdentifier = strtolower($currentMemoryLimit[strlen($currentMemoryLimit)-1]);
 

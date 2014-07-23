@@ -18,19 +18,9 @@ class Manager implements ExecutableInterface
     private $maximumNumberOfThreads;
 
     /**
-     * @var int
-     */
-    private $maximumSecondsOfRunTime;
-
-    /**
      * @var MemoryLimitManager
      */
     private $memoryLimitManager;
-
-    /**
-     * @var int
-     */
-    private $minimumDistanceInSecondsBeforeReachingTimeLimit;
 
     /**
      * @var int
@@ -95,14 +85,14 @@ class Manager implements ExecutableInterface
         //set default values for optional properties
         $this->memoryLimitManager->setMaximumInMegaBytes(128);
         $this->setMaximumNumberOfThreads(16);
-        $this->setMaximumSecondsOfRunTime(3600);  //1 * 60 * 60 = 1 hour
         $this->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second
+        $this->timeLimitManager->setMaximumInSeconds(3600); //1 * 60 * 60 = 1 hour
 
         //set values for mandatory properties
         //@todo calculate minimumDistance[...]Limit in setter methods
         $this->memoryLimitManager->setBufferInMegaBytes(8);
-        $this->minimumDistanceInSecondsBeforeReachingTimeLimit = 2;
         $this->processId = posix_getpid();
+        $this->timeLimitManager->setBufferInSeconds(2);
         $this->threads = array();
     }
 
@@ -151,14 +141,6 @@ class Manager implements ExecutableInterface
     }
 
     /**
-     * @param int $maximumSecondsOfRunTime
-     */
-    public function setMaximumSecondsOfRunTime($maximumSecondsOfRunTime)
-    {
-        $this->maximumSecondsOfRunTime = (int) $maximumSecondsOfRunTime;
-    }
-
-    /**
      * @param int $numberOfMicrosecondsToCheckThreadStatus
      */
     public function setNumberOfMicrosecondsToCheckThreadStatus($numberOfMicrosecondsToCheckThreadStatus)
@@ -176,7 +158,7 @@ class Manager implements ExecutableInterface
         //dispatch event pre execute
         //dispatch event pre executing open tasks
         while ($this->taskManager->areThereOpenTasksLeft()) {
-            if ($this->isTimeLimitReached()) {
+            if ($this->timeLimitManager->isLimitReached()) {
                 $this->stopAllThreads();
             } else if ($this->memoryLimitManager->isLimitReached()) {
                 $this->stopNewestThread();
@@ -197,7 +179,7 @@ class Manager implements ExecutableInterface
 
         //dispatch event pre waiting of still running threads
         while ($this->notAllThreadsAreFinished()) {
-            if ($this->isTimeLimitReached()) {
+            if ($this->timeLimitManager->isLimitReached()) {
                 $this->stopAllThreads();
             } else if ($this->memoryLimitManager->isLimitReached()) {
                 $this->stopNewestThread();
@@ -359,18 +341,5 @@ class Manager implements ExecutableInterface
     private function sleep()
     {
         usleep($this->numberOfMicrosecondsToCheckThreadStatus);
-    }
-
-    /**
-     * @return bool
-     */
-    private function isTimeLimitReached()
-    {
-        //@todo merge startTime and maximumSecondsOfRunTime to property since
-        //  it is wasted to recalculate this static value in execution mode
-        $isReached = (($this->startTime + $this->maximumSecondsOfRunTime) <
-            (time() + $this->minimumDistanceInSecondsBeforeReachingTimeLimit));
-
-        return $isReached;
     }
 }

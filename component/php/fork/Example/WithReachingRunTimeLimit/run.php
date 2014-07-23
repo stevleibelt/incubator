@@ -35,7 +35,7 @@ foreach ($tasks as $task) {
     $manager->addTask($task);
 }
 
-$manager->setMaximumSecondsOfRunTime($maximumRunTimeInSeconds);
+$manager->getTimeLimitManager()->setMaximumInSeconds($maximumRunTimeInSeconds);
 $manager->execute();
 
 foreach ($tasks as $key => $task) {
