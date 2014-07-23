@@ -15,6 +15,7 @@ abstract class AbstractTask implements ExecutableInterface
     const STATUS_ABORTED = 2;
     const STATUS_FINISHED = 1;
     const STATUS_NOT_FINISHED = 0;
+    const STATUS_RUNNING = 3;
 
     /**
      * @var int
@@ -43,7 +44,7 @@ abstract class AbstractTask implements ExecutableInterface
     }
 
     /**
-     * @return int
+     * @return bool
      */
     public function isAborted()
     {
@@ -51,7 +52,7 @@ abstract class AbstractTask implements ExecutableInterface
     }
 
     /**
-     * @return int
+     * @return bool
      */
     public function isFinished()
     {
@@ -59,7 +60,15 @@ abstract class AbstractTask implements ExecutableInterface
     }
 
     /**
-     * @return int
+     * @return bool
+     */
+    public function isRunning()
+    {
+        return ($this->status === self::STATUS_RUNNING);
+    }
+
+    /**
+     * @return bool
      */
     public function isNotFinished()
     {
@@ -74,5 +83,10 @@ abstract class AbstractTask implements ExecutableInterface
     public function markAsFinished()
     {
         $this->status = self::STATUS_FINISHED;
+    }
+
+    public function markAsRunning()
+    {
+        $this->status = self::STATUS_RUNNING;
     }
 }

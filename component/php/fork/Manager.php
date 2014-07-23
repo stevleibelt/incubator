@@ -13,21 +13,6 @@ namespace Net\Bazzline\Component\Fork;
 class Manager implements ExecutableInterface
 {
     /**
-     * @var array|AbstractTask[]
-     */
-    private $abortedTasks;
-
-    /**
-     * @var bool
-     */
-    private $areThereOpenTasksLeft;
-
-    /**
-     * @var array|AbstractTask[]
-     */
-    private $finishedTasks;
-
-    /**
      * @var int
      */
     private $maximumNumberOfThreads;
@@ -53,19 +38,9 @@ class Manager implements ExecutableInterface
     private $numberOfMicrosecondsToCheckThreadStatus;
 
     /**
-     * @var array|AbstractTask[]
-     */
-    private $openTasks;
-
-    /**
      * @var int
      */
     private $processId;
-
-    /**
-     * @var array|AbstractTask[]
-     */
-    private $runningTasks;
 
     /**
      * @var int
@@ -95,7 +70,8 @@ class Manager implements ExecutableInterface
         //@todo add all needed
         $mandatoryPHPFunctions = array(
             'pcntl_fork',
-            'posix_getpid'
+            'posix_getpid',
+            'spl_object_hash'
         );
 
         foreach ($mandatoryPHPFunctions as $mandatoryPHPFunction) {
@@ -121,15 +97,10 @@ class Manager implements ExecutableInterface
         $this->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second
 
         //set values for mandatory properties
-        $this->abortedTasks = array();
-        $this->areThereOpenTasksLeft = false;
-        $this->finishedTasks = array();
         //@todo calculate minimumDistance[...]Limit in setter methods
         $this->memoryLimitManager->setBufferInMegaBytes(8);
         $this->minimumDistanceInSecondsBeforeReachingTimeLimit = 2;
-        $this->openTasks = array();
         $this->processId = posix_getpid();
-        $this->runningTasks = array();
         $this->threads = array();
     }
 
@@ -140,8 +111,7 @@ class Manager implements ExecutableInterface
     public function addTask(AbstractTask $task)
     {
         $task->setParentProcessId($this->processId);
-        $this->openTasks[] = $task;
-        $this->areThereOpenTasksLeft = true;
+        $this->taskManager->addTask($task);
 
         return $this;
     }
@@ -155,7 +125,7 @@ class Manager implements ExecutableInterface
     }
 
     /**
-     * @return TaskLimitManager
+     * @return TaskManager
      */
     public function getTaskManager()
     {
@@ -203,10 +173,10 @@ class Manager implements ExecutableInterface
 
         //dispatch event pre execute
         //dispatch event pre executing open tasks
-        while ($this->areThereOpenTasksLeft) {
+        while ($this->taskManager->areThereOpenTasksLeft()) {
             if ($this->isTimeLimitReached()) {
                 $this->stopAllThreads();
-            } else if ($this->isMemoryLimitReached()) {
+            } else if ($this->memoryLimitManager->isLimitReached()) {
                 $this->stopNewestThread();
                 $this->sleep();
             } else {
@@ -214,7 +184,7 @@ class Manager implements ExecutableInterface
                     $this->updateNumberOfRunningThreads();
                     $this->sleep();
                 } else {
-                    $task = $this->getOpenTask();
+                    $task = $this->taskManager->getOpenTask();
                     //dispatch event pre start thread
                     $this->startThread($task);
                     //dispatch event post start thread
@@ -227,7 +197,7 @@ class Manager implements ExecutableInterface
         while ($this->notAllThreadsAreFinished()) {
             if ($this->isTimeLimitReached()) {
                 $this->stopAllThreads();
-            } else if ($this->isMemoryLimitReached()) {
+            } else if ($this->memoryLimitManager->isLimitReached()) {
                 $this->stopNewestThread();
                 $this->sleep();
             } else {
@@ -253,7 +223,7 @@ class Manager implements ExecutableInterface
         foreach ($this->threads as $processId => $data) {
             if ($this->hasThreadFinished($processId)) {
                 //dispatch event thread has finished with data
-                $this->moveTaskFromRunningToFinished($processId);
+                $this->taskManager->markRunningTaskAsFinished($data['task']);
                 unset($this->threads[$processId]);
             }
         }
@@ -279,8 +249,11 @@ class Manager implements ExecutableInterface
         } else {
             //parent
             //$processId > 0
-            $this->threads[$processId] = $time;
-            $this->runningTasks[$processId] = $task;
+            $this->threads[$processId] = array(
+                'startTime' => $time,
+                'task' => $task
+            );
+            $this->taskManager->markTaskAsRunning($task);
         }
     }
 
@@ -295,7 +268,9 @@ class Manager implements ExecutableInterface
             if (isset($this->threads[$processId])) {
                 $isStopped = posix_kill($processId, SIGTERM);
                 if ($isStopped) {
+                    $task = $this->threads[$processId]['task'];
                     unset($this->threads[$processId]);
+                    $this->taskManager->markRunningTaskAsAborted($task);
                 } else {
                     throw new RuntimeException(
                         'thread with process id "' . $processId . '" could not be stopped'
@@ -312,9 +287,10 @@ class Manager implements ExecutableInterface
     {
         $newestProcessId = null;
         $newestStartTime = 0;
+        $task = null;
 
-        foreach ($this->threads as $processId => $startTime) {
-            if ($startTime > $newestStartTime) {
+        foreach ($this->threads as $processId => $data) {
+            if ($data['startTime'] > $newestStartTime) {
                 $newestProcessId = $processId;
             }
         }
@@ -322,7 +298,6 @@ class Manager implements ExecutableInterface
         if (!is_null($newestProcessId)) {
             //dispatch event newest thread
             $this->stopThread($newestProcessId);
-            $this->moveTaskFromRunningToAborted($newestProcessId);
         }
     }
 
@@ -332,9 +307,8 @@ class Manager implements ExecutableInterface
     private function stopAllThreads()
     {
         //dispatch event stop all threads
-        foreach ($this->threads as $processId => $startTime) {
+        foreach ($this->threads as $processId => $data) {
             $this->stopThread($processId);
-            $this->moveTaskFromRunningToAborted($processId);
         }
     }
 
@@ -386,40 +360,6 @@ class Manager implements ExecutableInterface
     }
 
     /**
-     * @return mixed
-     */
-    private function getOpenTask()
-    {
-        $task = array_shift($this->openTasks);
-
-        if (empty($this->openTasks)) {
-            $this->areThereOpenTasksLeft = false;
-        }
-
-        return $task;
-    }
-
-    /**
-     * @param $processId
-     */
-    private function moveTaskFromRunningToAborted($processId)
-    {
-        $this->abortedTasks[$processId] = $this->runningTasks[$processId];
-        $this->abortedTasks[$processId]->markAsAborted();
-        unset($this->runningTasks[$processId]);
-    }
-
-    /**
-     * @param $processId
-     */
-    private function moveTaskFromRunningToFinished($processId)
-    {
-        $this->finishedTasks[$processId] = $this->runningTasks[$processId];
-        $this->finishedTasks[$processId]->markAsFinished();
-        unset($this->runningTasks[$processId]);
-    }
-
-    /**
      * @return bool
      */
     private function isTimeLimitReached()
@@ -430,13 +370,5 @@ class Manager implements ExecutableInterface
             (time() + $this->minimumDistanceInSecondsBeforeReachingTimeLimit));
 
         return $isReached;
-    }
-
-    /**
-     * @return bool
-     */
-    private function isMemoryLimitReached()
-    {
-        return $this->memoryLimitManager->isLimitReached();
     }
 }
