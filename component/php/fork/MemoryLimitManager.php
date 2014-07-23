@@ -15,19 +15,33 @@ class MemoryLimitManager
     /**
      * @var int
      */
-    private $bufferInBits;
+    private $bufferInBytes;
 
     /**
      * @var int
      */
-    private $maximumInBits;
+    private $maximumInBytes;
 
-    /**
-     * @param int $bits
-     */
-    public function setBufferInBits($bits)
+    public function __construct()
     {
-        $this->bufferInBits = (int) $bits;
+        $currentMemoryLimit = trim(ini_get('memory_limit'));
+        $unitIdentifier = strtolower($currentMemoryLimit[strlen($currentMemoryLimit)-1]);
+
+        switch ($unitIdentifier) {
+            case 'G':
+                $this->maximumInBytes = 1073741824 * $currentMemoryLimit;    //1073741824 = 1024 * 1024 * 1024
+                break;
+            case 'M':
+                $this->maximumInBytes = 1048576 * $currentMemoryLimit;    //1048576 = 1024 * 1024
+                break;
+            case 'K':
+                $this->maximumInBytes = 1024 * $currentMemoryLimit;
+                break;
+            default:
+                $this->maximumInBytes = $currentMemoryLimit;
+        }
+
+        $this->maximumInBytes = $currentMemoryLimit;
     }
 
     /**
@@ -35,7 +49,7 @@ class MemoryLimitManager
      */
     public function setBufferInBytes($bytes)
     {
-        $this->setBufferInBits((8 * $bytes));
+        $this->bufferInBytes = (int) $bytes;
     }
 
     /**
@@ -55,19 +69,11 @@ class MemoryLimitManager
     }
 
     /**
-     * @param int $bits
-     */
-    public function setMaximumInBits($bits)
-    {
-        $this->maximumInBits = (int) $bits;
-    }
-
-    /**
      * @param int $bytes
      */
     public function setMaximumInBytes($bytes)
     {
-        $this->setMaximumInBits((8 * $bytes));
+        $this->maximumInBytes = (int) $bytes;
     }
 
     /**
@@ -91,9 +97,9 @@ class MemoryLimitManager
      */
     public function isLimitReached()
     {
-        $currentUsageWithBuffer = memory_get_usage(true) + $this->bufferInBits;
+        $currentUsageWithBuffer = memory_get_usage(true) + $this->bufferInBytes;
 
-        $isReached = ($currentUsageWithBuffer >= $this->maximumInBits);
+        $isReached = ($currentUsageWithBuffer >= $this->maximumInBytes);
 
         return $isReached;
     }

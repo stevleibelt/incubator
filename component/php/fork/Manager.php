@@ -119,7 +119,7 @@ class Manager implements ExecutableInterface
         $this->timeLimitManager = new TimeLimitManager();
 
         //set default values for optional properties
-        $this->memoryLimitManager->setMaximumInBits(1073741824); //1 * 8 * 1024 * 1024 = 128 MB
+        $this->memoryLimitManager->setMaximumInMegaBytes(128);
         $this->setMaximumNumberOfThreads(16);
         $this->setMaximumSecondsOfRunTime(3600);  //1 * 60 * 60 = 1 hour
         $this->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second
@@ -129,7 +129,7 @@ class Manager implements ExecutableInterface
         $this->areThereOpenTasksLeft = false;
         $this->finishedTasks = array();
         //@todo calculate minimumDistance[...]Limit in setter methods
-        $this->memoryLimitManager->setBufferInBits(65536);  //1 * 6 * 1024 * 8 = 8 MB
+        $this->memoryLimitManager->setBufferInMegaBytes(8);
         $this->minimumDistanceInSecondsBeforeReachingTimeLimit = 2;
         $this->openTasks = array();
         $this->processId = posix_getpid();
