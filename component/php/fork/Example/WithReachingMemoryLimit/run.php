@@ -4,7 +4,7 @@
  * @since 2014-07-20 
  */
 
-namespace Net\Bazzline\Component\Fork\Example\WithReachingRunTimeLimit;
+namespace Net\Bazzline\Component\Fork\Example\WithReachingMemoryLimit;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once 'ExampleTask.php';
@@ -12,15 +12,14 @@ require_once 'ExampleTask.php';
 use Net\Bazzline\Component\Fork\Manager;
 
 $manager = new Manager();
-$maximumRunTimeInSeconds = 9;
 
 $taskOne = new ExampleTask();
 $taskTwo = new ExampleTask();
 $taskThree = new ExampleTask();
 
-$taskOne->setRunTime(($maximumRunTimeInSeconds - 3)); //there is an offset of 2 seconds
-$taskTwo->setRunTime($maximumRunTimeInSeconds);
-$taskThree->setRunTime(($maximumRunTimeInSeconds + 1));
+$taskOne->setNumberOfDataMultiplication(3);
+$taskTwo->setNumberOfDataMultiplication(4);
+$taskThree->setNumberOfDataMultiplication(5);
 
 /**
  * @var array|ExampleTask[] $tasks
@@ -35,12 +34,13 @@ foreach ($tasks as $task) {
     $manager->addTask($task);
 }
 
-$manager->setMaximumSecondsOfRunTime($maximumRunTimeInSeconds);
+$manager->getMemoryLimitManager()->setBufferInMegaBytes(1);
+$manager->getMemoryLimitManager()->setMaximumInMegaBytes(4);
 $manager->execute();
 
 foreach ($tasks as $key => $task) {
     $status = ($task->isAborted()) ?
         'aborted' : (($task->isFinished()) ?
             'finished' : 'not finished');
-    echo 'task ' . $key . ' with run time of ' . $task->getRunTime() . ' seconds has been ' . $status . PHP_EOL;
+    echo 'task ' . $key . ' with run time of ' . $task->getNumberOfDataMultiplication() . ' seconds has been ' . $status . PHP_EOL;
 }
