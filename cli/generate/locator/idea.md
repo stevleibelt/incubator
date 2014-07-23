@@ -189,3 +189,4 @@ The Locator is taking care of the instance pooling.
 
 * missing tests
 * missing features
+* create zf2 module to easy up usage
