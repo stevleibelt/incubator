@@ -69,6 +69,8 @@ class Manager implements ExecutableInterface
     {
         //@todo add all needed
         $mandatoryPHPFunctions = array(
+            'getmypid',
+            'memory_get_usage',
             'pcntl_fork',
             'posix_getpid',
             'spl_object_hash'

@@ -38,9 +38,25 @@ abstract class AbstractTask implements ExecutableInterface
     /**
      * @return int
      */
+    public function getMemoryUsage()
+    {
+        return memory_get_usage(true);
+    }
+
+    /**
+     * @return int
+     */
     public function getParentProcessId()
     {
         return $this->parentProcessId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProcessId()
+    {
+        return getmypid();
     }
 
     /**
