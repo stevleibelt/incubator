@@ -9,6 +9,8 @@ $files = array(
     'ExecutableInterface.php',
     'RuntimeException.php',
     'AbstractTask.php',
+    'MemoryLimitManager.php',
+    'TimeLimitManager.php',
     'Manager.php'
 );
 

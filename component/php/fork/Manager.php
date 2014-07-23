@@ -48,9 +48,9 @@ class Manager implements ExecutableInterface
     private $maximumSecondsOfRunTime;
 
     /**
-     * @var int
+     * @var MemoryLimitManager
      */
-    private $minimumDistanceInBytesBeforeReachingMemoryLimit;
+    private $memoryLimitManager;
 
     /**
      * @var int
@@ -83,6 +83,11 @@ class Manager implements ExecutableInterface
     private $startTime;
 
     /**
+     * @var TimeLimitManager
+     */
+    private $timeLimitManager;
+
+    /**
      * @var array
      */
     private $threads;
@@ -108,8 +113,13 @@ class Manager implements ExecutableInterface
 
         declare(ticks = 10);
 
+        //@todo they have to be injected while object creation
+        //@todo create a factory for manager creation
+        $this->memoryLimitManager = new MemoryLimitManager();
+        $this->timeLimitManager = new TimeLimitManager();
+
         //set default values for optional properties
-        $this->setMaximumBytesOfMemoryUsage(1073741824);    //1 * 8 * 1024 * 1024 = 128 MB
+        $this->memoryLimitManager->setMaximumInBits(1073741824); //1 * 8 * 1024 * 1024 = 128 MB
         $this->setMaximumNumberOfThreads(16);
         $this->setMaximumSecondsOfRunTime(3600);  //1 * 60 * 60 = 1 hour
         $this->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second
@@ -119,7 +129,7 @@ class Manager implements ExecutableInterface
         $this->areThereOpenTasksLeft = false;
         $this->finishedTasks = array();
         //@todo calculate minimumDistance[...]Limit in setter methods
-        $this->minimumDistanceInBytesBeforeReachingMemoryLimit = 65536; //1 * 6 * 1024 * 8 = 8 MB
+        $this->memoryLimitManager->setBufferInBits(65536);  //1 * 6 * 1024 * 8 = 8 MB
         $this->minimumDistanceInSecondsBeforeReachingTimeLimit = 2;
         $this->openTasks = array();
         $this->processId = posix_getpid();
@@ -416,11 +426,6 @@ class Manager implements ExecutableInterface
      */
     private function isMemoryLimitReached()
     {
-        //@todo merge initialMemoryUsageInBytes and maximumBytesOfMemoryUsage to property since
-        //  it is wasted to recalculate this static value in execution mode
-        $isReached = (($this->initialMemoryUsageInBytes + $this->maximumBytesOfMemoryUsage) <
-            (memory_get_usage(true) + $this->minimumDistanceInBytesBeforeReachingMemoryLimit));
-
-        return $isReached;
+        return $this->memoryLimitManager->isLimitReached();
     }
 }
