@@ -1,27 +1,18 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2014-07-20 
+ * @since 2014-07-23 
  */
 
-//@todo replace with autoloader when own project
-$files = array(
-    'ExecutableInterface.php',
-    'RuntimeException.php',
-    'AbstractTask.php',
-    'MemoryLimitManager.php',
-    'TimeLimitManager.php',
-    'Manager.php'
-);
+namespace Net\Bazzline\Component\Fork\Example\MoreTasksThenOpenThreads;
 
-foreach ($files as $file) {
-    require_once __DIR__ . '/../' . $file;
-}
+use Net\Bazzline\Component\Fork\AbstractTask;
 
 /**
  * Class ExampleTask
+ * @package Net\Bazzline\Component\Fork\Example\MoreTasksThenOpenThreads
  */
-class ExampleTask extends \Net\Bazzline\Component\Fork\AbstractTask
+class ExampleTask extends AbstractTask
 {
     /**
      * @throws \Net\Bazzline\Component\Fork\RuntimeException
@@ -38,13 +29,3 @@ class ExampleTask extends \Net\Bazzline\Component\Fork\AbstractTask
         echo $identifier . ' memory usage: ' . (memory_get_usage(true)) . ' bytes' . PHP_EOL;
     }
 }
-
-$manager = new \Net\Bazzline\Component\Fork\Manager();
-$totalNumberOfTasks = 7;
-
-for ($iterator = 0; $iterator < $totalNumberOfTasks; ++$iterator) {
-    $task = new ExampleTask();
-    $manager->addTask($task);
-}
-
-$manager->execute();
