@@ -25,6 +25,11 @@ abstract class AbstractTask implements ExecutableInterface
     /**
      * @var int
      */
+    private $startTime;
+
+    /**
+     * @var int
+     */
     private $status = self::STATUS_NOT_FINISHED;
 
     /**
@@ -32,7 +37,23 @@ abstract class AbstractTask implements ExecutableInterface
      */
     public function setParentProcessId($parentProcessId)
     {
-        $this->parentProcessId = $parentProcessId;
+        $this->parentProcessId = (int) $parentProcessId;
+    }
+
+    /**
+     * @param int $timestamp
+     */
+    public function setStartTime($timestamp)
+    {
+        $this->startTime = (int) $timestamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRunTime()
+    {
+        return (time() - $this->startTime);
     }
 
     /**

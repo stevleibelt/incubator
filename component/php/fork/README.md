@@ -17,17 +17,20 @@
 
 * AbstractTask
     * implements the unique logic a sub process should execute
+    * implements
+        * getProcessId()
+        * getParentProcessId()
+        * getRuntime()
+        * getMemoryUsage()
 
 ## Additional Ideas
 
 * an event listener can be used to easy up extending this component
 * add shared memory for inter process calls (ipc)
 * add logging (by event event handler?)
-* a sub process should implement
-    * getProcessId()
-    * getParentProcessId()
-    * getRuntime()
-    * getMemoryUsage()
+* AbstractTask should implement
+    * getGroupId()
+    * getUserId()
     * setGroupId($groupId)
     * setUserId($userId)
 
