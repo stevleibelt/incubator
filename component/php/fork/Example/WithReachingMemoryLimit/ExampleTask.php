@@ -46,7 +46,7 @@ class ExampleTask extends AbstractTask
 
         echo $identifier . ' says hello' . PHP_EOL;
         echo $identifier . ' number of data multiplication ' . $this->numberOfDataMultiplication . PHP_EOL;
-        echo $identifier . ' memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
+        echo $identifier . ' initial memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
         echo PHP_EOL;
 
         for ($iterator = 0; $iterator < $this->numberOfDataMultiplication; ++$iterator) {
@@ -66,6 +66,8 @@ class ExampleTask extends AbstractTask
                     $anotherRound = false;
                 }
                 ++$anotherIterator;
+                echo $identifier . ' memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
+                sleep(1);
             }
             //end creating one megabyte of data
             $workingDataSet[] = $data;
@@ -73,7 +75,7 @@ class ExampleTask extends AbstractTask
 
         echo $identifier . ' says goodbye' . PHP_EOL;
         echo $identifier . ' runtime: ' . (time() - $startTime) . ' seconds' . PHP_EOL;
-        echo $identifier . ' memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
+        echo $identifier . ' final memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
         echo PHP_EOL;
     }
 }
