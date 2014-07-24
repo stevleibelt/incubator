@@ -123,16 +123,11 @@ class MemoryLimitManager
 
             if (isset($return[1])) {
                 //non-swapped physical memory in kilo bytes
-                $currentUsageWithBuffer += ($return[0] * 1024);
+                $currentUsageWithBuffer += ($return[1] * 1024);
             }
         }
 
         $isReached = ($currentUsageWithBuffer >= $this->maximumInBytes);
-
-echo '  number of threads ' . count($processIds) . PHP_EOL;
-echo '  memory usage ' . (memory_get_usage(true)) . PHP_EOL;
-echo '  total memory usage ' . ($currentUsageWithBuffer) . PHP_EOL;
-echo '  is reached ' . var_export($isReached, true) . PHP_EOL;
 
         return $isReached;
     }

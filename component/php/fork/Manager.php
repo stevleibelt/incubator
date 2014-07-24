@@ -188,6 +188,7 @@ class Manager implements ExecutableInterface
                 $this->updateNumberOfRunningThreads();
                 $this->sleep();
             }
+sleep(1);
         }
         //dispatch event post waiting of still running threads
 

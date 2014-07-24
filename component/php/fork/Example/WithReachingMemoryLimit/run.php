@@ -17,9 +17,9 @@ $taskOne = new ExampleTask();
 $taskTwo = new ExampleTask();
 $taskThree = new ExampleTask();
 
-$taskOne->setNumberOfDataMultiplication(3);
-$taskTwo->setNumberOfDataMultiplication(4);
-$taskThree->setNumberOfDataMultiplication(5);
+$taskOne->setNumberOfDataMultiplication(1);
+$taskTwo->setNumberOfDataMultiplication(2);
+$taskThree->setNumberOfDataMultiplication(3);
 
 /**
  * @var array|ExampleTask[] $tasks
@@ -35,7 +35,7 @@ foreach ($tasks as $task) {
 }
 
 $manager->getMemoryLimitManager()->setBufferInMegaBytes(1);
-$manager->getMemoryLimitManager()->setMaximumInMegaBytes(4);
+$manager->getMemoryLimitManager()->setMaximumInMegaBytes(12);
 $manager->execute();
 
 foreach ($tasks as $key => $task) {

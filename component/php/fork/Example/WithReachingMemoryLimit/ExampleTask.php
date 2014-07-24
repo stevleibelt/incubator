@@ -41,13 +41,9 @@ class ExampleTask extends AbstractTask
     public function execute()
     {
         $identifier = 'task (' . posix_getpid() . ' / ' . $this->getParentProcessId() . ')';
-        $startTime = time();
         $workingDataSet = array();
 
         echo $identifier . ' says hello' . PHP_EOL;
-        echo $identifier . ' number of data multiplication ' . $this->numberOfDataMultiplication . PHP_EOL;
-        echo $identifier . ' initial memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
-        echo PHP_EOL;
 
         for ($iterator = 0; $iterator < $this->numberOfDataMultiplication; ++$iterator) {
             //begin creating one megabyte of data
@@ -66,16 +62,12 @@ class ExampleTask extends AbstractTask
                     $anotherRound = false;
                 }
                 ++$anotherIterator;
-                echo $identifier . ' memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
-                sleep(1);
             }
             //end creating one megabyte of data
             $workingDataSet[] = $data;
+            sleep(1);
         }
 
         echo $identifier . ' says goodbye' . PHP_EOL;
-        echo $identifier . ' runtime: ' . (time() - $startTime) . ' seconds' . PHP_EOL;
-        echo $identifier . ' final memory usage ' . (memory_get_usage(true) / 1024 / 1024) . ' MB ' .PHP_EOL;
-        echo PHP_EOL;
     }
 }
