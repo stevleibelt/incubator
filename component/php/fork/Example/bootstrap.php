@@ -12,6 +12,7 @@ $files = array(
     'MemoryLimitManager.php',
     'TaskManager.php',
     'TimeLimitManager.php',
+    'ManagerFactory.php',
     'Manager.php'
 );
 

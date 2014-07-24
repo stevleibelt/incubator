@@ -55,44 +55,34 @@ class Manager implements ExecutableInterface
     /**
      * @throws RuntimeException
      */
-    public function __construct()
+    public function __construct(MemoryLimitManager $memoryLimitManager, TaskManager $taskManager, TimeLimitManager $timeLimitManager, $validateEnvironment = true)
     {
-        //@todo add all needed
-        $mandatoryPHPFunctions = array(
-            'getmypid',
-            'memory_get_usage',
-            'pcntl_fork',
-            'posix_getpid',
-            'spl_object_hash'
-        );
+        if ($validateEnvironment) {
+            //@todo add all needed
+            $mandatoryPHPFunctions = array(
+                'getmypid',
+                'memory_get_usage',
+                'pcntl_fork',
+                'posix_getpid',
+                'spl_object_hash'
+            );
 
-        foreach ($mandatoryPHPFunctions as $mandatoryPHPFunction) {
-            if (!function_exists($mandatoryPHPFunction)) {
-                throw new RuntimeException(
-                    'mandatory php function "' . $mandatoryPHPFunction . '" is not available'
-                );
+            foreach ($mandatoryPHPFunctions as $mandatoryPHPFunction) {
+                if (!function_exists($mandatoryPHPFunction)) {
+                    throw new RuntimeException(
+                        'mandatory php function "' . $mandatoryPHPFunction . '" is not available'
+                    );
+                }
             }
         }
 
         declare(ticks = 10);
 
-        //@todo they have to be injected while object creation
-        //@todo create a factory for manager creation
-        $this->memoryLimitManager = new MemoryLimitManager();
-        $this->taskManager = new TaskManager();
-        $this->timeLimitManager = new TimeLimitManager();
+        $this->memoryLimitManager = $memoryLimitManager;
+        $this->taskManager = $taskManager;
+        $this->timeLimitManager = $timeLimitManager;
 
-        //set default values for optional properties
-        $this->memoryLimitManager->setMaximumInMegaBytes(128);
-        $this->setMaximumNumberOfThreads(16);
-        $this->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second
-        $this->timeLimitManager->setMaximumInSeconds(3600); //1 * 60 * 60 = 1 hour
-
-        //set values for mandatory properties
-        //@todo calculate minimumDistance[...]Limit in setter methods
-        $this->memoryLimitManager->setBufferInMegaBytes(8);
         $this->processId = posix_getpid();
-        $this->timeLimitManager->setBufferInSeconds(2);
         $this->threads = array();
     }
 
