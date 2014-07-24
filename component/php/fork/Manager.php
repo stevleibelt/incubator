@@ -338,26 +338,14 @@ class Manager implements ExecutableInterface
         return ($this->countNumberOfThreads() >= $this->maximumNumberOfThreads);
     }
 
+    /**
+     * @return bool
+     */
     private function isMaximumMemoryLimitOfWholeThreadsReached()
     {
-        $currentMemoryUsage = memory_get_usage(true);
+        $processIds = array_keys($this->threads);
 
-        foreach ($this->threads as $processId => $data) {
-            $return = 0;
-            exec('ps -p ' . $processId . ' -o rss', $return);
-
-            if (isset($return[1])) {
-                //non-swapped physical memory in kilo bytes
-                $currentMemoryUsage += ($return[0] * 1024);
-            }
-        }
-
-echo 'number of threads ' . count($this->threads) . PHP_EOL;
-echo 'memory usage ' . (memory_get_usage(true)) . PHP_EOL;
-echo 'buffered maximum ' . ($this->memoryLimitManager->getBufferedMaximumInBytes() / (1024 * 1024)) . PHP_EOL;
-        $isReached = $currentMemoryUsage >= $this->memoryLimitManager->getBufferedMaximumInBytes();
-
-echo 'is reached ' . var_export($isReached, true) . PHP_EOL;
+        $isReached = $this->memoryLimitManager->isLimitReached($processIds);
 
         return $isReached;
     }
