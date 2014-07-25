@@ -7,13 +7,13 @@
 namespace Net\Bazzline\Component\Fork;
 
 /**
- * Class ManagerFactory
+ * Class ForkManagerFactory
  * @package Net\Bazzline\Component\Fork
  */
-class ManagerFactory
+class ForkManagerFactory
 {
     /**
-     * @return Manager
+     * @return ForkManager
      */
     public function create()
     {
@@ -28,7 +28,7 @@ class ManagerFactory
         $timeLimitManager->setMaximumInSeconds(3600); //1 * 60 * 60 = 1 hour
         $timeLimitManager->setBufferInSeconds(2);
 
-        $manager = new Manager($memoryLimitManager, $taskManager, $timeLimitManager);
+        $manager = new ForkManager($memoryLimitManager, $taskManager, $timeLimitManager);
 
         $manager->setMaximumNumberOfThreads(16);
         $manager->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second

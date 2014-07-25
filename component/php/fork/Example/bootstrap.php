@@ -12,8 +12,8 @@ $files = array(
     'MemoryLimitManager.php',
     'TaskManager.php',
     'TimeLimitManager.php',
-    'ManagerFactory.php',
-    'Manager.php'
+    'ForkManagerFactory.php',
+    'ForkManager.php'
 );
 
 foreach ($files as $file) {

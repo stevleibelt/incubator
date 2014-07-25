@@ -2,7 +2,7 @@
 
 ## Terms
 
-* Manager
+* ForkManager
     * gets tasks attached
     * uses sub processes to execute task
     * takes care that forking is available

@@ -7,10 +7,10 @@
 namespace Net\Bazzline\Component\Fork;
 
 /**
- * Class Manager
+ * Class ForkManager
  * @package Net\Bazzline\Component\Fork
  */
-class Manager implements ExecutableInterface
+class ForkManager implements ExecutableInterface
 {
     /**
      * @var int

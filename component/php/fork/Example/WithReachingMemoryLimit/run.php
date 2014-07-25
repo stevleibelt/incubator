@@ -9,9 +9,9 @@ namespace Net\Bazzline\Component\Fork\Example\WithReachingMemoryLimit;
 require_once __DIR__ . '/../bootstrap.php';
 require_once 'ExampleTask.php';
 
-use Net\Bazzline\Component\Fork\ManagerFactory;
+use Net\Bazzline\Component\Fork\ForkManagerFactory;
 
-$factory = new ManagerFactory();
+$factory = new ForkManagerFactory();
 $manager = $factory->create();
 
 $taskOne = new ExampleTask();
