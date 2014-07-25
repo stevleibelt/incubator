@@ -9,9 +9,10 @@ namespace Net\Bazzline\Component\Fork\Example\Basic;
 require_once __DIR__ . '/../bootstrap.php';
 require_once 'ExampleTask.php';
 
-use Net\Bazzline\Component\Fork\Manager;
+use Net\Bazzline\Component\Fork\ManagerFactory;
 
-$manager = new Manager();
+$factory = new ManagerFactory();
+$manager = $factory->create();
 $totalNumberOfTasks = 7;
 
 for ($iterator = 0; $iterator < $totalNumberOfTasks; ++$iterator) {

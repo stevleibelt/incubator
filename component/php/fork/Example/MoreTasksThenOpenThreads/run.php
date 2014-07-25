@@ -9,9 +9,10 @@ namespace Net\Bazzline\Component\Fork\Example\MoreTasksThenOpenThreads;
 require_once __DIR__ . '/../bootstrap.php';
 require_once 'ExampleTask.php';
 
-use Net\Bazzline\Component\Fork\Manager;
+use Net\Bazzline\Component\Fork\ManagerFactory;
 
-$manager = new Manager();
+$factory = new ManagerFactory();
+$manager = $factory->create();
 
 $manager->setMaximumNumberOfThreads(4);
 $totalNumberOfTasks = 7;
