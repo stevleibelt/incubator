@@ -60,3 +60,8 @@ Thanks to all the great projects and pages out there.
 * [php thread by mmarquez](https://github.com/mmarquez/php-thread)
 * [forkdaemon php by baracudanetworks](https://github.com/barracudanetworks/forkdaemon-php)
 * [power spawn by lordgnu](https://github.com/lordgnu/PowerSpawn)
+
+# To Do
+
+* add exception if you want to set a higher time/memory limit than available via ini_get
+* write unit tests
