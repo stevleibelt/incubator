@@ -63,6 +63,7 @@ Thanks to all the great projects and pages out there.
 
 # To Do
 
+* replace constructor manager injecton in ForkManager with "inject()" methods
 * move memory manager and run time manager into own component
 * add exception if you want to set a higher time/memory limit than available via ini_get
 * add signal handling in ForkManager and AbstractTask
