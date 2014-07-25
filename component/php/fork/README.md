@@ -26,7 +26,7 @@
 ## Additional Ideas
 
 * an event listener can be used to easy up extending this component
-* add shared memory for inter process calls (ipc)
+* add shared memory for intern process calls (ipc / fifi)
 * add logging (by event event handler?)
 * AbstractTask should implement
     * getGroupId()
