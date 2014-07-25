@@ -65,5 +65,5 @@ Thanks to all the great projects and pages out there.
 
 * add exception if you want to set a higher time/memory limit than available via ini_get
 * add signal handling in ForkManager and AbstractTask
-* add EventManager
+* add EventManager (https://packagist.org/packages/symfony/event-dispatcher)
 * write unit tests
