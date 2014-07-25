@@ -4,7 +4,7 @@
  * @since 2014-07-21
  */
 
-namespace Net\Bazzline\Component\Fork\Example\MoreTasksThenOpenThreads;
+namespace Net\Bazzline\Component\Fork\Example\WithMoreTasksThenOpenThreads;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once 'ExampleTask.php';

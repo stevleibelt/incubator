@@ -4,13 +4,13 @@
  * @since 2014-07-23 
  */
 
-namespace Net\Bazzline\Component\Fork\Example\MoreTasksThenOpenThreads;
+namespace Net\Bazzline\Component\Fork\Example\WithMoreTasksThenOpenThreads;
 
 use Net\Bazzline\Component\Fork\AbstractTask;
 
 /**
  * Class ExampleTask
- * @package Net\Bazzline\Component\Fork\Example\MoreTasksThenOpenThreads
+ * @package Net\Bazzline\Component\Fork\Example\WithMoreTasksThenOpenThreads
  */
 class ExampleTask extends AbstractTask
 {
