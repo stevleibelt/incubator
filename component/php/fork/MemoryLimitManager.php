@@ -119,11 +119,11 @@ class MemoryLimitManager
 
         foreach ($processIds as $processId) {
             $return = 0;
-            exec('ps -p ' . $processId . ' -o rss', $return);
+            exec('ps -p ' . $processId . '  --no-headers -o rss', $return);
 
-            if (isset($return[1])) {
+            if (isset($return[0])) {
                 //non-swapped physical memory in kilo bytes
-                $currentUsageWithBuffer += ($return[1] * 1024);
+                $currentUsageWithBuffer += ($return[0] * 1024);
             }
         }
 
