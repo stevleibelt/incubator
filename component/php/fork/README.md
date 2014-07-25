@@ -64,4 +64,6 @@ Thanks to all the great projects and pages out there.
 # To Do
 
 * add exception if you want to set a higher time/memory limit than available via ini_get
+* add signal handling in ForkManager and AbstractTask
+* add EventManager
 * write unit tests
