@@ -20,41 +20,57 @@ class MemoryLimitManager
     /**
      * @var int
      */
+    private $maximumFromIniInBytes;
+
+    /**
+     * @var int
+     */
     private $maximumInBytes;
 
     public function __construct()
     {
         //@todo implement dealing with memory_limit of -1
-        $currentMemoryLimit = trim(ini_get('memory_limit'));
-        $unitIdentifier = strtolower($currentMemoryLimit[strlen($currentMemoryLimit)-1]);
+        $currentMemoryLimitFromIni = trim(ini_get('memory_limit'));
+        $unitIdentifier = strtolower($currentMemoryLimitFromIni[strlen($currentMemoryLimitFromIni)-1]);
 
         switch ($unitIdentifier) {
             case 'G':
-                $this->maximumInBytes = 1073741824 * $currentMemoryLimit;    //1073741824 = 1024 * 1024 * 1024
+                $this->maximumInBytes = 1073741824 * $currentMemoryLimitFromIni;    //1073741824 = 1024 * 1024 * 1024
                 break;
             case 'M':
-                $this->maximumInBytes = 1048576 * $currentMemoryLimit;    //1048576 = 1024 * 1024
+                $this->maximumInBytes = 1048576 * $currentMemoryLimitFromIni;    //1048576 = 1024 * 1024
                 break;
             case 'K':
-                $this->maximumInBytes = 1024 * $currentMemoryLimit;
+                $this->maximumInBytes = 1024 * $currentMemoryLimitFromIni;
                 break;
             default:
-                $this->maximumInBytes = $currentMemoryLimit;
+                $this->maximumInBytes = $currentMemoryLimitFromIni;
         }
 
-        $this->maximumInBytes = $currentMemoryLimit;
+        $this->maximumFromIniInBytes = $currentMemoryLimitFromIni;
+        $this->maximumInBytes = $currentMemoryLimitFromIni;
     }
 
     /**
-     * @param int $bytes
+     * @param $bytes
+     * @throws InvalidArgumentException
      */
     public function setBufferInBytes($bytes)
     {
+        if ($bytes > $this->maximumFromIniInBytes) {
+            throw new InvalidArgumentException(
+                'provided maximum (' . $bytes .
+                ') is above ini maximum (' .
+                $this->maximumFromIniInBytes . ')'
+            );
+        }
+
         $this->bufferInBytes = (int) $bytes;
     }
 
     /**
      * @param int $kiloBytes
+     * @throws InvalidArgumentException
      */
     public function setBufferInKiloBytes($kiloBytes)
     {
@@ -63,6 +79,7 @@ class MemoryLimitManager
 
     /**
      * @param int $megaBytes
+     * @throws InvalidArgumentException
      */
     public function setBufferInMegaBytes($megaBytes)
     {
@@ -71,6 +88,7 @@ class MemoryLimitManager
 
     /**
      * @param int $gigaBytes
+     * @throws InvalidArgumentException
      */
     public function setBufferInGigaBytes($gigaBytes)
     {
@@ -79,6 +97,7 @@ class MemoryLimitManager
 
     /**
      * @param int $bytes
+     * @throws InvalidArgumentException
      */
     public function setMaximumInBytes($bytes)
     {
@@ -87,6 +106,7 @@ class MemoryLimitManager
 
     /**
      * @param int $kiloBytes
+     * @throws InvalidArgumentException
      */
     public function setMaximumInKiloBytes($kiloBytes)
     {
@@ -95,6 +115,7 @@ class MemoryLimitManager
 
     /**
      * @param int $megaBytes
+     * @throws InvalidArgumentException
      */
     public function setMaximumInMegaBytes($megaBytes)
     {
@@ -103,6 +124,7 @@ class MemoryLimitManager
 
     /**
      * @param int $gigaBytes
+     * @throws InvalidArgumentException
      */
     public function setMaximumInGigaBytes($gigaBytes)
     {

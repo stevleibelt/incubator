@@ -20,6 +20,11 @@ class TimeLimitManager
     /**
      * @var int
      */
+    private $maximumFromIniInSeconds;
+
+    /**
+     * @var int
+     */
     private $maximumInSeconds;
 
     /**
@@ -29,7 +34,8 @@ class TimeLimitManager
 
     public function __construct()
     {
-        $this->setMaximumInSeconds((int) ini_get('max_execution_time'));
+        $this->maximumFromIniInSeconds = (int) ini_get('max_execution_time');
+        $this->setMaximumInSeconds($this->maximumFromIniInSeconds);
         $this->startTime = time();
     }
 
@@ -50,10 +56,18 @@ class TimeLimitManager
     }
 
     /**
-     * @param int $maximumInSeconds
+     * @param $maximumInSeconds
+     * @throws InvalidArgumentException
      */
     public function setMaximumInSeconds($maximumInSeconds)
     {
+        if ($maximumInSeconds > $this->maximumFromIniInSeconds) {
+            throw new InvalidArgumentException(
+                'provided maximum (' . $maximumInSeconds .
+                ') is above ini maximum (' .
+                $this->maximumFromIniInSeconds . ')'
+            );
+        }
         $this->maximumInSeconds = time() + (int) $maximumInSeconds;
     }
 
