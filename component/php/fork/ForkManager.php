@@ -257,6 +257,7 @@ sleep(1);
 
     /**
      * @throws RuntimeException
+     * @todo think about the idea to put this in a "HandleMaximumMemoryLimitReachedStrategy"
      */
     private function stopNewestThread()
     {
