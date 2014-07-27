@@ -31,7 +31,7 @@ class ForkManagerFactory
         $timeLimitManager->setLimitInHours(1);
         $timeLimitManager->setBufferInMinutes(4);
 
-        $manager = new ForkManager($taskManager);
+        $manager = new ForkManager();
 
         $manager->injectMemoryLimitManager($memoryLimitManager);
         $manager->injectTimeLimitManager($timeLimitManager);
