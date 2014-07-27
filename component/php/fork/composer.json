@@ -19,9 +19,9 @@
         "net_bazzline/php_component_memory_limit_manager": "1.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.0.*",
+        "phpunit/phpunit": "4.*",
         "mockery/mockery": "dev-master",
-        "phpmd/phpmd": "1.5.0",
+        "phpmd/phpmd": "2.*",
         "apigen/apigen": "2.8.0",
         "nette/nette": "~2.1.3"
     },
