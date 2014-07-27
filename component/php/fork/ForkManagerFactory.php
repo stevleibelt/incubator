@@ -35,6 +35,7 @@ class ForkManagerFactory
 
         $manager->injectMemoryLimitManager($memoryLimitManager);
         $manager->injectTimeLimitManager($timeLimitManager);
+        $manager->injectTaskManager($taskManager);
         $manager->setMaximumNumberOfThreads(16);
         $manager->setNumberOfMicrosecondsToCheckThreadStatus(100000);   //1000000 microseconds = 1 second
 

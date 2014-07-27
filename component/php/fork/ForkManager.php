@@ -53,11 +53,10 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     private $threads;
 
     /**
-     * @param TaskManager $taskManager
      * @param bool $validateEnvironment
      * @throws RuntimeException
      */
-    public function __construct(TaskManager $taskManager, $validateEnvironment = true)
+    public function __construct($validateEnvironment = true)
     {
         if ($validateEnvironment) {
             //@todo add all needed
@@ -79,8 +78,6 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
         }
 
         declare(ticks = 10);
-
-        $this->taskManager = $taskManager;
 
         $this->processId = posix_getpid();
         $this->threads = array();
@@ -107,14 +104,6 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     }
 
     /**
-     * @param MemoryLimitManager $manager
-     */
-    public function injectMemoryLimitManager(MemoryLimitManager $manager)
-    {
-        $this->memoryLimitManager = $manager;
-    }
-
-    /**
      * @return TaskManager
      */
     public function getTaskManager()
@@ -131,11 +120,27 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     }
 
     /**
+     * @param MemoryLimitManager $manager
+     */
+    public function injectMemoryLimitManager(MemoryLimitManager $manager)
+    {
+        $this->memoryLimitManager = $manager;
+    }
+
+    /**
      * @param TimeLimitManager $manager
      */
     public function injectTimeLimitManager(TimeLimitManager $manager)
     {
         $this->timeLimitManager = $manager;
+    }
+
+    /**
+     * @param TaskManager $manager
+     */
+    public function injectTaskManager(TaskManager $manager)
+    {
+        $this->taskManager = $manager;
     }
 
     /**
