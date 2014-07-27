@@ -4,13 +4,13 @@
  * @since 2014-07-23 
  */
 
-namespace Net\Bazzline\Component\Fork\Example\WithReachingRunTimeLimit;
+namespace Net\Bazzline\Component\Fork\Example\WithReachingTimeLimit;
 
 use Net\Bazzline\Component\Fork\AbstractTask;
 
 /**
  * Class ExampleTask
- * @package Net\Bazzline\Component\Fork\Example\WithReachingRunTimeLimit
+ * @package Net\Bazzline\Component\Fork\Example\WithReachingTimeLimit
  */
 class ExampleTask extends AbstractTask
 {

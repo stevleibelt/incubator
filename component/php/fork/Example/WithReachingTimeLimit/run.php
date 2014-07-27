@@ -4,7 +4,7 @@
  * @since 2014-07-20 
  */
 
-namespace Net\Bazzline\Component\Fork\Example\WithReachingRunTimeLimit;
+namespace Net\Bazzline\Component\Fork\Example\WithReachingTimeLimit;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once 'ExampleTask.php';
@@ -36,7 +36,9 @@ foreach ($tasks as $task) {
     $manager->addTask($task);
 }
 
-$manager->getTimeLimitManager()->setMaximumInSeconds($maximumRunTimeInSeconds);
+$manager->getTimeLimitManager()->setBufferInSeconds(0);
+$manager->getTimeLimitManager()->setLimitInSeconds($maximumRunTimeInSeconds);
+
 $manager->execute();
 
 foreach ($tasks as $key => $task) {

@@ -4,14 +4,14 @@
  * @since 2014-07-23 
  */
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 //@todo replace with autoloader when own project
 $files = array(
     'ExecutableInterface.php',
     'RuntimeException.php',
     'AbstractTask.php',
-    'MemoryLimitManager.php',
     'TaskManager.php',
-    'TimeLimitManager.php',
     'ForkManagerFactory.php',
     'ForkManager.php'
 );

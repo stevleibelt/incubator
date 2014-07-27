@@ -6,11 +6,16 @@
 
 namespace Net\Bazzline\Component\Fork;
 
+use Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager;
+use Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManagerDependentInterface;
+use Net\Bazzline\Component\TimeLimitManager\TimeLimitManager;
+use Net\Bazzline\Component\TimeLimitManager\TimeLimitManagerDependentInterface;
+
 /**
  * Class ForkManager
  * @package Net\Bazzline\Component\Fork
  */
-class ForkManager implements ExecutableInterface
+class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInterface, TimeLimitManagerDependentInterface
 {
     /**
      * @var int
@@ -33,11 +38,6 @@ class ForkManager implements ExecutableInterface
     private $processId;
 
     /**
-     * @var int
-     */
-    private $startTime;
-
-    /**
      * @var TaskManager
      */
     private $taskManager;
@@ -53,9 +53,11 @@ class ForkManager implements ExecutableInterface
     private $threads;
 
     /**
+     * @param TaskManager $taskManager
+     * @param bool $validateEnvironment
      * @throws RuntimeException
      */
-    public function __construct(MemoryLimitManager $memoryLimitManager, TaskManager $taskManager, TimeLimitManager $timeLimitManager, $validateEnvironment = true)
+    public function __construct(TaskManager $taskManager, $validateEnvironment = true)
     {
         if ($validateEnvironment) {
             //@todo add all needed
@@ -78,9 +80,7 @@ class ForkManager implements ExecutableInterface
 
         declare(ticks = 10);
 
-        $this->memoryLimitManager = $memoryLimitManager;
         $this->taskManager = $taskManager;
-        $this->timeLimitManager = $timeLimitManager;
 
         $this->processId = posix_getpid();
         $this->threads = array();
@@ -107,6 +107,14 @@ class ForkManager implements ExecutableInterface
     }
 
     /**
+     * @param MemoryLimitManager $manager
+     */
+    public function injectMemoryLimitManager(MemoryLimitManager $manager)
+    {
+        $this->memoryLimitManager = $manager;
+    }
+
+    /**
      * @return TaskManager
      */
     public function getTaskManager()
@@ -120,6 +128,14 @@ class ForkManager implements ExecutableInterface
     public function getTimeLimitManager()
     {
         return $this->timeLimitManager;
+    }
+
+    /**
+     * @param TimeLimitManager $manager
+     */
+    public function injectTimeLimitManager(TimeLimitManager $manager)
+    {
+        $this->timeLimitManager = $manager;
     }
 
     /**
@@ -143,8 +159,6 @@ class ForkManager implements ExecutableInterface
      */
     public function execute()
     {
-        $this->startTime = time();
-
         //dispatch event pre execute
         //dispatch event pre executing open tasks
         while ($this->taskManager->areThereOpenTasksLeft()) {
@@ -178,10 +192,8 @@ class ForkManager implements ExecutableInterface
                 $this->updateNumberOfRunningThreads();
                 $this->sleep();
             }
-sleep(1);
         }
         //dispatch event post waiting of still running threads
-
         //dispatch event post execute
     }
 

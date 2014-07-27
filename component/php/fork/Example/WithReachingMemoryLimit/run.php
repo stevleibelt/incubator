@@ -36,7 +36,7 @@ foreach ($tasks as $task) {
 }
 
 $manager->getMemoryLimitManager()->setBufferInMegaBytes(1);
-$manager->getMemoryLimitManager()->setMaximumInMegaBytes(12);
+$manager->getMemoryLimitManager()->setLimitInMegaBytes(12);
 $manager->execute();
 
 foreach ($tasks as $key => $task) {
