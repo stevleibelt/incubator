@@ -4,7 +4,7 @@
  * @since 2014-07-20 
  */
 
-namespace Net\Bazzline\Component\Fork;
+namespace Net\Bazzline\Component\ForkManager;
 
 use Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager;
 use Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManagerDependentInterface;

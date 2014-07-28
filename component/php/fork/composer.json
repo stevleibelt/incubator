@@ -1,6 +1,6 @@
 {
     "description": "Helps you to deal with process forking / multithreading in php",
-    "keywords": ["php", "multithreading", "thread", "fork", "manager"],
+    "keywords": ["php", "multithreading", "thread", "fork", "manager", "thread manager", "fork manager", "process manager"],
     "license": "LGPLv3",
     "name": "net_bazzline/php_component_fork_manager",
     "type": "library",
