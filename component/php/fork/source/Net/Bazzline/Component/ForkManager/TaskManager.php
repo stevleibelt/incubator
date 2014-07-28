@@ -58,7 +58,7 @@ class TaskManager
      * @param AbstractTask $task
      * @return $this
      */
-    public function addTask(AbstractTask $task)
+    public function addOpenTask(AbstractTask $task)
     {
         $this->openTasks[] = $task;
         $this->areThereOpenTasksLeft = true;
@@ -121,7 +121,7 @@ class TaskManager
     /**
      * @param AbstractTask $task
      */
-    public function markTaskAsRunning(AbstractTask $task)
+    public function markOpenTaskAsRunning(AbstractTask $task)
     {
         $key = $this->getArrayIndexKey($task);
         $task->markAsRunning();

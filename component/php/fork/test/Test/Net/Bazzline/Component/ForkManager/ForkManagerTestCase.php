@@ -6,6 +6,7 @@
 
 namespace Test\Net\Bazzline\Component\ForkManager;
 
+use Mockery;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -14,5 +15,24 @@ use PHPUnit_Framework_TestCase;
  */
 class ForkManagerTestCase extends PHPUnit_Framework_TestCase
 {
+    protected function tearDown()
+    {
+        Mockery::close();
+    }
 
-} 
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\ForkManager\TaskManager
+     */
+    protected function getMockOfTaskManager()
+    {
+        return Mockery::mock('Net\Bazzline\Component\ForkManager\TaskManager');
+    }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\ForkManager\AbstractTask
+     */
+    protected function getMockOfAbstractTask()
+    {
+        return Mockery::mock('Net\Bazzline\Component\ForkManager\AbstractTask');
+    }
+}
