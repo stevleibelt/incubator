@@ -1,7 +1,7 @@
 <?php
 /**
- * @author: sleibelt
- * @since: 7/28/14
+ * @author: stev leibelt <artodeto@bazzline.net>
+ * @since: 2014-07-28
  */
 
 namespace Test\Net\Bazzline\Component\ForkManager;
