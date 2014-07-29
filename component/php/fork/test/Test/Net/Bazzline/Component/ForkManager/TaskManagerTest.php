@@ -34,6 +34,20 @@ class TaskManagerTest extends ForkManagerTestCase
         $this->assertNull($manager->getOpenTask());
     }
 
+    public function testMarkOpenTaskAsRunning()
+    {
+        $manager = $this->getNewTaskManager();
+        $task = $this->getMockOfAbstractTask();
+
+        $task->shouldReceive('markAsRunning')
+            ->once();
+
+        //get task as running
+        $manager->addOpenTask($task);
+        $manager->getOpenTask();
+        $manager->markOpenTaskAsRunning($task);
+    }
+
     public function testMarkRunningTaskAsAborted()
     {
         $manager = $this->getNewTaskManager();
@@ -50,6 +64,24 @@ class TaskManagerTest extends ForkManagerTestCase
         $manager->markOpenTaskAsRunning($task);
 
         $manager->markRunningTaskAsAborted($task);
+    }
+
+    public function testMarkRunningTaskAsFinished()
+    {
+        $manager = $this->getNewTaskManager();
+        $task = $this->getMockOfAbstractTask();
+
+        $task->shouldReceive('markAsRunning')
+            ->once();
+        $task->shouldReceive('markAsFinished')
+            ->once();
+
+        //get task as running
+        $manager->addOpenTask($task);
+        $manager->getOpenTask();
+        $manager->markOpenTaskAsRunning($task);
+
+        $manager->markRunningTaskAsFinished($task);
     }
 
     /**

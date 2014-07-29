@@ -90,7 +90,7 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     public function addTask(AbstractTask $task)
     {
         $task->setParentProcessId($this->processId);
-        $this->taskManager->addTask($task);
+        $this->taskManager->addOpenTask($task);
 
         return $this;
     }
@@ -245,7 +245,7 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
                 'startTime' => $time,
                 'task' => $task
             );
-            $this->taskManager->markTaskAsRunning($task);
+            $this->taskManager->markOpenTaskAsRunning($task);
         }
     }
 
