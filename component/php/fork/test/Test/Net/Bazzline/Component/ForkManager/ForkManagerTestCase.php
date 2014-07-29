@@ -37,6 +37,22 @@ class ForkManagerTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager
+     */
+    protected function getMockOfMemoryLimitManager()
+    {
+        return Mockery::mock('Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager');
+    }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\TimeLimitManager\TimeLimitManager
+     */
+    protected function getMockOfTimeLimitManager()
+    {
+        return Mockery::mock('Net\Bazzline\Component\TimeLimitManager\TimeLimitManager');
+    }
+
+    /**
      * @return Mockery\MockInterface|\Net\Bazzline\Component\ForkManager\AbstractTask
      */
     protected function getPartialMockOfAbstractTask()
