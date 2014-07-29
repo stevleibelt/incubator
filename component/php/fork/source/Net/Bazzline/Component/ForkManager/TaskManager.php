@@ -120,6 +120,8 @@ class TaskManager
 
     /**
      * @param AbstractTask $task
+     * @throws InvalidArgumentException
+     * @todo implement validation if task is not in open|finished|aborted|running array
      */
     public function markOpenTaskAsRunning(AbstractTask $task)
     {
