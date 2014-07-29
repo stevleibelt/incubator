@@ -35,4 +35,12 @@ class ForkManagerTestCase extends PHPUnit_Framework_TestCase
     {
         return Mockery::mock('Net\Bazzline\Component\ForkManager\AbstractTask');
     }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\ForkManager\AbstractTask
+     */
+    protected function getPartialMockOfAbstractTask()
+    {
+        return Mockery::mock('Net\Bazzline\Component\ForkManager\AbstractTask[execute]');
+    }
 }

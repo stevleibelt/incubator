@@ -14,7 +14,7 @@ abstract class AbstractTask implements ExecutableInterface
 {
     const STATUS_ABORTED = 2;
     const STATUS_FINISHED = 1;
-    const STATUS_NOT_FINISHED = 0;
+    const STATUS_NOT_STARTED = 0;
     const STATUS_RUNNING = 3;
 
     /**
@@ -25,28 +25,12 @@ abstract class AbstractTask implements ExecutableInterface
     /**
      * @var int
      */
-    private $startTime;
+    private $startTime = 0;
 
     /**
      * @var int
      */
-    private $status = self::STATUS_NOT_FINISHED;
-
-    /**
-     * @param int $parentProcessId
-     */
-    public function setParentProcessId($parentProcessId)
-    {
-        $this->parentProcessId = (int) $parentProcessId;
-    }
-
-    /**
-     * @param int $timestamp
-     */
-    public function setStartTime($timestamp)
-    {
-        $this->startTime = (int) $timestamp;
-    }
+    private $status = self::STATUS_NOT_STARTED;
 
     /**
      * @return int
@@ -99,17 +83,17 @@ abstract class AbstractTask implements ExecutableInterface
     /**
      * @return bool
      */
-    public function isRunning()
+    public function isNotStarted()
     {
-        return ($this->status === self::STATUS_RUNNING);
+        return ($this->status === self::STATUS_NOT_STARTED);
     }
 
     /**
      * @return bool
      */
-    public function isNotFinished()
+    public function isRunning()
     {
-        return ($this->status = self::STATUS_NOT_FINISHED);
+        return ($this->status === self::STATUS_RUNNING);
     }
 
     public function markAsAborted()
@@ -125,5 +109,21 @@ abstract class AbstractTask implements ExecutableInterface
     public function markAsRunning()
     {
         $this->status = self::STATUS_RUNNING;
+    }
+
+    /**
+     * @param int $parentProcessId
+     */
+    public function setParentProcessId($parentProcessId)
+    {
+        $this->parentProcessId = (int) $parentProcessId;
+    }
+
+    /**
+     * @param int $timestamp
+     */
+    public function setStartTime($timestamp)
+    {
+        $this->startTime = (int) $timestamp;
     }
 }
