@@ -20,4 +20,10 @@ for ($iterator = 0; $iterator < $totalNumberOfTasks; ++$iterator) {
     $manager->addTask($task);
 }
 
+$manager->getTimeLimitManager()->setBufferInSeconds(2);
+$manager->getTimeLimitManager()->setLimitInSeconds(20);
+
+$manager->getMemoryLimitManager()->setBufferInMegaBytes(2);
+$manager->getMemoryLimitManager()->setLimitInMegaBytes(64);
+
 $manager->execute();

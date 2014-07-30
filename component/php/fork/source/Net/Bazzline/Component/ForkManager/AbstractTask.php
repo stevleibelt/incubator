@@ -144,22 +144,22 @@ abstract class AbstractTask implements TaskInterface
             );
         }
 
-        pcntl_signal(SIGHUP,    array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGINT,    array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGUSR1,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGUSR2,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGQUIT,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGILL,    array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGABRT,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGFPE,    array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGSEGV,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGPIPE,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGALRM,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGTERM,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGCHLD,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGCONT,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGTSTP,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGTTIN,   array($this, $nameOfSignalHandlerMethod));
-        pcntl_signal(SIGTTOU,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGHUP,    array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGINT,    array($this, $nameOfSignalHandlerMethod));  //shell ctrl+c
+        //pcntl_signal(SIGUSR1,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGUSR2,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGQUIT,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGILL,    array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGABRT,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGFPE,    array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGSEGV,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGPIPE,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGALRM,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGTERM,   array($this, $nameOfSignalHandlerMethod));  //kill <pid>
+        //pcntl_signal(SIGCHLD,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGCONT,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGTSTP,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGTTIN,   array($this, $nameOfSignalHandlerMethod));
+        //pcntl_signal(SIGTTOU,   array($this, $nameOfSignalHandlerMethod));
     }
 }
