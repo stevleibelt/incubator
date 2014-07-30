@@ -10,6 +10,7 @@
     * taking care of optional runtime limit
     * taking care of optional memory limit
     * taking care of maximal number of sub processes
+    * provides method "setUpPOSIXSignalHandling" and "dispatchPOSIXSignal" to implement posix signal handling
 
 * Thread
     * the stupid simple sub process that works on a well defined task
@@ -22,6 +23,7 @@
         * getParentProcessId()
         * getRuntime()
         * getMemoryUsage()
+    * provides method "setUpPOSIXSignalHandling" and "dispatchPOSIXSignal" to implement posix signal handling
 
 ## Additional Ideas
 
@@ -63,8 +65,5 @@ Thanks to all the great projects and pages out there.
 
 # To Do
 
-* replace constructor manager injecton in ForkManager with "inject()" methods
-* move memory manager and run time manager into own component
-* add signal handling in ForkManager and AbstractTask
 * add EventManager (https://packagist.org/packages/symfony/event-dispatcher)
 * write unit tests

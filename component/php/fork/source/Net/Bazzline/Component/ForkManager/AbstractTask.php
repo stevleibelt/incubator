@@ -127,11 +127,16 @@ abstract class AbstractTask implements TaskInterface
         $this->startTime = (int) $timestamp;
     }
 
+    protected function dispatchSignal()
+    {
+        pcntl_signal_dispatch();
+    }
+
     /**
      * @param $nameOfSignalHandlerMethod
      * @throws InvalidArgumentException
      */
-    protected function setUpPOSIXSignalHandling($nameOfSignalHandlerMethod)
+    protected function setUpSignalHandling($nameOfSignalHandlerMethod)
     {
         if (!is_callable($nameOfSignalHandlerMethod)) {
             throw new InvalidArgumentException(

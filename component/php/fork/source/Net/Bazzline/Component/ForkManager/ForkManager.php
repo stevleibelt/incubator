@@ -64,6 +64,8 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
                 'getmypid',
                 'memory_get_usage',
                 'pcntl_fork',
+                'pcntl_signal',
+                'pcntl_signal_dispatch',
                 'posix_getpid',
                 'spl_object_hash'
             );
@@ -164,6 +166,7 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
      */
     public function execute()
     {
+        $this->setUpSignalHandling('signalHandler');
         //dispatch event pre execute
         //dispatch event pre executing open tasks
         while ($this->taskManager->areThereOpenTasksLeft()) {
@@ -361,6 +364,54 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
 
     private function sleep()
     {
+        $this->dispatchSignal();
         usleep($this->numberOfMicrosecondsToCheckThreadStatus);
     }
+
+    //begin of posix signal handling
+    /**
+     * @param int $signal
+     */
+    private function signalHandler($signal)
+    {
+        //dispatch event caught signal
+        $this->stopAllThreads();
+    }
+
+    private function dispatchSignal()
+    {
+        pcntl_signal_dispatch();
+    }
+
+    /**
+     * @param $nameOfSignalHandlerMethod
+     * @throws InvalidArgumentException
+     */
+    private function setUpSignalHandling($nameOfSignalHandlerMethod)
+    {
+        if (!is_callable($nameOfSignalHandlerMethod)) {
+            throw new InvalidArgumentException(
+                'provided method name "' . $nameOfSignalHandlerMethod . '" is not available'
+            );
+        }
+
+        pcntl_signal(SIGHUP,    array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGINT,    array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGUSR1,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGUSR2,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGQUIT,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGILL,    array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGABRT,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGFPE,    array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGSEGV,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGPIPE,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGALRM,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGTERM,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGCHLD,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGCONT,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGTSTP,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGTTIN,   array($this, $nameOfSignalHandlerMethod));
+        pcntl_signal(SIGTTOU,   array($this, $nameOfSignalHandlerMethod));
+    }
+    //end of posix signal handling
 }
