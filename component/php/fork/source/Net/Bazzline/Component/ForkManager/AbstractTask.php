@@ -138,7 +138,7 @@ abstract class AbstractTask implements TaskInterface
      */
     protected function setUpSignalHandling($nameOfSignalHandlerMethod)
     {
-        if (!is_callable($nameOfSignalHandlerMethod)) {
+        if (!is_callable(array($this, $nameOfSignalHandlerMethod))) {
             throw new InvalidArgumentException(
                 'provided method name "' . $nameOfSignalHandlerMethod . '" is not available'
             );
