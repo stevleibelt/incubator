@@ -203,8 +203,8 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
      */
     public function execute()
     {
-        $this->eventDispatcher->dispatch(self::EVENT_BEFORE_EXECUTE);
         $this->assertMandatoryPropertiesAreSet();
+        $this->eventDispatcher->dispatch(self::EVENT_BEFORE_EXECUTE);
         $this->eventDispatcher->dispatch(self::EVENT_ADDING_SIGNAL_HANDLER);
         $this->setUpSignalHandling('signalHandler');
         $this->eventDispatcher->dispatch(self::EVENT_BEFORE_EXECUTING_OPEN_TASKS);
