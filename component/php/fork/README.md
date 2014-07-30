@@ -28,7 +28,7 @@
 ## Additional Ideas
 
 * an event listener can be used to easy up extending this component
-* add shared memory for intern process calls (ipc / fifi)
+* add shared memory for intern process calls ([ipc](https://github.com/pbergman/processes-fork/tree/master/src/PBergman/SystemV/IPC) / [fifo](https://github.com/kriswallsmith/spork/blob/master/src/Spork/Fifo.php))
 * add logging (by event event handler?)
 * AbstractTask should implement
     * getGroupId()
