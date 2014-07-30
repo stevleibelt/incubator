@@ -36,7 +36,7 @@
     * setGroupId($groupId)
     * setUserId($userId)
 
-## links
+## Links
 
 Following links to projects and pages to easy up stepping into process forking (in php).
 Thanks to all the great projects and pages out there.
@@ -66,4 +66,7 @@ Thanks to all the great projects and pages out there.
 # To Do
 
 * add EventManager (https://packagist.org/packages/symfony/event-dispatcher)
-* write unit tests
+
+# Open Questions
+
+* how to write unit tests for forking itself?

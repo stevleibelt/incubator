@@ -148,50 +148,6 @@ class ForkManagerTest extends ForkManagerTestCase
         $manager->execute();
     }
 
-    public function testExecuteWithOneTasksWhileTimeLimitIsReached()
-    {
-$this->markTestSkipped();
-        $processId = getmypid();
-        $manager = $this->getNewManager();
-        /** @var \Mockery\MockInterface|\Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager $memoryLimitManager */
-        $memoryLimitManager = $manager->getMemoryLimitManager();
-        /** @var \Mockery\MockInterface|\Net\Bazzline\Component\ForkManager\TaskManager $taskManager */
-        $taskManager = $manager->getTaskManager();
-        $task = $this->getMockOfAbstractTask();
-        /** @var \Mockery\MockInterface|\Net\Bazzline\Component\TimeLimitManager\TimeLimitManager $timeLimitManager */
-        $timeLimitManager = $manager->getTimeLimitManager();
-
-        $task->shouldReceive('setParentProcessId')
-            ->with($processId)
-            ->once();
-        $taskManager->shouldReceive('addOpenTask')
-            ->with($task)
-            ->once();
-
-        $memoryLimitManager->shouldReceive('isLimitReached')
-            ->withAnyArgs()
-            ->andReturn(false);
-        $taskManager->shouldReceive('areThereOpenTasksLeft')
-            ->andReturn(true, false)
-            ->twice();
-        $timeLimitManager->shouldReceive('isLimitReached')
-            ->andReturn(false, true)
-            ->twice();
-
-        $manager->addTask($task);
-        $manager->execute();
-    }
-
-    public function testExecuteWithTasksWhileMemoryLimitIsReached()
-    {
-$this->markTestIncomplete();
-    }
-
-    public function testExecuteWithTasksWhileReachingMaximumNumberOfThreads()
-    {
-$this->markTestIncomplete();
-    }
-
     /**
      * @return ForkManager
      */
