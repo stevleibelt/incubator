@@ -8,6 +8,7 @@ namespace Net\Bazzline\Component\ForkManager;
 
 use Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager;
 use Net\Bazzline\Component\TimeLimitManager\TimeLimitManager;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Class ForkManagerFactory
@@ -20,6 +21,7 @@ class ForkManagerFactory
      */
     public function create()
     {
+        $eventDispatcher = new EventDispatcher();
         $memoryLimitManager = new MemoryLimitManager();
         $taskManager = new TaskManager();
         $timeLimitManager = new TimeLimitManager();
@@ -33,6 +35,7 @@ class ForkManagerFactory
 
         $manager = new ForkManager();
 
+        $manager->injectEventDispatcher($eventDispatcher);
         $manager->injectMemoryLimitManager($memoryLimitManager);
         $manager->injectTimeLimitManager($timeLimitManager);
         $manager->injectTaskManager($taskManager);
