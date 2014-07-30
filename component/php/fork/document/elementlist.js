@@ -1,0 +1,3 @@
+
+var ApiGen = ApiGen || {};
+ApiGen.elements = [["c","Exception"],["c","InvalidArgumentException"],["c","LogicException"],["c","Net\\Bazzline\\Component\\ForkManager\\AbstractTask"],["c","Net\\Bazzline\\Component\\ForkManager\\ExecutableInterface"],["c","Net\\Bazzline\\Component\\ForkManager\\ForkManager"],["c","Net\\Bazzline\\Component\\ForkManager\\ForkManagerFactory"],["c","Net\\Bazzline\\Component\\ForkManager\\InvalidArgumentException"],["c","Net\\Bazzline\\Component\\ForkManager\\RuntimeException"],["c","Net\\Bazzline\\Component\\ForkManager\\TaskInterface"],["c","Net\\Bazzline\\Component\\ForkManager\\TaskManager"],["c","RuntimeException"]];
