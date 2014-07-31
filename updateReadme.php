@@ -10,6 +10,7 @@ $baseUrl = 'https://github.com/stevleibelt/incubator/tree/master/';
 $filePath = __DIR__ . '/README.md';
 $identifierOfSectionsAndIdeas = '## Sections And Ideas';
 
+//begin of update logic
 /**
  * @param string $identifier
  * @param string $filePath
@@ -18,7 +19,6 @@ $identifierOfSectionsAndIdeas = '## Sections And Ideas';
 function fetchContentThatShouldNotBeUpdated($identifier, $filePath)
 {
     $contentOfReadme = explode("\n", file_get_contents($filePath));
-    //$contentOfReadme = file('README.md');
     $contentBeforeIdentifier = array();
 
     foreach ($contentOfReadme as $content) {
@@ -63,7 +63,6 @@ function directoryWalker($basePath, array &$array)
         $foundMatchingSuffixInDirectory = false;
         $path = $basePath . DIRECTORY_SEPARATOR . $directoryName;
         $fileNames = getFileNames($path);
-        $iterator = 0;
 
         foreach ($fileNames as $fileName) {
             if (stringEndsWith($fileName, $matchingSuffix)) {
@@ -82,7 +81,9 @@ function directoryWalker($basePath, array &$array)
         directoryWalker($pathToSearchIn, $array);
     }
 }
+//end of update logic
 
+//begin of file system utility
 /**
  * @param string $basePath
  * @return array
@@ -133,7 +134,9 @@ function getDirectoryNames($basePath)
 
     return $names;
 }
+//end of file system utility
 
+//begin of string utility
 /**
  * @param string $haystack
  * @param string $needle
@@ -143,6 +146,9 @@ function stringEndsWith($haystack, $needle)
 {
     return (substr($haystack, -(strlen($needle))) === $needle);
 }
+//end of string utility
+
+//starting generation
 
 $content = array_merge(
     fetchContentThatShouldNotBeUpdated(
