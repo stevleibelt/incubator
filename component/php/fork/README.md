@@ -63,10 +63,6 @@ Thanks to all the great projects and pages out there.
 * [forkdaemon php by baracudanetworks](https://github.com/barracudanetworks/forkdaemon-php)
 * [power spawn by lordgnu](https://github.com/lordgnu/PowerSpawn)
 
-# To Do
-
-* add EventManager (https://packagist.org/packages/symfony/event-dispatcher)
-
 # Open Questions
 
 * how to write unit tests for forking itself?
