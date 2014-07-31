@@ -21,6 +21,7 @@ class ForkManagerFactory
      */
     public function create()
     {
+        $event = new ForkManagerEvent();
         $eventDispatcher = new EventDispatcher();
         $memoryLimitManager = new MemoryLimitManager();
         $taskManager = new TaskManager();
@@ -35,6 +36,7 @@ class ForkManagerFactory
 
         $manager = new ForkManager();
 
+        $manager->injectEvent($event);
         $manager->injectEventDispatcher($eventDispatcher);
         $manager->injectMemoryLimitManager($memoryLimitManager);
         $manager->injectTimeLimitManager($timeLimitManager);

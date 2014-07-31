@@ -55,19 +55,30 @@ class ForkManagerTest extends ForkManagerTestCase
 
     public function testExecuteWithNoTask()
     {
+        $event = $this->getMockOfForkManagerEvent();
+        $eventDispatcher = $this->getMockOfEventDispatcher();
         $manager = $this->getNewManager();
         /** @var \Mockery\MockInterface|\Net\Bazzline\Component\ForkManager\TaskManager $taskManager */
         $taskManager = $manager->getTaskManager();
+
+        $event->shouldReceive('setData');
+
+        $eventDispatcher->shouldReceive('dispatch')
+            ->withAnyArgs();
 
         $taskManager->shouldReceive('areThereOpenTasksLeft')
             ->andReturn(false)
             ->once();
 
+        $manager->injectEventDispatcher($eventDispatcher);
+        $manager->injectEvent($event);
         $manager->execute();
     }
 
     public function testExecuteWithOneTask()
     {
+        $event = $this->getMockOfForkManagerEvent();
+        $eventDispatcher = $this->getMockOfEventDispatcher();
         $processId = getmypid();
         $manager = $this->getNewManager();
         /** @var \Mockery\MockInterface|\Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager $memoryLimitManager */
@@ -77,6 +88,11 @@ class ForkManagerTest extends ForkManagerTestCase
         $task = $this->getMockOfAbstractTask();
         /** @var \Mockery\MockInterface|\Net\Bazzline\Component\TimeLimitManager\TimeLimitManager $timeLimitManager */
         $timeLimitManager = $manager->getTimeLimitManager();
+
+        $event->shouldReceive('setData');
+
+        $eventDispatcher->shouldReceive('dispatch')
+            ->withAnyArgs();
 
         $task->shouldReceive('setParentProcessId')
             ->with($processId)
@@ -94,12 +110,16 @@ class ForkManagerTest extends ForkManagerTestCase
         $timeLimitManager->shouldReceive('isLimitReached')
             ->andReturn(false);
 
+        $manager->injectEventDispatcher($eventDispatcher);
+        $manager->injectEvent($event);
         $manager->addTask($task);
         $manager->execute();
     }
 
     public function testExecuteWithTasks()
     {
+        $event = $this->getMockOfForkManagerEvent();
+        $eventDispatcher = $this->getMockOfEventDispatcher();
         $processId = getmypid();
         $manager = $this->getNewManager();
         /** @var \Mockery\MockInterface|\Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager $memoryLimitManager */
@@ -112,6 +132,11 @@ class ForkManagerTest extends ForkManagerTestCase
         $firstTask = $this->getMockOfAbstractTask();
         $secondTask = $this->getMockOfAbstractTask();
         $thirdTask = $this->getMockOfAbstractTask();
+
+        $event->shouldReceive('setData');
+
+        $eventDispatcher->shouldReceive('dispatch')
+            ->withAnyArgs();
 
         $firstTask->shouldReceive('setParentProcessId')
             ->with($processId)
@@ -142,6 +167,8 @@ class ForkManagerTest extends ForkManagerTestCase
         $timeLimitManager->shouldReceive('isLimitReached')
             ->andReturn(false);
 
+        $manager->injectEvent($event);
+        $manager->injectEventDispatcher($eventDispatcher);
         $manager->addTask($firstTask);
         $manager->addTask($secondTask);
         $manager->addTask($thirdTask);
@@ -155,6 +182,8 @@ class ForkManagerTest extends ForkManagerTestCase
     {
         $manager = new ForkManager();
 
+        $manager->injectEvent($this->getMockOfForkManagerEvent());
+        $manager->injectEventDispatcher($this->getMockOfEventDispatcher());
         $manager->injectMemoryLimitManager($this->getMockOfMemoryLimitManager());
         $manager->injectTaskManager($this->getMockOfTaskManager());
         $manager->injectTimeLimitManager($this->getMockOfTimeLimitManager());

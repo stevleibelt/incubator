@@ -18,20 +18,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInterface, TimeLimitManagerDependentInterface
 {
-    const EVENT_ADDING_SIGNAL_HANDLER                               = 0;
-    const EVENT_AFTER_EXECUTE                                       = 1;
-    const EVENT_AFTER_EXECUTING_OPEN_TASKS                          = 2;
-    const EVENT_AFTER_WAITING_UNTIL_ALL_RUNNING_TASKS_ARE_FINISHED  = 3;
-    const EVENT_AFTER_STARTING_NEW_THREAD                           = 4;
-    const EVENT_BEFORE_EXECUTE                                      = 5;
-    const EVENT_BEFORE_EXECUTING_OPEN_TASKS                         = 6;
-    const EVENT_BEFORE_STARTING_NEW_THREAD                          = 7;
-    const EVENT_BEFORE_WAITING_UNTIL_ALL_RUNNING_TASKS_ARE_FINISHED = 8;
-    const EVENT_MEMORY_LIMIT_REACHED                                = 9;
-    const EVENT_THREAD_HAS_FINISHED_WORK                            = 10;
-    const EVENT_THREAD_HAS_STARTED_WORK                             = 11;
-    const EVENT_THREAD_WAS_STOPPED                                  = 12;
-    const EVENT_TIME_LIMIT_REACHED                                  = 13;
+    /**
+     * @var ForkManagerEvent
+     */
+    private $event;
 
     /**
      * @var EventDispatcher
@@ -151,6 +141,14 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     }
 
     /**
+     * @param ForkManagerEvent $event
+     */
+    public function injectEvent(ForkManagerEvent $event)
+    {
+        $this->event = $event;
+    }
+
+    /**
      * @param EventDispatcher $dispatcher
      */
     public function injectEventDispatcher(EventDispatcher $dispatcher)
@@ -204,17 +202,33 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     public function execute()
     {
         $this->assertMandatoryPropertiesAreSet();
-        $this->eventDispatcher->dispatch(self::EVENT_BEFORE_EXECUTE);
-        $this->eventDispatcher->dispatch(self::EVENT_ADDING_SIGNAL_HANDLER);
         $this->setUpSignalHandling('signalHandler');
-        $this->eventDispatcher->dispatch(self::EVENT_BEFORE_EXECUTING_OPEN_TASKS);
+
+        $this->eventDispatcher->dispatch(
+            ForkManagerEvent::STARTING_EXECUTION,
+            $this->createNewEvent()
+        );
 
         while ($this->taskManager->areThereOpenTasksLeft()) {
             if ($this->timeLimitManager->isLimitReached()) {
-                $this->eventDispatcher->dispatch(self::EVENT_TIME_LIMIT_REACHED);
+                $this->eventDispatcher->dispatch(
+                    ForkManagerEvent::REACHING_TIME_LIMIT,
+                    $this->createNewEvent(
+                        array(
+                            'forkManager' => $this
+                        )
+                    )
+                );
                 $this->stopAllThreads();
             } else if ($this->isMaximumMemoryLimitOfWholeThreadsReached()) {
-                $this->eventDispatcher->dispatch(self::EVENT_MEMORY_LIMIT_REACHED);
+                $this->eventDispatcher->dispatch(
+                    ForkManagerEvent::REACHING_TIME_LIMIT,
+                    $this->createNewEvent(
+                        array(
+                            'forkManager' => $this
+                        )
+                    )
+                );
                 $this->stopNewestThread();
                 $this->sleep();
             } else {
@@ -223,22 +237,40 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
                     $this->sleep();
                 } else {
                     $task = $this->taskManager->getOpenTask();
-                    $this->eventDispatcher->dispatch(self::EVENT_BEFORE_STARTING_NEW_THREAD);
                     $this->startThread($task);
-                    $this->eventDispatcher->dispatch(self::EVENT_AFTER_STARTING_NEW_THREAD);
                 }
             }
         }
 
-        $this->eventDispatcher->dispatch(self::EVENT_AFTER_EXECUTING_OPEN_TASKS);
-        $this->eventDispatcher->dispatch(self::EVENT_BEFORE_WAITING_UNTIL_ALL_RUNNING_TASKS_ARE_FINISHED);
+        $this->eventDispatcher->dispatch(
+            ForkManagerEvent::FINISHED_EXECUTION_OF_OPEN_TASK,
+            $this->createNewEvent()
+        );
+        $this->eventDispatcher->dispatch(
+            ForkManagerEvent::STARTING_WAITING_FOR_RUNNING_TASKS,
+            $this->createNewEvent()
+        );
 
         while ($this->notAllThreadsAreFinished()) {
             if ($this->timeLimitManager->isLimitReached()) {
-                $this->eventDispatcher->dispatch(self::EVENT_TIME_LIMIT_REACHED);
+                $this->eventDispatcher->dispatch(
+                    ForkManagerEvent::REACHING_TIME_LIMIT,
+                    $this->createNewEvent(
+                        array(
+                            'forkManager' => $this
+                        )
+                    )
+                );
                 $this->stopAllThreads();
             } else if ($this->isMaximumMemoryLimitOfWholeThreadsReached()) {
-                $this->eventDispatcher->dispatch(self::EVENT_MEMORY_LIMIT_REACHED);
+                $this->eventDispatcher->dispatch(
+                    ForkManagerEvent::REACHING_TIME_LIMIT,
+                    $this->createNewEvent(
+                        array(
+                            'forkManager' => $this
+                        )
+                    )
+                );
                 $this->stopNewestThread();
                 $this->sleep();
             } else {
@@ -247,8 +279,14 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
             }
         }
 
-        $this->eventDispatcher->dispatch(self::EVENT_AFTER_WAITING_UNTIL_ALL_RUNNING_TASKS_ARE_FINISHED);
-        $this->eventDispatcher->dispatch(self::EVENT_AFTER_EXECUTE);
+        $this->eventDispatcher->dispatch(
+            ForkManagerEvent::FINISHED_WAITING_FOR_RUNNING_TASKS,
+            $this->createNewEvent()
+        );
+        $this->eventDispatcher->dispatch(
+            ForkManagerEvent::FINISHED_EXECUTION,
+            $this->createNewEvent()
+        );
     }
 
     /**
@@ -263,7 +301,14 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     {
         foreach ($this->threads as $processId => $data) {
             if ($this->hasThreadFinished($processId)) {
-                $this->eventDispatcher->dispatch(self::EVENT_THREAD_HAS_FINISHED_WORK);
+                $this->eventDispatcher->dispatch(
+                    ForkManagerEvent::FINISHED_TASK,
+                    $this->createNewEvent(
+                        array(
+                            'task' => $data['task']
+                        )
+                    )
+                );
                 $this->taskManager->markRunningTaskAsFinished($data['task']);
                 unset($this->threads[$processId]);
             }
@@ -290,7 +335,14 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
         } else {
             //parent
             //$processId > 0
-            $this->eventDispatcher->dispatch(self::EVENT_THREAD_HAS_STARTED_WORK);
+            $this->eventDispatcher->dispatch(
+                ForkManagerEvent::STARTING_TASK,
+                $this->createNewEvent(
+                    array(
+                        'task' => $task
+                    )
+                )
+            );
             $this->threads[$processId] = array(
                 'startTime' => $time,
                 'task' => $task
@@ -309,8 +361,15 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
             if (isset($this->threads[$processId])) {
                 $isStopped = posix_kill($processId, SIGTERM);
                 if ($isStopped) {
-                    $this->eventDispatcher->dispatch(self::EVENT_THREAD_WAS_STOPPED);
                     $task = $this->threads[$processId]['task'];
+                    $this->eventDispatcher->dispatch(
+                        ForkManagerEvent::STOPPING_TASK,
+                        $this->createNewEvent(
+                            array(
+                                'task' => $task
+                            )
+                        )
+                    );
                     unset($this->threads[$processId]);
                     $this->taskManager->markRunningTaskAsAborted($task);
                 } else {
@@ -475,6 +534,7 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     private function assertMandatoryPropertiesAreSet()
     {
         $properties = array(
+            'event',
             'eventDispatcher',
             'memoryLimitManager',
             'timeLimitManager',
@@ -488,5 +548,17 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
                 );
             }
         }
+    }
+
+    /**
+     * @param array $data
+     * @return ForkManagerEvent
+     */
+    private function createNewEvent(array $data = array())
+    {
+        $event = clone $this->event;
+        $event->setData($data);
+
+        return $event;
     }
 }
