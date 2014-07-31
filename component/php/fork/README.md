@@ -70,3 +70,4 @@ Thanks to all the great projects and pages out there.
 # Open Questions
 
 * how to write unit tests for forking itself?
+    * [option one](http://kpayne.me/2012/01/17/how-to-unit-test-fork/)
