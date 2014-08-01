@@ -68,3 +68,9 @@ Thanks to all the great projects and pages out there.
 
 * how to write unit tests for forking itself?
     * [option one](http://kpayne.me/2012/01/17/how-to-unit-test-fork/)
+* there is a theoretical race condition problem and i have no idea how to solve this in php
+    * the parent process (fork manager) has process id 123
+    * a child process (task) gets process id 124
+    * child gets the signal kill or finished its execution and the process id 124 is available again
+    * between the usleep of the parent, a new system process gets spawned with the process id 124
+    * how distinguish if the process with id 124 is the child or a new process?
