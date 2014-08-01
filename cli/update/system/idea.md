@@ -1,10 +1,8 @@
-System Update
-=============
+# System Update
 
 Influenced by [roundcube installer](https://github.com/roundcube/roundcubemail/blob/master/bin/update.sh).
 
-Core Functionalities
---------------------
+## Core Functionalities
 
 * current version is a string in a version file
 * update mechanism is defined in steps

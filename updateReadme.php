@@ -108,37 +108,6 @@ function directoryWalker($basePath, array &$array)
         directoryWalker($pathToSearchIn, $array);
     }
 }
-
-
-//take from: https://github.com/zendframework/zf2/blob/master/library/Zend/Stdlib/ArrayUtils.php
-/**
- * Merge two arrays together.
- * If an integer key exists in both arrays and preserveNumericKeys is false, the value
- * from the second array will be appended to the first array. If both values are arrays, they
- * are merged together, else the value of the second array overwrites the one of the first array.
- * @param  array $arrayOne
- * @param  array $arrayTwo
- * @param  bool  $preserveNumericKeys
- * @return array
- */
-function merge(array $arrayOne, array $arrayTwo, $preserveNumericKeys = false)
-{
-    foreach ($arrayTwo as $key => $value) {
-        if (array_key_exists($key, $arrayOne)) {
-            if (is_int($key) && !$preserveNumericKeys) {
-                $arrayOne[] = $value;
-            } elseif (is_array($value) && is_array($arrayOne[$key])) {
-                $arrayOne[$key] = merge($arrayOne[$key], $value, $preserveNumericKeys);
-            } else {
-                $arrayOne[$key] = $value;
-            }
-        } else {
-            $arrayOne[$key] = $value;
-        }
-    }
-
-    return $arrayOne;
-}
 //end of update logic
 
 //begin of file system utility

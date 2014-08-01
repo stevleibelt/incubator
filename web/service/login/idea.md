@@ -1,16 +1,13 @@
-Login Service
-=============
+# Login Service
 
-Basic Concept
--------------
+## Basic Concept
 
 REST based web service to centralize login information.
 
 The service holds login and passphrase information.
 You current application askes the service by providing user login/passphrase combination and its api access key.
 
-Storage Concept
----------------
+## Storage Concept
 
 login table
 

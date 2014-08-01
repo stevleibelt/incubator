@@ -1,11 +1,9 @@
-Static Page Generator
-=====================
+# Static Page Generator
 
 Tired of blog systems because they are for the web browser users?
 Currently, i am. I do not want to blame the guys who are throwing there time on great open source projects to build a blog system with used by webbrowser. But thinking about myself, all i want is to write something in markdown or similar and upload this entry.
 
-Core Functionalities
---------------------
+## Core Functionalities
 
 * one template
 * supports sections and subsections and subsections ...
@@ -21,8 +19,7 @@ Core Functionalities
 * internal linking
 * pure php array configuration
 
-Nice To Have
-------------
+## Nice To Have
 
 * rest api to simple
     * add an entry (generation done on the server)
@@ -37,20 +34,17 @@ Nice To Have
 * picture upload
 * web generator
 
-Currently Not Wanted
---------------------
+## Currently Not Wanted
 
 * comments
 
-Implementation
---------------
+## Implementation
 
 * each entry generats a unique identifier 
     * easy up human readable url renaming
     * easy up internal and external linking
 
-Existing Projects
------------------
+## Existing Projects
 
 * [NanoBlogger](http://nanoblogger.sourceforge.net/)
 * [pelican](http://docs.getpelican.com/en/3.3.0/)
@@ -72,14 +66,12 @@ Existing Projects
 * [phrozn](https://github.com/Pawka/phrozn)
 * [PieCrust](https://github.com/ludovicchabant/PieCrust)
 
-Components
-----------
+## Components
 
 * rest web service to verifiy validity of id/passphrase combination (identity)
 * cli component that implements general logic to communicate with upper rest service
 
-Configurable Values
--------------------
+## Configurable Values
 
 * base url
 * archive url
@@ -89,8 +81,7 @@ Configurable Values
 * default author
 * entries per page per month
 
-Workflow
---------
+## Workflow
 
 * write entry in my_file.md
     * contains
@@ -112,8 +103,7 @@ Workflow
     * update archive (current month section)
     * update main page
 
-Structure Of Content
---------------------
+## Structure Of Content
 
 * one main page of current month with link to previous[/next] month (link to archive)
 * one section page of current month with link to previous[/next] month (link to archive)
