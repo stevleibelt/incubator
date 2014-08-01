@@ -1,6 +1,6 @@
 # Incubator
 
-Ideads for software projects.
+Ideas for software projects.
 
 Instead of creating a repository for each idea, this is the place where all the snippets and thoughts are going placed.
 
