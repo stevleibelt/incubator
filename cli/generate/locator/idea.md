@@ -185,8 +185,14 @@ class FromArrayConfigurationFileLocator extends BaseLocator implements \My\Full\
 
 The Locator is taking care of the instance pooling.
 
+# Future Improvements
+
+* add "verify" method to configuration that throws an error if not all mandatory parameters are set
+* implement validation of used interface- or class names by adding "autoloader class path"
+* implement a flag to create a LocatorInterface out of the written Locator
+* create zf2 module to easy up usage
+
 # Todo
 
-* missing tests
-* missing features
-* create zf2 module to easy up usage
+* add unit tests
+* take a look to [om builder](https://github.com/propelorm/Propel/blob/master/generator/lib/builder/om/OMBuilder.php) and [abstract command](https://github.com/propelorm/Propel2/blob/master/src/Propel/Generator/Command/AbstractCommand.php)

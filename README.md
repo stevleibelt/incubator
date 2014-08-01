@@ -11,7 +11,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 [idea](https://github.com/stevleibelt/incubator/tree/master//general/fileManager)
 [cli progress bar](https://github.com/stevleibelt/incubator/tree/master//cli/progressBar)
 [System Update](https://github.com/stevleibelt/incubator/tree/master//cli/update/system)
-[ToDos](https://github.com/stevleibelt/incubator/tree/master//cli/generate/locator)
+[Locator Generator](https://github.com/stevleibelt/incubator/tree/master//cli/generate/locator)
 [Database Generator](https://github.com/stevleibelt/incubator/tree/master//cli/generate/database)
 [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master//component/php/merge_arrays)
 [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master//component/php/batch_job)
