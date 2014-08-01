@@ -30,72 +30,66 @@ class ForkManagerEvent extends Event
     const STOPPING_TASK                         = 'forkManager.thread.stopped';
 
     /**
-     * @var array
+     * @var ForkManager
      */
-    private $data = array();
+    private $forkManager;
+
+    /**
+     * @var TaskInterface
+     */
+    private $task;
 
     public function __clone()
     {
-        $this->data = array();
+        $this->task = null;
+        $this->forkManager = null;
     }
 
     /**
-     * @return array
+     * @return ForkManager
      */
-    public function getData()
+    public function getForkManager()
     {
-        return $this->data;
+        return $this->forkManager;
     }
 
     /**
-     * @param array $data
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * @return null|AbstractTask
-     */
-    public function getDataKeyTask()
-    {
-        return $this->getDataKey('task');
-    }
-
-    /**
-     * @return null|ForkManager
-     */
-    public function getDataKeyForkManager()
-    {
-        return $this->getDataKey('forkManager');
-    }
-
-    public function hasDataKeyTask()
-    {
-        return $this->hasDataKey('task');
-    }
-
-    public function hasDataKeyForkManager()
-    {
-        return $this->hasDataKey('forkManager');
-    }
-
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    private function getDataKey($key)
-    {
-        return $this->data[$key];
-    }
-
-    /**
-     * @param string $key
      * @return bool
      */
-    private function hasDataKey($key)
+    public function hasForkManager()
     {
-        return isset($this->data[$key]);
+        return ($this->forkManager instanceof ForkManager);
+    }
+
+    /**
+     * @param null|ForkManager $manager
+     */
+    public function setForkManager(ForkManager $manager)
+    {
+        $this->forkManager = $manager;
+    }
+
+    /**
+     * @return null|TaskInterface
+     */
+    public function getTask()
+    {
+        return $this->task;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTask()
+    {
+        return ($this->task instanceof TaskInterface);
+    }
+
+    /**
+     * @param TaskInterface $task
+     */
+    public function setTask(TaskInterface $task)
+    {
+        $this->task = $task;
     }
 }

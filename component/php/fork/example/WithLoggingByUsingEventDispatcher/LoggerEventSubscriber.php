@@ -144,7 +144,7 @@ class LoggerEventSubscriber implements EventSubscriberInterface
         echo '----------------' . PHP_EOL;
         echo '  ' . $message . PHP_EOL;
         echo '  event:' . PHP_EOL;
-        echo '    ' . ($event->hasDataKeyForkManager() ? 'has fork manager' : 'has no fork manager') . PHP_EOL;
-        echo '    ' . ($event->hasDataKeyTask() ? 'has task' : 'has no task') . PHP_EOL;
+        echo '    ' . ($event->hasForkManager() ? 'has fork manager' : 'has no fork manager') . PHP_EOL;
+        echo '    ' . ($event->hasTask() ? 'has task' : 'has no task') . PHP_EOL;
     }
 }
