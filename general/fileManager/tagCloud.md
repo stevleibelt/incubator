@@ -1,4 +1,4 @@
-# idea
+# Tag Cloud
 
 The idea is to extend a file manager with a tag cloud.
 Known from bLogs or news pages, this tag cloud would contain words and number of entries in braces.
