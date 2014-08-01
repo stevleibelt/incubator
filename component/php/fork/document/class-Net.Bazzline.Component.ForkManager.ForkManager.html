@@ -6,8 +6,8 @@
 
 	<title>Class Net\Bazzline\Component\ForkManager\ForkManager | Fork Manager by Bazzline</title>
 
-	<script type="text/javascript" src="resources/combined.js?1012438206"></script>
-	<script type="text/javascript" src="elementlist.js?2574804180"></script>
+	<script type="text/javascript" src="resources/combined.js?3550413354"></script>
+	<script type="text/javascript" src="elementlist.js?3269465746"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 </head>
@@ -43,6 +43,7 @@
 			<ul>
 				<li><a href="class-Net.Bazzline.Component.ForkManager.AbstractTask.html">AbstractTask</a></li>
 				<li class="active"><a href="class-Net.Bazzline.Component.ForkManager.ForkManager.html">ForkManager</a></li>
+				<li><a href="class-Net.Bazzline.Component.ForkManager.ForkManagerEvent.html">ForkManagerEvent</a></li>
 				<li><a href="class-Net.Bazzline.Component.ForkManager.ForkManagerFactory.html">ForkManagerFactory</a></li>
 				<li><a href="class-Net.Bazzline.Component.ForkManager.TaskManager.html">TaskManager</a></li>
 			</ul>
@@ -133,7 +134,7 @@
 		<b>Namespace:</b> <a href="namespace-Net.html">Net</a>\<a href="namespace-Net.Bazzline.html">Bazzline</a>\<a href="namespace-Net.Bazzline.Component.html">Component</a>\<a href="namespace-Net.Bazzline.Component.ForkManager.html">ForkManager</a><br>
 		<b>Package:</b> Net\Bazzline\Component\Fork<br>
 
-		<b>Located at</b> <a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#14-420" title="Go to source code">ForkManager.php</a><br>
+		<b>Located at</b> <a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#15-544" title="Go to source code">ForkManager.php</a><br>
 	</div>
 
 
@@ -151,7 +152,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#55-86" title="Go to source code">__construct</a>( <span>boolean <var>$validateEnvironment</var> = <span class="php-keyword1">true</span></span> )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#66-97" title="Go to source code">__construct</a>( <span>boolean <var>$validateEnvironment</var> = <span class="php-keyword1">true</span></span> )</code>
 
 		<div class="description short">
 			
@@ -189,7 +190,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addTask">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#88-98" title="Go to source code">addTask</a>( <span><code><a href="class-Net.Bazzline.Component.ForkManager.AbstractTask.html">Net\Bazzline\Component\ForkManager\AbstractTask</a></code> <var>$task</var></span> )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#99-109" title="Go to source code">addTask</a>( <span><code><a href="class-Net.Bazzline.Component.ForkManager.AbstractTask.html">Net\Bazzline\Component\ForkManager\AbstractTask</a></code> <var>$task</var></span> )</code>
 
 		<div class="description short">
 			
@@ -216,6 +217,39 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="getEventDispatcher" id="_getEventDispatcher">
+
+		<td class="attributes"><code>
+			 public 
+			Symfony\Component\EventDispatcher\EventDispatcher
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getEventDispatcher">#</a>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#111-117" title="Go to source code">getEventDispatcher</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>Symfony\Component\EventDispatcher\EventDispatcher</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="getMemoryLimitManager" id="_getMemoryLimitManager">
 
 		<td class="attributes"><code>
@@ -227,7 +261,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getMemoryLimitManager">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#100-106" title="Go to source code">getMemoryLimitManager</a>( )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#119-125" title="Go to source code">getMemoryLimitManager</a>( )</code>
 
 		<div class="description short">
 			
@@ -260,7 +294,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getTaskManager">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#108-114" title="Go to source code">getTaskManager</a>( )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#127-133" title="Go to source code">getTaskManager</a>( )</code>
 
 		<div class="description short">
 			
@@ -293,7 +327,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getTimeLimitManager">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#116-122" title="Go to source code">getTimeLimitManager</a>( )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#135-141" title="Go to source code">getTimeLimitManager</a>( )</code>
 
 		<div class="description short">
 			
@@ -315,6 +349,74 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="injectEvent" id="_injectEvent">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_injectEvent">#</a>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#143-149" title="Go to source code">injectEvent</a>( <span><code><a href="class-Net.Bazzline.Component.ForkManager.ForkManagerEvent.html">Net\Bazzline\Component\ForkManager\ForkManagerEvent</a></code> <var>$event</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$event</var></dt>
+					<dd><code><code><a href="class-Net.Bazzline.Component.ForkManager.ForkManagerEvent.html">Net\Bazzline\Component\ForkManager\ForkManagerEvent</a></code></code><br>$event</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="injectEventDispatcher" id="_injectEventDispatcher">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_injectEventDispatcher">#</a>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#151-157" title="Go to source code">injectEventDispatcher</a>( <span>Symfony\Component\EventDispatcher\EventDispatcher <var>$dispatcher</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$dispatcher</var></dt>
+					<dd><code>Symfony\Component\EventDispatcher\EventDispatcher</code><br>$dispatcher</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="injectMemoryLimitManager" id="_injectMemoryLimitManager">
 
 		<td class="attributes"><code>
@@ -326,7 +428,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_injectMemoryLimitManager">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#124-130" title="Go to source code">injectMemoryLimitManager</a>( <span>Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager <var>$manager</var></span> )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#159-165" title="Go to source code">injectMemoryLimitManager</a>( <span>Net\Bazzline\Component\MemoryLimitManager\MemoryLimitManager <var>$manager</var></span> )</code>
 
 		<div class="description short">
 			
@@ -360,7 +462,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_injectTimeLimitManager">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#132-138" title="Go to source code">injectTimeLimitManager</a>( <span>Net\Bazzline\Component\TimeLimitManager\TimeLimitManager <var>$manager</var></span> )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#167-173" title="Go to source code">injectTimeLimitManager</a>( <span>Net\Bazzline\Component\TimeLimitManager\TimeLimitManager <var>$manager</var></span> )</code>
 
 		<div class="description short">
 			
@@ -394,7 +496,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_injectTaskManager">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#140-146" title="Go to source code">injectTaskManager</a>( <span><code><a href="class-Net.Bazzline.Component.ForkManager.TaskManager.html">Net\Bazzline\Component\ForkManager\TaskManager</a></code> <var>$manager</var></span> )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#175-181" title="Go to source code">injectTaskManager</a>( <span><code><a href="class-Net.Bazzline.Component.ForkManager.TaskManager.html">Net\Bazzline\Component\ForkManager\TaskManager</a></code> <var>$manager</var></span> )</code>
 
 		<div class="description short">
 			
@@ -428,7 +530,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setMaximumNumberOfThreads">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#148-154" title="Go to source code">setMaximumNumberOfThreads</a>( <span>integer <var>$maximumNumberOfThreads</var></span> )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#183-189" title="Go to source code">setMaximumNumberOfThreads</a>( <span>integer <var>$maximumNumberOfThreads</var></span> )</code>
 
 		<div class="description short">
 			
@@ -462,7 +564,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setNumberOfMicrosecondsToCheckThreadStatus">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#156-162" title="Go to source code">setNumberOfMicrosecondsToCheckThreadStatus</a>( <span>integer <var>$numberOfMicrosecondsToCheckThreadStatus</var></span> )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#191-197" title="Go to source code">setNumberOfMicrosecondsToCheckThreadStatus</a>( <span>integer <var>$numberOfMicrosecondsToCheckThreadStatus</var></span> )</code>
 
 		<div class="description short">
 			
@@ -496,7 +598,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_execute">#</a>
-		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#164-206" title="Go to source code">execute</a>( )</code>
+		<code><a href="source-class-Net.Bazzline.Component.ForkManager.ForkManager.html#199-274" title="Go to source code">execute</a>( )</code>
 
 		<div class="description short">
 			
