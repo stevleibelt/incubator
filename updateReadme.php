@@ -45,13 +45,40 @@ function createContentThatShouldBeUpdated($identifier, $basePath, $baseUrl)
     $content[] = $identifier;
     $content[] = '';
 
-    $array = array();
-    directoryWalker($basePath, $array);
-echo __METHOD__ . ' ' . var_export($array, true) . PHP_EOL;
+    $fullQualifiedPathsWithFittingFiles = array();
+    directoryWalker($basePath, $fullQualifiedPathsWithFittingFiles);
+
+    $pathsAsArray = convertDirectoryWalkerResult($basePath, $fullQualifiedPathsWithFittingFiles);
+    addGeneratedContent($content, $pathsAsArray, $baseUrl);
 
     return $content;
 }
 
+function addGeneratedContent(&$content, array $data, $baseUrl)
+{
+    foreach ($data as $path => $fileName) {
+        $lines = getLinesFromFile($path . DIRECTORY_SEPARATOR . $fileName, 1);
+        $content[] = '[' . substr($lines[0], 2) . '](' . $baseUrl . '/' . $path . ')';
+    }
+}
+
+function convertDirectoryWalkerResult($basePath, array $array)
+{
+    $convertedArray = array();
+    $lengthOfBasePath = strlen($basePath) + 1; //+1 for trailing directory slash
+
+    foreach ($array as $fullQualifiedPath => $fileName) {
+        $key = substr($fullQualifiedPath, $lengthOfBasePath);
+        $convertedArray[$key] = $fileName;
+    }
+
+    return $convertedArray;
+}
+
+/**
+ * @param string $basePath
+ * @param array $array
+ */
 function directoryWalker($basePath, array &$array)
 {
     $matchingSuffix = '.md';
@@ -81,9 +108,48 @@ function directoryWalker($basePath, array &$array)
         directoryWalker($pathToSearchIn, $array);
     }
 }
+
+
+//take from: https://github.com/zendframework/zf2/blob/master/library/Zend/Stdlib/ArrayUtils.php
+/**
+ * Merge two arrays together.
+ * If an integer key exists in both arrays and preserveNumericKeys is false, the value
+ * from the second array will be appended to the first array. If both values are arrays, they
+ * are merged together, else the value of the second array overwrites the one of the first array.
+ * @param  array $arrayOne
+ * @param  array $arrayTwo
+ * @param  bool  $preserveNumericKeys
+ * @return array
+ */
+function merge(array $arrayOne, array $arrayTwo, $preserveNumericKeys = false)
+{
+    foreach ($arrayTwo as $key => $value) {
+        if (array_key_exists($key, $arrayOne)) {
+            if (is_int($key) && !$preserveNumericKeys) {
+                $arrayOne[] = $value;
+            } elseif (is_array($value) && is_array($arrayOne[$key])) {
+                $arrayOne[$key] = merge($arrayOne[$key], $value, $preserveNumericKeys);
+            } else {
+                $arrayOne[$key] = $value;
+            }
+        } else {
+            $arrayOne[$key] = $value;
+        }
+    }
+
+    return $arrayOne;
+}
 //end of update logic
 
 //begin of file system utility
+function getLinesFromFile($filePath, $numberOfLines)
+{
+    $content = explode("\n", file_get_contents($filePath));
+    $lines = array_slice($content, 0, $numberOfLines);
+
+    return $lines;
+}
+
 /**
  * @param string $basePath
  * @return array
@@ -162,4 +228,4 @@ $content = array_merge(
     )
 );
 
-//echo var_export($content, true) . PHP_EOL;
+file_put_contents($filePath, implode("\n", $content));

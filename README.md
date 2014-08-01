@@ -8,6 +8,15 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 
 ## Sections And Ideas
 
-* [web](https://github.com/stevleibelt/incubator/tree/master/web)
-    * [blog](https://github.com/stevleibelt/incubator/tree/master/web/blog)
-        * [static page generator](https://github.com/stevleibelt/incubator/tree/master/web/blog/static_page_generator/idea.md)
+[idea](https://github.com/stevleibelt/incubator/tree/master//general/fileManager)
+[cli progress bar](https://github.com/stevleibelt/incubator/tree/master//cli/progressBar)
+[stem Update](https://github.com/stevleibelt/incubator/tree/master//cli/update/system)
+[ToDos](https://github.com/stevleibelt/incubator/tree/master//cli/generate/locator)
+[Database Generator](https://github.com/stevleibelt/incubator/tree/master//cli/generate/database)
+[Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master//component/php/merge_arrays)
+[Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master//component/php/batch_job)
+[Signal Component for PHP](https://github.com/stevleibelt/incubator/tree/master//component/php/signals)
+[Fork Component for PHP](https://github.com/stevleibelt/incubator/tree/master//component/php/fork)
+[tocomplete](https://github.com/stevleibelt/incubator/tree/master//web/general/autocomplete)
+[atic Page Generator](https://github.com/stevleibelt/incubator/tree/master//web/blog/static_page_generator)
+[gin Service](https://github.com/stevleibelt/incubator/tree/master//web/service/login)
