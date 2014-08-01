@@ -58,7 +58,7 @@ function addGeneratedContent(&$content, array $data, $baseUrl)
 {
     foreach ($data as $path => $fileName) {
         $lines = getLinesFromFile($path . DIRECTORY_SEPARATOR . $fileName, 1);
-        $content[] = '[' . substr($lines[0], 2) . '](' . $baseUrl . '/' . $path . ')';
+        $content[] = '* [' . substr($lines[0], 2) . '](' . $baseUrl . '/' . $path . ')';
     }
 }
 
