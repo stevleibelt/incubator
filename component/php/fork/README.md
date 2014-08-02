@@ -28,7 +28,7 @@
 ## Additional Ideas
 
 * an event listener can be used to easy up extending this component
-* add shared memory for intern process calls ([ipc](https://github.com/pbergman/processes-fork/tree/master/src/PBergman/SystemV/IPC) / [fifo](https://github.com/kriswallsmith/spork/blob/master/src/Spork/Fifo.php))
+* add shared memory for intern process calls ([ipc](https://github.com/pbergman/processes-fork/tree/master/src/PBergman/SystemV/IPC) / [fifo](https://github.com/kriswallsmith/spork/blob/master/src/Spork/Fifo.php), [shm](https://github.com/johan-adriaans/PHP-Semaphore-Fork-test/blob/master/index.php))
 * add logging (by event event handler?)
 * AbstractTask should implement
     * getGroupId()
@@ -63,6 +63,14 @@ Thanks to all the great projects and pages out there.
 * [php thread by mmarquez](https://github.com/mmarquez/php-thread)
 * [forkdaemon php by baracudanetworks](https://github.com/barracudanetworks/forkdaemon-php)
 * [power spawn by lordgnu](https://github.com/lordgnu/PowerSpawn)
+
+# Todo
+
+* add following to singal handling
+    pcntl_signal(SIGHUP, array(&$this, 'signal_handler_sighup'));
+    pcntl_signal(SIGCHLD, array(&$this, 'signal_handler_sigchild'));
+    pcntl_signal(SIGTERM, array(&$this, 'signal_handler_sigint'));
+    pcntl_signal(SIGINT, array(&$this, 'signal_handler_sigint'));
 
 # Open Questions
 
