@@ -43,6 +43,7 @@ class LoggerEventSubscriber implements EventSubscriberInterface
             ForkManagerEvent::STARTING_EXECUTION_OF_OPEN_TASK => array('onStartingExecutionOfOpenTask'),
             ForkManagerEvent::STARTING_TASK => array('onStartingTask'),
             ForkManagerEvent::STARTING_WAITING_FOR_RUNNING_TASKS => array('onStartingWaitingForRunningTasks'),
+            ForkManagerEvent::STOPPING_EXECUTION => array('onStoppingExecution'),
             ForkManagerEvent::STOPPING_TASK => array('onStoppingTask')
         );
     }
@@ -136,6 +137,14 @@ class LoggerEventSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @param ForkManagerEvent $event
+     */
+    public function onStoppingExecution(ForkManagerEvent $event)
+    {
+        $this->dumpingEventWithMessage('stopping execution', $event);
+    }
+
+    /**
      * @param string $message
      * @param ForkManagerEvent $event
      */
@@ -146,5 +155,9 @@ class LoggerEventSubscriber implements EventSubscriberInterface
         echo '  event:' . PHP_EOL;
         echo '    ' . ($event->hasForkManager() ? 'has fork manager' : 'has no fork manager') . PHP_EOL;
         echo '    ' . ($event->hasTask() ? 'has task' : 'has no task') . PHP_EOL;
+        echo '    ' . ($event->hasSource() ? 'has source' : 'has no source') . PHP_EOL;
+        if ($event->hasSource()) {
+            echo '        source: ' . $event->getSource() . PHP_EOL;
+        }
     }
 }
