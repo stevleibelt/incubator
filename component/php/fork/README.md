@@ -64,14 +64,6 @@ Thanks to all the great projects and pages out there.
 * [forkdaemon php by baracudanetworks](https://github.com/barracudanetworks/forkdaemon-php)
 * [power spawn by lordgnu](https://github.com/lordgnu/PowerSpawn)
 
-# Todo
-
-* add following to singal handling
-    pcntl_signal(SIGHUP, array(&$this, 'signal_handler_sighup'));
-    pcntl_signal(SIGCHLD, array(&$this, 'signal_handler_sigchild'));
-    pcntl_signal(SIGTERM, array(&$this, 'signal_handler_sigint'));
-    pcntl_signal(SIGINT, array(&$this, 'signal_handler_sigint'));
-
 # Open Questions
 
 * how to write unit tests for forking itself?
