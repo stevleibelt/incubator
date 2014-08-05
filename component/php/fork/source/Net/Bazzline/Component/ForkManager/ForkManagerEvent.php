@@ -27,6 +27,7 @@ class ForkManagerEvent extends Event
     const STARTING_TASK                         = 'forkManager.task.execution.open.started';
     const STARTING_WAITING_FOR_RUNNING_TASKS    = 'forkManager.task.waiting_for_running.started';
 
+    const STOPPING_EXECUTION                    = 'forkManager.execution.stopped';
     const STOPPING_TASK                         = 'forkManager.thread.stopped';
 
     /**
@@ -35,14 +36,20 @@ class ForkManagerEvent extends Event
     private $forkManager;
 
     /**
+     * @var string
+     */
+    private $source;
+
+    /**
      * @var TaskInterface
      */
     private $task;
 
     public function __clone()
     {
-        $this->task = null;
         $this->forkManager = null;
+        $this->source = null;
+        $this->task = null;
     }
 
     /**
@@ -67,6 +74,30 @@ class ForkManagerEvent extends Event
     public function setForkManager(ForkManager $manager)
     {
         $this->forkManager = $manager;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSource()
+    {
+        return (!is_null($this->source));
+    }
+
+    /**
+     * @param string $source
+     */
+    public function setSource($source)
+    {
+        $this->source = (string) $source;
     }
 
     /**

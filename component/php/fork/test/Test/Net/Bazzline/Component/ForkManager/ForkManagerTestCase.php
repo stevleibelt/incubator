@@ -75,4 +75,12 @@ class ForkManagerTestCase extends PHPUnit_Framework_TestCase
     {
         return Mockery::mock('Symfony\Component\EventDispatcher\EventDispatcher');
     }
+
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\ForkManager\ForkManager
+     */
+    protected function getMockOfForkManager()
+    {
+        return Mockery::mock('Net\Bazzline\Component\ForkManager\ForkManager');
+    }
 }
