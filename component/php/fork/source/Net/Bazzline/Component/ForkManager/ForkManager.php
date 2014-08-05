@@ -460,7 +460,16 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
     private function signalHandler($signal)
     {
         //dispatch event caught signal
-        $this->stopAllThreads();
+
+        switch ($signal) {
+            case SIGCHLD:
+                $this->updateNumberOfRunningThreads();
+                break;
+            case SIGTERM:
+            case SIGINT:
+            default:
+                $this->stopAllThreads();
+        }
     }
 
     private function dispatchSignal()
@@ -492,7 +501,7 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
         //pcntl_signal(SIGPIPE,   array($this, $nameOfSignalHandlerMethod));    //write to a pipe without other process is connected to it
         //pcntl_signal(SIGALRM,   array($this, $nameOfSignalHandlerMethod));    //some kind of limit is reached
         pcntl_signal(SIGTERM,   array($this, $nameOfSignalHandlerMethod));  //termination signal | kill <pid>
-        //pcntl_signal(SIGCHLD,   array($this, $nameOfSignalHandlerMethod));    //child is terminated
+        pcntl_signal(SIGCHLD,   array($this, $nameOfSignalHandlerMethod));    //child is terminated
         //pcntl_signal(SIGCONT,   array($this, $nameOfSignalHandlerMethod));    //continue your work
         //pcntl_signal(SIGTSTP,   array($this, $nameOfSignalHandlerMethod));    //terminal stop signal
         //pcntl_signal(SIGTTIN,   array($this, $nameOfSignalHandlerMethod));    //background process attempting read
