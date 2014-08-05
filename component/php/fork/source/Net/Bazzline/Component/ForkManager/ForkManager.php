@@ -472,8 +472,9 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
             case SIGCHLD:
                 $this->updateNumberOfRunningThreads();
                 break;
+            case SIGABRT:
             case SIGALRM:
-            //case SIGTERM:
+            case SIGHUP:
             case SIGINT:
             default:
                 echo $signal . PHP_EOL;
@@ -508,18 +509,18 @@ class ForkManager implements ExecutableInterface, MemoryLimitManagerDependentInt
             );
         }
 
-        //pcntl_signal(SIGHUP,    array($this, $nameOfSignalHandlerMethod));    //controlling terminal is closed
+        pcntl_signal(SIGHUP,    array($this, $nameOfSignalHandlerMethod));    //controlling terminal is closed
         pcntl_signal(SIGINT,    array($this, $nameOfSignalHandlerMethod));  //interrupt this processing | ctrl+c
         //pcntl_signal(SIGUSR1,   array($this, $nameOfSignalHandlerMethod));    //user defined conditions
         //pcntl_signal(SIGUSR2,   array($this, $nameOfSignalHandlerMethod));    //user defined conditions
         //pcntl_signal(SIGQUIT,   array($this, $nameOfSignalHandlerMethod));    //quit your processing
         //pcntl_signal(SIGILL,    array($this, $nameOfSignalHandlerMethod));    //illegal instruction performed
-        //pcntl_signal(SIGABRT,   array($this, $nameOfSignalHandlerMethod));    //abort process
+        pcntl_signal(SIGABRT,   array($this, $nameOfSignalHandlerMethod));    //abort process
         //pcntl_signal(SIGFPE,    array($this, $nameOfSignalHandlerMethod));    //error on arithmetic
         //pcntl_signal(SIGSEGV,   array($this, $nameOfSignalHandlerMethod));    //invalid virtual memory reference
         //pcntl_signal(SIGPIPE,   array($this, $nameOfSignalHandlerMethod));    //write to a pipe without other process is connected to it
-        //pcntl_signal(SIGALRM,   array($this, $nameOfSignalHandlerMethod));    //some kind of limit is reached
-        pcntl_signal(SIGTERM,   array($this, $nameOfSignalHandlerMethod));  //termination signal | kill <pid>
+        pcntl_signal(SIGALRM,   array($this, $nameOfSignalHandlerMethod));    //some kind of limit is reached
+        //pcntl_signal(SIGTERM,   array($this, $nameOfSignalHandlerMethod));  //termination signal | kill <pid>
         pcntl_signal(SIGCHLD,   array($this, $nameOfSignalHandlerMethod));    //child is terminated
         //pcntl_signal(SIGCONT,   array($this, $nameOfSignalHandlerMethod));    //continue your work
         //pcntl_signal(SIGTSTP,   array($this, $nameOfSignalHandlerMethod));    //terminal stop signal
