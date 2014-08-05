@@ -4,14 +4,14 @@
  * @since 2014-07-31
  */
 
-namespace Net\Bazzline\Component\ForkManager\Example\WithLoggingByUsingEventDispatcher;
+namespace Net\Bazzline\Component\ProcessForkManager\Example\WithLoggingByUsingEventDispatcher;
 
-use Net\Bazzline\Component\ForkManager\ForkManagerEvent;
+use Net\Bazzline\Component\ProcessForkManager\ForkManagerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class Logger
- * @package Net\Bazzline\Component\Fork\Example\WithLoggingByUsingEventDispatcher
+ * @package Net\Bazzline\Component\ProcessForkManager\Example\WithLoggingByUsingEventDispatcher
  */
 class LoggerEventSubscriber implements EventSubscriberInterface
 {

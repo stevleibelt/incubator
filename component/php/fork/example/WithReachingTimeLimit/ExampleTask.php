@@ -4,13 +4,13 @@
  * @since 2014-07-23 
  */
 
-namespace Net\Bazzline\Component\ForkManager\Example\WithReachingTimeLimit;
+namespace Net\Bazzline\Component\ProcessForkManager\Example\WithReachingTimeLimit;
 
-use Net\Bazzline\Component\ForkManager\AbstractTask;
+use Net\Bazzline\Component\ProcessForkManager\AbstractTask;
 
 /**
  * Class ExampleTask
- * @package Net\Bazzline\Component\Fork\Example\WithReachingTimeLimit
+ * @package Net\Bazzline\Component\ProcessForkManager\Example\WithReachingTimeLimit
  */
 class ExampleTask extends AbstractTask
 {
@@ -36,7 +36,7 @@ class ExampleTask extends AbstractTask
     }
 
     /**
-     * @throws \Net\Bazzline\Component\ForkManager\RuntimeException
+     * @throws \Net\Bazzline\Component\ProcessForkManager\RuntimeException
      */
     public function execute()
     {

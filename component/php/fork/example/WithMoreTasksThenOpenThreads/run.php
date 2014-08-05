@@ -4,12 +4,12 @@
  * @since 2014-07-21
  */
 
-namespace Net\Bazzline\Component\ForkManager\Example\WithMoreTasksThenOpenThreads;
+namespace Net\Bazzline\Component\ProcessForkManager\Example\WithMoreTasksThenOpenThreads;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once 'ExampleTask.php';
 
-use Net\Bazzline\Component\ForkManager\ForkManagerFactory;
+use Net\Bazzline\Component\ProcessForkManager\ForkManagerFactory;
 
 $factory = new ForkManagerFactory();
 $manager = $factory->create();

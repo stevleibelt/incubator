@@ -4,18 +4,18 @@
  * @since 2014-07-31
  */
 
-namespace Net\Bazzline\Component\ForkManager\Example\WithLoggingByUsingEventDispatcher;
+namespace Net\Bazzline\Component\ProcessForkManager\Example\WithLoggingByUsingEventDispatcher;
 
-use Net\Bazzline\Component\ForkManager\AbstractTask;
+use Net\Bazzline\Component\ProcessForkManager\AbstractTask;
 
 /**
  * Class ExampleTask
- * @package Net\Bazzline\Component\Fork\Example\WithLoggingByUsingEventDispatcher
+ * @package Net\Bazzline\Component\ProcessForkManager\Example\WithLoggingByUsingEventDispatcher
  */
 class ExampleTask extends AbstractTask
 {
     /**
-     * @throws \Net\Bazzline\Component\ForkManager\RuntimeException
+     * @throws \Net\Bazzline\Component\ProcessForkManager\RuntimeException
      */
     public function execute()
     {

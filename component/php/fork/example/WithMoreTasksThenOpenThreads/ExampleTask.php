@@ -4,18 +4,18 @@
  * @since 2014-07-23 
  */
 
-namespace Net\Bazzline\Component\ForkManager\Example\WithMoreTasksThenOpenThreads;
+namespace Net\Bazzline\Component\ProcessForkManager\Example\WithMoreTasksThenOpenThreads;
 
-use Net\Bazzline\Component\ForkManager\AbstractTask;
+use Net\Bazzline\Component\ProcessForkManager\AbstractTask;
 
 /**
  * Class ExampleTask
- * @package Net\Bazzline\Component\Fork\Example\WithMoreTasksThenOpenThreads
+ * @package Net\Bazzline\Component\ProcessForkManager\Example\WithMoreTasksThenOpenThreads
  */
 class ExampleTask extends AbstractTask
 {
     /**
-     * @throws \Net\Bazzline\Component\ForkManager\RuntimeException
+     * @throws \Net\Bazzline\Component\ProcessForkManager\RuntimeException
      */
     public function execute()
     {
