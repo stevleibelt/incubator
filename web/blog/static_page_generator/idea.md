@@ -65,6 +65,8 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
 * [hexo](https://github.com/tommy351/hexo)
 * [phrozn](https://github.com/Pawka/phrozn)
 * [PieCrust](https://github.com/ludovicchabant/PieCrust)
+* [create a blog in less than a minute](http://moquet.net/blog/create-a-blog-in-less-than-a-minute/)
+* [source of create a blog in less than a minute](https://github.com/MattKetmo/moquet.net/blob/master/_posts/2012-08-01-create-a-blog-in-less-than-a-minute.markdown)
 
 ## Components
 
