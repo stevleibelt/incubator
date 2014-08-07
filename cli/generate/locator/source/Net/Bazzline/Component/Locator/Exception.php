@@ -1,13 +1,15 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2014-05-26 
+ * @since 2014-08-07 
  */
 
 namespace Net\Bazzline\Component\Locator;
 
+use Exception as ParentClass;
+
 /**
- * Class RuntimeException
+ * Class Exception
  * @package Net\Bazzline\Component\Locator
  */
-class RuntimeException extends Exception {}
+class Exception extends ParentClass {}
