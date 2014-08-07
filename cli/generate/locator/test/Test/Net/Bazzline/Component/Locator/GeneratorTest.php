@@ -12,4 +12,12 @@ namespace Test\Net\Bazzline\Component\Locator;
  */
 class GeneratorTest extends LocatorTestCase
 {
+    public function testSetters()
+    {
+        $generator = $this->getGenerator();
+
+        $this->assertEquals($generator, $generator->setFactoryInterfaceGenerator($this->getFactoryInterfaceGenerator()));
+        $this->assertEquals($generator, $generator->setInvalidArgumentExceptionGenerator($this->getInvalidArgumentExceptionGenerator()));
+        $this->assertEquals($generator, $generator->setLocatorGenerator($this->getLocatorGenerator()));
+    }
 }
