@@ -6,6 +6,8 @@
 
 namespace Test\Net\Bazzline\Component\Locator;
 
+use org\bovigo\vfs\vfsStream;
+
 /**
  * Class GeneratorTest
  * @package Test\Net\Bazzline\Component\Locator
@@ -19,6 +21,51 @@ class GeneratorTest extends LocatorTestCase
         $this->assertEquals($generator, $generator->setFactoryInterfaceGenerator($this->getMockOfFactoryInterfaceGenerator()));
         $this->assertEquals($generator, $generator->setInvalidArgumentExceptionGenerator($this->getMockOfInvalidArgumentExceptionGenerator()));
         $this->assertEquals($generator, $generator->setLocatorGenerator($this->getMockOfLocatorGenerator()));
+    }
+
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\RuntimeException
+     * @expectedExceptionMessage provided path "vfs://foo/bar" is not a directory
+     */
+    public function testGenerateWithInvalidFilePath()
+    {
+        $generator = $this->getGenerator();
+        $configuration = $this->getMockOfConfiguration();
+
+        $path = 'foo';
+        $permissions = 0755;
+        $root = vfsStream::setup($path, $permissions);
+        $name = 'bar';
+        $file = vfsStream::newFile($name);
+        $root->addChild($file);
+
+        $configuration->shouldReceive('getFilePath')
+            ->andReturn($file->url());
+
+        $generator->setConfiguration($configuration);
+
+        $generator->generate();
+    }
+
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\RuntimeException
+     * @expectedExceptionMessage provided directory "vfs://foo" is not writable
+     */
+    public function testGenerateWithNotWritableFilePath()
+    {
+        $generator = $this->getGenerator();
+        $configuration = $this->getMockOfConfiguration();
+
+        $path = 'foo';
+        $permissions = 0400;
+        $root = vfsStream::setup($path, $permissions);
+
+        $configuration->shouldReceive('getFilePath')
+            ->andReturn($root->url());
+
+        $generator->setConfiguration($configuration);
+
+        $generator->generate();
     }
 
     /**
