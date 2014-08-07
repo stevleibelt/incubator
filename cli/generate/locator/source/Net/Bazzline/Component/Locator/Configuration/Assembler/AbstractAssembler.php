@@ -130,15 +130,6 @@ abstract class AbstractAssembler implements AssemblerInterface
                         }
                         break;
                 }
-            } else {
-                switch ($expectedType) {
-                    case 'array':
-                        $data[$key] = array();
-                        break;
-                    case 'string':
-                        $data[$key] = '';
-                        break;
-                }
             }
         }
     }

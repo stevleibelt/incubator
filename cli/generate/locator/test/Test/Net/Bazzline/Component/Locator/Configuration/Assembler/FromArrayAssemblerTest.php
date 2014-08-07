@@ -32,11 +32,10 @@ class FromArrayAssemblerTest extends LocatorTestCase
     public function testAssembleWithNoArrayAsData()
     {
         $assembler = $this->getFromArrayAssembler();
-
         $configuration = $this->getMockOfConfiguration();
-        $assembler->setConfiguration($configuration);
 
-        $assembler->assemble(null);
+        $assembler->setConfiguration($configuration)
+            ->assemble(null);
     }
 
     /**
@@ -46,11 +45,10 @@ class FromArrayAssemblerTest extends LocatorTestCase
     public function testAssembleWithEmptyDataArray()
     {
         $assembler = $this->getFromArrayAssembler();
-
         $configuration = $this->getMockOfConfiguration();
-        $assembler->setConfiguration($configuration);
 
-        $assembler->assemble(array());
+        $assembler->setConfiguration($configuration)
+            ->assemble(array());
     }
 
     /**
@@ -60,11 +58,10 @@ class FromArrayAssemblerTest extends LocatorTestCase
     public function testAssembleWithMissingMandatoryDataKeyClassName()
     {
         $assembler = $this->getFromArrayAssembler();
-
         $configuration = $this->getMockOfConfiguration();
-        $assembler->setConfiguration($configuration);
 
-        $assembler->assemble(array('key' => null));
+        $assembler->setConfiguration($configuration)
+            ->assemble(array('key' => null));
     }
 
     /**
@@ -74,11 +71,10 @@ class FromArrayAssemblerTest extends LocatorTestCase
     public function testAssembleWithWrongMandatoryDataKeyClassNameValueType()
     {
         $assembler = $this->getFromArrayAssembler();
-
         $configuration = $this->getMockOfConfiguration();
-        $assembler->setConfiguration($configuration);
 
-        $assembler->assemble(array('class_name' => 1));
+        $assembler->setConfiguration($configuration)
+            ->assemble(array('class_name' => 1));
     }
 
     /**
@@ -88,11 +84,10 @@ class FromArrayAssemblerTest extends LocatorTestCase
     public function testAssembleWithMissingMandatoryDataKeyFilePath()
     {
         $assembler = $this->getFromArrayAssembler();
-
         $configuration = $this->getMockOfConfiguration();
-        $assembler->setConfiguration($configuration);
 
-        $assembler->assemble(array('class_name' => 'class name'));
+        $assembler->setConfiguration($configuration)
+            ->assemble(array('class_name' => 'class name'));
     }
 
     /**
@@ -102,11 +97,10 @@ class FromArrayAssemblerTest extends LocatorTestCase
     public function testAssembleWithWrongOptionalDataKeyClassNameValueType()
     {
         $assembler = $this->getFromArrayAssembler();
-
         $configuration = $this->getMockOfConfiguration();
-        $assembler->setConfiguration($configuration);
 
-        $assembler->assemble(
+        $assembler->setConfiguration($configuration)
+            ->assemble(
             array(
                 'class_name'    => 'class name',
                 'file_path'     => '/file/path',
@@ -115,7 +109,29 @@ class FromArrayAssemblerTest extends LocatorTestCase
         );
     }
 
-    public function testAssembleWithValidData()
+    public function testAssembleWithValidMandatoryData()
+    {
+        $assembler = $this->getFromArrayAssembler();
+        $configuration = $this->getMockOfConfiguration();
+
+        $configuration->shouldReceive('setClassName')
+            ->with('my_class')
+            ->andReturn($configuration)
+            ->once();
+        $configuration->shouldReceive('setFilePath')
+            ->with('/my/file/path')
+            ->once();
+
+        $data = array(
+            'class_name'    => 'my_class',
+            'file_path'     => '/my/file/path'
+        );
+
+        $assembler->setConfiguration($configuration)
+            ->assemble($data);
+    }
+
+    public function testAssembleWithValidAllData()
     {
 $this->markTestIncomplete();
     }

@@ -23,50 +23,61 @@ class FromArrayAssembler extends AbstractAssembler
         //set strings
         $configuration
             ->setClassName($data['class_name'])
-            ->setFilePath($data['file_path'])
-            ->setNamespace($data['namespace']);
+            ->setFilePath($data['file_path']);
+
+        if (isset($data['namespace'])) {
+            $configuration->setNamespace($data['namespace']);
+        }
 
         if (isset($data['method_prefix'])) {
             $configuration->setMethodPrefix($data['method_prefix']);
         }
 
-        //set arrays
-        foreach ($data['extends'] as $className) {
-            $configuration->setExtends($className);
-        }
-
-        foreach ($data['instances'] as $key => $instance) {
-            if (!isset($instance['class_name'])) {
-                throw new RuntimeException(
-                    'instance entry with key "' . $key . '" needs to have a key "class_name"'
-                );
+        if (isset($data['extends'])) {
+            //set arrays
+            foreach ($data['extends'] as $className) {
+                $configuration->setExtends($className);
             }
-
-            $alias = (isset($instance['alias'])) ? $instance['alias'] : null;
-            $class = $instance['class_name'];
-            $isFactory = (isset($instance['is_factory'])) ? $instance['is_factory'] : false;
-            $isShared = (isset($instance['is_shared'])) ? $instance['is_shared'] : true;
-            $methodBodyBuilder = (isset($instance['method_body_builder'])) ? $instance['method_body_builder'] : null;
-            $returnValue = (isset($instance['return_value'])) ? $instance['return_value'] : $class;
-
-            $configuration->addInstance($class, $isFactory, $isShared, $returnValue, $alias, $methodBodyBuilder);
         }
 
-        foreach ($data['implements'] as $interfaceName) {
-            $configuration->addImplements($interfaceName);
-        }
+        if (isset($data['instances'])) {
+            foreach ($data['instances'] as $key => $instance) {
+                if (!isset($instance['class_name'])) {
+                    throw new RuntimeException(
+                        'instance entry with key "' . $key . '" needs to have a key "class_name"'
+                    );
+                }
 
-        foreach ($data['uses'] as $key => $uses) {
-            if (!isset($uses['class_name'])) {
-                throw new RuntimeException(
-                    'use entry with key "' . $key . '" needs to have a key "class_name"'
-                );
+                $alias = (isset($instance['alias'])) ? $instance['alias'] : null;
+                $class = $instance['class_name'];
+                $isFactory = (isset($instance['is_factory'])) ? $instance['is_factory'] : false;
+                $isShared = (isset($instance['is_shared'])) ? $instance['is_shared'] : true;
+                $methodBodyBuilder = (isset($instance['method_body_builder'])) ? $instance['method_body_builder'] : null;
+                $returnValue = (isset($instance['return_value'])) ? $instance['return_value'] : $class;
+
+                $configuration->addInstance($class, $isFactory, $isShared, $returnValue, $alias, $methodBodyBuilder);
             }
+        }
 
-            $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
-            $class = $uses['class_name'];
+        if (isset($data['implements'])) {
+            foreach ($data['implements'] as $interfaceName) {
+                $configuration->addImplements($interfaceName);
+            }
+        }
 
-            $configuration->addUses($class, $alias);
+        if (isset($data['uses'])) {
+            foreach ($data['uses'] as $key => $uses) {
+                if (!isset($uses['class_name'])) {
+                    throw new RuntimeException(
+                        'use entry with key "' . $key . '" needs to have a key "class_name"'
+                    );
+                }
+
+                $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
+                $class = $uses['class_name'];
+
+                $configuration->addUses($class, $alias);
+            }
         }
 
         $this->setConfiguration($configuration);
