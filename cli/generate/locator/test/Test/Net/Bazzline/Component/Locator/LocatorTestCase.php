@@ -59,7 +59,7 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     /**
      * @return Mockery\MockInterface|\Net\Bazzline\Component\Locator\Configuration\Assembler\AbstractAssembler
      */
-    public function getAbstractAssembler()
+    public function getMockOfAbstractAssembler()
     {
         return Mockery::mock('Net\Bazzline\Component\Locator\Configuration\Assembler\AbstractAssembler');
     }
@@ -126,11 +126,27 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return FactoryInterfaceGenerator|\Mockery\MockInterface
+     */
+    protected function getMockOfFactoryInterfaceGenerator()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\FactoryInterfaceGenerator');
+    }
+
+    /**
      * @return InvalidArgumentExceptionGenerator
      */
     protected function getInvalidArgumentExceptionGenerator()
     {
         return new InvalidArgumentExceptionGenerator();
+    }
+
+    /**
+     * @return InvalidArgumentExceptionGenerator|\Mockery\MockInterface
+     */
+    protected function getMockOfInvalidArgumentExceptionGenerator()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\InvalidArgumentExceptionGenerator');
     }
 
     /**
@@ -155,6 +171,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     protected function getLocatorGenerator()
     {
         return new LocatorGenerator();
+    }
+
+    /**
+     * @return LocatorGenerator|\Mockery\MockInterface
+     */
+    protected function getMockOfLocatorGenerator()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\LocatorGenerator');
     }
     //----end of locator namespace
 

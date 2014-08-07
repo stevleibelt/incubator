@@ -20,13 +20,13 @@ class AbstractAssemblerTest extends LocatorTestCase
      */
     public function testWithGetConfigurationWithNoConfigurationSet()
     {
-        $assembler = $this->getAbstractAssembler();
+        $assembler = $this->getMockOfAbstractAssembler();
         $assembler->getConfiguration();
     }
 
     public function testSetAndSetConfiguration()
     {
-        $assembler = $this->getAbstractAssembler();
+        $assembler = $this->getMockOfAbstractAssembler();
         $configuration = $this->getConfiguration();
 
         $this->assertEquals($assembler, $assembler->setConfiguration($configuration));

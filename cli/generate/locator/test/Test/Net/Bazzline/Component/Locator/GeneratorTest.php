@@ -16,8 +16,16 @@ class GeneratorTest extends LocatorTestCase
     {
         $generator = $this->getGenerator();
 
-        $this->assertEquals($generator, $generator->setFactoryInterfaceGenerator($this->getFactoryInterfaceGenerator()));
-        $this->assertEquals($generator, $generator->setInvalidArgumentExceptionGenerator($this->getInvalidArgumentExceptionGenerator()));
-        $this->assertEquals($generator, $generator->setLocatorGenerator($this->getLocatorGenerator()));
+        $this->assertEquals($generator, $generator->setFactoryInterfaceGenerator($this->getMockOfFactoryInterfaceGenerator()));
+        $this->assertEquals($generator, $generator->setInvalidArgumentExceptionGenerator($this->getMockOfInvalidArgumentExceptionGenerator()));
+        $this->assertEquals($generator, $generator->setLocatorGenerator($this->getMockOfLocatorGenerator()));
+    }
+
+    public function testGenerate()
+    {
+        $generator = $this->getGenerator();
+        $factoryInterfaceGenerator = $this->getFactoryInterfaceGenerator();
+        $invalidArgumentExceptionGenerator = $this->getInvalidArgumentExceptionGenerator();
+
     }
 }
