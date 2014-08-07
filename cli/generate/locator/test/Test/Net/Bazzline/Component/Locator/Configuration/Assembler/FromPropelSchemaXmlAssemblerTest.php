@@ -16,11 +16,11 @@ class FromPropelSchemaXmlAssemblerTest extends LocatorTestCase
 {
     public function testWithInvalidData()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testWithValidData()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 }

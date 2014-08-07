@@ -94,7 +94,7 @@ class LocatorGeneratorTest extends LocatorTestCase
 
     public function testGenerate()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
         //setup vfs
         //create configuration
         //define mocks with all "shouldReceive" calls

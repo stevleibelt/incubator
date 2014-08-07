@@ -6,10 +6,10 @@
 
 namespace Net\Bazzline\Component\Locator\FileExistsStrategy;
 
-use InvalidArgumentException as ParentClass;
+use Net\Bazzline\Component\Locator\Exception;
 
 /**
  * Class InvalidArgumentException
  * @package Net\Bazzline\Component\Locator\FileExistsStrategy
  */
-class InvalidArgumentException extends ParentClass {}
+class InvalidArgumentException extends Exception {}

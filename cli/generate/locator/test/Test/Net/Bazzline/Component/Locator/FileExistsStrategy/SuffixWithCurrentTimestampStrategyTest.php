@@ -16,21 +16,21 @@ class SuffixWithCurrentTimestampStrategyTest extends LocatorTestCase
 {
     public function testGetCurrentTimestampWithoutSettingIt()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testSetAndGetCurrentTimestamp()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testExecuteWithNotRenameableFile()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testExecuteWithRenameableFile()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 }

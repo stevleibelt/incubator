@@ -16,11 +16,11 @@ class DeleteStrategyTest extends LocatorTestCase
 {
     public function testExecuteWithNotDeletableFile()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testExecuteWithDeletableFile()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 }

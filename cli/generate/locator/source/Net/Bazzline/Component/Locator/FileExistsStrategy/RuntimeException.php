@@ -6,10 +6,10 @@
 
 namespace Net\Bazzline\Component\Locator\FileExistsStrategy;
 
-use RuntimeException as ParentClass;
+use Net\Bazzline\Component\Locator\Exception;
 
 /**
  * Class RuntimeException
  * @package Net\Bazzline\Component\Locator\FileExistsStrategy
  */
-class RuntimeException extends ParentClass {}
+class RuntimeException extends Exception {}

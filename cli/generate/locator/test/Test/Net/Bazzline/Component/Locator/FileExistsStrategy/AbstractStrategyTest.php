@@ -16,21 +16,21 @@ class AbstractStrategyTest extends LocatorTestCase
 {
     public function testInvalidFileName()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testValidFileName()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testInvalidFilePath()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 
     public function testValidFilePath()
     {
-        $this->markTestIncomplete();
+$this->markTestIncomplete();
     }
 }
