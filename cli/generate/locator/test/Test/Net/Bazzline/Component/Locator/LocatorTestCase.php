@@ -83,6 +83,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
 
     //----begin of file exists strategy namespace
     /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface
+     */
+    public function getMockOfFileExistsStrategyInterface()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\FileExistsStrategy\FileExistsStrategyInterface');
+    }
+
+    /**
      * @return DeleteStrategy
      */
     public function getDeleteStrategy()
@@ -115,6 +123,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
         $configuration->setUses($this->getUses());
 
         return $configuration;
+    }
+
+    /**
+     * @return Configuration|\Mockery\MockInterface
+     */
+    protected function getMockOfConfiguration()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\Configuration');
     }
 
     /**

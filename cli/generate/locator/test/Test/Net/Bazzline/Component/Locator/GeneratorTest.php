@@ -21,11 +21,96 @@ class GeneratorTest extends LocatorTestCase
         $this->assertEquals($generator, $generator->setLocatorGenerator($this->getMockOfLocatorGenerator()));
     }
 
-    public function testGenerate()
+    /**
+     * @return array
+     */
+    public static function generateTestDataProvider()
+    {
+        return array(
+            'just locator generator' => array(
+                'hasFactoryInstances' => false,
+                'hasSharedInstances' => false
+            ),
+            'with factory interface' => array(
+                'hasFactoryInstances' => true,
+                'hasSharedInstances' => false
+            ),
+            'with shared instances' => array(
+                'hasFactoryInstances' => false,
+                'hasSharedInstances' => true
+            ),
+            'with factory interface and shared instances' => array(
+                'hasFactoryInstances' => true,
+                'hasSharedInstances' => true
+            )
+        );
+    }
+
+    /**
+     * @dataProvider generateTestDataProvider
+     * @param bool $hasFactoryInstance
+     * @param bool $hasSharedInstances
+     */
+    public function testGenerate($hasFactoryInstance, $hasSharedInstances)
     {
         $generator = $this->getGenerator();
-        $factoryInterfaceGenerator = $this->getFactoryInterfaceGenerator();
-        $invalidArgumentExceptionGenerator = $this->getInvalidArgumentExceptionGenerator();
+        $configuration = $this->getMockOfConfiguration();
+        $fileExistsStrategy = $this->getMockOfFileExistsStrategyInterface();
+        $locatorGenerator = $this->getMockOfLocatorGenerator();
 
+        $configuration->shouldReceive('getFilePath')
+            ->andReturn(sys_get_temp_dir())
+            ->twice();
+        $configuration->shouldReceive('hasFactoryInstances')
+            ->andReturn($hasFactoryInstance)
+            ->twice();
+        $configuration->shouldReceive('hasSharedInstances')
+            ->andReturn($hasSharedInstances)
+            ->atMost();
+
+        $locatorGenerator->shouldReceive('setConfiguration')
+            ->with($configuration)
+            ->once();
+        $locatorGenerator->shouldReceive('setFileExistsStrategy')
+            ->with($fileExistsStrategy)
+            ->once();
+        $locatorGenerator->shouldReceive('generate')
+            ->once();
+
+        if ($hasFactoryInstance) {
+            $factoryInterfaceGenerator = $this->getMockOfFactoryInterfaceGenerator();
+
+            $factoryInterfaceGenerator->shouldReceive('setConfiguration')
+                ->with($configuration)
+                ->once();
+            $factoryInterfaceGenerator->shouldReceive('setFileExistsStrategy')
+                ->with($fileExistsStrategy)
+                ->once();
+            $factoryInterfaceGenerator->shouldReceive('generate')
+                ->once();
+
+            $generator->setFactoryInterfaceGenerator($factoryInterfaceGenerator);
+        }
+
+        if ($hasFactoryInstance || $hasSharedInstances) {
+            $invalidArgumentExceptionGenerator = $this->getMockOfInvalidArgumentExceptionGenerator();
+
+            $invalidArgumentExceptionGenerator->shouldReceive('setConfiguration')
+                ->with($configuration)
+                ->once();
+            $invalidArgumentExceptionGenerator->shouldReceive('setFileExistsStrategy')
+                ->with($fileExistsStrategy)
+                ->once();
+            $invalidArgumentExceptionGenerator->shouldReceive('generate')
+                ->once();
+
+            $generator->setInvalidArgumentExceptionGenerator($invalidArgumentExceptionGenerator);
+        }
+
+        $generator->setConfiguration($configuration);
+        $generator->setFileExistsStrategy($fileExistsStrategy);
+        $generator->setLocatorGenerator($locatorGenerator);
+
+        $generator->generate();
     }
 }
