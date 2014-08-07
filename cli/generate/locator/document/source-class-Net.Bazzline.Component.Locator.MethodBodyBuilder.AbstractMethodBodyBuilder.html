@@ -155,16 +155,16 @@
 </span><span id="46" class="l"><a class="l" href="#46">46: </a>    }
 </span><span id="47" class="l"><a class="l" href="#47">47: </a>
 </span><span id="48" class="l"><a class="l" href="#48">48: </a>    <span class="php-comment">/**
-</span></span><span id="49" class="l"><a class="l" href="#49">49: </a><span class="php-comment">     * @param array $parameters
+</span></span><span id="49" class="l"><a class="l" href="#49">49: </a><span class="php-comment">     * @param array $propertyNames
 </span></span><span id="50" class="l"><a class="l" href="#50">50: </a><span class="php-comment">     * @throws RuntimeException
 </span></span><span id="51" class="l"><a class="l" href="#51">51: </a><span class="php-comment">     */</span>
-</span><span id="52" class="l"><a class="l" href="#52">52: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_assertMandatoryParameters" href="#_assertMandatoryParameters">assertMandatoryProperties</a>(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span> = <span class="php-keyword1">array</span>(<span class="php-quote">'instance'</span>))
+</span><span id="52" class="l"><a class="l" href="#52">52: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_assertMandatoryProperties" href="#_assertMandatoryProperties">assertMandatoryProperties</a>(<span class="php-keyword1">array</span> <span class="php-var">$propertyNames</span> = <span class="php-keyword1">array</span>(<span class="php-quote">'instance'</span>))
 </span><span id="53" class="l"><a class="l" href="#53">53: </a>    {
-</span><span id="54" class="l"><a class="l" href="#54">54: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$parameters</span> <span class="php-keyword1">as</span> <span class="php-var">$parameter</span>) {
-</span><span id="55" class="l"><a class="l" href="#55">55: </a>            <span class="php-keyword1">if</span> (!<span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;<span class="php-var">$parameter</span>)
-</span><span id="56" class="l"><a class="l" href="#56">56: </a>                || (<span class="php-keyword2">is_null</span>(<span class="php-var">$this</span>-&gt;<span class="php-var">$parameter</span>))) {
+</span><span id="54" class="l"><a class="l" href="#54">54: </a>        <span class="php-keyword1">foreach</span> (<span class="php-var">$propertyNames</span> <span class="php-keyword1">as</span> <span class="php-var">$propertyName</span>) {
+</span><span id="55" class="l"><a class="l" href="#55">55: </a>            <span class="php-keyword1">if</span> (!<span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;<span class="php-var">$propertyName</span>)
+</span><span id="56" class="l"><a class="l" href="#56">56: </a>                || (<span class="php-keyword2">is_null</span>(<span class="php-var">$this</span>-&gt;<span class="php-var">$propertyName</span>))) {
 </span><span id="57" class="l"><a class="l" href="#57">57: </a>                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> RuntimeException(
-</span><span id="58" class="l"><a class="l" href="#58">58: </a>                    <span class="php-quote">'parameter &quot;'</span> . <span class="php-var">$parameter</span> . <span class="php-quote">'&quot; is mandatory'</span>
+</span><span id="58" class="l"><a class="l" href="#58">58: </a>                    <span class="php-quote">'property &quot;'</span> . <span class="php-var">$propertyName</span> . <span class="php-quote">'&quot; is mandatory'</span>
 </span><span id="59" class="l"><a class="l" href="#59">59: </a>                );
 </span><span id="60" class="l"><a class="l" href="#60">60: </a>            }
 </span><span id="61" class="l"><a class="l" href="#61">61: </a>        }
