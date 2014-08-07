@@ -87,6 +87,8 @@
 ## Bad
 
 * still an incubator project
+* missing unit tests mr artodeto himself
+* complex project, what about a bit more documentation?
 
 # Behaviour
 
@@ -187,10 +189,10 @@ The Locator is taking care of the instance pooling.
 
 # Future Improvements
 
+* create zf2 module to easy up usage
 * add "verify" method to configuration that throws an error if not all mandatory parameters are set
 * implement validation of used interface- or class names by adding "autoloader class path"
 * implement a flag to create a LocatorInterface out of the written Locator
-* create zf2 module to easy up usage
 
 # Todo
 
