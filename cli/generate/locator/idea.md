@@ -89,6 +89,9 @@
 * still an incubator project
 * missing unit tests mr artodeto himself
 * complex project, what about a bit more documentation?
+    * how to write a assembler
+    * how to write a file exist strategy
+    * how to write a method body builder
 
 # Behaviour
 
