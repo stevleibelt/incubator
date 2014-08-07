@@ -21,7 +21,7 @@ class FetchFromFactoryInstancePoolBuilder extends AbstractMethodBodyBuilder
      */
     public function build(BlockGenerator $body)
     {
-        $this->assertMandatoryParameters();
+        $this->assertMandatoryProperties();
 
         $body
             ->add('return $this->fetchFromFactoryInstancePool(\'' . $this->instance->getClassName() . '\')->create();');

@@ -21,7 +21,7 @@ class FetchFromSharedInstancePoolOrCreateByFactoryBuilder extends AbstractMethod
      */
     public function build(BlockGenerator $body)
     {
-        $this->assertMandatoryParameters();
+        $this->assertMandatoryProperties();
 
         if ($this->instance->hasReturnValue()) {
             $returnValue = $this->instance->getReturnValue();

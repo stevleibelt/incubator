@@ -21,7 +21,7 @@ class PropelQueryCreateBuilder extends AbstractMethodBodyBuilder
      */
     public function build(BlockGenerator $body)
     {
-        $this->assertMandatoryParameters();
+        $this->assertMandatoryProperties();
 
         $body->add('return ' . $this->instance->getClassName() . '::create();');
 

@@ -12,7 +12,20 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  * Class AbstractMethodBodyBuilderTest
  * @package Test\Net\Bazzline\Component\Locator\MethodBodyBuilder
  */
-class AbstractMethodBodyBuilderTest
+class AbstractMethodBodyBuilderTest extends LocatorTestCase
 {
+    public function testClone()
+    {
+$this->markTestIncomplete();
+    }
 
+    public function testSetInstance()
+    {
+$this->markTestIncomplete();
+    }
+
+    public function extend()
+    {
+$this->markTestIncomplete();
+    }
 } 

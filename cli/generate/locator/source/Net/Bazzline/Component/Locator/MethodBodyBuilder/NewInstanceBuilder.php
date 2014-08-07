@@ -21,7 +21,7 @@ class NewInstanceBuilder extends AbstractMethodBodyBuilder
      */
     public function build(BlockGenerator $body)
     {
-        $this->assertMandatoryParameters();
+        $this->assertMandatoryProperties();
 
         $body
             ->add('return new ' . $this->instance->getClassName() . '();');

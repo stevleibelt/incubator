@@ -21,7 +21,7 @@ class FetchFromSharedInstancePoolBuilder extends AbstractMethodBodyBuilder
      */
     public function build(BlockGenerator $body)
     {
-        $this->assertMandatoryParameters();
+        $this->assertMandatoryProperties();
 
         $body
             ->add('return $this->fetchFromSharedInstancePool(\'' . $this->instance->getClassName() . '\');');

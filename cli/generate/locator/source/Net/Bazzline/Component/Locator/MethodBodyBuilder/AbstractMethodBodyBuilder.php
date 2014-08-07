@@ -46,16 +46,16 @@ abstract class AbstractMethodBodyBuilder implements MethodBodyBuilderInterface
     }
 
     /**
-     * @param array $parameters
+     * @param array $propertyNames
      * @throws RuntimeException
      */
-    protected function assertMandatoryParameters(array $parameters = array('instance'))
+    protected function assertMandatoryProperties(array $propertyNames = array('instance'))
     {
-        foreach ($parameters as $parameter) {
-            if (!isset($this->$parameter)
-                || (is_null($this->$parameter))) {
+        foreach ($propertyNames as $propertyName) {
+            if (!isset($this->$propertyName)
+                || (is_null($this->$propertyName))) {
                 throw new RuntimeException(
-                    'parameter "' . $parameter . '" is mandatory'
+                    'property "' . $propertyName . '" is mandatory'
                 );
             }
         }
