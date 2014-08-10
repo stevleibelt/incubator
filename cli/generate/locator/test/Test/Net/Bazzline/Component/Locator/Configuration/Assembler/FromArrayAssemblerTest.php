@@ -7,6 +7,7 @@
 namespace Test\Net\Bazzline\Component\Locator\Configuration\Assembler;
 
 use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
+use Net\Bazzline\Component\Locator\Configuration;
 
 /**
  * Class FromArrayAssemblerTest
@@ -14,6 +15,7 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  */
 class FromArrayAssemblerTest extends LocatorTestCase
 {
+    //begin of test
     /**
      * @expectedException \Net\Bazzline\Component\Locator\Configuration\Assembler\RuntimeException
      * @expectedExceptionMessage configuration is mandatory
@@ -131,8 +133,31 @@ class FromArrayAssemblerTest extends LocatorTestCase
             ->assemble($data);
     }
 
-    public function testAssembleWithValidAllData()
+    /**
+     * @dataProvider validDataTestProvider
+     * @param array $data
+     * @param Configuration $configuration
+     */
+    public function testAssembleWithValidAllData(array $data, Configuration $configuration)
     {
 $this->markTestIncomplete();
     }
-} 
+    //end of test
+
+    /**
+     * @return array
+     */
+    public static function validDataTestProvider()
+    {
+        $testCases = array();
+
+        $firstConfiguration = new Configuration();
+
+        $testCases[] = array(
+            'data' => array(),
+            'configuration' => $firstConfiguration
+        );
+
+        return $testCases;
+    }
+}
