@@ -6,6 +6,7 @@
 
 namespace Test\Net\Bazzline\Component\Locator\FileExistsStrategy;
 
+use org\bovigo\vfs\vfsStream;
 use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
 
 /**
@@ -16,21 +17,51 @@ class SuffixWithCurrentTimestampStrategyTest extends LocatorTestCase
 {
     public function testGetCurrentTimestampWithoutSettingIt()
     {
-$this->markTestIncomplete();
+        $strategy = $this->getSuffixWithCurrentTimestampStrategy();
+
+        $this->assertGreaterThanOrEqual(time(), $strategy->getCurrentTimeStamp());
     }
 
     public function testSetAndGetCurrentTimestamp()
     {
-$this->markTestIncomplete();
+        $strategy = $this->getSuffixWithCurrentTimestampStrategy();
+        $timestamp = __LINE__;
+
+        $strategy->setCurrentTimeStamp($timestamp);
+
+        $this->assertEquals($timestamp, $strategy->getCurrentTimeStamp());
     }
 
     public function testExecuteWithNotRenameableFile()
     {
-$this->markTestIncomplete();
+        $this->markTestSkipped('vfsStream seams to have a bug inside. We can move this file, even without having read or write permissions.');
+        $strategy = $this->getSuffixWithCurrentTimestampStrategy();
+        $root = vfsStream::setup('root', 0700);
+        $file = vfsStream::newFile('file', 0000);
+
+        $root->addChild($file);
+
+        $strategy->setFileName('file');
+        $strategy->setFilePath($root->url());
+
+        $strategy->execute();
     }
 
     public function testExecuteWithRenameableFile()
     {
-$this->markTestIncomplete();
+        $strategy = $this->getSuffixWithCurrentTimestampStrategy();
+        $timestamp = __LINE__;
+        $root = vfsStream::setup('root', 0700);
+        $file = vfsStream::newFile('file', 0700);
+
+        $root->addChild($file);
+
+        $strategy->setCurrentTimeStamp($timestamp);
+        $strategy->setFileName('file');
+        $strategy->setFilePath($root->url());
+
+        $this->assertEquals($root->url() . DIRECTORY_SEPARATOR . 'file', $file->url());
+        $strategy->execute();
+        $this->assertEquals($root->url() . DIRECTORY_SEPARATOR . 'file.' . $timestamp, $file->url());
     }
 }
