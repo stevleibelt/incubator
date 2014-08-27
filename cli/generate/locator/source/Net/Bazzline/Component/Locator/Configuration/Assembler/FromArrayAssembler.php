@@ -35,9 +35,7 @@ class FromArrayAssembler extends AbstractAssembler
 
         if (isset($data['extends'])) {
             //set arrays
-            foreach ($data['extends'] as $className) {
-                $configuration->setExtends($className);
-            }
+            $configuration->setExtends($data['extends']);
         }
 
         if (isset($data['instances'])) {
@@ -112,7 +110,7 @@ class FromArrayAssembler extends AbstractAssembler
         );
 
         $optionalKeysToExpectedValueTyp = array(
-            'extends'           => 'array',
+            'extends'           => 'string',
             'instances'         => 'array',
             'implements'        => 'array',
             'namespace'         => 'string',

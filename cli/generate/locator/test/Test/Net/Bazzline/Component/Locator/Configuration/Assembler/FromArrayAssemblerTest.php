@@ -94,7 +94,7 @@ class FromArrayAssemblerTest extends LocatorTestCase
 
     /**
      * @expectedException \Net\Bazzline\Component\Locator\Configuration\Assembler\InvalidArgumentException
-     * @expectedExceptionMessage value of key "extends" must be of type "array" when set
+     * @expectedExceptionMessage value of key "extends" must be of type "string" when set
      */
     public function testAssembleWithWrongOptionalDataKeyClassNameValueType()
     {
@@ -106,7 +106,7 @@ class FromArrayAssemblerTest extends LocatorTestCase
             array(
                 'class_name'    => 'class name',
                 'file_path'     => '/file/path',
-                'extends'       => 'your argument is invalid'
+                'extends'       => array('your argument is invalid')
             )
         );
     }
@@ -133,31 +133,78 @@ class FromArrayAssemblerTest extends LocatorTestCase
             ->assemble($data);
     }
 
-    /**
-     * @dataProvider validDataTestProvider
-     * @param array $data
-     * @param Configuration $configuration
-     */
-    public function testAssembleWithValidAllData(array $data, Configuration $configuration)
+    public function testAssembleWithValidAllData()
     {
-$this->markTestIncomplete();
-    }
-    //end of test
-
-    /**
-     * @return array
-     */
-    public static function validDataTestProvider()
-    {
-        $testCases = array();
-
-        $firstConfiguration = new Configuration();
-
-        $testCases[] = array(
-            'data' => array(),
-            'configuration' => $firstConfiguration
+        $className = 'TestName';
+        $extends = 'Bar';
+        $filePath = '/test/name';
+        $implements = array(
+                'BarInterface',
+                'FooInterface',
+                'TestInterface'
+        );
+        $instances = array(
+                array(
+                    'alias'         => 'UniqueInvokableInstance',
+                    'class_name'    => '\Application\Model\ExampleUniqueInvokableInstance',
+                    'is_shared'     => false
+                ),
+                array(
+                    'alias'         => 'UniqueFactorizedInstance',
+                    'class_name'    => '\Application\Factory\ExampleUniqueFactorizedInstanceFactory',
+                    'is_factory'    => true,
+                    'is_shared'     => false,
+                    'return_value'  => '\Application\Model\ExampleUniqueFactorizedInstance'
+                ),
+                array(
+                    'alias'         => 'SharedInvokableInstance',
+                    'class_name'    => '\Application\Model\ExampleSharedInvokableInstance'
+                ),
+                array(
+                    'alias'         => 'SharedFactorizedInstance',
+                    'class_name'    => '\Application\Factory\ExampleSharedFactorizedInstanceFactory',
+                    'is_factory'    => true,
+                    'return_value'  => '\Application\Model\ExampleSharedFactorizedInstance'
+                )
+        );
+        $methodPrefix = 'test';
+        $namespace = 'Test\Namespace';
+        $uses = array(
+            array('class_name' => 'My\Foo', 'alias' => 'Foo')
         );
 
-        return $testCases;
+        $configuration = $this->getConfiguration();
+        $data = array(
+            'class_name' => $className,
+            'file_path' => $filePath,
+            'namespace' => $namespace,
+            'method_prefix' => $methodPrefix,
+            'extends' => $extends,
+            'instances' => $instances,
+            'implements' => $implements,
+            'uses' => $uses
+        );
+
+        $assembler = $this->getFromArrayAssembler();
+        $assembler->setConfiguration($configuration);
+        $assembler->assemble($data);
+
+        $expectedUseCollection = array();
+        foreach ($uses as $use) {
+            $item = $this->getUses();
+            $item->setAlias($use['alias']);
+            $item->setClassName($use['class_name']);
+            $expectedUseCollection[] = $item;
+        }
+
+        $this->assertEquals($className, $configuration->getClassName());
+        $this->assertEquals($extends, $configuration->getExtends());
+        $this->assertEquals($className . '.php', $configuration->getFileName());
+        $this->assertEquals($implements, $configuration->getImplements());
+        $this->assertSameSize($instances, $configuration->getInstances());
+        $this->assertEquals($methodPrefix, $configuration->getMethodPrefix());
+        $this->assertEquals($namespace, $configuration->getNamespace());
+        $this->assertEquals($expectedUseCollection, $configuration->getUseCollection());
     }
+    //end of test
 }
