@@ -38,26 +38,27 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
         //set strings
         $configuration
             ->setClassName($data['class_name'])
-            ->setFilePath($data['file_path'])
-            ->setNamespace($data['namespace']);
+            ->setFilePath($data['file_path']);
 
         if (isset($data['method_prefix'])) {
             $configuration->setMethodPrefix($data['method_prefix']);
         }
 
-        //set arrays
-        foreach ($data['extends'] as $className) {
-            $configuration->setExtends($className);
+        if (isset($data['namespace'])) {
+            $configuration->setNamespace($data['namespace']);
         }
 
-        //@todo implement instance adding
+        if (isset($data['extends'])) {
+            $configuration->setExtends($data['extends']);
+        }
+
         $reader = new XMLReader();
         $reader->open($pathToSchemaXml);
 
         $columnClassMethodBodyBuilder = (isset($data['column_class_method_body_builder']))
             ? $data['column_class_method_body_builder'] : null;
         $hasRootNamespace = false;
-        $locatorNamespace = $data['namespace'];
+        $locatorNamespace = (isset($data['namespace'])) ? $data['namespace'] : '';
         $queryClassMethodBodyBuilder = (isset($data['query_class_method_body_builder']))
             ? $data['query_class_method_body_builder'] : null;
         $rootNamespace = '';
@@ -113,21 +114,25 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
         }
         $reader->close();
 
-        foreach ($data['implements'] as $interfaceName) {
-            $configuration->addImplements($interfaceName);
+        if (isset($data['implements'])) {
+            foreach ($data['implements'] as $interfaceName) {
+                $configuration->addImplements($interfaceName);
+            }
         }
 
-        foreach ($data['uses'] as $key => $uses) {
-            if (!isset($uses['class_name'])) {
-                throw new RuntimeException(
-                    'use entry with key "' . $key . '" needs to have a key "class_name"'
-                );
+        if (isset($data['uses'])) {
+            foreach ($data['uses'] as $key => $uses) {
+                if (!isset($uses['class_name'])) {
+                    throw new RuntimeException(
+                        'use entry with key "' . $key . '" needs to have a key "class_name"'
+                    );
+                }
+
+                $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
+                $className = str_replace('\\\\', '\\', $uses['class_name']);
+
+                $configuration->addUses($className, $alias);
             }
-
-            $alias = (isset($uses['alias'])) ? $uses['alias'] : '';
-            $className = str_replace('\\\\', '\\', $uses['class_name']);
-
-            $configuration->addUses($className, $alias);
         }
 
         $this->setConfiguration($configuration);
@@ -162,7 +167,7 @@ class FromPropelSchemaXmlAssembler extends AbstractAssembler
         );
 
         $optionalKeysToExpectedValueTyp = array(
-            'extends'               => 'array',
+            'extends'               => 'string',
             'implements'            => 'array',
             'namespace'             => 'string',
             'path_to_schema_xml'    => 'string',

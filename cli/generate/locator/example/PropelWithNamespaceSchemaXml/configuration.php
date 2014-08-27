@@ -8,9 +8,7 @@ return array(
     'assembler' => '\Net\Bazzline\Component\Locator\Configuration\Assembler\FromPropelSchemaXmlAssembler',
     'class_name' => 'FromPropelNamespacedSchemaXmlLocator',    //determines file name as well as php class name
     //add class names here, depending on entries in use section, full qualified or not
-    'extends' => array(
-        'BaseLocator'
-    ),
+    'extends' => 'BaseLocator',
     'file_exists_strategy' => '\Net\Bazzline\Component\Locator\FileExistsStrategy\SuffixWithCurrentTimestampStrategy',
     //file path where files will be generated
     'file_path' => __DIR__ . '/../../data',

@@ -34,7 +34,6 @@ class FromArrayAssembler extends AbstractAssembler
         }
 
         if (isset($data['extends'])) {
-            //set arrays
             $configuration->setExtends($data['extends']);
         }
 
