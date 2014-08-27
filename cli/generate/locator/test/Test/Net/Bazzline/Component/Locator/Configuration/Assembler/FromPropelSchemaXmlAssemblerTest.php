@@ -130,7 +130,7 @@ class FromPropelSchemaXmlAssemblerTest extends LocatorTestCase
         $data = array(
             'class_name'            => 'my_class',
             'file_path'             => '/my/file/path',
-            'path_to_schema_xml'    => __DIR__ . DIRECTORY_SEPARATOR . 'schema.xml'
+            'path_to_schema_xml'    => __DIR__ . DIRECTORY_SEPARATOR . 'schema.xml' //@todo replace real path with vfsStream
         );
 
         $assembler->setConfiguration($configuration)
@@ -166,7 +166,7 @@ class FromPropelSchemaXmlAssemblerTest extends LocatorTestCase
             'file_path'             => $filePath,
             'method_prefix'         => $methodPrefix,
             'namespace'             => $namespace,
-            'path_to_schema_xml'    => __DIR__ . DIRECTORY_SEPARATOR . 'schema.xml'
+            'path_to_schema_xml'    => __DIR__ . DIRECTORY_SEPARATOR . 'schema.xml' //@todo replace real path with vfsStream
         );
 
         $assembler = $this->getFromPropelSchemaXmlAssembler();

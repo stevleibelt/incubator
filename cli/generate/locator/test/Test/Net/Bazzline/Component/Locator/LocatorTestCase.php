@@ -91,6 +91,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Locator\FileExistsStrategy\AbstractStrategy
+     */
+    public function getMockOfAbstractStrategy()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\FileExistsStrategy\AbstractStrategy[execute]');
+    }
+
+    /**
      * @return DeleteStrategy
      */
     public function getDeleteStrategy()

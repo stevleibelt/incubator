@@ -6,6 +6,7 @@
 
 namespace Test\Net\Bazzline\Component\Locator\FileExistsStrategy;
 
+use org\bovigo\vfs\vfsStream;
 use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
 
 /**
@@ -14,23 +15,55 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  */
 class AbstractStrategyTest extends LocatorTestCase
 {
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\FileExistsStrategy\InvalidArgumentException
+     * @expectedExceptionMessage invalid filename given
+     */
     public function testInvalidFileName()
     {
-$this->markTestIncomplete();
+        $strategy = $this->getMockOfAbstractStrategy();
+
+        $strategy->setFileName(null);
     }
 
     public function testValidFileName()
     {
-$this->markTestIncomplete();
+        $strategy = $this->getMockOfAbstractStrategy();
+
+        $strategy->setFileName('1');
     }
 
-    public function testInvalidFilePath()
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\FileExistsStrategy\InvalidArgumentException
+     * @expectedExceptionMessage provided path "vfs://root/file" has to be a directory
+     */
+    public function testFilePathIsNotADirectory()
     {
-$this->markTestIncomplete();
+        $strategy = $this->getMockOfAbstractStrategy();
+        $root = vfsStream::setup('root', 0755);
+        $file = vfsStream::newFile('file');
+        $root->addChild($file);
+
+        $strategy->setFilePath($file->url());
+    }
+
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\FileExistsStrategy\InvalidArgumentException
+     * @expectedExceptionMessage provided path "vfs://root" has to be writable
+     */
+    public function testFilePathIsNotAWritableDirectory()
+    {
+        $strategy = $this->getMockOfAbstractStrategy();
+        $root = vfsStream::setup('root', 0444);
+
+        $strategy->setFilePath($root->url());
     }
 
     public function testValidFilePath()
     {
-$this->markTestIncomplete();
+        $strategy = $this->getMockOfAbstractStrategy();
+        $root = vfsStream::setup('root', 0700);
+
+        $strategy->setFilePath($root->url());
     }
 }

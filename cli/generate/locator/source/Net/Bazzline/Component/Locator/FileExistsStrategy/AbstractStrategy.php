@@ -29,6 +29,8 @@ abstract class AbstractStrategy implements FileExistsStrategyInterface
      */
     public function setFileName($name)
     {
+        $name = (string) $name;
+
         if ($name === '') {
             throw new InvalidArgumentException(
                 'invalid filename given'
