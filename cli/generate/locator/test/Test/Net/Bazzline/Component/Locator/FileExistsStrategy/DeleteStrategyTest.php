@@ -15,20 +15,6 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  */
 class DeleteStrategyTest extends LocatorTestCase
 {
-    public function testExecuteWithNotDeletableFile()
-    {
-        $this->markTestSkipped('vfsStream seams to have a bug inside. We can unlink this file, even without having read or write permissions.');
-        $strategy = $this->getDeleteStrategy();
-        $root = vfsStream::setup('root', 0700);
-        $file = vfsStream::newFile('file', 0000);
-        $root->addChild($file);
-
-        $strategy->setFilePath($root->url());
-        $strategy->setFileName('file');
-
-        $strategy->execute();
-    }
-
     public function testExecuteWithDeletableFile()
     {
         $strategy = $this->getDeleteStrategy();

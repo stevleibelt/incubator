@@ -32,21 +32,6 @@ class SuffixWithCurrentTimestampStrategyTest extends LocatorTestCase
         $this->assertEquals($timestamp, $strategy->getCurrentTimeStamp());
     }
 
-    public function testExecuteWithNotRenameableFile()
-    {
-        $this->markTestSkipped('vfsStream seams to have a bug inside. We can move this file, even without having read or write permissions.');
-        $strategy = $this->getSuffixWithCurrentTimestampStrategy();
-        $root = vfsStream::setup('root', 0700);
-        $file = vfsStream::newFile('file', 0000);
-
-        $root->addChild($file);
-
-        $strategy->setFileName('file');
-        $strategy->setFilePath($root->url());
-
-        $strategy->execute();
-    }
-
     public function testExecuteWithRenameableFile()
     {
         $strategy = $this->getSuffixWithCurrentTimestampStrategy();
