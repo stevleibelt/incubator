@@ -14,13 +14,34 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  */
 class FetchFromFactoryInstancePoolBuilderTest extends LocatorTestCase
 {
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\MethodBodyBuilder\RuntimeException
+     * @expectedExceptionMessage property "instance" is mandatory
+     */
     public function testBuildWithMissingMandatoryProperties()
     {
-$this->markTestIncomplete();
+        $builder = $this->getFetchFromFactoryInstancePoolBuilder();
+        $builder->build($this->getBlockGenerator());
     }
 
     public function testBuild()
     {
-$this->markTestIncomplete();
+        $block = $this->getBlockGenerator();
+        $builder = $this->getFetchFromFactoryInstancePoolBuilder();
+        $className = 'FooBar';
+        $instance = $this->getMockOfInstance();
+        $instance->shouldReceive('getClassName')
+            ->once()
+            ->andReturn($className);
+
+        $builder->setInstance($instance);
+
+        $this->assertFalse($block->hasContent());
+        $builder->build($block);
+        $this->assertTrue($block->hasContent());
+        $this->assertEquals(
+            'return $this->fetchFromFactoryInstancePool(\'' . $className . '\')->create();',
+            $block->generate()
+        );
     }
 } 

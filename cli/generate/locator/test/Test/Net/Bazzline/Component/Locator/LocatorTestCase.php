@@ -7,12 +7,15 @@
 namespace Test\Net\Bazzline\Component\Locator;
 
 use Mockery;
+use Net\Bazzline\Component\CodeGenerator\BlockGenerator;
 use Net\Bazzline\Component\CodeGenerator\Factory\BlockGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\ClassGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\DocumentationGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\FileGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\MethodGeneratorFactory;
 use Net\Bazzline\Component\CodeGenerator\Factory\PropertyGeneratorFactory;
+use Net\Bazzline\Component\CodeGenerator\Indention;
+use Net\Bazzline\Component\CodeGenerator\LineGenerator;
 use Net\Bazzline\Component\Locator\Configuration;
 use Net\Bazzline\Component\Locator\FactoryInterfaceGenerator;
 use Net\Bazzline\Component\Locator\FileExistsStrategy\DeleteStrategy;
@@ -219,11 +222,35 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
 
     //----begin of generator
     /**
+     * @return \Net\Bazzline\Component\CodeGenerator\BlockGenerator
+     */
+    protected function getBlockGenerator()
+    {
+        return new BlockGenerator($this->getLineGenerator(), $this->getIndention());
+    }
+
+    /**
      * @return Mockery\MockInterface|\Net\Bazzline\Component\CodeGenerator\DocumentationGenerator
      */
     protected function getMockOfDocumentationGenerator()
     {
         return Mockery::mock('Net\Bazzline\Component\CodeGenerator\DocumentationGenerator');
+    }
+
+    /**
+     * @return LineGenerator
+     */
+    protected function getLineGenerator()
+    {
+        return new LineGenerator($this->getIndention());
+    }
+
+    /**
+     * @return Indention
+     */
+    protected function getIndention()
+    {
+        return new Indention();
     }
     //----end of generator
     //----begin of generator factory
