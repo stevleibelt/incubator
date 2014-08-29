@@ -24,6 +24,18 @@ class FetchFromFactoryInstancePoolBuilderTest extends LocatorTestCase
         $builder->build($this->getBlockGenerator());
     }
 
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\MethodBodyBuilder\RuntimeException
+     * @expectedExceptionMessage property "instance" is mandatory
+     */
+    public function testClone()
+    {
+        $builder = $this->getFetchFromFactoryInstancePoolBuilder();
+        $builder->setInstance($this->getInstance());
+        $clonedBuilder = clone $builder;
+        $clonedBuilder->build($this->getBlockGenerator());
+    }
+
     public function testBuild()
     {
         $block = $this->getBlockGenerator();

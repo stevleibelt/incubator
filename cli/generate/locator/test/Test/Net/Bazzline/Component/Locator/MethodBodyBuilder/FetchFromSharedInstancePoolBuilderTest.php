@@ -14,13 +14,46 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  */
 class FetchFromSharedInstancePoolBuilderTest extends LocatorTestCase
 {
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\MethodBodyBuilder\RuntimeException
+     * @expectedExceptionMessage property "instance" is mandatory
+     */
     public function testBuildWithMissingMandatoryProperties()
     {
-$this->markTestIncomplete();
+        $builder = $this->getFetchFromSharedInstancePoolBuilder();
+        $builder->build($this->getBlockGenerator());
+    }
+
+    /**
+     * @expectedException \Net\Bazzline\Component\Locator\MethodBodyBuilder\RuntimeException
+     * @expectedExceptionMessage property "instance" is mandatory
+     */
+    public function testClone()
+    {
+        $builder = $this->getFetchFromSharedInstancePoolBuilder();
+        $builder->setInstance($this->getInstance());
+        $clonedBuilder = clone $builder;
+        $clonedBuilder->build($this->getBlockGenerator());
     }
 
     public function testBuild()
     {
-$this->markTestIncomplete();
+        $block = $this->getBlockGenerator();
+        $builder = $this->getFetchFromSharedInstancePoolBuilder();
+        $className = 'FooBar';
+        $instance = $this->getMockOfInstance();
+        $instance->shouldReceive('getClassName')
+            ->once()
+            ->andReturn($className);
+
+        $builder->setInstance($instance);
+
+        $this->assertFalse($block->hasContent());
+        $builder->build($block);
+        $this->assertTrue($block->hasContent());
+        $this->assertEquals(
+            'return $this->fetchFromSharedInstancePool(\'' . $className . '\');',
+            $block->generate()
+        );
     }
 } 
