@@ -14,18 +14,17 @@ use Test\Net\Bazzline\Component\Locator\LocatorTestCase;
  */
 class AbstractMethodBodyBuilderTest extends LocatorTestCase
 {
-    public function testClone()
-    {
-$this->markTestIncomplete();
-    }
-
     public function testSetInstance()
     {
-$this->markTestIncomplete();
+        $builder = $this->getAbstractMethodBodyBuilder();
+        $this->assertEquals($builder, $builder->setInstance($this->getMockOfInstance()));
     }
 
     public function extend()
     {
-$this->markTestIncomplete();
+        $builder = $this->getAbstractMethodBodyBuilder();
+        $documentation = $this->getMockOfDocumentationGenerator();
+
+        $this->assertEquals($documentation, $builder->extend($documentation));
     }
 } 

@@ -40,6 +40,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
 
     //----begin of configuration namespace
     /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Locator\Configuration\Instance
+     */
+    public function getMockOfInstance()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\Configuration\Instance');
+    }
+
+    /**
      * @return Configuration\Instance
      */
     public function getInstance()
@@ -209,6 +217,15 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     //----begin of helper
     //----end of helper
 
+    //----begin of generator
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\CodeGenerator\DocumentationGenerator
+     */
+    protected function getMockOfDocumentationGenerator()
+    {
+        return Mockery::mock('Net\Bazzline\Component\CodeGenerator\DocumentationGenerator');
+    }
+    //----end of generator
     //----begin of generator factory
     /**
      * @return BlockGeneratorFactory
@@ -260,6 +277,13 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     //----end of generator factory
 
     //----begin of MethodBodyBuilder
+    /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Locator\MethodBodyBuilder\AbstractMethodBodyBuilder
+     */
+    protected function getAbstractMethodBodyBuilder()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\MethodBodyBuilder\AbstractMethodBodyBuilder[build]');
+    }
     /**
      * @return FetchFromFactoryInstancePoolBuilder
      */
