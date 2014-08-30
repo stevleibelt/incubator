@@ -154,6 +154,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return Mockery\MockInterface|\Net\Bazzline\Component\Locator\AbstractGenerator
+     */
+    protected function getMockOfAbstractGenerator()
+    {
+        return Mockery::mock('Net\Bazzline\Component\Locator\AbstractGenerator[generate]');
+    }
+
+    /**
      * @return FactoryInterfaceGenerator
      */
     protected function getFactoryInterfaceGenerator()
