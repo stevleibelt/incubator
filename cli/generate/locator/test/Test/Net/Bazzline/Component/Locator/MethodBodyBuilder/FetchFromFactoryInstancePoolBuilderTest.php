@@ -42,6 +42,7 @@ class FetchFromFactoryInstancePoolBuilderTest extends LocatorTestCase
         $builder = $this->getFetchFromFactoryInstancePoolBuilder();
         $className = 'FooBar';
         $instance = $this->getMockOfInstance();
+
         $instance->shouldReceive('getClassName')
             ->once()
             ->andReturn($className);
