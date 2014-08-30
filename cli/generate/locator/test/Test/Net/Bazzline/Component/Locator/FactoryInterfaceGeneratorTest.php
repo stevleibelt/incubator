@@ -42,9 +42,9 @@ class FactoryInterfaceGeneratorTest extends LocatorTestCase
 
     public function testGenerate()
     {
-        $configuration = $this->getMockOfConfiguration();
         $className = 'MyClass';
         $classGeneratorFactory = $this->getClassGeneratorFactory();
+        $configuration = $this->getMockOfConfiguration();
         $documentationGeneratorFactory = $this->getDocumentationGeneratorFactory();
         $fileGeneratorFactory = $this->getFileGeneratorFactory();
         $generator = $this->getFactoryInterfaceGenerator();
@@ -60,19 +60,18 @@ class FactoryInterfaceGeneratorTest extends LocatorTestCase
         $generator->setFileExistsStrategy($strategy);
         $generator->setMethodGeneratorFactory($methodGeneratorFactory);
 
-
-        $configuration->shouldReceive('getFilePath')
-            ->twice()
-            ->andReturn($root->url());
-        $configuration->shouldReceive('hasNamespace')
-            ->once()
-            ->andReturn(true);
-        $configuration->shouldReceive('getNamespace')
-            ->once()
-            ->andReturn($namespace);
         $configuration->shouldReceive('getClassName')
             ->once()
             ->andReturn($className);
+        $configuration->shouldReceive('getFilePath')
+            ->twice()
+            ->andReturn($root->url());
+        $configuration->shouldReceive('getNamespace')
+            ->once()
+            ->andReturn($namespace);
+        $configuration->shouldReceive('hasNamespace')
+            ->once()
+            ->andReturn(true);
 
         $expectedContent = '<?php' . PHP_EOL .
             '/**' . PHP_EOL .
