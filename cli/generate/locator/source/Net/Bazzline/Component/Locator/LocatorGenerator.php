@@ -200,8 +200,10 @@ class LocatorGenerator extends AbstractGenerator
     private function createClass(ClassGenerator $classGenerator, Configuration $configuration, DocumentationGeneratorFactory $documentationGeneratorFactory)
     {
         $documentationGenerator = $documentationGeneratorFactory->create();
-        $documentationGenerator->setClass($configuration->getClassName())
-            ->setPackage($configuration->getNamespace());
+        $documentationGenerator->setClass($configuration->getClassName());
+        if ($configuration->hasNamespace()) {
+            $documentationGenerator->setPackage($configuration->getNamespace());
+        }
 
         $classGenerator->setDocumentation($documentationGenerator);
         $classGenerator->setName($configuration->getClassName());

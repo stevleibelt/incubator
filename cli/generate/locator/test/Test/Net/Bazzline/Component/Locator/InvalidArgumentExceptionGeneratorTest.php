@@ -62,7 +62,7 @@ class InvalidArgumentExceptionGeneratorTest extends LocatorTestCase
             ->once()
             ->andReturn(true);
 
-        $expectedContent = '<?php' . PHP_EOL .
+        $expectedFileContent = '<?php' . PHP_EOL .
             '/**' . PHP_EOL .
             ' * @author Net\Bazzline\Component\Locator' . PHP_EOL .
             ' * @since ' . date('Y-m-d') . PHP_EOL .
@@ -87,7 +87,7 @@ class InvalidArgumentExceptionGeneratorTest extends LocatorTestCase
 
         $this->assertNotNull($expectedFile);
         $this->assertEquals(
-            $expectedContent,
+            $expectedFileContent,
             $expectedFile->getContent()
         );
     }
