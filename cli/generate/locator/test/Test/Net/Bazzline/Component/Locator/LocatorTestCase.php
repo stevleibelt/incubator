@@ -28,6 +28,7 @@ use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromFactoryInstancePoo
 use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolBuilder;
 use Net\Bazzline\Component\Locator\MethodBodyBuilder\FetchFromSharedInstancePoolOrCreateByFactoryBuilder;
 use Net\Bazzline\Component\Locator\MethodBodyBuilder\NewInstanceBuilder;
+use Net\Bazzline\Component\Locator\MethodBodyBuilder\PropelQueryCreateBuilder;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -341,6 +342,14 @@ class LocatorTestCase extends PHPUnit_Framework_TestCase
     protected function getNewInstanceBuilder()
     {
         return new NewInstanceBuilder();
+    }
+
+    /**
+     * @return PropelQueryCreateBuilder
+     */
+    protected function getPropelQueryCreateBuilder()
+    {
+        return new PropelQueryCreateBuilder();
     }
     //----end of MethodBodyBuilder
 }
