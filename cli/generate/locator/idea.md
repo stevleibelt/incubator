@@ -84,10 +84,9 @@
     * implement the [MethodBodyBuilderInterface](https://github.com/stevleibelt/incubator/blob/master/cli/generate/locator/source/Net/Bazzline/Component/Locator/MethodBodyBuilder/MethodBodyBuilderInterface.php) to write your own method body builder
 * uses separate [component](https://github.com/stevleibelt/php_component_code_generator) for php code generation
 
-## Bad
+## Bad / ToDo
 
 * still an incubator project
-* missing unit tests mr artodeto himself
 * complex project, what about a bit more documentation?
     * how to write a assembler
     * how to write a file exist strategy
@@ -196,8 +195,3 @@ The Locator is taking care of the instance pooling.
 * add "verify" method to configuration that throws an error if not all mandatory parameters are set
 * implement validation of used interface- or class names by adding "autoloader class path"
 * implement a flag to create a LocatorInterface out of the written Locator
-
-# Todo
-
-* add unit tests
-* take a look to [om builder](https://github.com/propelorm/Propel/blob/master/generator/lib/builder/om/OMBuilder.php) and [abstract command](https://github.com/propelorm/Propel2/blob/master/src/Propel/Generator/Command/AbstractCommand.php)
