@@ -8,6 +8,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 
 ## Sections And Ideas
 
+* [Console](https://github.com/stevleibelt/incubator/tree/master//cli/console)
 * [cli progress bar](https://github.com/stevleibelt/incubator/tree/master//cli/progressBar)
 * [System Update](https://github.com/stevleibelt/incubator/tree/master//cli/update/system)
 * [Database Generator](https://github.com/stevleibelt/incubator/tree/master//cli/generate/database)
