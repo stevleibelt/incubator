@@ -25,3 +25,36 @@ The component will easy up handling of batch job processes.
     * chunk_id
     * created_at
     * status
+
+## Flow
+
+* batch job reads configuration (all available batch jobs) and puts them into a queue
+* batch job acquires one (or multiple) queued batch jobs and start batch jobs with chunk id working on the queue
+* batch job executes batch job per queue and start acquirering until maximum number of queue workers is reached (based on system load and cool down) or no more items are available in the queue and finally starts the real queue worker
+
+### Configuration
+
+* id
+* name
+* chunk_size
+* high_load_parallel_process
+* medium_load_parallel_process
+* low_load_parallel_process
+* number_of_seconds_for_cooldown
+
+### process list
+
+* id
+* name
+* current_chunk_size
+* created_at
+
+### process history
+
+* id
+* name
+* current_chunk_size
+* configured_chunk_size
+* created_at
+* finished_at
+* memory_usage
