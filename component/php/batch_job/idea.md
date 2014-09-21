@@ -4,7 +4,7 @@ The component will easy up handling of batch job processes.
 
 ## Main Ideas
 
-* it is independent how a batch job is executed (url call, process forking, think about something else)
+* it is independent how a batch job is executed (url call, process forking, background process start, think about something else)
 * the component defines the manager and the batch job itself, you only plug in your business logic
 * the manager takes care to start the batch job
 * everything is stored in queues
