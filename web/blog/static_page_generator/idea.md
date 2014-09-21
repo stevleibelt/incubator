@@ -46,6 +46,9 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
 
 ## Existing Projects
 
+* [jekxyl](https://github.com/osaris/jekxyl)
+    * [basic usage](http://jekyllrb.com/docs/usage/)
+    * [configuration](http://jekyllrb.com/docs/configuration/)
 * [NanoBlogger](http://nanoblogger.sourceforge.net/)
 * [pelican](http://docs.getpelican.com/en/3.3.0/)
 * [hakyll](http://jaspervdj.be/hakyll)

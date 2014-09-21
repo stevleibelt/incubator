@@ -9,8 +9,23 @@ The component will easy up handling of batch job processes.
 * the manager takes care to start the batch job
 * everything is stored in queues
 
+## Terms
+
+### Enqueuer / Loader / Stocker / Restocker / Refiller
+
+* fills up queue with items
+
+### Acquirer
+
+* acquires / marks items in queue
+
+### Worker / Batch Job
+
+* works with the acquired queue items
+
 ## Unsorted Ideas
 
+* use [uuid](https://packagist.org/packages/rhumsaa/uuid) to generate chunk ids
 * simple batch jobs
 * manager tasks are split up
     * one job for choosing the upcoming running batch jobs
@@ -54,7 +69,6 @@ The component will easy up handling of batch job processes.
 * id
 * name
 * current_chunk_size
-* configured_chunk_size
 * created_at
 * finished_at
 * memory_usage
