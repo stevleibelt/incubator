@@ -10,6 +10,7 @@ $usage = 'Usage:' . PHP_EOL .
     basename(__FILE__) . ' <path to new version> [<group name>]';
 
 $pathToCurrentInstallation = '/usr/share/phpstorm';
+$pathToCurrentInstallation = '/tmp/phpstorm';
 
 try {
     if ($isNotCalledFromCommandLineInterface) {
@@ -23,16 +24,17 @@ try {
     $pathToNewVersion = array_shift($argv);
     $groupName = array_shift($argv);
 
-    echo $currentWorkingDirectory . PHP_EOL;
-    echo $relativeScriptFilePath . PHP_EOL;
-    echo var_export($pathToNewVersion, true) . PHP_EOL;
-    echo $groupName . PHP_EOL;
-
     if (is_null($pathToNewVersion)) {
         throw new InvalidArgumentException(
-            'path to new version ins mandatory'
+            'path to new version is mandatory'
         );
     }
+
+    $newVersionFileName = basename($pathToNewVersion);
+    $start = 9; //strlen('PhpStorm-');
+    $end = 7;   //strlen('.tar.gz');
+
+    $version = substr($newVersionFileName, $start, -$end);
 
     if (is_dir($pathToCurrentInstallation)) {
         $currentDate = date('Y_m_d');
@@ -67,7 +69,7 @@ try {
         }
     }
 
-    echo 'installing version' . PHP_EOL;
+    echo 'installing version ' . $version . PHP_EOL;
 
     $lines = array();
     $return = null;
@@ -83,6 +85,27 @@ try {
 
     $lines = array();
     $return = null;
+    $command = 'tar -ztf ' . $pathToNewVersion;
+    exec($command, $lines, $return);
+
+    if ($return > 0) {
+        throw new RuntimeException(
+            'following command created an error: "' . $command . '"' . PHP_EOL .
+            'return: "' . $return . '"'
+        );
+    }
+
+    $unpackedDirectoryName = array_shift(explode('/', $lines[0]));
+//@todo - steps
+    //backup existing version
+    //unpack new version
+    //copy new version nearby the existing version
+    //create softlink
+//@todo move unpacked director name into fitting path
+echo $unpackedDirectoryName . PHP_EOL;
+
+    $lines = array();
+    $return = null;
     $command = 'tar -zxf ' . $pathToNewVersion . ' -C ' . $pathToCurrentInstallation;
     exec($command, $lines, $return);
 
@@ -93,15 +116,35 @@ try {
         );
     }
 
-/*
-sudo tar -zxf "$PHPSTORM" -C /opt/phpstorm
+    if (!is_null($groupName)) {
+        echo 'updating group to ' . $groupName . PHP_EOL;
 
-echo 'setting rights'
-sudo chgrp -R "$GROUPNAME" /opt/phpstorm/
-    sudo chmod -R 770 /opt/phpstorm/
+        $lines = array();
+        $return = null;
+        $command = 'sudo chgrp -R ' . $groupName . ' ' . $pathToCurrentInstallation;
+        exec($command, $lines, $return);
 
-echo 'done'
-*/
+        if ($return > 0) {
+            throw new RuntimeException(
+                'following command created an error: "' . $command . '"' . PHP_EOL .
+                'return: "' . $return . '"'
+            );
+        }
+
+        echo 'setting permissions' . PHP_EOL;
+
+        $lines = array();
+        $return = null;
+        $command = 'sudo chmod -R 770 ' . $pathToCurrentInstallation;
+        exec($command, $lines, $return);
+
+        if ($return > 0) {
+            throw new RuntimeException(
+                'following command created an error: "' . $command . '"' . PHP_EOL .
+                'return: "' . $return . '"'
+            );
+        }
+    }
 } catch (Exception $exception) {
     echo 'Error' . PHP_EOL;
     echo '----------------' . PHP_EOL;
