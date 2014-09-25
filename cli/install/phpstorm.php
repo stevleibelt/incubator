@@ -12,6 +12,26 @@ $usage = 'Usage:' . PHP_EOL .
 $pathToCurrentInstallation = '/usr/share/phpstorm';
 $pathToCurrentInstallation = '/tmp/phpstorm';
 
+/**
+ * @param $command
+ * @return array
+ */
+function executeCommand($command)
+{
+    $lines = array();
+    $return = null;
+    exec($command, $lines, $return);
+
+    if ($return > 0) {
+        throw new RuntimeException(
+            'following command created an error: "' . $command . '"' . PHP_EOL .
+            'return: "' . $return . '"'
+        );
+    }
+
+    return $lines;
+}
+
 try {
     if ($isNotCalledFromCommandLineInterface) {
         throw new RuntimeException(
@@ -42,58 +62,22 @@ try {
 
         echo 'creating backup named "' . $backupName . '"' . PHP_EOL;
 
-        $lines = array();
-        $return = null;
         $command = 'tar --ignore-failed-read -zcf ' . $backupName . ' ' . $pathToCurrentInstallation;
-        exec($command, $lines, $return);
-
-        if ($return > 0) {
-            throw new RuntimeException(
-                'following command created an error: "' . $command . '"' . PHP_EOL .
-                'return: "' . $return . '"'
-            );
-        }
+        executeCommand($command);
 
         echo 'removing old installation' . PHP_EOL;
 
-        $lines = array();
-        $return = null;
         $command = 'rm -fr ' . $pathToCurrentInstallation;
-        exec($command, $lines, $return);
-
-        if ($return > 0) {
-            throw new RuntimeException(
-                'following command created an error: "' . $command . '"' . PHP_EOL .
-                'return: "' . $return . '"'
-            );
-        }
+        executeCommand($command);
     }
 
     echo 'installing version ' . $version . PHP_EOL;
 
-    $lines = array();
-    $return = null;
     $command = 'mkdir ' . $pathToCurrentInstallation;
-    exec($command, $lines, $return);
+    executeCommand($command);
 
-    if ($return > 0) {
-        throw new RuntimeException(
-            'following command created an error: "' . $command . '"' . PHP_EOL .
-            'return: "' . $return . '"'
-        );
-    }
-
-    $lines = array();
-    $return = null;
     $command = 'tar -ztf ' . $pathToNewVersion;
-    exec($command, $lines, $return);
-
-    if ($return > 0) {
-        throw new RuntimeException(
-            'following command created an error: "' . $command . '"' . PHP_EOL .
-            'return: "' . $return . '"'
-        );
-    }
+    executeCommand($command);
 
     $unpackedDirectoryName = array_shift(explode('/', $lines[0]));
 //@todo - steps
@@ -104,46 +88,19 @@ try {
 //@todo move unpacked director name into fitting path
 echo $unpackedDirectoryName . PHP_EOL;
 
-    $lines = array();
-    $return = null;
     $command = 'tar -zxf ' . $pathToNewVersion . ' -C ' . $pathToCurrentInstallation;
-    exec($command, $lines, $return);
-
-    if ($return > 0) {
-        throw new RuntimeException(
-            'following command created an error: "' . $command . '"' . PHP_EOL .
-            'return: "' . $return . '"'
-        );
-    }
+    executeCommand($command);
 
     if (!is_null($groupName)) {
         echo 'updating group to ' . $groupName . PHP_EOL;
 
-        $lines = array();
-        $return = null;
         $command = 'sudo chgrp -R ' . $groupName . ' ' . $pathToCurrentInstallation;
-        exec($command, $lines, $return);
-
-        if ($return > 0) {
-            throw new RuntimeException(
-                'following command created an error: "' . $command . '"' . PHP_EOL .
-                'return: "' . $return . '"'
-            );
-        }
+        executeCommand($command);
 
         echo 'setting permissions' . PHP_EOL;
 
-        $lines = array();
-        $return = null;
         $command = 'sudo chmod -R 770 ' . $pathToCurrentInstallation;
-        exec($command, $lines, $return);
-
-        if ($return > 0) {
-            throw new RuntimeException(
-                'following command created an error: "' . $command . '"' . PHP_EOL .
-                'return: "' . $return . '"'
-            );
-        }
+        executeCommand($command);
     }
 } catch (Exception $exception) {
     echo 'Error' . PHP_EOL;
