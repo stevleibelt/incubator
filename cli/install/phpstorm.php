@@ -10,7 +10,9 @@ $usage = 'Usage:' . PHP_EOL .
     basename(__FILE__) . ' <path to new version> [<group name>]';
 
 $pathToCurrentInstallation = '/usr/share/phpstorm';
-$pathToCurrentInstallation = '/tmp/phpstorm';
+$pathToExecutable = '/usr/bin/phpstorm.sh';
+$pathToTemporalPath = '/tmp/bazzline_' . md5(__FILE__);
+$pathToBackup = '/tmp';
 
 /**
  * @param $command
@@ -33,6 +35,8 @@ function executeCommand($command)
 }
 
 try {
+    $startTime = microtime(true);
+    //begin of validation
     if ($isNotCalledFromCommandLineInterface) {
         throw new RuntimeException(
             'command line script only'
@@ -49,59 +53,98 @@ try {
             'path to new version is mandatory'
         );
     }
+    //end of validation
 
+    //begin of variable setting
     $newVersionFileName = basename($pathToNewVersion);
     $start = 9; //strlen('PhpStorm-');
     $end = 7;   //strlen('.tar.gz');
 
     $version = substr($newVersionFileName, $start, -$end);
+    //end of variable setting
+
+    //begin of backup
+    if (is_file($pathToExecutable)) {
+        $command = 'rm -fr ' . $pathToExecutable;
+        executeCommand($command);
+    }
 
     if (is_dir($pathToCurrentInstallation)) {
         $currentDate = date('Y_m_d');
-        $backupName = 'phpstorm_' . $currentDate . '.tar.gz';
+        $pathNameToBackup = $pathToBackup . DIRECTORY_SEPARATOR . 'phpstorm_' . $currentDate . '.tar.gz';
 
-        echo 'creating backup named "' . $backupName . '"' . PHP_EOL;
+        if (is_dir($pathNameToBackup)) {
+            throw new RuntimeException(
+                'backup "' . $pathNameToBackup . '" already exist, you have to move or remove it manually'
+            );
+        }
 
-        $command = 'tar --ignore-failed-read -zcf ' . $backupName . ' ' . $pathToCurrentInstallation;
+        echo 'creating backup named "' . $pathNameToBackup . '"' . PHP_EOL;
+        $command = 'tar --ignore-failed-read -zcf ' . $pathNameToBackup . ' ' . $pathToCurrentInstallation;
         executeCommand($command);
 
         echo 'removing old installation' . PHP_EOL;
-
         $command = 'rm -fr ' . $pathToCurrentInstallation;
         executeCommand($command);
     }
 
-    echo 'installing version ' . $version . PHP_EOL;
+    if (is_dir($pathToTemporalPath)) {
+        $command = 'rm -fr ' . $pathToTemporalPath;
+        executeCommand($command);
+    }
+    //end of backup
 
-    $command = 'mkdir ' . $pathToCurrentInstallation;
+    //begin of installing new version
+    $command = 'mkdir ' . $pathToTemporalPath;
     executeCommand($command);
 
+    echo 'unpacking new version' . PHP_EOL;
     $command = 'tar -ztf ' . $pathToNewVersion;
-    executeCommand($command);
+    $lines = executeCommand($command);
 
     $unpackedDirectoryName = array_shift(explode('/', $lines[0]));
-//@todo - steps
-    //backup existing version
-    //unpack new version
-    //copy new version nearby the existing version
-    //create softlink
-//@todo move unpacked director name into fitting path
-echo $unpackedDirectoryName . PHP_EOL;
 
-    $command = 'tar -zxf ' . $pathToNewVersion . ' -C ' . $pathToCurrentInstallation;
+    $command = 'tar -zxf ' . $pathToNewVersion . ' -C ' . $pathToTemporalPath;
+    $lines = executeCommand($command);
+
+    echo 'installing version ' . $version . PHP_EOL;
+    $command = 'mv ' . $pathToTemporalPath . DIRECTORY_SEPARATOR . $unpackedDirectoryName . ' ' . $pathToCurrentInstallation;
+    executeCommand($command);
+
+    echo 'creating symlink "' . $pathToExecutable . '"' . PHP_EOL;
+    $command = 'ln -s ' . $pathToCurrentInstallation . '/bin/phpstorm.sh ' . $pathToExecutable;
     executeCommand($command);
 
     if (!is_null($groupName)) {
         echo 'updating group to ' . $groupName . PHP_EOL;
-
         $command = 'sudo chgrp -R ' . $groupName . ' ' . $pathToCurrentInstallation;
         executeCommand($command);
 
         echo 'setting permissions' . PHP_EOL;
-
         $command = 'sudo chmod -R 770 ' . $pathToCurrentInstallation;
         executeCommand($command);
     }
+
+    $command = 'rm -fr ' . $pathToTemporalPath;
+    executeCommand($command);
+    //end of installing new version
+
+    //begin of praise myself
+    echo 'done' . PHP_EOL;
+    echo '----' . PHP_EOL;
+    echo 'runtime: ' . round((microtime(true) - $startTime), 2) . ' seconds' . PHP_EOL;
+
+    $memoryUsage = memory_get_usage(true);
+    echo 'memory usage: ';
+    if ($memoryUsage < 1024) {
+        echo $memoryUsage . ' bytes';
+    } else if ($memoryUsage < 1048576) {
+        echo round(($memoryUsage / 1024), 2) . ' kilobytes';
+    } else {
+        echo round(($memoryUsage / 1048576), 2) . ' megabytes';
+    }
+    echo PHP_EOL;
+    //end of praise myself
 } catch (Exception $exception) {
     echo 'Error' . PHP_EOL;
     echo '----------------' . PHP_EOL;
