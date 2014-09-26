@@ -53,6 +53,12 @@ try {
             'path to new version is mandatory'
         );
     }
+
+    if (!is_file($pathToNewVersion)) {
+        throw new InvalidArgumentException(
+            'provided path to new version is not a file'
+        );
+    }
     //end of validation
 
     //begin of variable setting
