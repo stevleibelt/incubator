@@ -71,7 +71,7 @@ try {
 
     //begin of backup
     if (is_file($pathToExecutable)) {
-        $command = 'rm -fr ' . $pathToExecutable;
+        $command = 'sudo rm -fr ' . $pathToExecutable;
         executeCommand($command);
     }
 
@@ -90,7 +90,7 @@ try {
         executeCommand($command);
 
         echo 'removing old installation' . PHP_EOL;
-        $command = 'rm -fr ' . $pathToCurrentInstallation;
+        $command = 'sudo rm -fr ' . $pathToCurrentInstallation;
         executeCommand($command);
     }
 
@@ -114,11 +114,11 @@ try {
     $lines = executeCommand($command);
 
     echo 'installing version ' . $version . PHP_EOL;
-    $command = 'mv ' . $pathToTemporalPath . DIRECTORY_SEPARATOR . $unpackedDirectoryName . ' ' . $pathToCurrentInstallation;
+    $command = 'sudo mv ' . $pathToTemporalPath . DIRECTORY_SEPARATOR . $unpackedDirectoryName . ' ' . $pathToCurrentInstallation;
     executeCommand($command);
 
     echo 'creating symlink "' . $pathToExecutable . '"' . PHP_EOL;
-    $command = 'ln -s ' . $pathToCurrentInstallation . '/bin/phpstorm.sh ' . $pathToExecutable;
+    $command = 'sudo ln -s ' . $pathToCurrentInstallation . '/bin/phpstorm.sh ' . $pathToExecutable;
     executeCommand($command);
 
     if (!is_null($groupName)) {
