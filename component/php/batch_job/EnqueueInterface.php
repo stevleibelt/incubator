@@ -1,19 +1,19 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2014-09-21 
+ * @since 2014-10-09 
  */
 
 namespace component\php\batch_job;
 
 /**
- * Interface IdGeneratorInterface
+ * Interface EnqueueInterface
  * @package component\php\batch_job
  */
-interface IdGeneratorInterface
+interface EnqueueInterface
 {
     /**
-     * @return int|string
+     * @throws RuntimeException
      */
-    public function generateId();
+    public function enqueue();
 } 

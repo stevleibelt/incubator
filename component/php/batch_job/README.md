@@ -11,17 +11,43 @@ The component will easy up handling of batch job processes.
 
 ## Terms
 
+### Batch
+
+* contains id
+* contains items
+* contains size
+
 ### Enqueuer / Loader / Stocker / Restocker / Refiller
 
 * fills up queue with items
+* implements EnqueueInterface
 
 ### Acquirer
 
 * acquires / marks items in queue
+* implements AcquireInterface
+
+### Releaser
+
+* releases / unmarks items in queue
+* implements ReleaseInterface
 
 ### Worker / Batch Job
 
 * works with the acquired queue items
+* implements WorkInterface
+
+### Worker History
+
+* one entry per executed worker
+* has a well defined WorkerHistoryItem
+* is defined by a WorkerHistoryStorageInterface
+
+### Worker List
+
+* one entry per running worker
+* has a well defined WorkerListItem
+* is defined by a WorkerListStorageInterface
 
 ## Unsorted Ideas
 
