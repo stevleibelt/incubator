@@ -22,9 +22,16 @@ The component will easy up handling of batch job processes.
 * fills up queue with items
 * implements EnqueueInterface
 
+### Allocator
+
+* assign available instances (serversm or application instances) to the enqueued entries
+    * can be done by server load
+    * can be done by round robbin
+    * can be reassigned if one machine is not available anymore
+
 ### Acquirer
 
-* acquires / marks items in queue
+* acquires / marks items in queue with a worker id
 * implements AcquireInterface
 
 ### Releaser
