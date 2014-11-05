@@ -6,16 +6,41 @@ The component will easy up handling of batch job processes.
 
 * it is independent how a batch job is executed (url call, process forking, background process start, think about something else)
 * the component defines the manager and the batch job itself, you only plug in your business logic
-* the manager takes care to start the batch job
+* the manager takes care to:
+    * create the amount of work
+    * split the amount of work into batches
+    * start the right amount of jobs
 * everything is stored in queues
+* event based to hook easy up extension:
+    * implement a support for a "current worker list / process list"
+    * implement a support for a "worker history list"
 
 ## Terms
 
 ### Batch
 
-* contains id
-* contains items
-* contains size
+* container for a batch of work
+* contains:
+    * id
+    * items
+    * size
+
+### Worker / Job
+
+* works with a batch
+* implements WorkInterface
+* this is the area where you put in your business logic
+
+### Queue / List
+
+* a list containing all available items for a given worker
+* implements QueueInterface
+* structure:
+    * id
+    * batch_id
+    * status
+    * created_at
+    * processed_at
 
 ### Enqueuer / Loader / Stocker / Restocker / Refiller
 
@@ -24,37 +49,20 @@ The component will easy up handling of batch job processes.
 
 ### Allocator
 
-* assign available instances (serversm or application instances) to the enqueued entries
+* assign available instances (servers or application instances) to the enqueued entries
     * can be done by server load
     * can be done by round robbin
     * can be reassigned if one machine is not available anymore
 
 ### Acquirer
 
-* acquires / marks items in queue with a worker id
+* acquires / marks items in queue with a batch id
 * implements AcquireInterface
 
 ### Releaser
 
-* releases / unmarks items in queue
+* releases / unmarks items in queue from a batch id
 * implements ReleaseInterface
-
-### Worker / Batch Job
-
-* works with the acquired queue items
-* implements WorkInterface
-
-### Worker History
-
-* one entry per executed worker
-* has a well defined WorkerHistoryItem
-* is defined by a WorkerHistoryStorageInterface
-
-### Worker List
-
-* one entry per running worker
-* has a well defined WorkerListItem
-* is defined by a WorkerListStorageInterface
 
 ## Unsorted Ideas
 
@@ -68,11 +76,18 @@ The component will easy up handling of batch job processes.
             * minimum amount of entries in queue
     * one job simple prepares the chunks per batch job type
     * one job to start the prepared chunks per batch job
-* basic queue table
-    * id
-    * chunk_id
-    * created_at
-    * status
+
+### Worker History
+
+* one entry per executed worker
+* has a well defined WorkerHistoryItem
+* is defined by a WorkerHistoryStorageInterface
+
+### Worker List
+
+* one entry per running worker
+* has a well defined WorkerListItem
+* is defined by a WorkerListStorageInterface
 
 ## Flow
 
@@ -84,7 +99,8 @@ The component will easy up handling of batch job processes.
 
 * id
 * name
-* chunk_size
+* batch_size
+* priority
 * high_load_parallel_process
 * medium_load_parallel_process
 * low_load_parallel_process
@@ -94,14 +110,16 @@ The component will easy up handling of batch job processes.
 
 * id
 * name
-* current_chunk_size
+* current_batch_size
+* maximum_batch_size
 * created_at
 
 ### process history
 
 * id
 * name
-* current_chunk_size
+* current_batch_size
+* maximum_batch_size
 * created_at
 * finished_at
 * memory_usage
