@@ -64,6 +64,10 @@ The component will easy up handling of batch job processes.
 * releases / unmarks items in queue from a batch id
 * implements ReleaseInterface
 
+## Available Requests (with reference implementation as console command)
+
+
+
 ## Unsorted Ideas
 
 * use [uuid](https://packagist.org/packages/rhumsaa/uuid) to generate chunk ids
