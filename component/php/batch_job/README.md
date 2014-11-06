@@ -12,8 +12,8 @@ The component will easy up handling of batch job processes.
     * start the right amount of jobs
 * everything is stored in queues
 * event based to hook easy up extension:
-    * implement a support for a "current worker list / process list"
-    * implement a support for a "worker history list"
+    * implement a support for a "current processor list / process list"
+    * implement a support for a "processor history list"
 
 ## Terms
 
@@ -25,15 +25,15 @@ The component will easy up handling of batch job processes.
     * items
     * size
 
-### Worker / Job
+### Processor / Worker / Job
 
 * works with a batch
-* implements WorkInterface
+* implements ProcessorInterface
 * this is the area where you put in your business logic
 
 ### Queue / List
 
-* a list containing all available items for a given worker
+* a list containing all available items for a given processor
 * implements QueueInterface
 * structure:
     * id
@@ -66,7 +66,16 @@ The component will easy up handling of batch job processes.
 
 ## Available Requests (with reference implementation as console command)
 
-
+* acquire-queue <queue name> [<batch size>] [<number of batches> = 1]
+* acquire-queues [<batch size>] [<number of batches> = 1]
+* allocate-queue <queue name>
+* allocate-queues
+* enqueue-into-queue <queue name>
+* enqueue-into-queues
+* process-queue <queue name> [<number of processors> = 1] [--burst]
+* process-queues [<number of processors> = 1] [--burst]
+* release-queue <queue name> [<batch id>]
+* release-queues
 
 ## Unsorted Ideas
 
@@ -81,37 +90,59 @@ The component will easy up handling of batch job processes.
     * one job simple prepares the chunks per batch job type
     * one job to start the prepared chunks per batch job
 
-### Worker History
+### Processor History
 
-* one entry per executed worker
-* has a well defined WorkerHistoryItem
-* is defined by a WorkerHistoryStorageInterface
+* one entry per executed processor
+* has a well defined ProcessorHistoryItem
+* is defined by a ProcessorHistoryStorageInterface
 
-### Worker List
+### Processor List
 
-* one entry per running worker
-* has a well defined WorkerListItem
-* is defined by a WorkerListStorageInterface
+* one entry per running processor
+* has a well defined ProcessorListItem
+* is defined by a ProcessorListStorageInterface
 
 ## Flow
 
 * batch job reads configuration (all available batch jobs) and puts them into a queue
 * batch job acquires one (or multiple) queued batch jobs and start batch jobs with chunk id working on the queue
-* batch job executes batch job per queue and start acquirering until maximum number of queue workers is reached (based on system load and cool down) or no more items are available in the queue and finally starts the real queue worker
+* batch job executes batch job per queue and start acquirering until maximum number of queue processors is reached (based on system load and cool down) or no more items are available in the queue and finally starts the real queue processor
 
 ### Configuration
 
-* id
-* name
-* batch_size
-* priority
-* high_load_parallel_process
-* medium_load_parallel_process
-* low_load_parallel_process
-* number_of_seconds_for_cooldown
+#### Default
+
+* enabled: true
+* priority: 50
+* batch size: 100
+* memory limit: 128MB
+* runtime limit: 60
+* number of processes on high load: 4
+* number of processes on medium load: 10
+* number of processes on low load: 20
+* number of seconds between runs: 4
+
+
+#### Per Job
+
+* unique name / unique id: string
+* [enabled: boolean]
+* [priority: integer]
+* [batch size: integer]
+* [memory limit: string]
+* [runtime limit: integer]
+* [number of processes on high load: integer]
+* [number of processes on medium load: integer]
+* [number of processes on low load: integer]
+* [number of seconds between runs: integer]
+* full qualified acquirer class name
+* full qualified allocator class name
+* full qualified processor class name
+* full qualified releaser class name
 
 ### process list
 
+?
 * id
 * name
 * current_batch_size
@@ -120,6 +151,7 @@ The component will easy up handling of batch job processes.
 
 ### process history
 
+?
 * id
 * name
 * current_batch_size
