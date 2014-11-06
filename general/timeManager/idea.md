@@ -1,3 +1,5 @@
+# Time Manager
+
 # General
 
 * authentication token as to provided on each request (except routes "/login" and "/register")

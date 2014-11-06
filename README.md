@@ -13,7 +13,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Database Generator](https://github.com/stevleibelt/incubator/tree/master//cli/generate/database)
 * [System Update](https://github.com/stevleibelt/incubator/tree/master//cli/update/system)
 * [zfs manager](https://github.com/stevleibelt/incubator/tree/master//general/zfsManager)
-* [General](https://github.com/stevleibelt/incubator/tree/master//general/timeManager)
+* [Time Manager](https://github.com/stevleibelt/incubator/tree/master//general/timeManager)
 * [Test Management](https://github.com/stevleibelt/incubator/tree/master//general/testManagement)
 * [Tag Cloud](https://github.com/stevleibelt/incubator/tree/master//general/fileManager)
 * [Autocomplete](https://github.com/stevleibelt/incubator/tree/master//web/general/autocomplete)
