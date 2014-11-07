@@ -1,0 +1,20 @@
+<?php
+/**
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2014-11-07 
+ */
+
+namespace De\Leibelt\ProcessPipe;
+
+/**
+ * Interface PipeInterface
+ * @package De\Leibelt\ProcessPipeline
+ */
+interface PipeInterface extends ExecutableInterface
+{
+    /**
+     * @param ExecutableInterface $process
+     * @return $this
+     */
+    public function pipe(ExecutableInterface $process);
+} 

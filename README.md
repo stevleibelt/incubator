@@ -23,4 +23,5 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/merge_arrays)
 * [Signal Component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/signals)
 * [sed on [system process](https://github.com/jakobwesthoff/systemProcess) but with a more general aproach in mind.](https://github.com/stevleibelt/incubator/tree/master/component/php/command)
+* [Process Pipe](https://github.com/stevleibelt/incubator/tree/master/component/php/process_pipe)
 * [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/batch_job)
