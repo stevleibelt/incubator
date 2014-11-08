@@ -13,7 +13,7 @@ namespace De\Leibelt\ProcessPipe;
 interface PipeInterface extends ExecutableInterface
 {
     /**
-     * @param ExecutableInterface $process
+     * @param ExecutableInterface $process - or more
      * @return $this
      */
     public function pipe(ExecutableInterface $process);

@@ -57,11 +57,11 @@ $data = array(
     'times' => array()
 );
 $pipe = new Pipe();
-$processOne = new ProcessOne();
-$processTwo = new ProcessTwo();
 
-$pipe->pipe($processOne);
-$pipe->pipe($processTwo);
+$pipe->pipe(
+    new ProcessOne(),
+    new ProcessTwo()
+);
 
 echo 'data before process pipe.' . PHP_EOL;
 echo var_export($data, true) . PHP_EOL;

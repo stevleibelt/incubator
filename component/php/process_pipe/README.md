@@ -10,7 +10,20 @@ Take a look to the example section.
 
 # Usage
 
-## By using the pipe method
+## By using the pipe method for multiple process
+
+```php
+$pipe = new Pipe();
+
+$pipe->pipe(
+    new ProcessOne(), 
+    new ProcessTwo()
+);
+
+$data = $pipe->execute($data);
+
+```
+## By using the pipe method once for each process
 
 ```php
 $pipe = new Pipe();

@@ -24,11 +24,7 @@ class Pipe implements PipeInterface
         $this->processes = array();
 
         if (func_num_args() > 0) {
-            foreach (func_get_args() as $argument) {
-                if ($argument instanceof ExecutableInterface) {
-                    $this->pipe($argument);
-                }
-            }
+            call_user_func_array('pipe', func_get_args());
         }
     }
 
@@ -52,7 +48,11 @@ class Pipe implements PipeInterface
      */
     public function pipe(ExecutableInterface $process)
     {
-        $this->processes[] = $process;
+        foreach (func_get_args() as $process) {
+            if ($process instanceof ExecutableInterface) {
+                $this->processes[] = $process;
+            }
+        }
 
         return $this;
     }
