@@ -47,7 +47,6 @@ $data = $pipe->execute($data);
 
 # to do
 
-* add example with data generator
 * add example with data transformer
 * rename $data to $io or $inputOutput
 
