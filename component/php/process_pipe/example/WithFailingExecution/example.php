@@ -4,7 +4,7 @@
  * @since 2014-11-08 
  */
 
-namespace De\Leibelt\ProcessPipe\Example\TwoProcessWithFailingExecution;
+namespace De\Leibelt\ProcessPipe\Example\WithFailingExecution;
 
 use De\Leibelt\ProcessPipe\ExecutableException;
 use De\Leibelt\ProcessPipe\ExecutableInterface;

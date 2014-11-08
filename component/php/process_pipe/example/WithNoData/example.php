@@ -4,7 +4,7 @@
  * @since 2014-11-08 
  */
 
-namespace De\Leibelt\ProcessPipe\Example\TwoProcessNoData;
+namespace De\Leibelt\ProcessPipe\Example\WithNoData;
 
 use De\Leibelt\ProcessPipe\ExecutableInterface;
 use De\Leibelt\ProcessPipe\Pipe;

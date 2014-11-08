@@ -4,12 +4,11 @@
  * @since 2014-11-09
  */
 
-namespace De\Leibelt\ProcessPipe\Example\TwoProcessWithArrayData;
+namespace De\Leibelt\ProcessPipe\Example\WithDataTypeValidation;
 
 use De\Leibelt\ProcessPipe\ExecutableException;
 use De\Leibelt\ProcessPipe\ExecutableInterface;
 use De\Leibelt\ProcessPipe\Pipe;
-use De\Leibelt\ProcessPipe\PipeInterface;
 use Exception;
 
 require_once __DIR__ . '/../autoload.php';
