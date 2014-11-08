@@ -29,17 +29,17 @@ class Pipe implements PipeInterface
     }
 
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
         foreach ($this->processes as $process) {
-            $data = $process->execute($data);
+            $input = $process->execute($input);
         }
 
-        return $data;
+        return $input;
     }
 
     /**

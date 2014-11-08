@@ -4,7 +4,7 @@
  * @since 2014-11-09
  */
 
-namespace De\Leibelt\ProcessPipe\Example\WithDataTypeValidation;
+namespace De\Leibelt\ProcessPipe\Example\InputValidator;
 
 use De\Leibelt\ProcessPipe\ExecutableException;
 use De\Leibelt\ProcessPipe\ExecutableInterface;
@@ -19,15 +19,15 @@ require_once __DIR__ . '/../autoload.php';
 class ProcessOne implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws \De\Leibelt\ProcessPipe\ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
-        $data .= ' ' . __METHOD__;
+        $input .= ' ' . __METHOD__;
 
-        return $data;
+        return $input;
     }
 }
 
@@ -37,23 +37,23 @@ class ProcessOne implements ExecutableInterface
 class ProcessTwo implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws \De\Leibelt\ProcessPipe\ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
-        if (!is_array($data)) {
-            throw new ExecutableException('data must be type of array');
+        if (!is_array($input)) {
+            throw new ExecutableException('input must be type of array');
         }
 
-        $data[] = __METHOD__;
+        $input[] = __METHOD__;
 
-        return $data;
+        return $input;
     }
 }
 
-$data = 'string';
+$input = 'string';
 
 $pipe = new Pipe();
 
@@ -63,8 +63,8 @@ $pipe->pipe(
 );
 
 try {
-    $data = $pipe->execute($data);
-    echo $data . PHP_EOL;
+    $output = $pipe->execute($input);
+    echo $output . PHP_EOL;
 } catch (Exception $exception) {
     echo 'caught exception with message: ' . $exception->getMessage() . PHP_EOL;
 }

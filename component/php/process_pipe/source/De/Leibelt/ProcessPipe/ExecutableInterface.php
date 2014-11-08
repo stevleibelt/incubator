@@ -13,9 +13,9 @@ namespace De\Leibelt\ProcessPipe;
 interface ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws ExecutableException
      */
-    public function execute($data = null);
+    public function execute($input = null);
 } 

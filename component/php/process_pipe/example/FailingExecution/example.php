@@ -4,7 +4,7 @@
  * @since 2014-11-08 
  */
 
-namespace De\Leibelt\ProcessPipe\Example\WithFailingExecution;
+namespace De\Leibelt\ProcessPipe\Example\FailingExecution;
 
 use De\Leibelt\ProcessPipe\ExecutableException;
 use De\Leibelt\ProcessPipe\ExecutableInterface;
@@ -18,13 +18,13 @@ require_once __DIR__ . '/../autoload.php';
 class ProcessOne implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws \De\Leibelt\ProcessPipe\ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
-        return $data;
+        return $input;
     }
 }
 
@@ -34,11 +34,11 @@ class ProcessOne implements ExecutableInterface
 class ProcessTwo implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws \De\Leibelt\ProcessPipe\ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
         throw new ExecutableException(__METHOD__ . ' has failed');
     }

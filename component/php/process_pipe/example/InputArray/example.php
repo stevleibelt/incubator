@@ -4,7 +4,7 @@
  * @since 2014-11-08 
  */
 
-namespace De\Leibelt\ProcessPipe\Example\WithArrayData;
+namespace De\Leibelt\ProcessPipe\Example\InputArray;
 
 use De\Leibelt\ProcessPipe\ExecutableInterface;
 use De\Leibelt\ProcessPipe\Pipe;
@@ -17,17 +17,17 @@ require_once __DIR__ . '/../autoload.php';
 class ProcessOne implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws \De\Leibelt\ProcessPipe\ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
-        $data['name'] = 'bar';
-        $data['steps'][] = __METHOD__;
-        $data['times'][] = microtime(true);
+        $input['name'] = 'bar';
+        $input['steps'][] = __METHOD__;
+        $input['times'][] = microtime(true);
 
-        return $data;
+        return $input;
     }
 }
 
@@ -37,21 +37,21 @@ class ProcessOne implements ExecutableInterface
 class ProcessTwo implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws \De\Leibelt\ProcessPipe\ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
-        $data['name'] = 'foobar';
-        $data['steps'][] = __METHOD__;
-        $data['times'][] = microtime(true);
+        $input['name'] = 'foobar';
+        $input['steps'][] = __METHOD__;
+        $input['times'][] = microtime(true);
 
-        return $data;
+        return $input;
     }
 }
 
-$data = array(
+$input = array(
     'name' => 'foo',
     'steps' => array(),
     'times' => array()
@@ -63,10 +63,10 @@ $pipe->pipe(
     new ProcessTwo()
 );
 
-echo 'data before process pipe.' . PHP_EOL;
-echo var_export($data, true) . PHP_EOL;
+echo 'input' . PHP_EOL;
+echo var_export($input, true) . PHP_EOL;
 
-$data = $pipe->execute($data);
+$output = $pipe->execute($input);
 
-echo 'data after process pipe.' . PHP_EOL;
-echo var_export($data, true) . PHP_EOL;
+echo 'output' . PHP_EOL;
+echo var_export($output, true) . PHP_EOL;

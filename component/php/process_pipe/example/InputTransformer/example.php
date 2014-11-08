@@ -4,7 +4,7 @@
  * @since 2014-11-08 
  */
 
-namespace De\Leibelt\ProcessPipe\Example\WithDataTransformer;
+namespace De\Leibelt\ProcessPipe\Example\InputTransformer;
 
 use De\Leibelt\ProcessPipe\ExecutableException;
 use De\Leibelt\ProcessPipe\ExecutableInterface;
@@ -19,19 +19,19 @@ require_once __DIR__ . '/../autoload.php';
 class ObjectToArrayTransformer implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws \De\Leibelt\ProcessPipe\ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
-        if (!is_object($data)) {
-            throw new ExecutableException('data must be instance of object');
+        if (!is_object($input)) {
+            throw new ExecutableException('input must be instance of object');
         }
 
         $array = array();
 
-        foreach (get_object_vars($data) as $property => $value) {
+        foreach (get_object_vars($input) as $property => $value) {
             $array[$property] = $value;
         }
 
@@ -46,17 +46,17 @@ class ObjectToArrayTransformer implements ExecutableInterface
 class ArrayToJSONTransformer implements ExecutableInterface
 {
     /**
-     * @param mixed $data
+     * @param mixed $input
      * @return mixed
      * @throws ExecutableException
      */
-    public function execute($data = null)
+    public function execute($input = null)
     {
-        if (!is_array($data)) {
-            throw new ExecutableException('data must be an array');
+        if (!is_array($input)) {
+            throw new ExecutableException('input must be an array');
         }
 
-        return json_encode($data);
+        return json_encode($input);
     }
 }
 
