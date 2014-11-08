@@ -24,7 +24,7 @@ class Pipe implements PipeInterface
         $this->processes = array();
 
         if (func_num_args() > 0) {
-            call_user_func_array('pipe', func_get_args());
+            call_user_func_array(array($this, 'pipe'), func_get_args());
         }
     }
 
