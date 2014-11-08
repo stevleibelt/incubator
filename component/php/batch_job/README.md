@@ -66,15 +66,15 @@ The component will easy up handling of batch job processes.
 
 ## Available Requests (with reference implementation as console command)
 
-* acquire-queue <queue name> [<batch size>] [<number of batches> = 1]
-* acquire-queues [<batch size>] [<number of batches> = 1]
-* allocate-queue <queue name>
+* acquire-queue `<queue name>` [`<batch size>`] [`<number of batches>` = 1]
+* acquire-queues [`<batch size>`] [`<number of batches>` = 1]
+* allocate-queue `<queue name>`
 * allocate-queues
-* enqueue-into-queue <queue name>
+* enqueue-into-queue `<queue name>`
 * enqueue-into-queues
-* process-queue <queue name> [<number of processors> = 1] [--burst]
-* process-queues [<number of processors> = 1] [--burst]
-* release-queue <queue name> [<batch id>]
+* process-queue `<queue name>` [`<number of processors>` = 1] [--burst]
+* process-queues [`<number of processors>` = 1] [--burst]
+* release-queue `<queue name>` [`<batch id>`]
 * release-queues
 
 ## Unsorted Ideas
