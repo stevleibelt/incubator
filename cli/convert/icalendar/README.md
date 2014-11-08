@@ -1,10 +1,8 @@
-ICalendar Converter
-===================
+# ICalendar Converter
 
 Simple command line tool to read and display an *.ical file.
 
-Core Functionalities
---------------------
+# Core Functionalities
 
 * read and convert an *.ical file and outputs content
 * supports time frame to scope output 
