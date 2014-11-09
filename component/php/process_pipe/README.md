@@ -6,7 +6,14 @@ Indeed, it is a [pseudo pipeline](http://en.wikipedia.org/wiki/Pipeline_(softwar
 Currently, there is no plan to blow up the code base with an implementation of [STDIN](http://en.wikipedia.org/wiki/Standard_streams#Standard_input_.28stdin.29), [STDOUT](http://en.wikipedia.org/wiki/Standard_streams#Standard_output_.28stdout.29) or [STDERR](http://en.wikipedia.org/wiki/Standard_streams#Standard_error_.28stderr.29).
 Errors can be handled by the thrown exception. Input is defined by the ExecutableInterface, as well as the output (return value).
 
-Take a look to the example section.
+Take a look to the example section. The following examples are:
+
+* no input
+* input array
+* failing execution
+* input generator
+* input transformer
+* input validator
 
 # Usage
 
