@@ -11,11 +11,16 @@
 |-----------|-----------|---------------------------------------------------|-------------------------------|
 |/register  | POST      | email, password                                   | creates new account           |
 |/login     | POST      | email, password                                   | creates authentication token  |
-|/entry     | GET       | [start=<Y-m-d%20H:i:s][end=<Y-m-d%20H:i:s]        | fetches all entries           |
-|/entry     | POST      | start, end, subject, content                      | create entry                  |
+|/entrys    | GET       | [start=Y-m-d%20H:i:s][end=Y-m-d%20H:i:s]          | fetches all entries           |
+|/entry     | POST      | start, end, subject, content, tags                | create entry                  |
 |/entry/:id | GET       |                                                   | fetch single entry            |
-|/entry/:id | PUT       | start, end, subject, content                      | update entry                  |
+|/entry/:id | PUT       | start, end, subject, content, tags                | update entry                  |
 |/entry/:id | DELETE    |                                                   | delete entry                  |
+|/tags      | GET       | [prefix=character[character[...]]]                | fetch all tags                |
+|/tag       | POST      | name                                              | create tag                    |
+|/tag/:id   | GET       |                                                   | fetch single tag              |
+|/tag/:id   | PUT       | name                                              | update tag                    |
+|/tag/:id   | DELETE    |                                                   | delete tag                    |
 
 # Database Tables
 
