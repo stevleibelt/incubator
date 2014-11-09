@@ -14,6 +14,7 @@ Take a look to the example section. The following examples are:
 * input generator
 * input transformer
 * input validator
+* data flow manipulator
 
 # Usage
 
