@@ -26,5 +26,4 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Signal Component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/signals)
 * [SFTP Module for ZF2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_sftp)
 * [Command Component](https://github.com/stevleibelt/incubator/tree/master/component/php/command)
-* [Process Pipe](https://github.com/stevleibelt/incubator/tree/master/component/php/process_pipe)
 * [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/batch_job)
