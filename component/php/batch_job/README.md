@@ -89,6 +89,7 @@ The component will easy up handling of batch job processes.
             * minimum amount of entries in queue
     * one job simple prepares the chunks per batch job type
     * one job to start the prepared chunks per batch job
+* rename it to "BatchD" :o)
 
 ### Processor History
 
