@@ -89,6 +89,9 @@ The component will easy up handling of batch job processes.
             * minimum amount of entries in queue
     * one job simple prepares the chunks per batch job type
     * one job to start the prepared chunks per batch job
+* server load can be fetch by
+    * url endpoint
+    * database table
 * rename it to "BatchD" :o)
 
 ### Processor History
