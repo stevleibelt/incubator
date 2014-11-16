@@ -93,6 +93,7 @@ The component will easy up handling of batch job processes.
     * url endpoint
     * database table
 * rename it to "BatchD" :o)
+* queue is a database table
 
 ### Processor History
 
