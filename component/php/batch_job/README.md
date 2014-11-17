@@ -4,9 +4,9 @@ The component will easy up handling of batch job processes.
 
 ## Main Ideas
 
-* it is independent how a batch job is executed (url call, process forking, background process start, think about something else)
-* the component defines the manager and the batch job itself, you only plug in your business logic
-* the manager takes care to:
+* it is independent how a batch job is executed (url call, process forking, background process, threads or think about something else)
+* the component defines the manager and batch job components itself, all you need to do is to plug in your business logic
+* the manager takes care of:
     * create the amount of work
     * split the amount of work into batches
     * start the right amount of jobs
@@ -20,9 +20,11 @@ The component will easy up handling of batch job processes.
 ### Batch
 
 * container for a batch of work
+* is arrayable
+* implements BatchInterface
 * contains:
     * id
-    * items
+    * collection of queue item ids
     * size
 
 ### Processor / Worker / Job
@@ -33,18 +35,20 @@ The component will easy up handling of batch job processes.
 
 ### Queue / List
 
-* a list containing all available items for a given processor
+* a list containing all available item ids for a given processor
+* a item id is an id referring to a item you have to process
 * implements QueueInterface
 * structure:
     * id
     * batch_id
+    * item_id
     * status
     * created_at
     * processed_at
 
 ### Enqueuer / Loader / Stocker / Restocker / Refiller
 
-* fills up queue with items
+* fills up queue with item ids
 * implements EnqueueInterface
 
 ### Allocator
@@ -56,12 +60,12 @@ The component will easy up handling of batch job processes.
 
 ### Acquirer
 
-* acquires / marks items in queue with a batch id
+* acquires / marks item ids in queue with a batch id
 * implements AcquireInterface
 
 ### Releaser
 
-* releases / unmarks items in queue from a batch id
+* releases / unmarks item ids in queue from a batch id
 * implements ReleaseInterface
 
 ## Available Requests (with reference implementation as console command)
@@ -92,8 +96,7 @@ The component will easy up handling of batch job processes.
 * server load can be fetch by
     * url endpoint
     * database table
-* rename it to "BatchD" :o)
-* queue is a database table
+* queue is a database table by default
 * queues are managed in pure pdo-sql to increase speed and reduce memory footprint
 * batch job can be paused
 
