@@ -94,6 +94,8 @@ The component will easy up handling of batch job processes.
     * database table
 * rename it to "BatchD" :o)
 * queue is a database table
+* queues are managed in pure pdo-sql to increase speed and reduce memory footprint
+* batch job can be paused
 
 ### Processor History
 
