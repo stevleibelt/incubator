@@ -18,6 +18,15 @@ The component will easy up handling of batch job processes.
 
 ## Terms
 
+### Batch Job
+
+* collection or summary of
+	* processor
+    * queue
+    * enqueuer
+    * aqcuirer
+    * releaser
+
 ### Batch
 
 * container for a collection of items
@@ -56,13 +65,6 @@ The component will easy up handling of batch job processes.
 * implements EnqueueInterface
 * inserts item references into the queue 
 
-### Instance
-
-* representation of a physical/system endpoint
-	* [web]server
-    * event loop
-    * application
-
 ### Acquirer
 
 * acquires / marks item ids in queue with a batch id
@@ -76,6 +78,13 @@ The component will easy up handling of batch job processes.
     * simple sets the batch_id for an amount of queue entries to NULL
     * with event handling, it can do more
 * implements ReleaseInterface|LoadBalancerAwareInterface
+
+### Instance
+
+* representation of a physical/system endpoint
+	* [web]server
+    * event loop
+    * application
 
 ### Load Balancer / Instance Manager - v1.1
 
@@ -150,7 +159,15 @@ The component will easy up handling of batch job processes.
 
 ### Configuration
 
-#### Default / General
+#### Instance
+
+* unique_identifier: string
+	* enabled: boolean
+    * endpoint: string
+
+#### Batch Job
+
+##### Default / General
 
 * enabled: true
 * priority: 50
@@ -169,7 +186,7 @@ The component will easy up handling of batch job processes.
     * host
 
 
-#### Per Job
+##### Per Job
 
 * unique name / unique id: string
 * [enabled: boolean]
@@ -186,6 +203,11 @@ The component will easy up handling of batch job processes.
 * full qualified processor class name
 * full qualified releaser class name
 * database table name
+
+#### Manager
+
+* path_to_batch_job_configuration
+* path_to_instance_configuration
 
 ### processor list
 
