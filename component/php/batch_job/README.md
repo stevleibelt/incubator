@@ -30,7 +30,7 @@ The component will easy up handling of batch job processes.
 ### Batch
 
 * container for a collection of items
-* is arrayable (ArrayIterator|Traversable)
+* behaves like an array (ArrayAccess|Traversable)
 * implements BatchInterface
 * represents a scoped view on a queue
 * contains:
