@@ -21,7 +21,7 @@ The component will easy up handling of batch job processes.
 ### Batch Job
 
 * collection or summary of
-	* processor
+    * processor
     * queue
     * enqueuer
     * aqcuirer
@@ -30,11 +30,11 @@ The component will easy up handling of batch job processes.
 ### Batch
 
 * container for a collection of items
-* behaves like an array (ArrayAccess|Traversable)
+* behaves like an array (ArrayAccess|Iterator)
 * implements BatchInterface
 * represents a scoped view on a queue
 * contains:
-    * id
+    * identifier
     * item_id[] - collection of references to items
     * size
 
@@ -114,7 +114,9 @@ The component will easy up handling of batch job processes.
 
 ## Unsorted Ideas
 
-* use [uuid](https://packagist.org/packages/rhumsaa/uuid) to generate batch ids
+* use uuid to generate batch ids
+    * [uuid - lootils](http://packagist.org/packages/lootils/uuid) (v5, and unit tests)
+    * [uuid - laravel](http://packagist.org/packages/webpatser/laravel-uuid) (v5, no unit tests) (v5, no unit tests)
 * simple batch jobs (fast, low memory footprint, runtime below a minute)
 * manager tasks are split up
     * one job for choosing the upcoming running processors
