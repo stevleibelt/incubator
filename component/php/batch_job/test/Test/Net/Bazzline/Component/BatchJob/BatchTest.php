@@ -42,6 +42,31 @@ class BatchTest extends TestCase
             __LINE__,
             __LINE__
         );
+
+        foreach ($ids as $key => $value) {
+            $this->assertFalse($batch->offsetExists($key));
+            $batch->offsetSet($key, $value);
+        }
+
+        foreach ($ids as $key => $value) {
+            $this->assertTrue($batch->offsetExists($key));
+            $this->assertEquals($value, $batch->offsetGet($key));
+        }
+
+        foreach ($ids as $key => $value) {
+            $batch->offsetUnset($key);
+            $this->assertFalse($batch->offsetExists($key));
+        }
+    }
+
+    public function testIteratorImplementation()
+    {
+        $batch = $this->getNewBatch();
+        $ids = array(
+            __LINE__,
+            __LINE__,
+            __LINE__
+        );
         $batch->setIds($ids);
 
         foreach ($batch as $key => $value) {
