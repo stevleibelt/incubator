@@ -4,7 +4,9 @@
  * @since 2014-12-06 
  */
 
-namespace Test\Net\Bazzline\Component\BatchJob;
+namespace Test\Net\Bazzline\Component\BatchJob\Batch;
+
+use Test\Net\Bazzline\Component\BatchJob\TestCase;
 
 /**
  * Class BatchTest

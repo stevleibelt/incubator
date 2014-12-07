@@ -4,14 +4,14 @@
  * @since 2014-12-05 
  */
 
-namespace Net\Bazzline\Component\BatchJob;
+namespace Net\Bazzline\Component\BatchJob\Batch;
 
 use ArrayAccess;
 use Iterator;
 
 /**
  * Interface BatchInterface
- * @package Net\Bazzline\Component\BatchJob
+ * @package Net\Bazzline\Component\BatchJob\Batch
  */
 interface BatchInterface extends ArrayAccess, Iterator
 {

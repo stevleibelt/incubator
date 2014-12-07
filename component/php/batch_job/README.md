@@ -49,7 +49,7 @@ The component will easy up handling of batch job processes.
 * a list containing all available item ids for a given processor
 * a item id is an id referring to a item you want to process
 * implements QueueInterface
-* structure:
+* database table structure:
     * id
     * batch_id
     * item_id

@@ -4,11 +4,11 @@
  * @since 2014-12-05 
  */
 
-namespace Net\Bazzline\Component\BatchJob;
+namespace Net\Bazzline\Component\BatchJob\Batch;
 
 /**
  * Class Batch
- * @package Net\Bazzline\Component\BatchJob
+ * @package Net\Bazzline\Component\BatchJob\Batch
  */
 class Batch implements BatchInterface
 {

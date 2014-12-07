@@ -6,7 +6,7 @@
 
 namespace Test\Net\Bazzline\Component\BatchJob;
 
-use Net\Bazzline\Component\BatchJob\Batch;
+use Net\Bazzline\Component\BatchJob\Batch\Batch;
 use PHPUnit_Framework_TestCase;
 
 /**
