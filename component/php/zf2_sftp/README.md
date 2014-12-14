@@ -1,3 +1,8 @@
+# SFTP Module for ZF2
+
+## Code ideas
+
+```php
 <?php
 /**
  * used:
@@ -115,3 +120,4 @@ class SFTP
 
     }
 }
+```
