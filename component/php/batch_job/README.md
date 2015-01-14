@@ -134,6 +134,10 @@ The component will easy up handling of batch job processes.
     * queues are managed in pure pdo-sql to increase speed and reduce memory footprint
 * batch job can be paused (planned for version 1.4)
 * use rest endpoints for url process calling (and provide example cli implementation for using the rest endpoints - planned for version 1.5)
+* on failure
+    * if a process breaks while execution (stops working) you could use the infrastructure to
+        * implement a "monitoring" processor (checks the creation date with an expected time frame, validates if the pid is still running etc.)
+        * implement a "cleanup" processor (resets stats, sends mails/notifications, clean up file system/database etc.)
 * the manager simple triggers the commands above by reading the configuration and using the right factories
     * everything is a batch job / processor represented by a queue
         * processor_queue_enqueuer  -> procesor_queue
