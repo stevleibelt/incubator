@@ -21,11 +21,16 @@ The component will easy up handling of batch job processes.
 ### Batch Job
 
 * collection or summary of
+    * aqcuirer
+    * batch
+    * enqueuer
     * processor
     * queue
-    * enqueuer
-    * aqcuirer
     * releaser
+* is a container with simple setter and getter methods
+    * getProcessor
+    * getQueue
+    * ...
 
 ### Batch
 
