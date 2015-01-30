@@ -149,6 +149,12 @@ The component will easy up handling of batch job processes.
         * enqueuer_queue_enqueuer   -> enqueuer_queue
         * acquire_queue_enqueuer    -> acquire_queue
         * release_queue_enqueuer    -> release_queue
+* advices:
+    * queue:
+        * mo multi content queue (they are complex to debug and allowing race conditions)
+        * use “order by id ASC” for acquiring to process the queue top down (oldes entries first, timebased right ordering)
+        * no complex enqueuer (no priority, nothing that can lead into a race condition, simple new item and that’s it)
+
 
 ### Processor History (planned for version 1.3)
 
