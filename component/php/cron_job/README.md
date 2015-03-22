@@ -49,3 +49,7 @@
     * write log / history
     * load fitting cron job / factory
     * execute cron job
+
+# links
+
+* https://github.com/Arbitracker/Periodic
