@@ -6,9 +6,9 @@
  * @todo put it in nice classes
  */
 
-$baseUrl = 'https://github.com/stevleibelt/incubator/tree/master/';
-$filePath = __DIR__ . '/README.md';
-$identifierOfSectionsAndIdeas = '## Sections And Ideas';
+$baseUrl                        = 'https://github.com/stevleibelt/incubator/tree/master/';
+$filePath                       = __DIR__ . '/README.md';
+$identifierOfSectionsAndIdeas   = '## Sections And Ideas';
 
 //begin of update logic
 /**
