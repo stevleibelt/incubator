@@ -170,9 +170,11 @@ The component will easy up handling of batch job processes.
 
 ## Flow
 
-* manager reads configuration (all available items) and puts them into a queue
-* processor acquires one or multiple batches in the queue
-* processor starts working on available batches until maximum number of processors is reached or no more batches are available in the queue
+* batchjob manager
+    * reads configuration and current number of running process
+    * starts acquire manager by passing chunk id generator and all acquireable chunks (all available batch jobs with number of chunks)
+    * starts process manager by passing array of batch job to chunk id
+    * starts release manager by passing array of chunk id where process are not longer running
 
 ### Configuration
 
