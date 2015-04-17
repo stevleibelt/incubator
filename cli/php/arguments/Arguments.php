@@ -161,7 +161,7 @@ class Arguments
             if ($this->startsWith($argument, '--')) {
                 if ($this->contains($argument, '=')) {
                     $position   = strpos($argument, '=');
-                    $name       = substr($argument, 2, $position);
+                    $name       = substr($argument, 2, ($position - 2));
                     $value      = substr($argument, ($position + 1));
                     $this->addToList($name, $value);
                 } else {
@@ -171,7 +171,7 @@ class Arguments
                 if (strlen($argument) === 2) {
                     $this->triggers[] = substr($argument, 1);
                 } else {
-                    $name   = substr($argument, 1, 2);
+                    $name   = substr($argument, 1, 1);
                     $value  = substr($argument, 2);
                     $this->addToList($name, $value);
                 }

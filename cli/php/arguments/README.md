@@ -25,13 +25,11 @@ arguments provided:
     foobar
     foo
 lists provided:
-    foobar=f
+    foobar
         foo
-    foobar=b
         bar
-    ff
+    f
         foo
-    fb
         bar
 triggers provided:
     foo
