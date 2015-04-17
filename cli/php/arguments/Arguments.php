@@ -7,6 +7,9 @@
 class Arguments
 {
     /** @var array */
+    private $arguments;
+
+    /** @var array */
     private $lists;
 
     /** @var array */
@@ -20,13 +23,22 @@ class Arguments
      */
     public function __construct($argv = null)
     {
-        $this->lists   = array();
-        $this->triggers = array();
-        $this->values = array();
+        $this->arguments    = array();
+        $this->lists        = array();
+        $this->triggers     = array();
+        $this->values       = array();
 
         if (is_array($argv)) {
             $this->setArguments($argv);
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 
     /**
@@ -69,6 +81,14 @@ class Arguments
     public function getLists()
     {
         return ($this->hasLists()) ? $this->lists : array();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasArguments()
+    {
+        return (!empty($this->arguments));
     }
 
     /**
@@ -116,7 +136,8 @@ class Arguments
     public function setArguments(array $argv)
     {
         array_shift($argv);
-        $this->generate($argv);
+        $this->arguments = $argv;
+        $this->generate($this->arguments);
 
         return $this;
     }
@@ -138,21 +159,19 @@ class Arguments
     {
         foreach ($arguments as $argument) {
             if ($this->startsWith($argument, '--')) {
-                //echo var_export($argument, true) . PHP_EOL;
-                //echo var_export($this->contains($argument, '='), true) . PHP_EOL;
                 if ($this->contains($argument, '=')) {
                     $position   = strpos($argument, '=');
-                    $name       = substr($argument, 0, $position);
+                    $name       = substr($argument, 2, $position);
                     $value      = substr($argument, ($position + 1));
                     $this->addToList($name, $value);
                 } else {
-                    $this->triggers[] = $argument;
+                    $this->triggers[] = substr($argument, 2);
                 }
             } else if ($this->startsWith($argument, '-')) {
                 if (strlen($argument) === 2) {
-                    $this->triggers[] = $argument;
+                    $this->triggers[] = substr($argument, 1);
                 } else {
-                    $name   = substr($argument, 0, 2);
+                    $name   = substr($argument, 1, 2);
                     $value  = substr($argument, 2);
                     $this->addToList($name, $value);
                 }

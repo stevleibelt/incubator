@@ -14,16 +14,28 @@ php example.php --foo bar --foobar="foo" --foobar="bar" -f"foo" -f"bar" -b fooba
 
 Generates the following output.
 ```
+arguments provided:
+    --foo
+    bar
+    --foobar=foo
+    --foobar=bar
+    -ffoo
+    -fbar
+    -b
+    foobar
+    foo
 lists provided:
-    --foobar
+    foobar=f
         foo
+    foobar=b
         bar
-    -f
+    ff
         foo
+    fb
         bar
 triggers provided:
-    --foo
-    -b
+    foo
+    b
 values provided:
     bar
     foobar
