@@ -148,6 +148,7 @@ class Arguments
      */
     private function addToList($name, $value)
     {
+        $value = trim($value, '"'); //remove >"< if exists
         if (isset($this->lists[$name])) {
             $this->lists[$name][] = $value;
         } else {
