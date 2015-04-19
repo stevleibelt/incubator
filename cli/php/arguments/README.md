@@ -39,3 +39,13 @@ values provided:
     foobar
     foo
 ```
+
+# Links (other good projects)
+
+* [search on packagist](https://packagist.org/search/?search_query%5Bquery%5D=getopt)
+* [yeriomin/getopt](https://github.com/yeriomin/getopt)
+* [ulrichsg/getopt-php](https://github.com/ulrichsg/getopt-php)
+* [stuartherbert/CommandLineLib](https://github.com/stuartherbert/CommandLineLib/)
+* [auraphp/Aura.Cli](https://github.com/auraphp/Aura.Cli)
+* [hoaproject/Console](https://github.com/hoaproject/Console)
+* [deweller/php-cliopts](https://github.com/deweller/php-cliopts)
