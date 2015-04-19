@@ -42,15 +42,6 @@ class Arguments
     }
 
     /**
-     * @param string $name
-     * @return null|mixed
-     */
-    public function getTrigger($name)
-    {
-
-    }
-
-    /**
      * @return array
      */
     public function getTriggers()
@@ -59,20 +50,20 @@ class Arguments
     }
 
     /**
-     * @param string $name
-     * @return null|mixed
-     */
-    public function getValue($name)
-    {
-
-    }
-
-    /**
      * @return array
      */
     public function getValues()
     {
         return ($this->hasValues()) ? $this->values : array();
+    }
+
+    /**
+     * @param string $name
+     * @return null|mixed
+     */
+    public function getList($name)
+    {
+        return ($this->hasList($name)) ? $this->lists[$name] : null;
     }
 
     /**
@@ -122,7 +113,7 @@ class Arguments
      */
     public function hasTrigger($name)
     {
-        return (isset($this->triggers[$name]));
+        return in_array($name, $this->triggers);
     }
 
     /**
@@ -165,6 +156,11 @@ class Arguments
                     $name       = substr($argument, 2, ($position - 2));
                     $value      = substr($argument, ($position + 1));
                     $this->addToList($name, $value);
+                } else if ($this->contains($argument, '"')) {
+                    $position   = strpos($argument, '"');
+                    $name       = substr($argument, 2, ($position - 2));
+                    $value      = substr($argument, ($position + 1));
+                    $this->addToList($name, $value);
                 } else {
                     $this->triggers[] = substr($argument, 2);
                 }
@@ -172,8 +168,13 @@ class Arguments
                 if (strlen($argument) === 2) {
                     $this->triggers[] = substr($argument, 1);
                 } else {
-                    $name   = substr($argument, 1, 1);
-                    $value  = substr($argument, 2);
+                    $name = substr($argument, 1, 1);
+                    if ($this->contains($argument, '=')) {
+                        $position = strpos($argument, '=') + 1;
+                    } else {
+                        $position = 2;
+                    }
+                    $value = substr($argument, $position);
                     $this->addToList($name, $value);
                 }
             } else {

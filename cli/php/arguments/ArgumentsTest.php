@@ -146,6 +146,53 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 ),
                 'triggers'  => array(),
                 'values'    => array()
+            ),
+            'complex example' => array(
+                'argv'      => array(
+                    __FILE__,
+                    '--foobar="foo"',
+                    '--foobar"baz"',
+                    '--foobar=bar',
+                    'foobar',
+                    '-f=foo',
+                    '-f"baz"',
+                    '-f="bar"',
+                    '-b',
+                    'foo',
+                    '-z'
+                ),
+                'arguments' => array(
+                    '--foobar="foo"',
+                    '--foobar"baz"',
+                    '--foobar=bar',
+                    'foobar',
+                    '-f=foo',
+                    '-f"baz"',
+                    '-f="bar"',
+                    '-b',
+                    'foo',
+                    '-z'
+                ),
+                'lists'     => array(
+                    'foobar'    => array(
+                        'foo',
+                        'baz',
+                        'bar'
+                    ),
+                    'f'         => array(
+                        'foo',
+                        'baz',
+                        'bar'
+                    )
+                ),
+                'triggers'  => array(
+                    'b',
+                    'z'
+                ),
+                'values'    => array(
+                    'foobar',
+                    'foo'
+                )
             )
         );
     }
@@ -172,7 +219,14 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedTriggers, $arguments->getTriggers());
         $this->assertEquals($expectedValues, $arguments->getValues());
 
-        //@todo test getValue()/getList()/getTrigger()/...
+        foreach ($expectedLists as $name => $values) {
+            $this->assertTrue($arguments->hasList($name));
+            $this->assertEquals($values, $arguments->getList($name));
+        }
+
+        foreach ($expectedTriggers as $name) {
+            $this->assertTrue($arguments->hasTrigger($name));
+        }
     }
 
     /**
