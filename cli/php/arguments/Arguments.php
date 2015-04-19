@@ -23,13 +23,10 @@ class Arguments
      */
     public function __construct($argv = null)
     {
-        $this->arguments    = array();
-        $this->lists        = array();
-        $this->triggers     = array();
-        $this->values       = array();
-
         if (is_array($argv)) {
             $this->setArguments($argv);
+        } else {
+            $this->initiate();
         }
     }
 
@@ -127,6 +124,7 @@ class Arguments
     public function setArguments(array $argv)
     {
         array_shift($argv);
+        $this->initiate();
         $this->arguments = $argv;
         $this->generate($this->arguments);
 
@@ -198,6 +196,14 @@ class Arguments
         }
 
         return $contains;
+    }
+
+    private function initiate()
+    {
+        $this->arguments    = array();
+        $this->lists        = array();
+        $this->triggers     = array();
+        $this->values       = array();
     }
 
     /**
