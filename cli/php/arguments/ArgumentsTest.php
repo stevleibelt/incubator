@@ -15,7 +15,7 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($arguments->hasArguments());
         $this->assertFalse($arguments->hasLists());
-        $this->assertFalse($arguments->hasTriggers());
+        $this->assertFalse($arguments->hasFlags());
         $this->assertFalse($arguments->hasValues());
     }
 
@@ -28,8 +28,8 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
             'empty argv' => array(
                 'argv'      => array(),
                 'arguments' => array(),
+                'flags'     => array(),
                 'lists'     => array(),
-                'triggers'  => array(),
                 'values'    => array()
             ),
             'only file name argument' => array(
@@ -37,8 +37,8 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                     __FILE__
                 ),
                 'arguments' => array(),
+                'flags'     => array(),
                 'lists'     => array(),
-                'triggers'  => array(),
                 'values'    => array()
             ),
             'one value' => array(
@@ -49,8 +49,8 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'arguments' => array(
                     'foo'
                 ),
+                'flags'     => array(),
                 'lists'     => array(),
-                'triggers'  => array(),
                 'values'    => array(
                     'foo'
                 )
@@ -63,10 +63,10 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'arguments' => array(
                     '-f'
                 ),
-                'lists'     => array(),
-                'triggers'  => array(
+                'flags'     => array(
                     'f'
                 ),
+                'lists'     => array(),
                 'values'    => array()
             ),
             'one long trigger' => array(
@@ -77,10 +77,10 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'arguments' => array(
                     '--foobar'
                 ),
-                'lists'     => array(),
-                'triggers'  => array(
+                'flags'     => array(
                     'foobar'
                 ),
+                'lists'     => array(),
                 'values'    => array()
             ),
             'one short list without quotation mark' => array(
@@ -91,12 +91,12 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'arguments' => array(
                     '-foo'
                 ),
+                'flags'     => array(),
                 'lists'     => array(
                     'f' => array(
                         'oo'
                     )
                 ),
-                'triggers'  => array(),
                 'values'    => array()
             ),
             'one short list with quotation mark' => array(
@@ -107,12 +107,12 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'arguments' => array(
                     '-f"oo"'
                 ),
+                'flags'  => array(),
                 'lists'     => array(
                     'f' => array(
                         'oo'
                     )
                 ),
-                'triggers'  => array(),
                 'values'    => array()
             ),
             'one long list without quotation mark' => array(
@@ -123,12 +123,12 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'arguments' => array(
                     '--foobar=baz'
                 ),
+                'flags'  => array(),
                 'lists'     => array(
                     'foobar' => array(
                         'baz'
                     )
                 ),
-                'triggers'  => array(),
                 'values'    => array()
             ),
             'one long list with quotation mark' => array(
@@ -139,12 +139,12 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'arguments' => array(
                     '--foobar="baz"'
                 ),
+                'flags'  => array(),
                 'lists'     => array(
                     'foobar' => array(
                         'baz'
                     )
                 ),
-                'triggers'  => array(),
                 'values'    => array()
             ),
             'complex example' => array(
@@ -173,6 +173,10 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                     'foo',
                     '-z'
                 ),
+                'flags'  => array(
+                    'b',
+                    'z'
+                ),
                 'lists'     => array(
                     'foobar'    => array(
                         'foo',
@@ -184,10 +188,6 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                         'baz',
                         'bar'
                     )
-                ),
-                'triggers'  => array(
-                    'b',
-                    'z'
                 ),
                 'values'    => array(
                     'foobar',
@@ -201,31 +201,31 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
      * @dataProvider testWithArgumentsProvider
      * @param array $argv
      * @param array $expectedArguments
+     * @param array $expectedFlags
      * @param array $expectedLists
-     * @param array $expectedTriggers
      * @param array $expectedValues
      */
-    public function testWithArguments(array $argv, array $expectedArguments, array $expectedLists, array $expectedTriggers, array $expectedValues)
+    public function testWithArguments(array $argv, array $expectedArguments, array $expectedFlags, array $expectedLists, array $expectedValues)
     {
         $arguments = $this->getNewArguments($argv);
 
         $this->assertEquals((!empty($expectedArguments)), $arguments->hasArguments());
+        $this->assertEquals((!empty($expectedFlags)), $arguments->hasFlags());
         $this->assertEquals((!empty($expectedLists)), $arguments->hasLists());
-        $this->assertEquals((!empty($expectedTriggers)), $arguments->hasTriggers());
         $this->assertEquals((!empty($expectedValues)), $arguments->hasValues());
 
         $this->assertEquals($expectedArguments, $arguments->getArguments());
+        $this->assertEquals($expectedFlags, $arguments->getFlags());
         $this->assertEquals($expectedLists, $arguments->getLists());
-        $this->assertEquals($expectedTriggers, $arguments->getTriggers());
         $this->assertEquals($expectedValues, $arguments->getValues());
+
+        foreach ($expectedFlags as $name) {
+            $this->assertTrue($arguments->hasFlag($name));
+        }
 
         foreach ($expectedLists as $name => $values) {
             $this->assertTrue($arguments->hasList($name));
             $this->assertEquals($values, $arguments->getList($name));
-        }
-
-        foreach ($expectedTriggers as $name) {
-            $this->assertTrue($arguments->hasTrigger($name));
         }
     }
 

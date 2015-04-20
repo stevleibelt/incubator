@@ -29,13 +29,13 @@ if ($arguments->hasLists()) {
     echo 'no values provided' . PHP_EOL;
 }
 
-if ($arguments->hasTriggers()) {
-    echo 'triggers provided:' . PHP_EOL;
-    foreach ($arguments->getTriggers() as $trigger) {
-        echo '    ' . $trigger . PHP_EOL;
+if ($arguments->hasFlags()) {
+    echo 'flags provided:' . PHP_EOL;
+    foreach ($arguments->getFlags() as $flag) {
+        echo '    ' . $flag . PHP_EOL;
     }
 } else {
-    echo 'no triggers provided' . PHP_EOL;
+    echo 'no flags provided' . PHP_EOL;
 }
 
 if ($arguments->hasValues()) {

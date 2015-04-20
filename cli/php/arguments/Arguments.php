@@ -10,10 +10,10 @@ class Arguments
     private $arguments;
 
     /** @var array */
-    private $lists;
+    private $flags;
 
     /** @var array */
-    private $triggers;
+    private $lists;
 
     /** @var array */
     private $values;
@@ -41,17 +41,9 @@ class Arguments
     /**
      * @return array
      */
-    public function getTriggers()
+    public function getFlags()
     {
-        return ($this->hasTriggers()) ? $this->triggers : array();
-    }
-
-    /**
-     * @return array
-     */
-    public function getValues()
-    {
-        return ($this->hasValues()) ? $this->values : array();
+        return ($this->hasFlags()) ? $this->flags : array();
     }
 
     /**
@@ -72,11 +64,36 @@ class Arguments
     }
 
     /**
+     * @return array
+     */
+    public function getValues()
+    {
+        return ($this->hasValues()) ? $this->values : array();
+    }
+
+    /**
      * @return bool
      */
     public function hasArguments()
     {
         return (!empty($this->arguments));
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasFlag($name)
+    {
+        return in_array($name, $this->flags);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFlags()
+    {
+        return (!empty($this->flags));
     }
 
     /**
@@ -102,23 +119,6 @@ class Arguments
     public function hasValues()
     {
         return (!empty($this->values));
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasTrigger($name)
-    {
-        return in_array($name, $this->triggers);
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasTriggers()
-    {
-        return (!empty($this->triggers));
     }
 
     public function setArguments(array $argv)
@@ -160,11 +160,11 @@ class Arguments
                     $value      = substr($argument, ($position + 1));
                     $this->addToList($name, $value);
                 } else {
-                    $this->triggers[] = substr($argument, 2);
+                    $this->flags[] = substr($argument, 2);
                 }
             } else if ($this->startsWith($argument, '-')) {
                 if (strlen($argument) === 2) {
-                    $this->triggers[] = substr($argument, 1);
+                    $this->flags[] = substr($argument, 1);
                 } else {
                     $name = substr($argument, 1, 1);
                     if ($this->contains($argument, '=')) {
@@ -201,8 +201,8 @@ class Arguments
     private function initiate()
     {
         $this->arguments    = array();
+        $this->flags        = array();
         $this->lists        = array();
-        $this->triggers     = array();
         $this->values       = array();
     }
 
