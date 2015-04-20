@@ -45,6 +45,7 @@ values provided:
 # Terms
 
 All arguments are grouped into one of three types, flags, lists or values.
+[Argument](http://en.wikipedia.org/wiki/Argument) or [parameter](http://en.wikipedia.org/wiki/Parameter)? I could not spot a major difference. When I think about parameters, my mind slipps into the domain of methods or functions, thats why I have decided to call them arguments. Furthermore, [php.net](http://php.net/manual/en/function.getopt.php) calls the "argument list" also :-).
 
 ## Flag
 
@@ -80,6 +81,11 @@ php example.php "value two" "value one"
 
 First value has the content "value two", second value has the content "value one".
 
+## Short Name and Long Name Notation
+
+Flag and list arguments supporting short name ("-f") and long name ("--foo") notation.
+A short name is inidicated by a single "-" while a long name is indicated by a double "-".
+The handling and the support of them is domain specific (and also a matter of tast). To merge the usage and the content for lists is not part of this component.
 
 # Why no Validation?
 
@@ -109,3 +115,7 @@ All about, your code has to take care if an argument is passed or not anyways. U
 * [auraphp/Aura.Cli](https://github.com/auraphp/Aura.Cli)
 * [hoaproject/Console](https://github.com/hoaproject/Console)
 * [deweller/php-cliopts](https://github.com/deweller/php-cliopts)
+
+# Final Words
+
+Star it if you like it :-). Add issues if you need it. Pull patches if you enjoy it.
