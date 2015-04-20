@@ -95,10 +95,10 @@ To sum it up, validation is domain specific for the validation itself and the er
 
 Since I won't write "never say never", if you have a smart idea or way to easy up validation, I'm open for an question or a pull request.
 
-# What about Optional Values?
+# What about Optional Arguments?
 
-Optional values underlying the same problems as validation does, not domain specific, not that easy to implement elegant and especially very special (e.g. value is optional if flag "--xyz" is used, otherwise mandatory).
-All about, your code has to take care if a argument is passed or not anyways, so using the available "has..."-methods should be sufficient and generic enough.
+Optional arguments underlying the same problems as validation does, not that easy to implement in an elegant way and especially very special/domain specific (e.g. an argument is optional if flag "--xyz" is used, otherwise mandatory).
+All about, your code has to take care if an argument is passed or not anyways. Using the available "has..."-methods should be sufficient and generic enough.
 
 # Links (other good projects)
 
