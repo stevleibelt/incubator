@@ -53,6 +53,12 @@ A flag is an argument that changes the behaviour of an command. It acts as a tri
 
 The position in a commandcall for a flag is not important, only the existence.
 
+Valid flags are:
+
+* -f
+* --flag
+* -flag (shortcut for -f -l -a -g)
+
 ## List
 
 A list is an argument that contains multiple values per name.
@@ -65,9 +71,21 @@ would result into a list with the name "my_list" and two arguments, "argument on
 
 Lists are the most complex arguments. Like for flags, the position in a commandcall for a list usage is not important.
 
+Valid Lists are:
+
+* -l=value
+* -l="val ue"
+* -list=value
+* -list="val ue"
+
 ## Value
 
 Values are straight forward arguments. You simple pass them to your command. Instead of a flag or a list, the position is important.
+
+Valid values are:
+
+* value
+* "val ue"
 
 ```
 php example.php "value one" "value two"
