@@ -113,7 +113,7 @@ The handling and the support of them is domain specific (and also a matter of ta
 # Why no Validation?
 
 Validation is a complex topic. That's why I decided to not put it into the domain of this component.  
-It would complicate the code itself. I would have created a universal validation interface that would slow down the usage of this component. Furthermore, you would have learn a validation expression language or would have need to write code that fits my validation interface.
+It would complicate the code itself. I would have created a universal validation interface that would slow down the usage of this component. Furthermore, you would have to learn a validation expression language or would have need to write code that fits my validation interface but not your "way of coding".
 
 At the end, what is validation all about?
 * check if a argument (flag, list, value) is passed or not
@@ -126,8 +126,8 @@ Since I won't write "never say never", if you have a smart idea or way to easy u
 
 # What about Optional Arguments?
 
-Optional arguments underlying the same problems as validation does, not that easy to implement in an elegant way and especially very special/domain specific (e.g. an argument is optional if flag "--xyz" is used, otherwise mandatory).
-All about, your code has to take care if an argument is passed or not anyways. Using the available "has..."-methods should be sufficient and generic enough.
+Optional arguments underlying the same problems as validation. It is not that easy to implement in an elegant way. It is very special/domain specific (e.g. an argument is optional if flag "--xyz" is used, otherwise mandatory).
+Your code has to take care if an argument is passed or not anyways. Using the available "has..."-methods should be sufficient and generic enough.
 
 # Links (other good projects)
 
