@@ -4,14 +4,14 @@
 
 * easy up handling of following kinds of arguments
     * flags (command -f|--force)
-    * lists (command --foobar"bar" --foobar=foo | command -f"bar" -f=foo)
+    * lists (command --foobar=foo | command -f=foo)
     * values values (command <value>)
 
 # Example
 
 The call of following example.
 ```
-php example.php --foo bar --foobar=foo --foobar="bar" -f"foo" -f=bar -b foobar foo
+php example.php --foo bar --foobar=foo --foobar="bar" -f="foo" -f=bar -b foobar foo -flag
 ```
 
 Generates the following output.
@@ -21,14 +21,19 @@ arguments provided:
     bar
     --foobar=foo
     --foobar=bar
-    -ffoo
+    -f=foo
     -f=bar
     -b
     foobar
     foo
+    -flag
 flags provided:
     foo
     b
+    f
+    l
+    a
+    g
 lists provided:
     foobar
         foo
@@ -102,7 +107,7 @@ First value has the content "value two", second value has the content "value one
 ## Short Name and Long Name Notation
 
 Flag and list arguments supporting short name ("-f") and long name ("--foo") notation.
-A short name is inidicated by a single "-" while a long name is indicated by a double "-".
+A short name is indicated by a single "-" while a long name is indicated by a double "-".
 The handling and the support of them is domain specific (and also a matter of tast). To merge the usage and the content for lists is not part of this component.
 
 # Why no Validation?

@@ -86,10 +86,10 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
             'one short list without quotation mark' => array(
                 'argv'      => array(
                     __FILE__,
-                    '-foo'
+                    '-f=oo'
                 ),
                 'arguments' => array(
-                    '-foo'
+                    '-f=oo'
                 ),
                 'flags'     => array(),
                 'lists'     => array(
@@ -102,10 +102,10 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
             'one short list with quotation mark' => array(
                 'argv'      => array(
                     __FILE__,
-                    '-f"oo"'
+                    '-f="oo"'
                 ),
                 'arguments' => array(
-                    '-f"oo"'
+                    '-f="oo"'
                 ),
                 'flags'  => array(),
                 'lists'     => array(
@@ -151,41 +151,41 @@ class ArgumentsTest extends PHPUnit_Framework_TestCase
                 'argv'      => array(
                     __FILE__,
                     '--foobar="foo"',
-                    '--foobar"baz"',
                     '--foobar=bar',
                     'foobar',
                     '-f=foo',
-                    '-f"baz"',
                     '-f="bar"',
                     '-b',
                     'foo',
-                    '-z'
+                    '-z',
+                    '-flag'
                 ),
                 'arguments' => array(
                     '--foobar="foo"',
-                    '--foobar"baz"',
                     '--foobar=bar',
                     'foobar',
                     '-f=foo',
-                    '-f"baz"',
                     '-f="bar"',
                     '-b',
                     'foo',
-                    '-z'
+                    '-z',
+                    '-flag'
                 ),
                 'flags'  => array(
                     'b',
-                    'z'
+                    'z',
+                    'f',
+                    'l',
+                    'a',
+                    'g'
                 ),
                 'lists'     => array(
                     'foobar'    => array(
                         'foo',
-                        'baz',
                         'bar'
                     ),
                     'f'         => array(
                         'foo',
-                        'baz',
                         'bar'
                     )
                 ),

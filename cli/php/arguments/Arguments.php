@@ -149,31 +149,32 @@ class Arguments
     {
         foreach ($arguments as $argument) {
             if ($this->startsWith($argument, '--')) {
+                $argument = substr($argument, 2);
                 if ($this->contains($argument, '=')) {
                     $position   = strpos($argument, '=');
-                    $name       = substr($argument, 2, ($position - 2));
-                    $value      = substr($argument, ($position + 1));
-                    $this->addToList($name, $value);
-                } else if ($this->contains($argument, '"')) {
-                    $position   = strpos($argument, '"');
-                    $name       = substr($argument, 2, ($position - 2));
+                    $name       = substr($argument, 0, $position);
                     $value      = substr($argument, ($position + 1));
                     $this->addToList($name, $value);
                 } else {
-                    $this->flags[] = substr($argument, 2);
+                    $this->flags[] = $argument;
                 }
             } else if ($this->startsWith($argument, '-')) {
-                if (strlen($argument) === 2) {
-                    $this->flags[] = substr($argument, 1);
-                } else {
-                    $name = substr($argument, 1, 1);
-                    if ($this->contains($argument, '=')) {
-                        $position = strpos($argument, '=') + 1;
-                    } else {
-                        $position = 2;
-                    }
-                    $value = substr($argument, $position);
+                $argument = substr($argument, 1);
+                $containsEqualCharacter = ($this->contains($argument, '='));
+                $equalCharacterIsOnSecondPosition = (strpos($argument, '=') === 1);
+                $isShortNameList = ($containsEqualCharacter
+                    && $equalCharacterIsOnSecondPosition);
+                if ($isShortNameList) {
+                    $name   = substr($argument, 0, 1);
+                    $value  = substr($argument, 2);
                     $this->addToList($name, $value);
+                } else if (!$containsEqualCharacter) {
+                    $length = strlen($argument);
+                    $iterator = 0;
+                    while ($iterator < $length) {
+                        $this->flags[] = $argument{$iterator};
+                        ++$iterator;
+                    }
                 }
             } else {
                 $this->values[] = $argument;
