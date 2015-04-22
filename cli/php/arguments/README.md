@@ -80,8 +80,8 @@ Valid Lists are:
 
 * -l=value
 * -l="val ue"
-* -list=value
-* -list="val ue"
+* --list=value
+* --list="val ue"
 
 ## Value
 
