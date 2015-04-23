@@ -245,3 +245,12 @@ The component will easy up handling of batch job processes.
 * created_at
 * finished_at
 * memory_usage
+
+# Recomendations
+
+* avoid adding a status column to your queue table
+    * this would increase complexity
+    * reduced scalability since the dbms has to tackle multiple status (on more index to maintain, increased number of consumers)
+    * create a queue table for each new step/task/process
+    * combine them by the naming like "item_validation_data_queue", "item_validation_url_reachable_queue"
+
