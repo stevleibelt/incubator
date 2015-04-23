@@ -4,7 +4,7 @@
  * @since: 2015-04-17
  */
 
-namespace De\Leibelt\Stev\Component\PHP\Csv;
+namespace Net\Bazzline\Component\Csv;
 
 use RuntimeException as ParentClass;
 

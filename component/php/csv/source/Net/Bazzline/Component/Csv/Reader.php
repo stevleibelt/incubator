@@ -4,11 +4,11 @@
  * @since: 2015-04-17
  */
 
-namespace De\Leibelt\Stev\Component\PHP\Csv;
+namespace Net\Bazzline\Component\Csv;
 
 //@see https://github.com/ajgarlag/AjglCsv/blob/master/Reader/ReaderAbstract.php
 //@see https://github.com/jwage/easy-csv/blob/master/lib/EasyCSV/Reader.php
-class Reader extends AbstractBase
+class Reader extends AbstractCsv
 {
     public function getLine($filter = null)
     {

@@ -4,14 +4,14 @@
  * @since: 2015-04-17
  */
 
-namespace De\Leibelt\Stev\Component\PHP\Csv;
+namespace Net\Bazzline\Component\Csv;
 
 use SplFileObject;
 
 //@see: https://github.com/keboola/php-csv/blob/master/src/Keboola/Csv/CsvFile.php
 //@see: https://github.com/swt83/php-csv/blob/master/src/Travis/CSV.php
 //@see: https://github.com/stevleibelt/EasyCSV/tree/master/lib/EasyCSV
-abstract class AbstractBase
+abstract class AbstractCsv
 {
     /** @var string */
     private $delimiter;
@@ -22,8 +22,11 @@ abstract class AbstractBase
     /** @var resource */
     private $handle;
 
+    /** @var array */
+    private $headlines;
+
     /** boolean */
-    private $hasHeaders;
+    private $hasHeadlines;
 
     /** @var int */
     private $currentLineNumber;
@@ -38,18 +41,18 @@ abstract class AbstractBase
      * @param null|string $path
      * @param string $delimiter
      * @param string $enclosure
-     * @param bool $hasHeaders
+     * @param bool $hasHeadlines
      * @param string $mode
      * @see http://php.net/manual/en/function.fopen.php
      */
-    public function __construct($path = null, $delimiter = ',', $enclosure = '"', $hasHeaders = true, $mode = 'a+')
+    public function __construct($path = null, $delimiter = ',', $enclosure = '"', $hasHeadlines = true, $mode = 'a+')
     {
         $this->setDelimiter($delimiter);
         $this->setEnclosure($enclosure);
-        if ($hasHeaders) {
-            $this->enableHasHeaders();
+        if ($hasHeadlines) {
+            $this->enableHasHeadlines();
         } else {
-            $this->disableHasHeaders();
+            $this->disableHasHeadlines();
         }
         $this->setMode($mode);
 
@@ -61,9 +64,9 @@ abstract class AbstractBase
     /**
      * @return $this
      */
-    public function disableHasHeaders()
+    public function disableHasHeadlines()
     {
-        $this->hasHeaders = false;
+        $this->hasHeadlines = false;
 
         return $this;
     }
@@ -71,9 +74,9 @@ abstract class AbstractBase
     /**
      * @return $this
      */
-    public function enableHasHeaders()
+    public function enableHasHeadlines()
     {
-        $this->hasHeaders = true;
+        $this->hasHeadlines = true;
 
         return $this;
     }
@@ -81,9 +84,9 @@ abstract class AbstractBase
     /**
      * @return boolean
      */
-    public function hasHeaders()
+    public function hasHeadlines()
     {
-        return $this->hasHeaders;
+        return $this->hasHeadlines;
     }
 
     /**

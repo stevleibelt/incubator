@@ -26,8 +26,11 @@ foreach ($reader as $row) {
 # By Iteration
 
 ```php
+//$headlines contains a php array
 //$data contains a php array
 $writer = new Writer('my/file.csv');
+
+$writer->addHeadlines($headlines);
 
 foreach ($data as $row) {
     $writer->addLine($row);
@@ -37,12 +40,21 @@ foreach ($data as $row) {
 # At Once
 
 ```php
+//$headlines contains a php array
 //$data contains a php array
 $writer = new Writer('my/file.csv');
 
+$writer->addHeadlines($headlines);
 $writer->addLines($data);
 ```
 
+# Truncate
+
+```php
+$writer = new Writer('my/file.csv');
+
+$writer->truncate();
+```
 
 # Other great component
 
