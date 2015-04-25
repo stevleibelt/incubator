@@ -97,47 +97,80 @@ class Reader implements Iterator
     }
 
     /**
-     * @param null|callable $filter
-     * @param null|int $lineNumber
+     * @param null|int $currentLineNumber - if "null", current line number is used
      * @return array|bool|string
      */
-    public function getLine($filter = null, $lineNumber = null)
+    public function readOneLine($currentLineNumber = null)
     {
         $file = $this->handler;
-
-        if (is_null($lineNumber)) {
-            $lineNumber = $this->currentLineNumber;
-        }
-
-        if ($file->getCurrentLine() !== $lineNumber) {
-            $file->seek($lineNumber);
-        }
+        $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
 
         if ($file->valid()) {
             $content = $file->current();
-            $this->currentLineNumber = (++$lineNumber);
+            $this->next();
         } else {
-            $content = false;
+            $content = false;   //@todo what happens with $this->currentLineNumber
         }
 
         return $content;
     }
 
     /**
-     * @param null|callable $filter
-     * @param null|int $limit
+     * @param int $numberOfLines
+     * @param null|int $currentLineNumber - if "null", current line number is used
      * @return array
      */
-    public function getLines($filter = null, $limit = null)
+    public function readManyLines($numberOfLines, $currentLineNumber = null)
     {
         $file   = $this->handler;
         $lines  = array();
+
+        $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
+
+        return $lines;
+    }
+
+    /**
+     * @return array
+     */
+    public function readAllLines()
+    {
+        $file   = $this->handler;
+        $lines  = array();
+
+        $file->rewind();
 
         while (!$file->eof()) {
             $lines[] = $file->fgetcsv();
         }
 
         return $lines;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentLineNumber()
+    {
+        return $this->currentLineNumber;
+    }
+
+    /**
+     * @param SplFileObject $file
+     * @param null|int $currentLineNumber
+     * @return SplFileObject
+     */
+    private function seekFileToCurrentLineNumberIfNeeded(SplFileObject $file, $currentLineNumber = null)
+    {
+        $seekIsNeeded = ((!is_null($currentLineNumber))
+            && ($currentLineNumber !== $this->currentLineNumber));
+
+        if ($seekIsNeeded) {
+            $file->seek($currentLineNumber);
+            $this->currentLineNumber = $currentLineNumber;
+        }
+
+        return $file;
     }
 
     /**
