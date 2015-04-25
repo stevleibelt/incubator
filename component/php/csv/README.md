@@ -64,3 +64,24 @@ $writer->truncate();
 * https://github.com/ajgarlag/AjglCsv
 * https://github.com/jwage/easy-csv
 * https://github.com/swt83/php-csv
+
+# Developer Logbook And Thoughts
+
+* writer
+    * __invoke($data)   //write single line
+    * ->writeOne($data);
+    * ->writeMany(array $collection);
+* reader
+    * readOne();
+    * readMany($limit);
+    * readAll();
+* factory
+    * setDelimiter($this->getDelimiter()); //getters are protected to easy up extending
+* version 2
+    * setFilter(callable $filter);  //for readers and writers
+    * writer
+        * truncate();
+        * copy($destination);
+        * delete();
+* version 3
+    * wrapper/proxy to easy up migration from EasyCsv to this component
