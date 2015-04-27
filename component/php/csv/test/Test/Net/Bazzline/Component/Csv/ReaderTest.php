@@ -6,6 +6,8 @@
 
 namespace Test\Net\Bazzline\Component\Csv;
 
+//@todo implement call of this tests with different delimiters etc. (after the 
+//setters are developed
 class ReaderTest extends AbstractTestCase
 {
     /**
