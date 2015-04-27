@@ -12,12 +12,12 @@
 ```php
 $reader = new Reader('my/file.csv');
 
-if ($reader->hasHeadlines()) {
-    echo 'headlines: ' . $reader->getHeadlines();
+if ($reader->hasHeadline()) {
+    echo 'headlines: ' . $reader->readHeadline();
 }
 
-foreach ($reader as $row) {
-    echo $row . PHP_EOL;
+foreach ($reader as $line) {
+    echo $line . PHP_EOL;
 }
 ```
 
@@ -27,13 +27,13 @@ foreach ($reader as $row) {
 
 ```php
 //$headlines contains a php array
-//$data contains a php array
+//$lines contains a php array
 $writer = new Writer('my/file.csv');
 
-$writer->addHeadlines($headlines);
+$writer->writeHeadline($headlines);
 
-foreach ($data as $row) {
-    $writer->addLine($row);
+foreach ($lines as $line) {
+    $writer->writeLine($line);
 }
 ```
 
@@ -41,11 +41,11 @@ foreach ($data as $row) {
 
 ```php
 //$headlines contains a php array
-//$data contains a php array
+//$lines contains a php array
 $writer = new Writer('my/file.csv');
 
-$writer->addHeadlines($headlines);
-$writer->addLines($data);
+$writer->writeHeadline($headline);
+$writer->writeLines($lines);
 ```
 
 # Truncate

@@ -32,6 +32,26 @@ class ReaderTest extends AbstractTestCase
         )
     );
 
+    public function testHasHeadline()
+    {
+        $content    = $this->contentAsArray;
+        $file       = $this->createFile();
+        $filesystem = $this->createFilesystem();
+        $reader     = $this->createReader();
+
+        $expectedContent    = array_slice($content, 1);
+        $expectedHeadline   = $content[0];
+
+        $file->setContent($this->getContentAsString());
+        $filesystem->addChild($file);
+        $reader->setPath($file->url());
+        $reader->enableHasHeadline();
+
+        $this->assertTrue($reader->hasHeadline());
+        $this->assertEquals($expectedContent, $reader->readAllLines());
+        $this->assertEquals($expectedHeadline, $reader->readHeadline());
+    }
+
     public function testReadWholeContentAtOnce()
     {
         $file       = $this->createFile();
@@ -42,6 +62,7 @@ class ReaderTest extends AbstractTestCase
         $filesystem->addChild($file);
         $reader->setPath($file->url());
 
+        $this->assertFalse($reader->hasHeadline());
         $this->assertEquals($this->contentAsArray, $reader->readAllLines());
     }
 

@@ -16,6 +16,9 @@ class Reader implements Iterator
     /** @var int */
     private $currentLineNumber = 0;
 
+    /** @var false|array */
+    private $headline = false;
+
     /** @var SplFileObject */
     private $handler;
 
@@ -77,11 +80,58 @@ class Reader implements Iterator
      */
     public function rewind()
     {
-        $this->currentLineNumber = 0;
-        $this->handler->rewind();
+        if ($this->hasHeadline()) {
+            $this->currentLineNumber = 1;
+            $this->handler->seek(1);
+        } else {
+            $this->currentLineNumber = 0;
+            $this->handler->rewind();
+        }
     }
     //end of Iterator
 
+    //begin of headline
+    /**
+     * @return $this
+     */
+    public function disableHasHeadline()
+    {
+        $this->headline = false;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function enableHasHeadline()
+    {
+        $currentLineNumber  = $this->getCurrentLineNumber();
+        $file               = $this->handler;
+        $this->headline     = $this->readOneLine(0);
+
+        $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
+
+        return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function hasHeadline()
+    {
+        return ($this->headline !== false);
+    }
+
+    /**
+     * @return false|array
+     */
+    public function readHeadline()
+    {
+        return $this->headline;
+    }
+    //end of headline
+
+    //begin of general
     /**
      * @param string $path
      * @return $this
@@ -90,8 +140,8 @@ class Reader implements Iterator
      */
     public function setPath($path)
     {
-        $this->path = $path;
-        $this->handler = $this->open($path);
+        $this->path     = $path;
+        $this->handler  = $this->open($path);
 
         return $this;
     }
@@ -145,10 +195,15 @@ class Reader implements Iterator
         $file   = $this->handler;
         $lines  = array();
 
-        $file->rewind();
+        $this->rewind();
 
-        while (!$file->eof()) {
-            $lines[] = $file->fgetcsv();
+        while (true) {
+            //$lines[] = $file->fgetcsv();
+            $lines[] = $file->current();
+            $file->next();
+            if ($file->eof()) {
+                break;
+            }
         }
 
         return $lines;
@@ -161,6 +216,7 @@ class Reader implements Iterator
     {
         return $this->currentLineNumber;
     }
+    //end of general
 
     /**
      * @param SplFileObject $file
