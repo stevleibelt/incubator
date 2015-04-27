@@ -78,21 +78,40 @@ class ReaderTest extends AbstractTestCase
         }
     }
 
-    public function testReadChunkOfTheContentByProvidingStartLineNumberAndAmountOfLines()
+    public function readChunkOfTheContentDataProvider()
+    {
+        $content        = $this->contentAsArray;
+        $indices        = array_keys($content);
+        $length         = count($indices);
+
+        return array(
+            'read something from the middle' => array(
+                'content'   => $content,
+                'end'       => $indices[($length - 2)],
+                'start'     => $indices[(1)]
+            )
+        );
+    }
+
+
+
+    /**
+     * @dataProvider readChunkOfTheContentDataProvider
+     * @param string $content
+     * @param int $end
+     * @param int $start
+     */
+    public function testReadChunkOfTheContentByProvidingStartLineNumberAndAmountOfLines($content, $end, $start)
     {
         $this->markTestIncomplete();
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
 
-        $file->setContent($this->getContentAsString());
+        $file->setContent($this->convertArrayToStrings($content));
         $filesystem->addChild($file);
         $reader->setPath($file->url());
 
-        $indices        = array_keys($this->contentAsArray);
-        $length         = count($indices);
-        $end            = $indices[($length - 2)];
-        $start          = $indices[(1)];
         $numberOfLines  = ($end - $start);
 
         $content = $reader->readManyLines($numberOfLines, $start);
@@ -125,9 +144,21 @@ echo var_export($content, true) . PHP_EOL;
      */
     private function getContentAsString()
     {
+        return $this->convertArrayToStrings($this->contentAsArray);
+    }
+
+
+
+    /**
+     * @param array $data
+     * @param string $delimiter
+     * @return string
+     */
+    private function convertArrayToStrings(array $data, $delimiter = ',')
+    {
         $string = '';
 
-        foreach ($this->contentAsArray as $contents) {
+        foreach ($data as $contents) {
             $string .= implode(',', $contents) . PHP_EOL;
         }
 
