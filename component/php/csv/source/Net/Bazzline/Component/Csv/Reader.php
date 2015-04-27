@@ -105,12 +105,8 @@ class Reader implements Iterator
         $file = $this->handler;
         $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
 
-        if ($file->valid()) {
-            $content = $file->current();
-            $this->next();
-        } else {
-            $content = false;   //@todo what happens with $this->currentLineNumber
-        }
+        $content = $file->current();
+        $this->next();
 
         return $content;
     }
@@ -128,11 +124,14 @@ class Reader implements Iterator
 
         $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
 
-        while ($file->valid()
-            && ($counter <= $numberOfLines)) {
+        while ($counter <= $numberOfLines) {
             $lines[] = $file->current();
-            $this->next();
-            ++$counter;
+            if ($file->eof()) {
+                break;
+            } else {
+                $this->next();
+                ++$counter;
+            }
         }
 
         return $lines;

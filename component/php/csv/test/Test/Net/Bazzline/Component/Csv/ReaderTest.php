@@ -128,7 +128,6 @@ class ReaderTest extends AbstractTestCase
 
     public function testReadContentByProvidingTheCurrentLineNumber()
     {
-        $this->markTestIncomplete();
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
@@ -140,7 +139,6 @@ class ReaderTest extends AbstractTestCase
         $lineNumber = (count($this->contentAsArray) - 1);
 
         while ($lineNumber > 0) {
-            echo $lineNumber . PHP_EOL;
             $this->assertEquals($this->contentAsArray[$lineNumber], $reader->readOneLine($lineNumber));
             --$lineNumber;
         }
