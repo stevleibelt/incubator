@@ -99,26 +99,31 @@ class ReaderTest extends AbstractTestCase
 
     /**
      * @dataProvider readChunkOfTheContentDataProvider
-     * @param string $content
+     * @param string $fullFileContent
      * @param int $end
      * @param int $start
      */
-    public function testReadChunkOfTheContentByProvidingStartLineNumberAndAmountOfLines($content, $end, $start)
+    public function testReadChunkOfTheContentByProvidingStartLineNumberAndAmountOfLines($fullFileContent, $end, $start)
     {
-        $this->markTestIncomplete();
-        $file       = $this->createFile();
-        $filesystem = $this->createFilesystem();
-        $reader     = $this->createReader();
+        $file           = $this->createFile();
+        $filesystem     = $this->createFilesystem();
+        $numberOfLines  = ($end - $start);
+        $reader         = $this->createReader();
 
-        $file->setContent($this->convertArrayToStrings($content));
+        $file->setContent($this->convertArrayToStrings($fullFileContent));
         $filesystem->addChild($file);
         $reader->setPath($file->url());
 
-        $numberOfLines  = ($end - $start);
+        $expectedContent = array();
 
-        $content = $reader->readManyLines($numberOfLines, $start);
-echo var_export(array($end, $start, $numberOfLines), true) . PHP_EOL;
-echo var_export($content, true) . PHP_EOL;
+        $counter = $start;
+
+        while ($counter <= $end) {
+            $expectedContent[] = $fullFileContent[$counter];
+            ++$counter;
+        }
+
+        $this->assertEquals($expectedContent, $reader->readManyLines($numberOfLines, $start));
     }
 
     public function testReadContentByProvidingTheCurrentLineNumber()

@@ -122,10 +122,18 @@ class Reader implements Iterator
      */
     public function readManyLines($numberOfLines, $currentLineNumber = null)
     {
-        $file   = $this->handler;
-        $lines  = array();
+        $counter    = 0;
+        $file       = $this->handler;
+        $lines      = array();
 
         $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
+
+        while ($file->valid()
+            && ($counter <= $numberOfLines)) {
+            $lines[] = $file->current();
+            $this->next();
+            ++$counter;
+        }
 
         return $lines;
     }
