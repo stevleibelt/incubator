@@ -67,16 +67,17 @@ $writer->truncate();
 
 # Developer Logbook And Thoughts
 
-* writer
-    * __invoke($data)   //write single line
-    * ->writeOne($data);
-    * ->writeMany(array $collection);
-* reader
-    * readOne();
-    * readMany($limit);
-    * readAll();
-* factory
-    * setDelimiter($this->getDelimiter()); //getters are protected to easy up extending
+* version 1
+    * writer
+        * __invoke($data)   //write single line
+        * ->writeOne($data);
+        * ->writeMany(array $collection);
+    * reader
+        * readOne();
+        * readMany($limit);
+        * readAll();
+    * factory
+        * setDelimiter($this->getDelimiter()); //getters are protected to easy up extending
 * version 2
     * setFilter(callable $filter);  //for readers and writers
     * writer
