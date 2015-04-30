@@ -23,7 +23,7 @@ foreach ($reader as $line) {
 
 ## Write
 
-# By Iteration
+### By Iteration
 
 ```php
 //$headlines contains a php array
@@ -37,7 +37,7 @@ foreach ($lines as $line) {
 }
 ```
 
-# At Once
+### At Once
 
 ```php
 //$headlines contains a php array
@@ -48,7 +48,7 @@ $writer->writeHeadline($headline);
 $writer->writeLines($lines);
 ```
 
-# Truncate
+### Truncate
 
 ```php
 $writer = new Writer('my/file.csv');
