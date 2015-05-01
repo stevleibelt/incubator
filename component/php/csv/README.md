@@ -23,11 +23,13 @@ foreach ($reader as $line) {
 
 ## Write
 
-### By Iteration
+### Write Content
+
+#### By Iteration
 
 ```php
 //$headlines contains a php array
-//$lines contains a php array
+//$lines contains a php array of arrays
 $writer = new Writer('my/file.csv');
 
 $writer->writeHeadline($headlines);
@@ -37,11 +39,11 @@ foreach ($lines as $line) {
 }
 ```
 
-### At Once
+#### At Once
 
 ```php
 //$headlines contains a php array
-//$lines contains a php array
+//$lines contains a php array of arrays
 $writer = new Writer('my/file.csv');
 
 $writer->writeHeadline($headline);
