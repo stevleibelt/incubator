@@ -50,6 +50,17 @@ $writer->writeHeadline($headline);
 $writer->writeLines($lines);
 ```
 
+#### By Using As A Function
+
+```php
+//$line contains a php array
+//$lines contains a php array of arrays
+$writer = new Writer('my/file.csv');
+
+$writer($line);
+$writer($lines);
+```
+
 ### Truncate
 
 ```php
