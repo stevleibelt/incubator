@@ -116,8 +116,6 @@ class ReaderTest extends AbstractTestCase
         );
     }
 
-
-
     /**
      * @dataProvider readChunkOfTheContentDataProvider
      * @param string $fullFileContent
@@ -172,8 +170,6 @@ class ReaderTest extends AbstractTestCase
     {
         return $this->convertArrayToStrings($this->contentAsArray);
     }
-
-
 
     /**
      * @param array $data
