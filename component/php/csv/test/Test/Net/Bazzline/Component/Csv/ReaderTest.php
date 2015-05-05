@@ -48,7 +48,7 @@ class ReaderTest extends AbstractTestCase
         $reader->enableHasHeadline();
 
         $this->assertTrue($reader->hasHeadline());
-        $this->assertEquals($expectedContent, $reader->readAllLines());
+        $this->assertEquals($expectedContent, $reader->readAll());
         $this->assertEquals($expectedHeadline, $reader->readHeadline());
     }
 
@@ -63,7 +63,7 @@ class ReaderTest extends AbstractTestCase
         $reader->setPath($file->url());
 
         $this->assertFalse($reader->hasHeadline());
-        $this->assertEquals($this->contentAsArray, $reader->readAllLines());
+        $this->assertEquals($this->contentAsArray, $reader->readAll());
     }
 
     public function testReadWholeContentByUsingTheIteratorInterface()
@@ -95,7 +95,7 @@ class ReaderTest extends AbstractTestCase
 
         $index = 0;
 
-        while ($line = $reader->readOneLine()) {
+        while ($line = $reader->readOne()) {
             $this->assertEquals($this->contentAsArray[$index], $line);
             ++$index;
         }
@@ -142,7 +142,7 @@ class ReaderTest extends AbstractTestCase
             ++$counter;
         }
 
-        $this->assertEquals($expectedContent, $reader->readManyLines($numberOfLines, $start));
+        $this->assertEquals($expectedContent, $reader->readMany($numberOfLines, $start));
     }
 
     public function testReadContentByProvidingTheCurrentLineNumber()
@@ -158,7 +158,7 @@ class ReaderTest extends AbstractTestCase
         $lineNumber = (count($this->contentAsArray) - 1);
 
         while ($lineNumber > 0) {
-            $this->assertEquals($this->contentAsArray[$lineNumber], $reader->readOneLine($lineNumber));
+            $this->assertEquals($this->contentAsArray[$lineNumber], $reader->readOne($lineNumber));
             --$lineNumber;
         }
     }

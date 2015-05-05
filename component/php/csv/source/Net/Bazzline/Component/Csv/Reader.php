@@ -108,7 +108,7 @@ class Reader implements Iterator
     {
         $currentLineNumber  = $this->getCurrentLineNumber();
         $file               = $this->handler;
-        $this->headline     = $this->readOneLine(0);
+        $this->headline     = $this->readOne(0);
 
         $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
 
@@ -150,7 +150,7 @@ class Reader implements Iterator
      * @param null|int $currentLineNumber - if "null", current line number is used
      * @return array|bool|string
      */
-    public function readOneLine($currentLineNumber = null)
+    public function readOne($currentLineNumber = null)
     {
         $file = $this->handler;
         $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
@@ -166,7 +166,7 @@ class Reader implements Iterator
      * @param null|int $currentLineNumber - if "null", current line number is used
      * @return array
      */
-    public function readManyLines($numberOfLines, $currentLineNumber = null)
+    public function readMany($numberOfLines, $currentLineNumber = null)
     {
         $counter    = 0;
         $file       = $this->handler;
@@ -190,7 +190,7 @@ class Reader implements Iterator
     /**
      * @return array
      */
-    public function readAllLines()
+    public function readAll()
     {
         $file   = $this->handler;
         $lines  = array();

@@ -9,6 +9,12 @@
 
 ## Read
 
+### Read Content
+
+TODO: add other ways (readOne/readMany/readAll)
+
+#### By Iteration
+
 ```php
 $reader = new Reader('my/file.csv');
 
@@ -35,7 +41,7 @@ $writer = new Writer('my/file.csv');
 $writer->writeHeadline($headlines);
 
 foreach ($lines as $line) {
-    $writer->writeLine($line);
+    $writer->writeOne($line);
 }
 ```
 
@@ -47,7 +53,7 @@ foreach ($lines as $line) {
 $writer = new Writer('my/file.csv');
 
 $writer->writeHeadline($headline);
-$writer->writeLines($lines);
+$writer->writeMany($lines);
 ```
 
 #### By Using As A Function

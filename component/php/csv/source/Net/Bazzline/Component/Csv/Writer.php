@@ -6,33 +6,25 @@
 
 namespace Net\Bazzline\Component\Csv;
 
-class Writer extends AbstractCsv
+class Writer
 {
-    public function addLine(array $line)
+    /** @var false|array */
+    private $headline = false;
+
+    public function writeOne($data)
     {
 
     }
 
-    public function addLines(array $lines)
+    public function writeMany(array $collection)
     {
-        foreach ($lines as $line) {
-            $this->addLine($line);
+        foreach ($collection as $data) {
+            $this->writeOne($data);
         }
     }
 
-    public function copy($path, $filter = null)
+    public function writeHeadlines(array $headlines)
     {
-
-    }
-
-    public function setHeadlines(array $headlines)
-    {
-        $this->truncate();
-        $this->addLine($headlines);
-    }
-
-    public function truncate()
-    {
-
+        $this->writeOne($headlines);
     }
 }
