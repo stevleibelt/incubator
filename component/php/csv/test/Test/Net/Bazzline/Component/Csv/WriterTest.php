@@ -1,14 +1,14 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2015-04-24 
+ * @since 2015-05-03
  */
 
 namespace Test\Net\Bazzline\Component\Csv;
 
 //@todo implement call of this tests with different delimiters etc. (after the 
 //setters are developed
-class ReaderTest extends AbstractTestCase
+class WriterTest extends AbstractTestCase
 {
     /**
      * @var array
@@ -32,26 +32,25 @@ class ReaderTest extends AbstractTestCase
         )
     );
 
-    public function testHasHeadline()
+    public function testWriteContentLinePerLineUsingWriteOne()
     {
-        $content    = $this->contentAsArray;
-        $file       = $this->createFile();
-        $filesystem = $this->createFilesystem();
-        $reader     = $this->createReader();
+        $collection         = $this->contentAsArray;
+        $expectedContent    = $this->convertArrayToStrings($collection);
+        $file               = $this->createFile();
+        $filesystem         = $this->createFilesystem();
+        $writer             = $this->createWriter();
 
-        $expectedContent    = array_slice($content, 1);
-        $expectedHeadline   = $content[0];
-
-        $file->setContent($this->getContentAsString());
         $filesystem->addChild($file);
-        $reader->setPath($file->url());
-        $reader->enableHasHeadline();
+        $writer->setPath($file->url());
 
-        $this->assertTrue($reader->hasHeadline());
-        $this->assertEquals($expectedContent, $reader->readAll());
-        $this->assertEquals($expectedHeadline, $reader->readHeadline());
+        foreach ($collection as $content) {
+            $this->assertNotFalse($writer->writeOne($content));
+        }
+
+        $this->assertEquals($expectedContent, $file->getContent());
     }
 
+    /*
     public function testReadWholeContentAtOnce()
     {
         $file       = $this->createFile();
@@ -63,7 +62,7 @@ class ReaderTest extends AbstractTestCase
         $reader->setPath($file->url());
 
         $this->assertFalse($reader->hasHeadline());
-        $this->assertEquals($this->contentAsArray, $reader->readAll());
+        $this->assertEquals($this->contentAsArray, $reader->readAllLines());
     }
 
     public function testReadWholeContentByUsingTheIteratorInterface()
@@ -95,7 +94,7 @@ class ReaderTest extends AbstractTestCase
 
         $index = 0;
 
-        while ($line = $reader->readOne()) {
+        while ($line = $reader->readOneLine()) {
             $this->assertEquals($this->contentAsArray[$index], $line);
             ++$index;
         }
@@ -116,12 +115,6 @@ class ReaderTest extends AbstractTestCase
         );
     }
 
-    /**
-     * @dataProvider readChunkOfTheContentDataProvider
-     * @param string $fullFileContent
-     * @param int $end
-     * @param int $start
-     */
     public function testReadChunkOfTheContentByProvidingStartLineNumberAndAmountOfLines($fullFileContent, $end, $start)
     {
         $file           = $this->createFile();
@@ -142,7 +135,7 @@ class ReaderTest extends AbstractTestCase
             ++$counter;
         }
 
-        $this->assertEquals($expectedContent, $reader->readMany($numberOfLines, $start));
+        $this->assertEquals($expectedContent, $reader->readManyLines($numberOfLines, $start));
     }
 
     public function testReadContentByProvidingTheCurrentLineNumber()
@@ -158,29 +151,28 @@ class ReaderTest extends AbstractTestCase
         $lineNumber = (count($this->contentAsArray) - 1);
 
         while ($lineNumber > 0) {
-            $this->assertEquals($this->contentAsArray[$lineNumber], $reader->readOne($lineNumber));
+            $this->assertEquals($this->contentAsArray[$lineNumber], $reader->readOneLine($lineNumber));
             --$lineNumber;
         }
     }
-
-    /**
-     * @return string
      */
+
     private function getContentAsString()
     {
         return $this->convertArrayToStrings($this->contentAsArray);
     }
 
-    /**
-     * @param array $data
-     * @param string $delimiter
-     * @return string
-     */
     private function convertArrayToStrings(array $data, $delimiter = ',')
     {
         $string = '';
 
         foreach ($data as $contents) {
+            foreach ($contents as &$part) {
+                $contains = $this->stringContains(' ');
+                if ($contains->evaluate($part, '', true)) {
+                    $part = '"' . $part . '"';
+                }
+            }
             $string .= implode($delimiter, $contents) . PHP_EOL;
         }
 

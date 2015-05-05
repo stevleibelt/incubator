@@ -16,11 +16,11 @@ class Reader implements Iterator
     /** @var int */
     private $currentLineNumber = 0;
 
-    /** @var false|array */
-    private $headline = false;
-
     /** @var SplFileObject */
     private $handler;
+
+    /** @var false|array */
+    private $headline = false;
 
     /** @var string */
     private $path;
@@ -90,7 +90,7 @@ class Reader implements Iterator
     }
     //end of Iterator
 
-    //begin of headline
+    //begin of headlines
     /**
      * @return $this
      */
@@ -129,7 +129,7 @@ class Reader implements Iterator
     {
         return $this->headline;
     }
-    //end of headline
+    //end of headlines
 
     //begin of general
     /**

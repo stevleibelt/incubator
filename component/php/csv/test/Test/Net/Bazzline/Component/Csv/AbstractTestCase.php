@@ -24,11 +24,11 @@ abstract class AbstractTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $name
      * @param int $permissions
+     * @param string $name
      * @return \org\bovigo\vfs\vfsStreamFile
      */
-    protected function createFile($name = 'test.csv', $permissions = 0700)
+    protected function createFile($permissions = 0700, $name = 'test.csv')
     {
         return vfsStream::newFile($name, $permissions);
     }

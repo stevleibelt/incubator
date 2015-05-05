@@ -52,7 +52,7 @@ foreach ($lines as $line) {
 //$lines contains a php array of arrays
 $writer = new Writer('my/file.csv');
 
-$writer->writeHeadline($headline);
+$writer->writeHeadline($headlines);
 $writer->writeMany($lines);
 ```
 
@@ -98,10 +98,12 @@ $writer->truncate();
     * factory
         * setDelimiter($this->getDelimiter()); //getters are protected to easy up extending
 * version 2
+    * remove dependency to php 5.4 (https://php.net/manual/en/splfileobject.fputcsv.php)
     * setFilter(callable $filter);  //for readers and writers
     * writer
         * truncate();
         * copy($destination);
         * delete();
+        * writeAll();   //truncates and writes content
 * version 3
     * wrapper/proxy to easy up migration from EasyCsv to this component
