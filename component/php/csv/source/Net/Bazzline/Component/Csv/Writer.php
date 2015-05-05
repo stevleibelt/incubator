@@ -19,6 +19,16 @@ class Writer
     /** @var string */
     private $path;
 
+    /**
+     * @param mixed|array $data
+     * @return false|int
+     */
+    public function __invoke($data)
+    {
+        return $this->writeOne($data);
+    }
+
+
     //begin of general
     /**
      * @return bool
@@ -44,18 +54,33 @@ class Writer
 
     /**
      * @param mixed|array $data
-     * @return int
+     * @return false|int
      */
     public function writeOne($data)
     {
         return $this->handler->fputcsv($data);
     }
 
+    /**
+     * @param array $collection
+     * @return false|int
+     */
     public function writeMany(array $collection)
     {
+        $lengthOfTheWrittenStrings = 0;
+
         foreach ($collection as $data) {
-            $this->writeOne($data);
+            $lengthOfTheWrittenString = $this->writeOne($data);
+
+            if ($lengthOfTheWrittenString === false) {
+                $lengthOfTheWrittenStrings = $lengthOfTheWrittenString;
+                break;
+            } else {
+                $lengthOfTheWrittenStrings += $lengthOfTheWrittenString;
+            }
         }
+
+        return $lengthOfTheWrittenStrings;
     }
 
     public function writeHeadlines(array $headlines)
