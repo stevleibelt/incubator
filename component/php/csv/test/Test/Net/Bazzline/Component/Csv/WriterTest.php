@@ -32,40 +32,64 @@ class WriterTest extends AbstractTestCase
         )
     );
 
+    private $enclosures = array(
+        's',
+        '"',
+        '|'
+    );
+
+    private $delimiters = array(
+        's',
+        'l',
+        '-',
+        ',',
+        ';'
+    );
+
     public function testWriteContentLinePerLineUsingWriteOne()
     {
-        $collection         = $this->contentAsArray;
-        $expectedContent    = $this->convertArrayToStrings($collection);
-        $file               = $this->createFile();
-        $filesystem         = $this->createFilesystem();
-        $writer             = $this->createWriter();
+        $delimiters = $this->delimiters;
 
-        $filesystem->addChild($file);
-        $writer->setPath($file->url());
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $expectedContent    = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $writer             = $this->createWriter();
 
-        foreach ($collection as $content) {
-            $this->assertNotFalse($writer->writeOne($content));
+            $filesystem->addChild($file);
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($file->url());
+
+            foreach ($collection as $content) {
+                $this->assertNotFalse($writer->writeOne($content));
+            }
+
+            $this->assertEquals($expectedContent, $file->getContent());
         }
-
-        $this->assertEquals($expectedContent, $file->getContent());
     }
 
     public function testWriteContentLinePerLineUsingWriterAsAFunction()
     {
-        $collection         = $this->contentAsArray;
-        $expectedContent    = $this->convertArrayToStrings($collection);
-        $file               = $this->createFile();
-        $filesystem         = $this->createFilesystem();
-        $writer             = $this->createWriter();
+        $delimiters = $this->delimiters;
 
-        $filesystem->addChild($file);
-        $writer->setPath($file->url());
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $expectedContent    = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $writer             = $this->createWriter();
 
-        foreach ($collection as $content) {
-            $this->assertNotFalse($writer($content));
+            $filesystem->addChild($file);
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($file->url());
+
+            foreach ($collection as $content) {
+                $this->assertNotFalse($writer($content));
+            }
+
+            $this->assertEquals($expectedContent, $file->getContent());
         }
-
-        $this->assertEquals($expectedContent, $file->getContent());
     }
 
     public function testWriteContentAtOnce()
