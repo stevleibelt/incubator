@@ -108,4 +108,6 @@ $writer->truncate();
         * delete();
         * writeAll();   //truncates and writes content
 * version 3
+    * unify reader and writer
+* version 4
     * wrapper/proxy to easy up migration from EasyCsv to this component
