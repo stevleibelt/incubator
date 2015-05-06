@@ -86,12 +86,14 @@ $writer->truncate();
 
 # Developer Logbook And Thoughts
 
-* version 1
+* version 1 - current step
     * writer
         * __invoke($data)   //write single line
         * ->writeOne($data);
         * ->writeMany(array $collection);
     * reader
+        * __invoke()   //read single line
+        * implements iterator
         * readOne();
         * readMany($limit);
         * readAll();

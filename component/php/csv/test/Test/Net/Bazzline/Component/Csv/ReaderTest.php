@@ -83,6 +83,24 @@ class ReaderTest extends AbstractTestCase
         }
     }
 
+    public function testReadWholeContentByUsingReaderAsAFunction()
+    {
+        $file       = $this->createFile();
+        $filesystem = $this->createFilesystem();
+        $reader     = $this->createReader();
+
+        $file->setContent($this->getContentAsString());
+        $filesystem->addChild($file);
+        $reader->setPath($file->url());
+
+        $index = 0;
+
+        while ($line = $reader()) {
+            $this->assertEquals($this->contentAsArray[$index], $line);
+            ++$index;
+        }
+    }
+
     public function testReadWholeContentLinePerLine()
     {
         $file       = $this->createFile();
@@ -159,6 +177,24 @@ class ReaderTest extends AbstractTestCase
 
         while ($lineNumber > 0) {
             $this->assertEquals($this->contentAsArray[$lineNumber], $reader->readOne($lineNumber));
+            --$lineNumber;
+        }
+    }
+
+    public function testReadContentByProvidingTheCurrentLineNumberByUsingReaderAsAFunction()
+    {
+        $file       = $this->createFile();
+        $filesystem = $this->createFilesystem();
+        $reader     = $this->createReader();
+
+        $file->setContent($this->getContentAsString());
+        $filesystem->addChild($file);
+        $reader->setPath($file->url());
+
+        $lineNumber = (count($this->contentAsArray) - 1);
+
+        while ($lineNumber > 0) {
+            $this->assertEquals($this->contentAsArray[$lineNumber], $reader($lineNumber));
             --$lineNumber;
         }
     }

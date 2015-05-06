@@ -25,6 +25,15 @@ class Reader implements Iterator
     /** @var string */
     private $path;
 
+    /**
+     * @param null $currentLineNumber
+     * @return array|bool|string
+     */
+    public function __invoke($currentLineNumber = null)
+    {
+        return $this->readOne($currentLineNumber);
+    }
+
     //begin of Iterator
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
