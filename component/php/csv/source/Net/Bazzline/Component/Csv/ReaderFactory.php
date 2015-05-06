@@ -6,7 +6,7 @@
 
 namespace Net\Bazzline\Component\Csv;
 
-class ReaderFactory implements FactoryInterface
+class ReaderFactory extends AbstractFactory
 {
     /**
      * @return object|Reader
@@ -14,6 +14,9 @@ class ReaderFactory implements FactoryInterface
     public function create()
     {
         $reader = new Reader();
+
+        $reader->setDelimiter($this->getDelimiter());
+        $reader->setEnclosure($this->getEnclosure());
 
         return $reader;
     }

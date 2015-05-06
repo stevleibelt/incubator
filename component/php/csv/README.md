@@ -86,7 +86,7 @@ $writer->truncate();
 
 # Developer Logbook And Thoughts
 
-* version 1 - current step
+* version 1 - done
     * writer
         * __invoke($data)   //write single line
         * ->writeOne($data);
@@ -97,9 +97,15 @@ $writer->truncate();
         * readOne();
         * readMany($limit);
         * readAll();
+* version 2 - current step
+    * implement support in Reader|Writer for
+        * setDelimiter
+        * setEnclosure
     * factory
         * setDelimiter($this->getDelimiter()); //getters are protected to easy up extending
-* version 2
+* version 3
+    * unify reader and writer
+* version 4
     * remove dependency to php 5.4 (https://php.net/manual/en/splfileobject.fputcsv.php)
     * setFilter(callable $filter);  //for readers and writers
     * writer
@@ -107,7 +113,5 @@ $writer->truncate();
         * copy($destination);
         * delete();
         * writeAll();   //truncates and writes content
-* version 3
-    * unify reader and writer
 * version 4
     * wrapper/proxy to easy up migration from EasyCsv to this component

@@ -11,19 +11,13 @@ namespace Net\Bazzline\Component\Csv;
 use Iterator;
 use SplFileObject;
 
-class Reader implements Iterator
+class Reader extends AbstractBase implements Iterator
 {
     /** @var int */
     private $currentLineNumber = 0;
 
-    /** @var SplFileObject */
-    private $handler;
-
     /** @var false|array */
     private $headline = false;
-
-    /** @var string */
-    private $path;
 
     /**
      * @param null $currentLineNumber
@@ -43,7 +37,7 @@ class Reader implements Iterator
      */
     public function current()
     {
-        return $this->handler->current();
+        return $this->getFileHandler()->current();
     }
 
     /**
@@ -55,7 +49,7 @@ class Reader implements Iterator
     public function next()
     {
         ++$this->currentLineNumber;
-        $this->handler->next();
+        $this->getFileHandler()->next();
     }
 
     /**
@@ -66,7 +60,7 @@ class Reader implements Iterator
      */
     public function key()
     {
-        return $this->handler->key();
+        return $this->getFileHandler()->key();
     }
 
     /**
@@ -78,7 +72,7 @@ class Reader implements Iterator
      */
     public function valid()
     {
-        return $this->handler->valid();
+        return $this->getFileHandler()->valid();
     }
 
     /**
@@ -91,10 +85,10 @@ class Reader implements Iterator
     {
         if ($this->hasHeadline()) {
             $this->currentLineNumber = 1;
-            $this->handler->seek(1);
+            $this->getFileHandler()->seek(1);
         } else {
             $this->currentLineNumber = 0;
-            $this->handler->rewind();
+            $this->getFileHandler()->rewind();
         }
     }
     //end of Iterator
@@ -116,7 +110,7 @@ class Reader implements Iterator
     public function enableHasHeadline()
     {
         $currentLineNumber  = $this->getCurrentLineNumber();
-        $file               = $this->handler;
+        $file               = $this->getFileHandler();
         $this->headline     = $this->readOne(0);
 
         $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
@@ -141,19 +135,6 @@ class Reader implements Iterator
     //end of headlines
 
     //begin of general
-    /**
-     * @param string $path
-     * @return $this
-     * @throws InvalidArgumentException
-     * @todo implement validation
-     */
-    public function setPath($path)
-    {
-        $this->path     = $path;
-        $this->handler  = $this->open($path);
-
-        return $this;
-    }
 
     /**
      * @param null|int $currentLineNumber - if "null", current line number is used
@@ -161,7 +142,7 @@ class Reader implements Iterator
      */
     public function readOne($currentLineNumber = null)
     {
-        $file = $this->handler;
+        $file = $this->getFileHandler();
         $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
 
         $content = $file->current();
@@ -178,7 +159,7 @@ class Reader implements Iterator
     public function readMany($numberOfLines, $currentLineNumber = null)
     {
         $counter    = 0;
-        $file       = $this->handler;
+        $file       = $this->getFileHandler();
         $lines      = array();
 
         $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
@@ -201,7 +182,7 @@ class Reader implements Iterator
      */
     public function readAll()
     {
-        $file   = $this->handler;
+        $file   = $this->getFileHandler();
         $lines  = array();
 
         $this->rewind();
@@ -226,6 +207,13 @@ class Reader implements Iterator
         return $this->currentLineNumber;
     }
     //end of general
+    /**
+     * @return string
+     */
+    protected function getFileHandlerOpenMode()
+    {
+        return 'r';
+    }
 
     /**
      * @param SplFileObject $file
@@ -241,19 +229,6 @@ class Reader implements Iterator
             $file->seek($currentLineNumber);
             $this->currentLineNumber = $currentLineNumber;
         }
-
-        return $file;
-    }
-
-    /**
-     * @param string $path
-     * @return SplFileObject
-     * @todo inject or inject factory
-     */
-    private function open($path)
-    {
-        $file = new SplFileObject($path);
-        $file->setFlags(SplFileObject::READ_CSV);
 
         return $file;
     }

@@ -6,18 +6,10 @@
 
 namespace Net\Bazzline\Component\Csv;
 
-use SplFileObject;
-
-class Writer
+class Writer extends AbstractBase
 {
-    /** @var SplFileObject */
-    private $handler;
-
     /** @var false|array */
     private $headlines = false;
-
-    /** @var string */
-    private $path;
 
     /**
      * @param mixed|array $data
@@ -39,26 +31,12 @@ class Writer
     }
 
     /**
-     * @param string $path
-     * @return $this
-     * @throws InvalidArgumentException
-     * @todo implement validation
-     */
-    public function setPath($path)
-    {
-        $this->path     = $path;
-        $this->handler  = $this->open($path);
-
-        return $this;
-    }
-
-    /**
      * @param mixed|array $data
      * @return false|int
      */
     public function writeOne($data)
     {
-        return $this->handler->fputcsv($data);
+        return $this->getFileHandler()->fputcsv($data, $this->getDelimiter(), $this->getEnclosure());
     }
 
     /**
@@ -91,15 +69,10 @@ class Writer
     //end of general
 
     /**
-     * @param string $path
-     * @return SplFileObject
-     * @todo inject or inject factory
+     * @return string
      */
-    private function open($path)
+    protected function getFileHandlerOpenMode()
     {
-        $file = new SplFileObject($path, 'w');
-        $file->setFlags(SplFileObject::READ_CSV);
-
-        return $file;
+        return 'w';
     }
 }

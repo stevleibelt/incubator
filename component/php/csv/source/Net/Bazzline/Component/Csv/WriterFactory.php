@@ -6,7 +6,7 @@
 
 namespace Net\Bazzline\Component\Csv;
 
-class WriterFactory implements FactoryInterface
+class WriterFactory extends AbstractFactory
 {
     /**
      * @return object
@@ -14,6 +14,9 @@ class WriterFactory implements FactoryInterface
     public function create()
     {
         $writer = new Writer();
+
+        $writer->setDelimiter($this->getDelimiter());
+        $writer->setEnclosure($this->getEnclosure());
 
         return $writer;
     }

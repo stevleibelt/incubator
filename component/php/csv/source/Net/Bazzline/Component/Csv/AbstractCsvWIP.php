@@ -11,7 +11,7 @@ use SplFileObject;
 //@see: https://github.com/keboola/php-csv/blob/master/src/Keboola/Csv/CsvFile.php
 //@see: https://github.com/swt83/php-csv/blob/master/src/Travis/CSV.php
 //@see: https://github.com/stevleibelt/EasyCSV/tree/master/lib/EasyCSV
-abstract class AbstractCsv
+abstract class AbstractCsvWIP
 {
     /** @var string */
     private $delimiter;
