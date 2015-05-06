@@ -94,18 +94,23 @@ class WriterTest extends AbstractTestCase
 
     public function testWriteContentAtOnce()
     {
-        $collection         = $this->contentAsArray;
-        $expectedContent    = $this->convertArrayToStrings($collection);
-        $file               = $this->createFile();
-        $filesystem         = $this->createFilesystem();
-        $writer             = $this->createWriter();
+        $delimiters = $this->delimiters;
 
-        $filesystem->addChild($file);
-        $writer->setPath($file->url());
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $expectedContent    = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $writer             = $this->createWriter();
 
-        $this->assertNotFalse($writer->writeMany($collection));
+            $filesystem->addChild($file);
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($file->url());
 
-        $this->assertEquals($expectedContent, $file->getContent());
+            $this->assertNotFalse($writer->writeMany($collection));
+
+            $this->assertEquals($expectedContent, $file->getContent());
+        }
     }
 
     /**
