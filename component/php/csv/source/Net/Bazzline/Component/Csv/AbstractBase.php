@@ -16,6 +16,9 @@ abstract class AbstractBase
     /** @var string */
     private $enclosure = '"';
 
+    /** @var string */
+    private $escapeCharacter = '\\';
+
     /** @var SplFileObject */
     private $handler;
 
@@ -28,17 +31,7 @@ abstract class AbstractBase
      */
     public function setDelimiter($delimiter)
     {
-        if (!is_string($delimiter)) {
-            $message = 'delimiter must be of type "string"';
-
-            throw new InvalidArgumentException($message);
-        }
-        if (strlen($delimiter) != 1) {
-            $message = 'delimiter must be a single character';
-
-            throw new InvalidArgumentException($message);
-        }
-
+        $this->assertIsASingleCharacterString($delimiter, 'delimiter');
         $this->delimiter = $delimiter;
     }
 
@@ -48,18 +41,17 @@ abstract class AbstractBase
      */
     public function setEnclosure($enclosure)
     {
-        if (!is_string($enclosure)) {
-            $message = 'enclosure must be of type "string"';
-
-            throw new InvalidArgumentException($message);
-        }
-        if (strlen($enclosure) != 1) {
-            $message = 'enclosure must be a single character';
-
-            throw new InvalidArgumentException($message);
-        }
-
+        $this->assertIsASingleCharacterString($enclosure, 'enclosure');
         $this->enclosure = $enclosure;
+    }
+
+    /**
+     * @param string $escapeCharacter
+     */
+    public function setEscapeCharacter($escapeCharacter)
+    {
+        $this->assertIsASingleCharacterString($escapeCharacter, 'escapeCharacter');
+        $this->escapeCharacter = $escapeCharacter;
     }
 
     /**
@@ -93,6 +85,14 @@ abstract class AbstractBase
     }
 
     /**
+     * @return string
+     */
+    protected function getEscapeCharacter()
+    {
+        return $this->escapeCharacter;
+    }
+
+    /**
      * @return SplFileObject
      */
     protected function getFileHandler()
@@ -116,5 +116,24 @@ abstract class AbstractBase
         $file->setFlags(SplFileObject::READ_CSV);
 
         return $file;
+    }
+
+    /**
+     * @param string $variable
+     * @param string $name
+     * @throws InvalidArgumentException
+     */
+    private function assertIsASingleCharacterString($variable, $name)
+    {
+        if (!is_string($variable)) {
+            $message = $name . ' must be of type "string"';
+
+            throw new InvalidArgumentException($message);
+        }
+        if (strlen($variable) != 1) {
+            $message = $name . ' must be a single character';
+
+            throw new InvalidArgumentException($message);
+        }
     }
 }

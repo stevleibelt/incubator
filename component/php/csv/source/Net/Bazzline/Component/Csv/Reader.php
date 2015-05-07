@@ -37,7 +37,7 @@ class Reader extends AbstractBase implements Iterator
      */
     public function current()
     {
-        return $this->getFileHandler()->current();
+        return $this->getFileHandler()->fgetcsv($this->getDelimiter(), $this->getEnclosure(), $this->getEscapeCharacter());
     }
 
     /**
@@ -84,12 +84,14 @@ class Reader extends AbstractBase implements Iterator
     public function rewind()
     {
         if ($this->hasHeadline()) {
-            $this->currentLineNumber = 1;
-            $this->getFileHandler()->seek(1);
+            $lineNumber = 1;
         } else {
-            $this->currentLineNumber = 0;
-            $this->getFileHandler()->rewind();
+            $lineNumber = 0;
         }
+        $this->seekFileToCurrentLineNumberIfNeeded(
+            $this->getFileHandler(),
+            $lineNumber
+        );
     }
     //end of Iterator
 
@@ -100,6 +102,7 @@ class Reader extends AbstractBase implements Iterator
     public function disableHasHeadline()
     {
         $this->headline = false;
+        $this->rewind();
 
         return $this;
     }
@@ -109,11 +112,8 @@ class Reader extends AbstractBase implements Iterator
      */
     public function enableHasHeadline()
     {
-        $currentLineNumber  = $this->getCurrentLineNumber();
-        $file               = $this->getFileHandler();
-        $this->headline     = $this->readOne(0);
-
-        $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
+        $this->headline = $this->readOne(0);
+        $this->rewind();
 
         return $this;
     }
@@ -137,15 +137,15 @@ class Reader extends AbstractBase implements Iterator
     //begin of general
 
     /**
-     * @param null|int $currentLineNumber - if "null", current line number is used
+     * @param null|int $lineNumber - if "null", current line number is used
      * @return array|bool|string
      */
-    public function readOne($currentLineNumber = null)
+    public function readOne($lineNumber = null)
     {
         $file = $this->getFileHandler();
-        $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
+        $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumber);
 
-        $content = $file->current();
+        $content = $this->current();
         $this->next();
 
         return $content;
@@ -153,24 +153,23 @@ class Reader extends AbstractBase implements Iterator
 
     /**
      * @param int $numberOfLines
-     * @param null|int $currentLineNumber - if "null", current line number is used
+     * @param null|int $lineNumberToStartWith - if "null", current line number is used
      * @return array
      */
-    public function readMany($numberOfLines, $currentLineNumber = null)
+    public function readMany($numberOfLines, $lineNumberToStartWith = null)
     {
         $counter    = 0;
         $file       = $this->getFileHandler();
         $lines      = array();
 
-        $file = $this->seekFileToCurrentLineNumberIfNeeded($file, $currentLineNumber);
+        //@todo implement validation if start is valid (>= 0 | 1)
+        $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumberToStartWith);
 
-        while ($counter <= $numberOfLines) {
-            $lines[] = $file->current();
-            if ($file->eof()) {
+        foreach ($this as $line) {
+            $lines[] = $line;
+            ++$counter;
+            if ($counter >= $numberOfLines) {
                 break;
-            } else {
-                $this->next();
-                ++$counter;
             }
         }
 
@@ -182,18 +181,11 @@ class Reader extends AbstractBase implements Iterator
      */
     public function readAll()
     {
-        $file   = $this->getFileHandler();
         $lines  = array();
-
         $this->rewind();
 
-        while (true) {
-            //$lines[] = $file->fgetcsv();
-            $lines[] = $file->current();
-            $file->next();
-            if ($file->eof()) {
-                break;
-            }
+        foreach ($this as $line) {
+            $lines[] = $line;
         }
 
         return $lines;

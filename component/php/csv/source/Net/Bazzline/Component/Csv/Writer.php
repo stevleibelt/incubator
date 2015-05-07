@@ -36,7 +36,7 @@ class Writer extends AbstractBase
      */
     public function writeOne($data)
     {
-        return $this->getFileHandler()->fputcsv($data, $this->getDelimiter(), $this->getEnclosure());
+        return $this->getFileHandler()->fputcsv($data, $this->getDelimiter(), $this->getEnclosure(), $this->getEscapeCharacter());
     }
 
     /**

@@ -47,9 +47,9 @@ class ReaderTest extends AbstractTestCase
         $reader->setPath($file->url());
         $reader->enableHasHeadline();
 
-        $this->assertTrue($reader->hasHeadline());
-        $this->assertEquals($expectedContent, $reader->readAll());
-        $this->assertEquals($expectedHeadline, $reader->readHeadline());
+        $this->assertTrue($reader->hasHeadline(), 'has headline');
+        $this->assertEquals($expectedContent, $reader->readAll(), 'read all');
+        $this->assertEquals($expectedHeadline, $reader->readHeadline(), 'read headline');
     }
 
     public function testReadWholeContentAtOnce()
