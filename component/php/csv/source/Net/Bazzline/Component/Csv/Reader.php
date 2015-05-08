@@ -14,9 +14,6 @@ use SplFileObject;
 class Reader extends AbstractBase implements Iterator
 {
     /** @var int */
-    private $currentLineNumber = 0;
-
-    /** @var int */
     private $initialLineNumber = 0;
 
     /** @var false|array */
@@ -51,7 +48,6 @@ class Reader extends AbstractBase implements Iterator
      */
     public function next()
     {
-        ++$this->currentLineNumber;
         $this->getFileHandler()->next();
     }
 
@@ -168,9 +164,9 @@ class Reader extends AbstractBase implements Iterator
 
         /*
 echo 'before seek' . PHP_EOL;
-echo __LINE__ . ' current line number: ' . $this->currentLineNumber . PHP_EOL;
+echo __LINE__ . ' current line number: ' . $this->key() . PHP_EOL;
         $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumberToStartWith);
-echo __LINE__ . ' current line number: ' . $this->currentLineNumber . PHP_EOL;
+echo __LINE__ . ' current line number: ' . $this->key() . PHP_EOL;
 
         //foreach not usable here since it is calling rewind before iterating
         while (($this->valid()) && ($counter >= $length)) {
@@ -213,7 +209,7 @@ echo 'counter: ' . $counter . PHP_EOL;
      */
     public function getCurrentLineNumber()
     {
-        return $this->currentLineNumber;
+        return $this->key();
     }
     //end of general
     /**
@@ -233,16 +229,15 @@ echo 'counter: ' . $counter . PHP_EOL;
     {
         $seekIsNeeded = ((!is_null($newLineNumber))
             && ($newLineNumber >= $this->initialLineNumber)
-            && ($newLineNumber !== $this->currentLineNumber));
+            && ($newLineNumber !== $this->key()));
 
 /*
 echo 'new line number: ' . $newLineNumber . PHP_EOL;
-echo 'current line number: ' . $this->currentLineNumber . PHP_EOL;
+echo 'current line number: ' . $this->key() . PHP_EOL;
 echo 'seek is needed: ' . var_export($seekIsNeeded, true) . PHP_EOL;
 */
         if ($seekIsNeeded) {
             $file->seek($newLineNumber);
-            $this->currentLineNumber = $newLineNumber;
         }
 
         return $file;
