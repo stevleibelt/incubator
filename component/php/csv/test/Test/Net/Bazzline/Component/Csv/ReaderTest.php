@@ -126,10 +126,10 @@ class ReaderTest extends AbstractTestCase
         $length         = count($indices);
 
         return array(
-            'read something from the middle' => array(
+            'read one line the middle' => array(
                 'content'   => $content,
-                'end'       => $indices[($length - 2)],
-                'start'     => $indices[(1)]
+                'end'       => $indices[1],
+                'start'     => $indices[0]
             )
         );
     }
@@ -155,7 +155,7 @@ class ReaderTest extends AbstractTestCase
 
         $counter = $start;
 
-        while ($counter <= $end) {
+        while ($counter < $end) {
             $expectedContent[] = $fullFileContent[$counter];
             ++$counter;
         }
@@ -165,6 +165,7 @@ class ReaderTest extends AbstractTestCase
 
     public function testReadContentByProvidingTheCurrentLineNumber()
     {
+        $data       = $this->contentAsArray;
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
@@ -173,16 +174,14 @@ class ReaderTest extends AbstractTestCase
         $filesystem->addChild($file);
         $reader->setPath($file->url());
 
-        $lineNumber = (count($this->contentAsArray) - 1);
-
-        while ($lineNumber > 0) {
-            $this->assertEquals($this->contentAsArray[$lineNumber], $reader->readOne($lineNumber));
-            --$lineNumber;
+        foreach ($data as $lineNumber => $line) {
+            $this->assertEquals($line, $reader->readOne($lineNumber));
         }
     }
 
     public function testReadContentByProvidingTheCurrentLineNumberByUsingReaderAsAFunction()
     {
+        $data       = $this->contentAsArray;
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
@@ -191,11 +190,8 @@ class ReaderTest extends AbstractTestCase
         $filesystem->addChild($file);
         $reader->setPath($file->url());
 
-        $lineNumber = (count($this->contentAsArray) - 1);
-
-        while ($lineNumber > 0) {
-            $this->assertEquals($this->contentAsArray[$lineNumber], $reader($lineNumber));
-            --$lineNumber;
+        foreach ($data as $lineNumber => $line) {
+            $this->assertEquals($line, $reader($lineNumber));
         }
     }
 

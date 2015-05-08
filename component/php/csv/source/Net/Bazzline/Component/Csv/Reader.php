@@ -16,6 +16,9 @@ class Reader extends AbstractBase implements Iterator
     /** @var int */
     private $currentLineNumber = 0;
 
+    /** @var int */
+    private $initialLineNumber = 0;
+
     /** @var false|array */
     private $headline = false;
 
@@ -88,6 +91,7 @@ class Reader extends AbstractBase implements Iterator
         } else {
             $lineNumber = 0;
         }
+        $this->initialLineNumber = $lineNumber;
         $this->seekFileToCurrentLineNumberIfNeeded(
             $this->getFileHandler(),
             $lineNumber
@@ -162,7 +166,6 @@ class Reader extends AbstractBase implements Iterator
         $file       = $this->getFileHandler();
         $lines      = array();
 
-        //@todo implement validation if start is valid (>= 0 | 1)
         $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumberToStartWith);
 
         foreach ($this as $line) {
@@ -215,6 +218,7 @@ class Reader extends AbstractBase implements Iterator
     private function seekFileToCurrentLineNumberIfNeeded(SplFileObject $file, $currentLineNumber = null)
     {
         $seekIsNeeded = ((!is_null($currentLineNumber))
+            && ($currentLineNumber >= $this->initialLineNumber)
             && ($currentLineNumber !== $this->currentLineNumber));
 
         if ($seekIsNeeded) {
