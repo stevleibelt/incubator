@@ -126,11 +126,27 @@ class ReaderTest extends AbstractTestCase
         $length         = count($indices);
 
         return array(
-            'read one line the middle' => array(
+            ///*
+            'read only the first line' => array(
                 'content'   => $content,
                 'end'       => $indices[1],
                 'start'     => $indices[0]
+            ),
+            //*/
+            /*
+            'read one line the middle' => array(
+                'content'   => $content,
+                'end'       => $indices[2],
+                'start'     => $indices[1]
+            ),
+            */
+            ///*
+            'read whole content' => array(
+                'content'   => $content,
+                'end'       => $indices[($length - 1)],
+                'start'     => $indices[0]
             )
+            //*/
         );
     }
 
@@ -144,7 +160,7 @@ class ReaderTest extends AbstractTestCase
     {
         $file           = $this->createFile();
         $filesystem     = $this->createFilesystem();
-        $numberOfLines  = ($end - $start);
+        $length  = ($end - $start);
         $reader         = $this->createReader();
 
         $file->setContent($this->convertArrayToStrings($fullFileContent));
@@ -159,8 +175,17 @@ class ReaderTest extends AbstractTestCase
             $expectedContent[] = $fullFileContent[$counter];
             ++$counter;
         }
+/*
+echo '>>>>' . PHP_EOL;
+echo 'start: ' . var_export($start, true) . PHP_EOL;
+echo 'end: ' . var_export($end, true) . PHP_EOL;
+echo 'length: ' . var_export($length, true) . PHP_EOL;
+echo 'expected: ' . var_export($expectedContent, true) . PHP_EOL;
+echo 'got: ' . var_export($reader->readMany($length, $start), true) . PHP_EOL;
+echo '<<<<' . PHP_EOL;
+*/
 
-        $this->assertEquals($expectedContent, $reader->readMany($numberOfLines, $start));
+        $this->assertEquals($expectedContent, $reader->readMany($length, $start));
     }
 
     public function testReadContentByProvidingTheCurrentLineNumber()

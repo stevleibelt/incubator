@@ -156,22 +156,36 @@ class Reader extends AbstractBase implements Iterator
     }
 
     /**
-     * @param int $numberOfLines
+     * @param int $length
      * @param null|int $lineNumberToStartWith - if "null", current line number is used
      * @return array
      */
-    public function readMany($numberOfLines, $lineNumberToStartWith = null)
+    public function readMany($length, $lineNumberToStartWith = null)
     {
         $counter    = 0;
         $file       = $this->getFileHandler();
         $lines      = array();
 
+        /*
+echo 'before seek' . PHP_EOL;
+echo __LINE__ . ' current line number: ' . $this->currentLineNumber . PHP_EOL;
         $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumberToStartWith);
+echo __LINE__ . ' current line number: ' . $this->currentLineNumber . PHP_EOL;
+
+        //foreach not usable here since it is calling rewind before iterating
+        while (($this->valid()) && ($counter >= $length)) {
+            $lines[] = $this->current();
+            $this->next();
+            ++$counter;
+echo 'counter: ' . $counter . PHP_EOL;
+        }
+        */
 
         foreach ($this as $line) {
+//echo 'counter: ' . $counter . PHP_EOL;
             $lines[] = $line;
             ++$counter;
-            if ($counter >= $numberOfLines) {
+            if ($counter >= $length) {
                 break;
             }
         }
@@ -212,18 +226,23 @@ class Reader extends AbstractBase implements Iterator
 
     /**
      * @param SplFileObject $file
-     * @param null|int $currentLineNumber
+     * @param null|int $newLineNumber
      * @return SplFileObject
      */
-    private function seekFileToCurrentLineNumberIfNeeded(SplFileObject $file, $currentLineNumber = null)
+    private function seekFileToCurrentLineNumberIfNeeded(SplFileObject $file, $newLineNumber = null)
     {
-        $seekIsNeeded = ((!is_null($currentLineNumber))
-            && ($currentLineNumber >= $this->initialLineNumber)
-            && ($currentLineNumber !== $this->currentLineNumber));
+        $seekIsNeeded = ((!is_null($newLineNumber))
+            && ($newLineNumber >= $this->initialLineNumber)
+            && ($newLineNumber !== $this->currentLineNumber));
 
+/*
+echo 'new line number: ' . $newLineNumber . PHP_EOL;
+echo 'current line number: ' . $this->currentLineNumber . PHP_EOL;
+echo 'seek is needed: ' . var_export($seekIsNeeded, true) . PHP_EOL;
+*/
         if ($seekIsNeeded) {
-            $file->seek($currentLineNumber);
-            $this->currentLineNumber = $currentLineNumber;
+            $file->seek($newLineNumber);
+            $this->currentLineNumber = $newLineNumber;
         }
 
         return $file;
