@@ -162,21 +162,24 @@ class Reader extends AbstractBase implements Iterator
         $file       = $this->getFileHandler();
         $lines      = array();
 
-        /*
-echo 'before seek' . PHP_EOL;
-echo __LINE__ . ' current line number: ' . $this->key() . PHP_EOL;
         $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumberToStartWith);
-echo __LINE__ . ' current line number: ' . $this->key() . PHP_EOL;
 
         //foreach not usable here since it is calling rewind before iterating
-        while (($this->valid()) && ($counter >= $length)) {
+echo '====' . PHP_EOL;
+        while (($this->valid()) && ($counter < $length)) {
+echo __LINE__ . ' current key: ' . $this->key() . PHP_EOL;
             $lines[] = $this->current();
+            //$lines[] = $file->current();
+echo __LINE__ . ' current key: ' . $this->key() . PHP_EOL;
             $this->next();
+//echo 'next key: ' . $this->key() . PHP_EOL;
             ++$counter;
-echo 'counter: ' . $counter . PHP_EOL;
         }
-        */
+echo 'final counter: ' . $counter . PHP_EOL;
+echo 'length: ' . $length . PHP_EOL;
+echo '====' . PHP_EOL;
 
+        /*
         foreach ($this as $line) {
 //echo 'counter: ' . $counter . PHP_EOL;
             $lines[] = $line;
@@ -185,6 +188,7 @@ echo 'counter: ' . $counter . PHP_EOL;
                 break;
             }
         }
+        */
 
         return $lines;
     }
@@ -231,11 +235,6 @@ echo 'counter: ' . $counter . PHP_EOL;
             && ($newLineNumber >= $this->initialLineNumber)
             && ($newLineNumber !== $this->key()));
 
-/*
-echo 'new line number: ' . $newLineNumber . PHP_EOL;
-echo 'current line number: ' . $this->key() . PHP_EOL;
-echo 'seek is needed: ' . var_export($seekIsNeeded, true) . PHP_EOL;
-*/
         if ($seekIsNeeded) {
             $file->seek($newLineNumber);
         }
