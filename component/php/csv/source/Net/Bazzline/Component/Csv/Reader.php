@@ -143,10 +143,15 @@ class Reader extends AbstractBase implements Iterator
     public function readOne($lineNumber = null)
     {
         $file = $this->getFileHandler();
+echo 'line number: ' . $lineNumber . PHP_EOL;
+echo 'key: ' . $this->key() . PHP_EOL;
         $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumber);
+echo 'key: ' . $this->key() . PHP_EOL;
 
         $content = $this->current();
+echo 'key: ' . $this->key() . PHP_EOL;
         $this->next();
+echo 'key: ' . $this->key() . PHP_EOL;
 
         return $content;
     }
@@ -158,37 +163,27 @@ class Reader extends AbstractBase implements Iterator
      */
     public function readMany($length, $lineNumberToStartWith = null)
     {
-        $counter    = 0;
-        $file       = $this->getFileHandler();
-        $lines      = array();
-
-        $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumberToStartWith);
+        $lastLine       = $lineNumberToStartWith + $length;
+        $lines          = array();
+        $currentLine    = $lineNumberToStartWith;
 
         //foreach not usable here since it is calling rewind before iterating
 echo '====' . PHP_EOL;
-        while (($this->valid()) && ($counter < $length)) {
-echo __LINE__ . ' current key: ' . $this->key() . PHP_EOL;
-            $lines[] = $this->current();
-            //$lines[] = $file->current();
-echo __LINE__ . ' current key: ' . $this->key() . PHP_EOL;
-            $this->next();
-//echo 'next key: ' . $this->key() . PHP_EOL;
-            ++$counter;
-        }
-echo 'final counter: ' . $counter . PHP_EOL;
-echo 'length: ' . $length . PHP_EOL;
-echo '====' . PHP_EOL;
-
-        /*
-        foreach ($this as $line) {
-//echo 'counter: ' . $counter . PHP_EOL;
-            $lines[] = $line;
-            ++$counter;
-            if ($counter >= $length) {
-                break;
+echo '>>while loop start' . PHP_EOL;
+        while ($currentLine < $lastLine) {
+            $lines[] = $this->readOne($currentLine);
+            if (!$this->valid()) {
+                $currentLine = $lastLine;
+echo 'became invalid for current line: ' . $currentLine . PHP_EOL;
             }
+            ++$currentLine;
         }
-        */
+echo '>>while loop end' . PHP_EOL;
+echo '____________' . PHP_EOL;
+echo 'final currentLine: ' . $currentLine . PHP_EOL;
+echo 'length: ' . $length . PHP_EOL;
+echo 'lines: ' . var_export($lines, true). PHP_EOL;
+echo '====' . PHP_EOL;
 
         return $lines;
     }
@@ -199,7 +194,6 @@ echo '====' . PHP_EOL;
     public function readAll()
     {
         $lines  = array();
-        $this->rewind();
 
         foreach ($this as $line) {
             $lines[] = $line;
