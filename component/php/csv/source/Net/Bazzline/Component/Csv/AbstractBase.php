@@ -33,6 +33,7 @@ abstract class AbstractBase
     {
         $this->assertIsASingleCharacterString($delimiter, 'delimiter');
         $this->delimiter = $delimiter;
+        $this->updateCsvControl();
     }
 
     /**
@@ -43,6 +44,7 @@ abstract class AbstractBase
     {
         $this->assertIsASingleCharacterString($enclosure, 'enclosure');
         $this->enclosure = $enclosure;
+        $this->updateCsvControl();
     }
 
     /**
@@ -52,6 +54,7 @@ abstract class AbstractBase
     {
         $this->assertIsASingleCharacterString($escapeCharacter, 'escapeCharacter');
         $this->escapeCharacter = $escapeCharacter;
+        $this->updateCsvControl();
     }
 
     /**
@@ -134,6 +137,19 @@ abstract class AbstractBase
             $message = $name . ' must be a single character';
 
             throw new InvalidArgumentException($message);
+        }
+    }
+
+    private function updateCsvControl()
+    {
+        $file = $this->getFileHandler();
+
+        if ($file instanceof SplFileObject) {
+            $file->setCsvControl(
+                $this->getDelimiter(),
+                $this->getEnclosure(),
+                $this->getEscapeCharacter()
+            );
         }
     }
 }

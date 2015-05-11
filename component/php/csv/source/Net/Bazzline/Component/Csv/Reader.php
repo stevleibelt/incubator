@@ -37,7 +37,7 @@ class Reader extends AbstractBase implements Iterator
      */
     public function current()
     {
-        return $this->getFileHandler()->fgetcsv($this->getDelimiter(), $this->getEnclosure(), $this->getEscapeCharacter());
+        return $this->getFileHandler()->current();
     }
 
     /**
@@ -143,15 +143,10 @@ class Reader extends AbstractBase implements Iterator
     public function readOne($lineNumber = null)
     {
         $file = $this->getFileHandler();
-echo 'line number: ' . $lineNumber . PHP_EOL;
-echo 'key: ' . $this->key() . PHP_EOL;
         $this->seekFileToCurrentLineNumberIfNeeded($file, $lineNumber);
-echo 'key: ' . $this->key() . PHP_EOL;
 
         $content = $this->current();
-echo 'key: ' . $this->key() . PHP_EOL;
         $this->next();
-echo 'key: ' . $this->key() . PHP_EOL;
 
         return $content;
     }
@@ -168,22 +163,13 @@ echo 'key: ' . $this->key() . PHP_EOL;
         $currentLine    = $lineNumberToStartWith;
 
         //foreach not usable here since it is calling rewind before iterating
-echo '====' . PHP_EOL;
-echo '>>while loop start' . PHP_EOL;
         while ($currentLine < $lastLine) {
             $lines[] = $this->readOne($currentLine);
             if (!$this->valid()) {
                 $currentLine = $lastLine;
-echo 'became invalid for current line: ' . $currentLine . PHP_EOL;
             }
             ++$currentLine;
         }
-echo '>>while loop end' . PHP_EOL;
-echo '____________' . PHP_EOL;
-echo 'final currentLine: ' . $currentLine . PHP_EOL;
-echo 'length: ' . $length . PHP_EOL;
-echo 'lines: ' . var_export($lines, true). PHP_EOL;
-echo '====' . PHP_EOL;
 
         return $lines;
     }

@@ -34,7 +34,6 @@ class ReaderTest extends AbstractTestCase
 
     public function testHasHeadline()
     {
-$this->markTestSkipped();
         $content    = $this->contentAsArray;
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
@@ -55,7 +54,6 @@ $this->markTestSkipped();
 
     public function testReadWholeContentAtOnce()
     {
-$this->markTestSkipped();
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
@@ -70,7 +68,6 @@ $this->markTestSkipped();
 
     public function testReadWholeContentByUsingTheIteratorInterface()
     {
-$this->markTestSkipped();
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
@@ -88,7 +85,6 @@ $this->markTestSkipped();
 
     public function testReadWholeContentByUsingReaderAsAFunction()
     {
-$this->markTestSkipped();
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
@@ -107,7 +103,6 @@ $this->markTestSkipped();
 
     public function testReadWholeContentLinePerLine()
     {
-$this->markTestSkipped();
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
         $reader     = $this->createReader();
@@ -131,13 +126,11 @@ $this->markTestSkipped();
         $length         = count($indices);
 
         return array(
-            /*
             'read only the first line' => array(
                 'content'   => $content,
                 'end'       => $indices[1],
                 'start'     => $indices[0]
             ),
-            */
             'read one line the middle' => array(
                 'content'   => $content,
                 'end'       => $indices[2],
@@ -176,21 +169,12 @@ $this->markTestSkipped();
             $expectedContent[] = $fullFileContent[$counter];
             ++$counter;
         }
-echo '>>>>' . PHP_EOL;
-echo 'start: ' . var_export($start, true) . PHP_EOL;
-echo 'end: ' . var_export($end, true) . PHP_EOL;
-echo 'length: ' . var_export($length, true) . PHP_EOL;
-echo 'expected: ' . var_export($expectedContent, true) . PHP_EOL;
-echo 'got: ' . var_export($reader->readMany($length, $start), true) . PHP_EOL;
-echo '<<<<' . PHP_EOL;
 
-        //$this->assertEquals($expectedContent, $reader->readMany($length, $start));
-        $this->fail('----');
+        $this->assertEquals($expectedContent, $reader->readMany($length, $start));
     }
 
     public function testReadContentByProvidingTheCurrentLineNumber()
     {
-$this->markTestSkipped();
         $data       = $this->contentAsArray;
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
@@ -207,7 +191,6 @@ $this->markTestSkipped();
 
     public function testReadContentByProvidingTheCurrentLineNumberByUsingReaderAsAFunction()
     {
-$this->markTestSkipped();
         $data       = $this->contentAsArray;
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
