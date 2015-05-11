@@ -17,6 +17,7 @@ class ReaderFactory extends AbstractFactory
 
         $reader->setDelimiter($this->getDelimiter());
         $reader->setEnclosure($this->getEnclosure());
+        $reader->setEscapeCharacter($this->getEscapeCharacter());
 
         return $reader;
     }

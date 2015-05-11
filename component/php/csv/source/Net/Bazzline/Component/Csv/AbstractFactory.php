@@ -23,4 +23,12 @@ abstract class AbstractFactory implements FactoryInterface
     {
         return '"';
     }
+
+    /**
+     * @return string
+     */
+    protected function getEscapeCharacter()
+    {
+        return "\\";
+    }
 }

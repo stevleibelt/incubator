@@ -17,6 +17,7 @@ class WriterFactory extends AbstractFactory
 
         $writer->setDelimiter($this->getDelimiter());
         $writer->setEnclosure($this->getEnclosure());
+        $writer->setEscapeCharacter($this->getEscapeCharacter());
 
         return $writer;
     }
