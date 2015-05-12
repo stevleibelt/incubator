@@ -16,9 +16,6 @@ class Reader extends AbstractBase implements Iterator
     /** @var int */
     private $initialLineNumber = 0;
 
-    /** @var false|array */
-    private $headline = false;
-
     /**
      * @param null $currentLineNumber
      * @return array|bool|string
@@ -101,7 +98,7 @@ class Reader extends AbstractBase implements Iterator
      */
     public function disableHasHeadline()
     {
-        $this->headline = false;
+        $this->resetHeadline();
         $this->rewind();
 
         return $this;
@@ -112,17 +109,10 @@ class Reader extends AbstractBase implements Iterator
      */
     public function enableHasHeadline()
     {
-        $this->headline = $this->readOne(0);
+        $this->setHeadline($this->readOne(0));
         $this->rewind();
 
         return $this;
-    }
-    /**
-     * @return bool
-     */
-    public function hasHeadline()
-    {
-        return ($this->headline !== false);
     }
 
     /**
@@ -130,7 +120,7 @@ class Reader extends AbstractBase implements Iterator
      */
     public function readHeadline()
     {
-        return $this->headline;
+        return $this->getHeadline();
     }
     //end of headlines
 
@@ -187,15 +177,8 @@ class Reader extends AbstractBase implements Iterator
 
         return $lines;
     }
-
-    /**
-     * @return int
-     */
-    public function getCurrentLineNumber()
-    {
-        return $this->key();
-    }
     //end of general
+
     /**
      * @return string
      */

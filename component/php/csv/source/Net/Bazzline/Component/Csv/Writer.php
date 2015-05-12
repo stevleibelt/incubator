@@ -8,9 +8,6 @@ namespace Net\Bazzline\Component\Csv;
 
 class Writer extends AbstractBase
 {
-    /** @var false|array */
-    private $headlines = false;
-
     /**
      * @param mixed|array $data
      * @return false|int
@@ -22,14 +19,6 @@ class Writer extends AbstractBase
 
 
     //begin of general
-    /**
-     * @return bool
-     */
-    public function hasHeadline()
-    {
-        return ($this->headlines !== false);
-    }
-
     /**
      * @param mixed|array $data
      * @return false|int
@@ -63,7 +52,7 @@ class Writer extends AbstractBase
 
     public function writeHeadlines(array $headlines)
     {
-        $this->headlines = $headlines;
+        $this->setHeadline($headlines);
         $this->writeOne($headlines);
     }
     //end of general

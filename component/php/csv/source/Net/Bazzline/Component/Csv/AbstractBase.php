@@ -19,11 +19,22 @@ abstract class AbstractBase
     /** @var string */
     private $escapeCharacter = '\\';
 
+    /** @var false|array */
+    private $headline = false;
+
     /** @var SplFileObject */
     private $handler;
 
     /** @var string */
     private $path;
+
+    /**
+     * @return bool
+     */
+    public function hasHeadline()
+    {
+        return ($this->headline !== false);
+    }
 
     /**
      * @param string $delimiter
@@ -107,6 +118,35 @@ abstract class AbstractBase
      * @return string
      */
     abstract protected function getFileHandlerOpenMode();
+
+    /**
+     * @return array|false
+     */
+    protected function getHeadline()
+    {
+        return $this->headline;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function resetHeadline()
+    {
+        $this->headline = false;
+
+        return $this;
+    }
+
+    /**
+     * @param array $headline
+     * @return $this
+     */
+    protected function setHeadline(array $headline)
+    {
+        $this->headline = $headline;
+
+        return $this;
+    }
 
     /**
      * @param string $path

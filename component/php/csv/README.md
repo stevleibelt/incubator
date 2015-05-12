@@ -103,9 +103,9 @@ $writer->truncate();
         * setEnclosure
     * factory
         * setDelimiter($this->getDelimiter()); //getters are protected to easy up extending
-* version 3 - current step
+* version 3 - done
     * unify reader and writer
-* version 4
+* version 4 - current step
     * remove dependency to php 5.4 (https://php.net/manual/en/splfileobject.fputcsv.php)
     * setFilter(callable $filter);  //for readers and writers
     * writer
