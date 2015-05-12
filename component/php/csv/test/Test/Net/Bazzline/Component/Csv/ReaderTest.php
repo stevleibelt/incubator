@@ -119,6 +119,9 @@ class ReaderTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @return array
+     */
     public function readChunkOfTheContentDataProvider()
     {
         $content        = $this->contentAsArray;
@@ -146,18 +149,18 @@ class ReaderTest extends AbstractTestCase
 
     /**
      * @dataProvider readChunkOfTheContentDataProvider
-     * @param string $fullFileContent
+     * @param string $content
      * @param int $end
      * @param int $start
      */
-    public function testReadChunkOfTheContentByProvidingStartLineNumberAndAmountOfLines($fullFileContent, $end, $start)
+    public function testReadChunkOfTheContentByProvidingStartLineNumberAndAmountOfLines($content, $end, $start)
     {
         $file           = $this->createFile();
         $filesystem     = $this->createFilesystem();
-        $length  = ($end - $start);
+        $length         = ($end - $start);
         $reader         = $this->createReader();
 
-        $file->setContent($this->convertArrayToStrings($fullFileContent));
+        $file->setContent($this->convertArrayToStrings($content));
         $filesystem->addChild($file);
         $reader->setPath($file->url());
 
@@ -166,7 +169,7 @@ class ReaderTest extends AbstractTestCase
         $counter = $start;
 
         while ($counter < $end) {
-            $expectedContent[] = $fullFileContent[$counter];
+            $expectedContent[] = $content[$counter];
             ++$counter;
         }
 

@@ -7,12 +7,26 @@
 namespace Test\Net\Bazzline\Component\Csv;
 
 use Net\Bazzline\Component\Csv\Reader;
+use Net\Bazzline\Component\Csv\ReaderFactory;
 use Net\Bazzline\Component\Csv\Writer;
+use Net\Bazzline\Component\Csv\WriterFactory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit_Framework_TestCase;
 
 abstract class AbstractTestCase extends PHPUnit_Framework_TestCase
 {
+    /** @var ReaderFactory */
+    private $readerFactory;
+
+    /** @var WriterFactory */
+    private $writerFactory;
+
+    final public function __construct()
+    {
+        $this->readerFactory = new ReaderFactory();
+        $this->writerFactory = new WriterFactory();
+    }
+
     /**
      * @param int $permissions
      * @param string $path
@@ -38,7 +52,7 @@ abstract class AbstractTestCase extends PHPUnit_Framework_TestCase
      */
     protected function createReader()
     {
-        return new Reader();
+        return $this->readerFactory->create();
     }
 
     /**
@@ -46,6 +60,6 @@ abstract class AbstractTestCase extends PHPUnit_Framework_TestCase
      */
     protected function createWriter()
     {
-        return new Writer();
+        return $this->writerFactory->create();
     }
 }
