@@ -107,7 +107,7 @@ abstract class AbstractBase
     }
 
     /**
-     * @return SplFileObject
+     * @return SplFileObject|resource
      */
     protected function getFileHandler()
     {
