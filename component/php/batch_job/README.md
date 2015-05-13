@@ -253,4 +253,5 @@ The component will easy up handling of batch job processes.
     * reduced scalability since the dbms has to tackle multiple status (on more index to maintain, increased number of consumers)
     * create a queue table for each new step/task/process
     * combine them by the naming like "item_validation_data_queue", "item_validation_url_reachable_queue"
+    * if you need to deal with status, implement a StatusManager/StateMachine that calculates the right status
 
