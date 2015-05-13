@@ -153,7 +153,7 @@ abstract class AbstractBase
      * @return SplFileObject
      * @todo inject or inject factory
      */
-    private function open($path)
+    protected function open($path)
     {
         $file = new SplFileObject($path, $this->getFileHandlerOpenMode());
         $file->setFlags(SplFileObject::READ_CSV);

@@ -13,7 +13,11 @@ class WriterFactory extends AbstractFactory
      */
     public function create()
     {
-        $writer = new Writer();
+        if (version_compare(phpversion(), '5.4', '<')) {
+            $writer = new WriterForPhp5Dot3();
+        } else {
+            $writer = new Writer();
+        }
 
         $writer->setDelimiter($this->getDelimiter());
         $writer->setEnclosure($this->getEnclosure());
