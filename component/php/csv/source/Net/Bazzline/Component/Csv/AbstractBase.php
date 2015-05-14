@@ -19,9 +19,6 @@ abstract class AbstractBase
     /** @var string */
     private $escapeCharacter = '\\';
 
-    /** @var null|callable */
-    private $filter;
-
     /** @var false|array */
     private $headline = false;
 
@@ -69,14 +66,6 @@ abstract class AbstractBase
         $this->assertIsASingleCharacterString($escapeCharacter, 'escapeCharacter');
         $this->escapeCharacter = $escapeCharacter;
         $this->updateCsvControl();
-    }
-
-    /**
-     * @param callable|null $filter
-     */
-    public function setFilter($filter)
-    {
-        $this->filter = $filter;
     }
 
     /**

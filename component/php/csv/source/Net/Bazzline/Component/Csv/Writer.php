@@ -20,7 +20,7 @@ class Writer extends AbstractBase
 
     //begin of general
     /**
-     * @param mixed|array $data
+     * @param array|mixed $data
      * @return false|int
      */
     public function writeOne($data)
