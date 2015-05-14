@@ -6,7 +6,7 @@
 
 namespace Net\Bazzline\Component\Csv;
 
-class FilteredReader extends Reader
+class FilteredWriterForPhp3Dot3 extends WriterForPhp5Dot3
 {
     /** @var FilterInterface */
     private $filter;
@@ -20,17 +20,12 @@ class FilteredReader extends Reader
     }
 
     /**
-     * @return mixed
+     * @param array|mixed $data
+     * @return false|int
      */
-    public function current()
+    public function writeOne($data)
     {
-        $data = parent::current();
-
-        if (!$this->filter->isValid($data)) {
-            $this->next();
-            $data = $this->current();
-        }
-
-        return $data;
+        return ($this->filter->isValid($data))
+            ? parent::writeOne($data) : false;
     }
 }

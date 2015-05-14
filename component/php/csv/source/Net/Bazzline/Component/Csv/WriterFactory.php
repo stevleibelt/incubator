@@ -13,16 +13,34 @@ class WriterFactory extends AbstractFactory
      */
     public function create()
     {
-        if (version_compare(phpversion(), '5.4', '<')) {
-            $writer = new WriterForPhp5Dot3();
-        } else {
-            $writer = new Writer();
-        }
+        $writer = $this->getWriter();
 
         $writer->setDelimiter($this->getDelimiter());
         $writer->setEnclosure($this->getEnclosure());
         $writer->setEscapeCharacter($this->getEscapeCharacter());
 
         return $writer;
+    }
+
+    /**
+     * @return Writer|WriterForPhp5Dot3
+     */
+    protected function getWriter()
+    {
+        if ($this->phpVersionLessThen5Dot4()) {
+            $writer = new WriterForPhp5Dot3();
+        } else {
+            $writer = new Writer();
+        }
+
+        return $writer;
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function phpVersionLessThen5Dot4()
+    {
+        return (version_compare(phpversion(), '5.4', '<'));
     }
 }
