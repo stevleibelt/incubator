@@ -11,7 +11,7 @@ class FilteredWriterFactory extends WriterFactory
     /**
      * @return FilteredWriter|FilteredWriterForPhp3Dot3
      */
-    protected function getWriter()
+    protected function createNewWriter()
     {
         if ($this->phpVersionLessThen5Dot4()) {
             $writer = new FilteredWriterForPhp3Dot3();
