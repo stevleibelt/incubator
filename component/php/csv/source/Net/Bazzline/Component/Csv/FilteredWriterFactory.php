@@ -19,6 +19,8 @@ class FilteredWriterFactory extends WriterFactory
             $writer = new FilteredWriter();
         }
 
+        $writer->setFilter(new AlwaysValidFilter());
+
         return $writer;
     }
 }
