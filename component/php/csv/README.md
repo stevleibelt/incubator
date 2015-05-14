@@ -105,13 +105,13 @@ $writer->truncate();
         * setDelimiter($this->getDelimiter()); //getters are protected to easy up extending
 * version 3 - done
     * unify reader and writer
-* version 4 - current step
+* version 4 
     * remove dependency to php 5.4 (https://php.net/manual/en/splfileobject.fputcsv.php)
     * setFilter(callable $filter);  //for readers and writers
     * writer
         * truncate();
-        * copy($destination);
         * delete();
+        * copy($destination); - current step (no unit tests)
         * writeAll();   //truncates and writes content
 * version 4
     * wrapper/proxy to easy up migration from EasyCsv to this component

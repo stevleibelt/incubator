@@ -8,6 +8,12 @@ namespace Net\Bazzline\Component\Csv;
 
 class Writer extends AbstractBase
 {
+    const OPEN_MODE_APPEND      = 'a';
+    const OPEN_MODE_TRUNCATE    = 'w';
+
+    /** @var boolean */
+    private $truncate = false;
+
     /**
      * @param mixed|array $data
      * @return false|int
@@ -19,6 +25,24 @@ class Writer extends AbstractBase
 
 
     //begin of general
+    /**
+     * @return bool
+     */
+    public function delete()
+    {
+        $this->close();
+
+        return unlink($this->getPath());
+    }
+
+    public function truncate()
+    {
+        $this->close();
+        $this->truncate = true;
+        $this->open($this->getPath());
+        $this->truncate = false;
+    }
+
     /**
      * @param array|mixed $data
      * @return false|int
@@ -62,6 +86,6 @@ class Writer extends AbstractBase
      */
     protected function getFileHandlerOpenMode()
     {
-        return 'w';
+        return ($this->truncate) ? self::OPEN_MODE_TRUNCATE : self::OPEN_MODE_APPEND;
     }
 }

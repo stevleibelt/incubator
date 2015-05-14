@@ -128,6 +128,14 @@ abstract class AbstractBase
     }
 
     /**
+     * @return string
+     */
+    protected function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
      * @return $this
      */
     protected function resetHeadline()
@@ -146,6 +154,13 @@ abstract class AbstractBase
         $this->headline = $headline;
 
         return $this;
+    }
+
+    protected function close()
+    {
+        if (!is_null($this->handler)) {
+            unset($this->handler);
+        }
     }
 
     /**
