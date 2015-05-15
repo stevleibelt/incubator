@@ -8,6 +8,11 @@ namespace Net\Bazzline\Component\Csv;
 
 class WriterForPhp5Dot3 extends Writer
 {
+    public function __destruct()
+    {
+        $this->close();
+    }
+
     /**
      * @param mixed|array $data
      * @return false|int
