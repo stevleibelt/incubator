@@ -13,7 +13,7 @@ class WriterFactory extends AbstractFactory
      */
     public function create()
     {
-        $writer = $this->createNewWriter();
+        $writer = $this->getWriter();
 
         $writer->setDelimiter($this->getDelimiter());
         $writer->setEnclosure($this->getEnclosure());
@@ -25,7 +25,7 @@ class WriterFactory extends AbstractFactory
     /**
      * @return Writer|WriterForPhp5Dot3
      */
-    protected function createNewWriter()
+    protected function getWriter()
     {
         if ($this->phpVersionLessThen5Dot4()) {
             $writer = new WriterForPhp5Dot3();
