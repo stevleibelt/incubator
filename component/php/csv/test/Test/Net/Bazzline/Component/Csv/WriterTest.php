@@ -113,6 +113,50 @@ class WriterTest extends AbstractTestCase
         }
     }
 
+    public function testTruncate()
+    {
+        $delimiters = $this->delimiters;
+
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $content            = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $writer             = $this->createWriter();
+
+            $file->setContent($content);
+            $filesystem->addChild($file);
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($file->url());
+
+            $writer->truncate();
+
+            $this->assertEquals('', $file->getContent());
+        }
+    }
+
+    public function testDelete()
+    {
+        $delimiters = $this->delimiters;
+
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $content            = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $writer             = $this->createWriter();
+
+            $file->setContent($content);
+            $filesystem->addChild($file);
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($file->url());
+
+            $writer->delete();
+
+            $this->assertFalse(file_exists($file->url()));
+        }
+    }
+
     /**
      * @param array $data
      * @param string $delimiter
