@@ -67,6 +67,8 @@ class Writer extends AbstractBase
     }
 
     /**
+     * truncates file and writes content
+     *
      * @param array $collection
      * @return false|int
      */
