@@ -114,7 +114,8 @@ $writer->truncate();
         * copy($destination);
         * writeAll();   //truncates and writes content
 * version 4 - current step
-    * wrapper/proxy to easy up migration from EasyCsv to this component
+    * implement \__clone();
+    * adapter to easy up migration from EasyCsv to this component
     * writer
 ```
 public function __construct($path, $mode = 'r+')
