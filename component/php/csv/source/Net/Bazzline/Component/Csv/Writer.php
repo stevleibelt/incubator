@@ -14,7 +14,7 @@ class Writer extends AbstractBase
     const OPEN_MODE_TRUNCATE    = 'w';
 
     /** @var boolean */
-    private $truncate = false;
+    private $useTruncateAsOpenMode = false;
 
     /**
      * @param mixed|array $data
@@ -61,18 +61,30 @@ class Writer extends AbstractBase
     public function truncate()
     {
         $this->close();
-        $this->truncate = true;
+        $this->useTruncateAsOpenMode = true;
         $this->open($this->getPath());
-        $this->truncate = false;
+        $this->useTruncateAsOpenMode = false;
     }
 
     /**
-     * @param array|mixed $data
+     * @param array $collection
      * @return false|int
      */
-    public function writeOne($data)
+    public function writeAll(array $collection)
     {
-        return $this->getFileHandler()->fputcsv($data, $this->getDelimiter(), $this->getEnclosure());
+        $this->truncate();
+
+        return $this->writeMany($collection);
+    }
+
+    /**
+     * @param array $headlines
+     * @return false|int
+     */
+    public function writeHeadlines(array $headlines)
+    {
+        $this->setHeadline($headlines);
+        return $this->writeOne($headlines);
     }
 
     /**
@@ -97,10 +109,13 @@ class Writer extends AbstractBase
         return $lengthOfTheWrittenStrings;
     }
 
-    public function writeHeadlines(array $headlines)
+    /**
+     * @param array|mixed $data
+     * @return false|int
+     */
+    public function writeOne($data)
     {
-        $this->setHeadline($headlines);
-        $this->writeOne($headlines);
+        return $this->getFileHandler()->fputcsv($data, $this->getDelimiter(), $this->getEnclosure());
     }
     //end of general
 
@@ -109,6 +124,6 @@ class Writer extends AbstractBase
      */
     protected function getFileHandlerOpenMode()
     {
-        return ($this->truncate) ? self::OPEN_MODE_TRUNCATE : self::OPEN_MODE_APPEND;
+        return ($this->useTruncateAsOpenMode) ? self::OPEN_MODE_TRUNCATE : self::OPEN_MODE_APPEND;
     }
 }

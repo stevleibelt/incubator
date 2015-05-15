@@ -92,7 +92,30 @@ class WriterTest extends AbstractTestCase
         }
     }
 
-    public function testWriteContentAtOnce()
+    public function testWriteAllContentAtOnce()
+    {
+        $delimiters = $this->delimiters;
+
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $expectedContent    = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $writer             = $this->createWriter();
+
+            $filesystem->addChild($file);
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($file->url());
+
+            //simple write the content two times
+            $this->assertNotFalse($writer->writeMany($collection));
+            $this->assertNotFalse($writer->writeAll($collection));
+
+            $this->assertEquals($expectedContent, $file->getContent());
+        }
+    }
+
+    public function testWriteManyContentAtOnce()
     {
         $delimiters = $this->delimiters;
 
@@ -192,7 +215,6 @@ class WriterTest extends AbstractTestCase
             $content            = $this->convertArrayToStrings($collection, $delimiter);
             $file               = $this->createFile();
             $filesystem         = $this->createFilesystem();
-            $line               = array('schalalal', 'schululu');
             $writer             = $this->createWriter();
 
             $file->setContent($content);

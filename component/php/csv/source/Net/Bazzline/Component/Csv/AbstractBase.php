@@ -159,7 +159,7 @@ abstract class AbstractBase
     protected function close()
     {
         if (!is_null($this->handler)) {
-            unset($this->handler);
+            $this->headline = null;
         }
     }
 
