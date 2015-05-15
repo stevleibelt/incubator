@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Csv;
 
+use Net\Bazzline\Component\BatchJob\RuntimeException;
+
 class Writer extends AbstractBase
 {
     const OPEN_MODE_APPEND      = 'a';
@@ -27,13 +29,23 @@ class Writer extends AbstractBase
     //begin of general
     /**
      * @param string $path
+     * @param bool $setPathAsCurrentPath
      * @return bool
      * @throws InvalidArgumentException
      * @todo implement validation
      */
-    public function copy($path)
+    public function copy($path, $setPathAsCurrentPath = false)
     {
-        return false;
+        $couldBeCopied = copy($this->getPath(), $path);
+
+        if ($setPathAsCurrentPath) {
+            if ($couldBeCopied) {
+                $this->close();
+                $this->setPath($path);
+            }
+        }
+
+        return $couldBeCopied;
     }
 
     /**

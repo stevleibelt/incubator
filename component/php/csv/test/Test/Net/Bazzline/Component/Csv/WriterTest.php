@@ -183,6 +183,33 @@ class WriterTest extends AbstractTestCase
         }
     }
 
+    public function testCopyWithSettingNewPathAsCurrentPath()
+    {
+        $delimiters = $this->delimiters;
+
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $content            = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $line               = array('schalalal', 'schululu');
+            $writer             = $this->createWriter();
+
+            $file->setContent($content);
+            $filesystem->addChild($file);
+
+            $sourceFilePath         = $file->url();
+            $destinationFilePath    = str_replace('test.csv', 'foobar.csv', $file->url());
+
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($sourceFilePath);
+
+            $this->assertFalse(file_exists($destinationFilePath));
+            $writer->copy($destinationFilePath, true);
+            $this->assertTrue(file_exists($destinationFilePath));
+        }
+    }
+
     /**
      * @param array $data
      * @param string $delimiter

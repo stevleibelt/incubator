@@ -111,8 +111,8 @@ $writer->truncate();
     * writer
         * truncate();
         * delete();
-        * copy($destination); - current step (no unit tests)
-        * writeAll();   //truncates and writes content
+        * copy($destination);
+        * writeAll();   //truncates and writes content - current step
 * version 4
     * wrapper/proxy to easy up migration from EasyCsv to this component
 * version 5
