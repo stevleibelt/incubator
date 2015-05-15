@@ -26,6 +26,17 @@ class Writer extends AbstractBase
 
     //begin of general
     /**
+     * @param string $path
+     * @return bool
+     * @throws InvalidArgumentException
+     * @todo implement validation
+     */
+    public function copy($path)
+    {
+        return false;
+    }
+
+    /**
      * @return bool
      */
     public function delete()

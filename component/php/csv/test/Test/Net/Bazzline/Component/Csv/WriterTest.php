@@ -151,9 +151,35 @@ class WriterTest extends AbstractTestCase
             $writer->setDelimiter($delimiter);
             $writer->setPath($file->url());
 
+            $this->assertTrue(file_exists($file->url()));
             $writer->delete();
-
             $this->assertFalse(file_exists($file->url()));
+        }
+    }
+
+    public function testCopy()
+    {
+        $delimiters = $this->delimiters;
+
+        foreach ($delimiters as $delimiter) {
+            $collection         = $this->contentAsArray;
+            $content            = $this->convertArrayToStrings($collection, $delimiter);
+            $file               = $this->createFile();
+            $filesystem         = $this->createFilesystem();
+            $writer             = $this->createWriter();
+
+            $file->setContent($content);
+            $filesystem->addChild($file);
+
+            $sourceFilePath         = $file->url();
+            $destinationFilePath    = str_replace('test.csv', 'foobar.csv', $file->url());
+
+            $writer->setDelimiter($delimiter);
+            $writer->setPath($sourceFilePath);
+
+            $this->assertFalse(file_exists($destinationFilePath));
+            $writer->copy($destinationFilePath);
+            $this->assertTrue(file_exists($destinationFilePath));
         }
     }
 
