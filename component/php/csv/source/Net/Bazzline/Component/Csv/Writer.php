@@ -86,6 +86,7 @@ class Writer extends AbstractBase
     public function writeHeadlines(array $headlines)
     {
         $this->setHeadline($headlines);
+
         return $this->writeOne($headlines);
     }
 

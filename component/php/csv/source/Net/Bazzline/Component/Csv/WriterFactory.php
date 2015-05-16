@@ -9,7 +9,7 @@ namespace Net\Bazzline\Component\Csv;
 class WriterFactory extends AbstractFactory
 {
     /**
-     * @return object
+     * @return Writer|WriterForPhp5Dot3
      */
     public function create()
     {
