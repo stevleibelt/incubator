@@ -172,6 +172,9 @@ abstract class AbstractBase
     {
         $file = new SplFileObject($path, $this->getFileHandlerOpenMode());
         $file->setFlags(SplFileObject::READ_CSV);
+        //@todo
+        //$file->setFlags(SplFileObject::DROP_NEW_LINE);
+        //$file->setFlags(SplFileObject::SKIP_EMPTY);
 
         return $file;
     }
