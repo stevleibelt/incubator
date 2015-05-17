@@ -120,9 +120,8 @@ $writer->truncate();
     * write adapter to easy up migration from [EasyCsv - 0.0.1](https://github.com/jwage/easy-csv/tree/0.0.1/lib/EasyCSV) to this component
     * [writer](https://github.com/jwage/easy-csv/blob/master/lib/EasyCSV/Writer.php)
     * [reader](https://github.com/jwage/easy-csv/blob/master/lib/EasyCSV/Reader.php)
-* version 5 - current step
-    * extend unit tests
 * future
+    * extend unit tests
     * implement \__clone();
     * write documentation
     * write examples
