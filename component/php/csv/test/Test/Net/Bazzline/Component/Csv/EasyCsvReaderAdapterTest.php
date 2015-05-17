@@ -42,7 +42,6 @@ class EasyCsvReaderAdapterTest extends AbstractTestCase
      */
     public function testGetHeaders(EasyCsvReaderAdapter $reader)
     {
-$this->markTestSkipped();
         $this->assertEquals(array("column1", "column2", "column3"), $reader->getHeaders());
     }
 

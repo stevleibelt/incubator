@@ -120,6 +120,7 @@ class Reader extends AbstractBase implements Iterator
     public function rewind()
     {
         if ($this->hasHeadline()) {
+            $this->initialLineNumber = 0;
             $this->setHeadline($this->readOne(0));
             $lineNumber = 1;
         } else {

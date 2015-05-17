@@ -34,7 +34,6 @@ class ReaderTest extends AbstractTestCase
 
     public function testHasHeadline()
     {
-$this->markTestSkipped();
         $content    = $this->contentAsArray;
         $file       = $this->createFile();
         $filesystem = $this->createFilesystem();
@@ -42,11 +41,7 @@ $this->markTestSkipped();
 
         $expectedContent    = array_slice($content, 1);
         $expectedHeadline   = $content[0];
-        foreach ($expectedContent as $key => &$content) {
-            $content = array_walk($content, function($value, &$key, $headline) {
-                $key = $headline[$key];
-            }, $expectedHeadline);
-        }
+        $expectedContent    = $this->addHeadlineAsKeysToContent($expectedHeadline, $expectedContent);
 
         $file->setContent($this->getContentAsString());
         $filesystem->addChild($file);
@@ -200,18 +195,35 @@ $this->markTestSkipped();
 
     public function testReadContentByProvidingTheCurrentLineNumberByUsingReaderAsAFunction()
     {
-        $data       = $this->contentAsArray;
-        $file       = $this->createFile();
+        $data = $this->contentAsArray;
+        $file = $this->createFile();
         $filesystem = $this->createFilesystem();
-        $reader     = $this->createReader();
-
+        $reader = $this->createReader();
         $file->setContent($this->getContentAsString());
         $filesystem->addChild($file);
         $reader->setPath($file->url());
-
-        foreach ($data as $lineNumber => $line) {
+        foreach($data as $lineNumber => $line) {
             $this->assertEquals($line, $reader($lineNumber));
         }
+    }
+
+    /**
+     * @param array $headline
+     * @param array $content
+     * @return array
+     */
+    private function addHeadlineAsKeysToContent(array $headline, array $content)
+    {
+        $adaptedContent = array();
+
+        foreach ($content as $key => $columns) {
+            $adaptedContent[$key] = array();
+            foreach ($columns as $columnKey => $columnContent) {
+                $adaptedContent[$key][$headline[$columnKey]] = $columnContent;
+            }
+        }
+
+        return $adaptedContent;
     }
 
     /**
