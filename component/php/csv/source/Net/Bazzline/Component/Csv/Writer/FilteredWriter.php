@@ -7,7 +7,6 @@
 namespace Net\Bazzline\Component\Csv\Writer;
 
 use Net\Bazzline\Component\Csv\Filter\FilterInterface;
-use Net\Bazzline\Component\Csv\Writer;
 
 class FilteredWriter extends Writer
 {

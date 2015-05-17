@@ -4,9 +4,9 @@
  * @since 2015-05-06 
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Writer;
 
-use Net\Bazzline\Component\Csv\Writer\WriterForPhp5Dot3;
+use Net\Bazzline\Component\Csv\AbstractFactory;
 
 class WriterFactory extends AbstractFactory
 {

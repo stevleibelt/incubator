@@ -6,8 +6,6 @@
 
 namespace Net\Bazzline\Component\Csv\Writer;
 
-use Net\Bazzline\Component\Csv\Writer;
-
 class WriterForPhp5Dot3 extends Writer
 {
     public function __destruct()

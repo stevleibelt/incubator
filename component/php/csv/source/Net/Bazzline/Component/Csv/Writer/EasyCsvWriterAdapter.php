@@ -6,9 +6,6 @@
 
 namespace Net\Bazzline\Component\Csv\Writer;
 
-use Net\Bazzline\Component\Csv\Writer;
-use Net\Bazzline\Component\Csv\WriterFactory;
-
 class EasyCsvWriterAdapter
 {
     /** @var Writer|WriterForPhp5Dot3  */

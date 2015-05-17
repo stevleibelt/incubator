@@ -4,9 +4,11 @@
  * @since: 2015-04-17
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Writer;
 
 use Net\Bazzline\Component\BatchJob\RuntimeException;
+use Net\Bazzline\Component\Csv\AbstractBase;
+use Net\Bazzline\Component\Csv\InvalidArgumentException;
 
 class Writer extends AbstractBase
 {
