@@ -4,7 +4,7 @@
  * @since 2015-05-14 
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Filter;
 
 interface FilterInterface
 {

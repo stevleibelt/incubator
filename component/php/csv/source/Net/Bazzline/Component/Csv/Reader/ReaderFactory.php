@@ -4,7 +4,9 @@
  * @since 2015-05-06 
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Reader;
+
+use Net\Bazzline\Component\Csv\AbstractFactory;
 
 class ReaderFactory extends AbstractFactory
 {

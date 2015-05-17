@@ -4,9 +4,11 @@
  * @since 2015-05-14 
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Writer;
 
-class FilteredWriter extends Writer
+use Net\Bazzline\Component\Csv\Filter\FilterInterface;
+
+class FilteredWriterForPhp3Dot3 extends WriterForPhp5Dot3
 {
     /** @var FilterInterface */
     private $filter;

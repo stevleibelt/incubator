@@ -4,7 +4,9 @@
  * @since 2015-05-14 
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Reader;
+
+use Net\Bazzline\Component\Csv\Filter\FilterInterface;
 
 class FilteredReader extends Reader
 {

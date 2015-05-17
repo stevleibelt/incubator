@@ -6,7 +6,7 @@
 
 namespace Test\Net\Bazzline\Component\Csv;
 
-use Net\Bazzline\Component\Csv\EasyCsvReaderAdapter;
+use Net\Bazzline\Component\Csv\Reader\EasyCsvReaderAdapter;
 
 /**
  * Class EasyCsvReaderAdapterTest

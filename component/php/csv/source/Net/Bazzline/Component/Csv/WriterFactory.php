@@ -6,6 +6,8 @@
 
 namespace Net\Bazzline\Component\Csv;
 
+use Net\Bazzline\Component\Csv\Writer\WriterForPhp5Dot3;
+
 class WriterFactory extends AbstractFactory
 {
     /**

@@ -4,7 +4,9 @@
  * @since: 2015-05-13
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Writer;
+
+use Net\Bazzline\Component\Csv\Writer;
 
 class WriterForPhp5Dot3 extends Writer
 {

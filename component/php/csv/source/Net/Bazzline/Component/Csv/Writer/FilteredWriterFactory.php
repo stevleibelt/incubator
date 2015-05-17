@@ -4,7 +4,11 @@
  * @since 2015-05-14 
  */
 
-namespace Net\Bazzline\Component\Csv;
+namespace Net\Bazzline\Component\Csv\Writer;
+
+use Net\Bazzline\Component\Csv\Filter\AlwaysValidFilter;
+use Net\Bazzline\Component\Csv\Filter\FilterInterface;
+use Net\Bazzline\Component\Csv\WriterFactory;
 
 class FilteredWriterFactory extends WriterFactory
 {

@@ -6,7 +6,7 @@
 
 namespace Test\Net\Bazzline\Component\Csv;
 
-use Net\Bazzline\Component\Csv\EasyCsvWriterAdapter;
+use Net\Bazzline\Component\Csv\Writer\EasyCsvWriterAdapter;
 
 /**
  * Class EasyCsvWriterAdapterTest

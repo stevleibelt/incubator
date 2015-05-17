@@ -6,8 +6,8 @@
 
 namespace Test\Net\Bazzline\Component\Csv;
 
-use Net\Bazzline\Component\Csv\Reader;
-use Net\Bazzline\Component\Csv\ReaderFactory;
+use Net\Bazzline\Component\Csv\Reader\Reader;
+use Net\Bazzline\Component\Csv\Reader\ReaderFactory;
 use Net\Bazzline\Component\Csv\Writer;
 use Net\Bazzline\Component\Csv\WriterFactory;
 use org\bovigo\vfs\vfsStream;

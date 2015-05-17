@@ -4,8 +4,7 @@
  * @since 2015-05-16 
  */
 
-namespace Net\Bazzline\Component\Csv;
-
+namespace Net\Bazzline\Component\Csv\Reader;
 
 class EasyCsvReaderAdapter
 {
