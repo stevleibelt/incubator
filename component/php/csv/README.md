@@ -64,7 +64,10 @@ $writer->writeMany($lines);
 $writer = new Writer('my/file.csv');
 
 $writer($line);
-$writer($lines);
+
+foreach ($lines as $line) {
+    $writer($lines);
+}
 ```
 
 ### Truncate
