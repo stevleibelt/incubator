@@ -24,6 +24,9 @@ class EasyCsvWriterAdapter
         } else {
             $this->writer = $writer;
         }
+
+        $this->writer->setDelimiter(',');
+        $this->writer->setEnclosure('"');
         $this->writer->setPath($path);
     }
 

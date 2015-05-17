@@ -27,7 +27,10 @@ class EasyCsvReaderAdapter
             $this->reader = $reader;
         }
 
+        $this->reader->setDelimiter(',');
+        $this->reader->setEnclosure('"');
         $this->reader->setPath($path);
+
         if ($headersInFirstRow) {
             $this->reader->enableHasHeadline();
         } else {

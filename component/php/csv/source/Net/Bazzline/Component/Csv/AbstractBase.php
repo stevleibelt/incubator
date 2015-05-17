@@ -60,6 +60,7 @@ abstract class AbstractBase
 
     /**
      * @param string $escapeCharacter
+     * @throws InvalidArgumentException
      */
     public function setEscapeCharacter($escapeCharacter)
     {

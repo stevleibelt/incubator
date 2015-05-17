@@ -113,11 +113,18 @@ class Writer extends AbstractBase
     }
 
     /**
-     * @param array|mixed $data
+     * @param string|array $data
      * @return false|int
      */
     public function writeOne($data)
     {
+        if (!is_array($data)) {
+            $data = explode($this->getDelimiter(), $data);
+            $data = array_map(function($value) {
+                return trim($value);
+            }, $data);
+        }
+
         return $this->getFileHandler()->fputcsv($data, $this->getDelimiter(), $this->getEnclosure());
     }
     //end of general

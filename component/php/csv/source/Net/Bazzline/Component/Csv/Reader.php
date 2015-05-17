@@ -8,6 +8,7 @@ namespace Net\Bazzline\Component\Csv;
 
 //@see https://github.com/ajgarlag/AjglCsv/blob/master/Reader/ReaderAbstract.php
 //@see https://github.com/jwage/easy-csv/blob/master/lib/EasyCSV/Reader.php
+//@todo implement save version to call enable/disable headline before setDelimiter etc.
 use Iterator;
 use SplFileObject;
 
@@ -24,6 +25,45 @@ class Reader extends AbstractBase implements Iterator
     {
         return $this->readOne($currentLineNumber);
     }
+
+    //begin of AbstractBase
+    /**
+     * @param string $delimiter
+     * @throws InvalidArgumentException
+     */
+    public function setDelimiter($delimiter)
+    {
+        parent::setDelimiter($delimiter);
+        if ($this->hasHeadline()) {
+            $this->enableHasHeadline();
+        }
+    }
+
+    /**
+     * @param string $enclosure
+     * @throws InvalidArgumentException
+     */
+    public function setEnclosure($enclosure)
+    {
+        parent::setEnclosure($enclosure);
+        if ($this->hasHeadline()) {
+            $this->enableHasHeadline();
+        }
+    }
+
+    /**
+     * @param string $escapeCharacter
+     * @throws InvalidArgumentException
+     */
+    public function setEscapeCharacter($escapeCharacter)
+    {
+        parent::setEscapeCharacter($escapeCharacter);
+        if ($this->hasHeadline()) {
+            $this->enableHasHeadline();
+        }
+    }
+
+    //end of AbstractBase
 
     //begin of Iterator
     /**
@@ -80,6 +120,7 @@ class Reader extends AbstractBase implements Iterator
     public function rewind()
     {
         if ($this->hasHeadline()) {
+            $this->setHeadline($this->readOne(0));
             $lineNumber = 1;
         } else {
             $lineNumber = 0;
@@ -109,6 +150,7 @@ class Reader extends AbstractBase implements Iterator
      */
     public function enableHasHeadline()
     {
+        $this->initialLineNumber = 0;
         $this->setHeadline($this->readOne(0));
         $this->rewind();
 
@@ -169,10 +211,17 @@ class Reader extends AbstractBase implements Iterator
      */
     public function readAll()
     {
-        $lines  = array();
+        $lines = array();
 
-        foreach ($this as $line) {
-            $lines[] = $line;
+        if ($this->hasHeadline()) {
+            $headline = $this->getHeadline();
+            foreach ($this as $line) {
+                $lines[] = array_combine($headline, $line);
+            }
+        } else {
+            foreach ($this as $line) {
+                $lines[] = $line;
+            }
         }
 
         return $lines;
