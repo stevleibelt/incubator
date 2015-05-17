@@ -26,5 +26,4 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [SFTP Module for ZF2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_sftp)
 * [cron job php component](https://github.com/stevleibelt/incubator/tree/master/component/php/cron_job)
 * [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/merge_arrays)
-* [CSV Handling Component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/csv)
 * [Signal Component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/signals)
