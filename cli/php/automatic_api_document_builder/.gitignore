@@ -1,3 +1,5 @@
 .idea
 composer.lock
+example/data
+example/output
 vendor
