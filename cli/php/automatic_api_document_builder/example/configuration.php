@@ -12,7 +12,6 @@ return array(
     ),
     'projects' => array(
         array(
-            'destination'   => 'document/',
             'source'        => 'source/Net/Bazzline/Component/Command/',
             'title'         => 'Command by Bazzline',
             'url'           => 'https://github.com/bazzline/php_component_command'
