@@ -37,25 +37,25 @@ class Builder
             $pathToConfigurationFile = array_shift($values);
 
             //@todo implement validation
-            $configuration = require_once $pathToConfigurationFile;
+            $configuration  = require_once $pathToConfigurationFile;
 
+            $cwd            = getcwd();
             $pathToData     = $configuration['paths']['data'];
             $pathToTarget   = $configuration['paths']['target'];
             $projects       = array();
 
             foreach ($configuration['projects'] as $project) {
-                $identifier = sha1($project['url']);
-
+                $identifier         = sha1($project['url']);
                 $pathToProjectData  = $pathToData . '/' . $identifier;
-                $cwd                = getcwd();
 
                 if (!is_dir($pathToProjectData)) {
-                    echo var_export(exec('/usr/bin/mkdir -p ' . $pathToProjectData), true) . PHP_EOL;
+                    exec('/usr/bin/mkdir -p ' . $pathToProjectData);
                     chdir($pathToProjectData);
-                    echo var_export(exec('/usr/bin/git clone ' . $project['url'] . ' .'), true) . PHP_EOL;
+                    exec('/usr/bin/git clone ' . $project['url'] . ' .');
                 } else {
                     chdir($pathToProjectData);
-                    echo var_export(exec('/usr/bin/git pull'), true) . PHP_EOL;
+                    //only do update if return is not 'Already up-to-date.'
+                    exec('/usr/bin/git pull');
                 }
                 chdir($cwd);
 
@@ -64,11 +64,14 @@ class Builder
                 $builder->setTitle($project['title']);
                 $builder->build();
 
-                $projects[] = $pathToTarget . '/' . $identifier;
+                $projects[] = array(
+                    'path'  => $pathToTarget . '/' . $identifier,
+                    'title' => $project['title'],
+                    'url'   => $project['url']
+                );
             }
             //@todo build index.html
-            $content = implode(PHP_EOL, $projects);
-            file_put_contents($pathToTarget . '/index.html', $content);
+            file_put_contents($pathToTarget . '/index.html', $this->getContent($projects, $configuration['title']));
         } else {
             $this->printUsage();
         }
@@ -81,14 +84,18 @@ class Builder
         echo $usage . PHP_EOL;
     }
 
-    private function getContent()
+    /**
+     * @param array $projects
+     * @param string $title
+     * @return string
+     */
+    private function getContent(array $projects, $title)
     {
-        echo '
-
+        $content = '
 <html>
     <head>
         <meta charset="utf-8">
-        <title>code.bazzline.net</title>
+        <title>' . $title . '</title>
     </head>
     <body>
         <h1>Available Projects</h1>
@@ -97,39 +104,25 @@ class Builder
                 <th>Name</th>
                 <th>Link to Code</th>
                 <th>Link to API</th>
-            </tr>
+            </tr>';
+
+        foreach ($projects as $project) {
+            $content .= '
             <tr>
-                <td>Code Generator Component for PHP</td>
-                <td><a href="https://www.github.com/bazzline/php_component_code_generator" title="code for bazzline php component for code generator">code</a></td>
-                <td><a href="php_component_code_generator/index.html" title="api for bazzline php component for code generator">api</a></td>
-            </tr>
-            <tr>
-                <td>Locator Generator Component for PHP</td>
-                <td><a href="https://www.github.com/bazzline/php_component_locator_generator" title="code for bazzline php component for locator generator">code</a></td>
-                <td><a href="php_component_locator_generator/index.html" title="api for bazzline php component for locator generator">api</a></td>
-            </tr>
-            <tr>
-                <td>Memory Limit Manager Component for PHP</td>
-                <td><a href="https://www.github.com/bazzline/php_component_memory_limit_manager" title="code for bazzline php component for memory limit manager">code</a></td>
-                <td><a href="php_component_memory_limit_manager/index.html" title="api for bazzline php component for memory limit manager">api</a></td>
-            </tr>
-            <tr>
-                <td>Process Fork Manager Component for PHP</td>
-                <td><a href="https://www.github.com/bazzline/php_component_process_fork_manager" title="code for bazzline php component for process fork manager">code</a></td>
-                <td><a href="php_component_process_fork_manager/index.html" title="api for bazzline php component for process fork manager">api</a></td>
-            </tr>
-            <tr>
-                <td>Time Limit Manager Component for PHP</td>
-                <td><a href="https://www.github.com/bazzline/php_component_time_limit_manager" title="code for bazzline php component for time limit manager">code</a></td>
-                <td><a href="php_component_time_limit_manager/index.html" title="api for bazzline php component for time limit manager">api</a></td>
-            </tr>
+                <td>' . $project['title'] . '</td>
+                <td><a href="' . $project['url'] . '" title="code for ' . $project['title'] . '">code</a></td>
+                <td><a href="' . $project['path'] . '/index.html" title="api for ' . $project['title'] . '">api</a></td>
+            </tr>';
+        }
+
+        $content .= '
         </table>
         <p>
-            Last updated at 2014-09-23
+            Last updated at ' . date('Y-m-d H:i:s') . '
         </p>
     </body>
-</html>
+</html>';
 
-        ';
+        return $content;
     }
 }
