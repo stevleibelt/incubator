@@ -1,3 +1,5 @@
+# Automatic Api Document Builder
+
 # Idea
 
 * iterating over collection of project paths
