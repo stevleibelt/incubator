@@ -44,6 +44,8 @@ class Builder
             $pathToTarget   = $configuration['paths']['target'];
             $projects       = array();
 
+            echo 'updating projects ' . count($configuration['projects']) . PHP_EOL;
+
             foreach ($configuration['projects'] as $project) {
                 $identifier         = sha1($project['url']);
                 $pathToProjectData  = $pathToData . '/' . $identifier;
@@ -58,6 +60,7 @@ class Builder
                     exec('/usr/bin/git pull');
                 }
                 chdir($cwd);
+                exec('/usr/bin/rm -fr ' . $pathToTarget . '/' . $identifier);
 
                 $builder->setDestination($pathToTarget . '/' . $identifier);
                 $builder->setSource($pathToData . '/' . $identifier . '/' . $project['source']);
@@ -65,13 +68,17 @@ class Builder
                 $builder->build();
 
                 $projects[] = array(
-                    'path'  => $pathToTarget . '/' . $identifier,
+                    'path'  => $identifier,
                     'title' => $project['title'],
                     'url'   => $project['url']
                 );
+                echo '.';
             }
+            echo PHP_EOL;
+            echo 'generating output' . PHP_EOL;
             //@todo build index.html
             file_put_contents($pathToTarget . '/index.html', $this->getContent($projects, $configuration['title']));
+            echo 'done' . PHP_EOL;
         } else {
             $this->printUsage();
         }
