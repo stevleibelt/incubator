@@ -43,3 +43,11 @@ Already up-to-date.
 ```
 git tag -l
 ```
+
+## dependencies
+
+```
+"net_bazzline/php_component_cli_arguments": "1.0.1"
+"net_bazzline/component_requirement": "1.1.0"
+"net_bazzline/php_component_command": "1.0.6"
+```
