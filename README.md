@@ -12,7 +12,6 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Test Management](https://github.com/stevleibelt/incubator/tree/master/general/testManagement)
 * [Tag Cloud](https://github.com/stevleibelt/incubator/tree/master/general/fileManager)
 * [zfs manager](https://github.com/stevleibelt/incubator/tree/master/general/zfsManager)
-* [cli progress bar](https://github.com/stevleibelt/incubator/tree/master/cli/php/progressBar)
 * [Automatic Api Document Builder](https://github.com/stevleibelt/incubator/tree/master/cli/php/automatic_api_document_builder)
 * [Console](https://github.com/stevleibelt/incubator/tree/master/cli/php/console)
 * [Database Generator](https://github.com/stevleibelt/incubator/tree/master/cli/php/generate/database)
