@@ -1,5 +1,5 @@
 .idea
 composer.lock
-example/data
-example/output
+example/cache/*
+example/output/*
 vendor
