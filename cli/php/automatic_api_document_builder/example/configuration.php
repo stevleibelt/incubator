@@ -5,9 +5,8 @@
  */
 
 return array(
-    'builder' => 'apigen',
     'paths' => array(
-        'data'      => __DIR__ . '/data',
+        'cache'     => __DIR__ . '/cache',
         'target'    => __DIR__ . '/output'
     ),
     'projects' => array(

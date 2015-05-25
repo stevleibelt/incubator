@@ -40,7 +40,7 @@ class Builder
             $configuration  = require_once $pathToConfigurationFile;
 
             $cwd            = getcwd();
-            $pathToData     = $configuration['paths']['data'];
+            $pathToCache    = $configuration['paths']['cache'];
             $pathToTarget   = $configuration['paths']['target'];
             $projects       = array();
 
@@ -48,14 +48,14 @@ class Builder
 
             foreach ($configuration['projects'] as $project) {
                 $identifier         = sha1($project['url']);
-                $pathToProjectData  = $pathToData . '/' . $identifier;
+                $pathToProjectCache = $pathToCache . '/' . $identifier;
 
-                if (!is_dir($pathToProjectData)) {
-                    exec('/usr/bin/mkdir -p ' . $pathToProjectData);
-                    chdir($pathToProjectData);
+                if (!is_dir($pathToProjectCache) {
+                    exec('/usr/bin/mkdir -p ' . $pathToProjectCache;
+                    chdir($pathToProjectCache;
                     exec('/usr/bin/git clone ' . $project['url'] . ' .');
                 } else {
-                    chdir($pathToProjectData);
+                    chdir($pathToProjectCache;
                     //only do update if return is not 'Already up-to-date.'
                     exec('/usr/bin/git pull');
                 }
@@ -63,7 +63,7 @@ class Builder
                 exec('/usr/bin/rm -fr ' . $pathToTarget . '/' . $identifier);
 
                 $builder->setDestination($pathToTarget . '/' . $identifier);
-                $builder->setSource($pathToData . '/' . $identifier . '/' . $project['source']);
+                $builder->setSource($pathToCache . '/' . $identifier . '/' . $project['source']);
                 $builder->setTitle($project['title']);
                 $builder->build();
 

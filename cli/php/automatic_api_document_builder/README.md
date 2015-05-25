@@ -9,24 +9,14 @@
 * does a git pull and evaluates the output to check if there is work to do
 * supporting multiple tags 
 
-# Scribble Section
+# Future Improvments
 
-## Configuration File
+* add more documentation generators
+* create factories
+* add "keep_cache" (boolean) value
+* impement cache and output cleanup (if project is moved or deleted etc.)
 
-```php
-return array(
-    'generator' => 'apigen',
-    'path' => array(
-        'data' => 'path/to/store/data'
-        'sources' => array(
-            '/absolute/path/to/a/project',
-            'relative/path/to/a/project'
-        ),
-        'target' => 'path/to/put/generated/content'
-    ),
-    'title' => 'code.bazzline.net'
-);
-```
+# Scribbled Thoughts
 
 ## validating for changes
 
