@@ -50,12 +50,12 @@ class Builder
                 $identifier         = sha1($project['url']);
                 $pathToProjectCache = $pathToCache . '/' . $identifier;
 
-                if (!is_dir($pathToProjectCache) {
-                    exec('/usr/bin/mkdir -p ' . $pathToProjectCache;
-                    chdir($pathToProjectCache;
+                if (!is_dir($pathToProjectCache)) {
+                    exec('/usr/bin/mkdir -p ' . $pathToProjectCache);
+                    chdir($pathToProjectCache);
                     exec('/usr/bin/git clone ' . $project['url'] . ' .');
                 } else {
-                    chdir($pathToProjectCache;
+                    chdir($pathToProjectCache);
                     //only do update if return is not 'Already up-to-date.'
                     exec('/usr/bin/git pull');
                 }
