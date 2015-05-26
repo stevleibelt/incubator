@@ -9,6 +9,9 @@ namespace Net\Bazzline\Component\ApiDocumentBuilder\Command;
 use Net\Bazzline\Component\ApiDocumentBuilder\Builder\Apigen;
 use Net\Bazzline\Component\ApiDocumentBuilder\Builder\BuilderInterface;
 use Net\Bazzline\Component\Cli\Arguments\Arguments;
+use Net\Bazzline\Component\CommandCollection\Filesystem\Create;
+use Net\Bazzline\Component\CommandCollection\Filesystem\Remove;
+use Net\Bazzline\Component\CommandCollection\Vcs\Git;
 
 class Builder
 {
@@ -47,20 +50,23 @@ class Builder
             echo 'updating projects ' . count($configuration['projects']) . PHP_EOL;
 
             foreach ($configuration['projects'] as $project) {
+                $git                = new Git();
                 $identifier         = sha1($project['url']);
                 $pathToProjectCache = $pathToCache . '/' . $identifier;
+                $remove             = new Remove();
 
                 if (!is_dir($pathToProjectCache)) {
-                    exec('/usr/bin/mkdir -p ' . $pathToProjectCache);
+                    $create = new Create();
+                    $create($pathToProjectCache);
                     chdir($pathToProjectCache);
-                    exec('/usr/bin/git clone ' . $project['url'] . ' .');
+                    $git->create($project['url'], '.');
                 } else {
                     chdir($pathToProjectCache);
                     //only do update if return is not 'Already up-to-date.'
-                    exec('/usr/bin/git pull');
+                    $git->update($pathToProjectCache);
                 }
                 chdir($cwd);
-                exec('/usr/bin/rm -fr ' . $pathToTarget . '/' . $identifier);
+                $remove($pathToTarget . '/' . $identifier);
 
                 $builder->setDestination($pathToTarget . '/' . $identifier);
                 $builder->setSource($pathToCache . '/' . $identifier . '/' . $project['source']);
