@@ -19,11 +19,43 @@ class ApplicationLocator
     private $sharedInstancePool = array();
 
     /**
+     * @return \Net\Bazzline\Component\Cli\Arguments\Arguments
+     */
+    public function getCliArguments()
+    {
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+    }
+
+    /**
+     * @return \Net\Bazzline\Component\ApiDocumentBuilder\Builder\Apigen
+     */
+    public function getApigenBuilder()
+    {
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+    }
+
+    /**
      * @return \Net\Bazzline\Component\CommandCollection\Filesystem\Create
      */
     public function getCreateDirectory()
     {
-        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Create');
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+    }
+
+    /**
+     * @return \Net\Bazzline\Component\CommandCollection\Vcs\Git
+     */
+    public function getGit()
+    {
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+    }
+
+    /**
+     * @return \Net\Bazzline\Component\CommandCollection\Filesystem\Remove
+     */
+    public function getRemoveDirectory()
+    {
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
     }
 
     /**
@@ -33,7 +65,7 @@ class ApplicationLocator
      */
     final protected function fetchFromSharedInstancePool($className)
     {
-        if ($this->isNotInFactoryInstancePool($className)) {
+        if ($this->isNotInSharedInstancePool($className)) {
             if (!class_exists($className)) {
                 throw new InvalidArgumentException(
                     'class "' . $className . '" does not exist'
@@ -41,7 +73,7 @@ class ApplicationLocator
             }
             
             $instance = new $className();
-            $this->addToFactoryInstancePool($className, $instance);
+            $this->addToSharedInstancePool($className, $instance);
         }
 
         return $this->getFromSharedInstancePool($className);

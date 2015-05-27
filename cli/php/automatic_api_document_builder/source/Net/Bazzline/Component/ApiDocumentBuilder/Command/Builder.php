@@ -8,6 +8,7 @@ namespace Net\Bazzline\Component\ApiDocumentBuilder\Command;
 
 use Net\Bazzline\Component\ApiDocumentBuilder\Builder\Apigen;
 use Net\Bazzline\Component\ApiDocumentBuilder\Builder\BuilderInterface;
+use Net\Bazzline\Component\ApiDocumentBuilder\Service\ApplicationLocator;
 use Net\Bazzline\Component\Cli\Arguments\Arguments;
 use Net\Bazzline\Component\CommandCollection\Filesystem\Create;
 use Net\Bazzline\Component\CommandCollection\Filesystem\Remove;
@@ -18,22 +19,26 @@ class Builder
     /** @var Arguments */
     private $arguments;
 
-    /** @var BuilderInterface */
-    private $builder;
+    /** @var ApplicationLocator */
+    private $locator;
 
     /**
      * @param array $arguments
      */
     function __construct(array $arguments)
     {
-        $this->arguments    = new Arguments($arguments);
-        $this->builder      = new Apigen();
+        $this->locator      = new ApplicationLocator();
+        $this->arguments    = $this->locator->getCliArguments();
+
+        $this->arguments->setArguments($arguments);
     }
 
     public function execute()
     {
         $arguments  = $this->arguments;
-        $builder    = $this->builder;
+        $locator    = $this->locator;
+        $builder    = $locator->getApigenBuilder();
+exit($arguments->getArguments());
 
         if ($arguments->hasValues()) {
             $values = $arguments->getValues();
