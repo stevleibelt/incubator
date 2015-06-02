@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Net\Bazzline\Component\Locator
- * @since 2015-05-27
+ * @since 2015-06-03
  */
 
 namespace Net\Bazzline\Component\ApiDocumentBuilder\Service;
