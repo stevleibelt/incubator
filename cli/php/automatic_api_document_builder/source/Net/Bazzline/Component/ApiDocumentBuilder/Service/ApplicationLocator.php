@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Net\Bazzline\Component\Locator
- * @since 2015-06-03
+ * @since 2015-06-04
  */
 
 namespace Net\Bazzline\Component\ApiDocumentBuilder\Service;
@@ -23,7 +23,7 @@ class ApplicationLocator
      */
     public function getCliArguments()
     {
-        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\Cli\Arguments\Arguments');
     }
 
     /**
@@ -31,7 +31,7 @@ class ApplicationLocator
      */
     public function getApigenBuilder()
     {
-        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\ApiDocumentBuilder\Builder\Apigen');
     }
 
     /**
@@ -39,7 +39,7 @@ class ApplicationLocator
      */
     public function getCreateDirectory()
     {
-        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Create');
     }
 
     /**
@@ -47,7 +47,7 @@ class ApplicationLocator
      */
     public function getGit()
     {
-        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Filesystem\Remove');
+        return $this->fetchFromSharedInstancePool('\Net\Bazzline\Component\CommandCollection\Vcs\Git');
     }
 
     /**
