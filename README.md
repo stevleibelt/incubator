@@ -13,7 +13,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Tag Cloud](https://github.com/stevleibelt/incubator/tree/master/general/fileManager)
 * [zfs manager](https://github.com/stevleibelt/incubator/tree/master/general/zfsManager)
 * [Console](https://github.com/stevleibelt/incubator/tree/master/cli/php/console)
-* [CLI Backupscript](https://github.com/stevleibelt/incubator/tree/master/cli/php/backup)
+* [CLI Backup Script](https://github.com/stevleibelt/incubator/tree/master/cli/php/backup)
 * [Database Generator](https://github.com/stevleibelt/incubator/tree/master/cli/php/generate/database)
 * [ICalendar Converter](https://github.com/stevleibelt/incubator/tree/master/cli/convert/icalendar)
 * [System Update](https://github.com/stevleibelt/incubator/tree/master/cli/update/system)

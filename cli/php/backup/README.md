@@ -1,4 +1,4 @@
-# CLI Backupscript
+# CLI Backup Script
 
 ## Idea
 
