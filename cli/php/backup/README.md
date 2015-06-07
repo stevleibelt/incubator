@@ -21,3 +21,10 @@
     * [memory limit](https://github.com/bazzline/php_component_memory_limit_manager)
     * [process fork](https://github.com/bazzline/php_component_process_fork_manager)
     * [time limit](https://github.com/bazzline/php_component_time_limit_manager)
+
+## Available Projects
+
+* https://github.com/skywebro/php-backup
+* https://github.com/robotamer/backup
+* https://github.com/AOEpeople/BackupMinify
+* https://github.com/sigma-z/Backupper
