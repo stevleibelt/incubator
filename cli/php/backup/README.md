@@ -8,6 +8,7 @@
 * backups configured sources to target
 * removes "lock"
 * updates "last.synchronized" file with current timestamp
+* send error mail if something goes wrong
 
 ## Dependencies
 
