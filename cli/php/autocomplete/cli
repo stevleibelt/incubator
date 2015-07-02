@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2015-07-02 
+ */
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$manager = new \Net\Bazzline\Component\Cli\Autocomplete\Manager();
+
+$manager->run();
