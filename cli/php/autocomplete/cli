@@ -9,4 +9,31 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $manager = new \Net\Bazzline\Component\Cli\Autocomplete\Manager();
 
+class Demo
+{
+    public function bar()
+    {
+        $this->cli(__METHOD__, func_get_args());
+    }
+    public function foo()
+    {
+        $this->cli(__METHOD__, func_get_args());
+    }
+
+    private function cli($identifier, array $arguments = array())
+    {
+        fputs(STDOUT, 'called: ' . $identifier . ' with arguments: ' . var_export($arguments) . PHP_EOL);
+    }
+}
+
+$demo = new Demo();
+
+$configuration = array(
+    'cli' => array(
+        'bar' => array($demo, 'bar'),
+        'foo' => array($demo, 'foo')
+    )
+);
+
+$manager->setConfiguration($configuration);
 $manager->run();
