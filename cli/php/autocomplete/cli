@@ -32,7 +32,8 @@ $configuration = array(
     'cli' => array(
         'bar' => array($demo, 'bar'),
         'foo' => array($demo, 'foo')
-    )
+    ),
+    'clear' => 'readline_clear_history'
 );
 
 $manager->setConfiguration($configuration);
