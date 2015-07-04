@@ -21,7 +21,6 @@ class Manager
      * @param array $configuration
      * @return $this
      * @throws InvalidArgumentException
-     * @todo implement validation
      */
     public function setConfiguration(array $configuration)
     {
