@@ -28,7 +28,7 @@ class Demo
 
     private function cli($identifier, array $arguments = array())
     {
-        fputs(STDOUT, 'called: ' . $identifier . ' with arguments: ' . var_export($arguments));
+        fputs(STDOUT, 'called: ' . $identifier . ' with arguments: ' . var_export($arguments) . PHP_EOL);
     }
 }
 

@@ -72,10 +72,9 @@ class Manager
 
             if (!empty($tokens)) {
                 $this->executeFromConfiguration($tokens, $configuration);
-                echo PHP_EOL;
+                readline_add_history($line);
             }
 
-            readline_add_history($line);
             usleep(500000);
         }
     }
