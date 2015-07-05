@@ -6,12 +6,13 @@
 
 namespace Net\Bazzline\Component\Cli\Autocomplete\Configuration;
 
+use Closure;
 use Net\Bazzline\Component\GenericAgreement\Exception\ExceptionInterface;
 use Net\Bazzline\Component\GenericAgreement\Process\ExecutableInterface;
 
 class Executable implements ExecutableInterface
 {
-    /** @var string|array */
+    /** @var string|array|Closure */
     private $executable;
 
     /**
