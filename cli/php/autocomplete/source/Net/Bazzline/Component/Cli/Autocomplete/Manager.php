@@ -25,6 +25,9 @@ class Manager
     /** @var string */
     private $prompt;
 
+    /** @var ReadLine */
+    private $readLine;
+
     /**
      * @param Assembler $assembler
      */
@@ -66,27 +69,35 @@ class Manager
         return $this;
     }
 
+    /**
+     * @param ReadLine $readLine
+     * @return $this
+     */
+    public function setReadLine(ReadLine $readLine)
+    {
+        $this->readLine = $readLine;
+
+        return $this;
+    }
+
     public function run()
     {
         $this->validateEnvironment();
 
         $assembler      = $this->assembler;
         $autocomplete   = $this->autocomplete;
-        $configuration  = $assembler->assemble($this->configuration);
         $prompt         = $this->prompt;
+        $readLine       = $this->readLine;
+
+        $configuration  = $assembler->assemble($this->configuration);
 
         $autocomplete->setConfiguration($configuration);
+        $readLine->setConfiguration($configuration);
+
         $this->registerAutocomplete($autocomplete);
 
         while (true) {
-            $line   = trim(readline($prompt));
-            $tokens = explode(' ', $line);
-
-            if (!empty($tokens)) {
-                $this->executeFromConfiguration($tokens, $configuration);
-                readline_add_history($line);
-            }
-
+            $readLine($prompt);
             usleep(500000);
         }
     }
@@ -97,26 +108,6 @@ class Manager
     private function registerAutocomplete(Autocomplete $autocomplete)
     {
         readline_completion_function($autocomplete);
-    }
-
-    /**
-     * @param array $tokens
-     * @param $configuration
-     */
-    private function executeFromConfiguration(array $tokens, $configuration)
-    {
-        if ($configuration instanceof Executable) {
-            $configuration->execute($tokens);
-        } else {
-            $token          = array_shift($tokens);
-            $isValidToken   = (!is_null($token) && (strlen($token) > 0));
-
-            if ($isValidToken) {
-                if (isset($configuration[$token])) {
-                    $this->executeFromConfiguration($tokens, $configuration[$token]);
-                }
-            }
-        }
     }
 
     /**

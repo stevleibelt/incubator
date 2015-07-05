@@ -10,6 +10,7 @@ use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Assembler;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Executable;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Validator;
 use Net\Bazzline\Component\Cli\Autocomplete\Manager;
+use Net\Bazzline\Component\Cli\Autocomplete\ReadLine;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -66,4 +67,5 @@ $assembler->setValidator(new Validator());
 $manager->setAssembler($assembler);
 $manager->setAutocomplete(new Autocomplete());
 $manager->setConfiguration($configuration);
+$manager->setReadLine(new ReadLine());
 $manager->run();
