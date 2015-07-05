@@ -14,19 +14,23 @@ class Validator implements ValidatorInterface
     /** @var string */
     private $message;
 
+    /** @var string */
+    private $trace;
+
     /**
      * @param mixed $data
      * @return boolean
      */
     public function isValid($data)
     {
-        $this->resetMessage();
+        $this->resetMessageAndTrace();
 
         try {
             $this->validate($data);
             $isValid = true;
         } catch (InvalidArgument $exception) {
-            $this->setMessage($exception->getMessage());
+            $this->message  = $exception->getMessage();
+            $this->trace    = $exception->getTraceAsString();
             $isValid = false;
         }
 
@@ -34,7 +38,7 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getMessage()
     {
@@ -42,24 +46,17 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * @return bool
+     * @return null|string
      */
-    public function hasMessage()
+    public function getTrace()
     {
-        return ($this->message !== '');
+        return $this->trace;
     }
 
-    /**
-     * @param string $message
-     */
-    private function setMessage($message)
+    private function resetMessageAndTrace()
     {
-        $this->message = (string) $message;
-    }
-
-    private function resetMessage()
-    {
-        $this->message = '';
+        $this->message  = null;
+        $this->trace    = null;
     }
 
     /**
@@ -77,11 +74,11 @@ class Validator implements ValidatorInterface
         }
 
         foreach ($configuration as $index => $arrayOrCallable) {
-            $path = (is_null($path)) ? $index : $path . '/' . $index;
+            $currentPath = (is_null($path)) ? $index : $path . '/' . $index;
 
             if (is_string($arrayOrCallable)) {
-                if(!is_callable($arrayOrCallable)) {
-                    throw new InvalidArgument('method in path "' . $path . '" must be callable');
+                if (!is_callable($arrayOrCallable)) {
+                    throw new InvalidArgument('method in path "' . $currentPath . '" must be callable');
                 }
             } else if (is_array($arrayOrCallable)) {
                 $object = current($arrayOrCallable);
@@ -90,15 +87,15 @@ class Validator implements ValidatorInterface
                     $methodName = $arrayOrCallable[1];
                     if (!method_exists($object, $methodName)) {
                         throw new InvalidArgument(
-                            'provided instance of "' . get_class($object) . '" in path "' . $path . '" does not have the method "' . $methodName . '"'
+                            'provided instance of "' . get_class($object) . '" in path "' . $currentPath . '" does not have the method "' . $methodName . '"'
                         );
                     }
                 } else {
-                    $this->validate($arrayOrCallable, $path);
+                    $this->validate($arrayOrCallable, $currentPath);
                 }
             } else {
                 throw new InvalidArgument(
-                    'can not handle value "' . var_export($arrayOrCallable, true) . '" in path "' . $path . '"'
+                    'can not handle value "' . var_export($arrayOrCallable, true) . '" in path "' . $currentPath . '"'
                 );
             }
         }

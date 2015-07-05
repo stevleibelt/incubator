@@ -5,6 +5,8 @@
  * @since 2015-07-02 
  */
 
+use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Assembler;
+use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Executable;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Validator;
 use Net\Bazzline\Component\Cli\Autocomplete\Manager;
 
@@ -25,7 +27,7 @@ class Demo
 
     private function cli($identifier, array $arguments = array())
     {
-        fputs(STDOUT, 'called: ' . $identifier . ' with arguments: ' . var_export($arguments) . PHP_EOL);
+        fputs(STDOUT, 'called: ' . $identifier . ' with arguments: ' . var_export($arguments));
     }
 }
 
@@ -36,9 +38,14 @@ $configuration = array(
         'bar' => array($demo, 'bar'),
         'foo' => array($demo, 'foo')
     ),
-    'clear' => 'readline_clear_history'
+    'clear' => 'readline_clear_history',
+    'echo'  => 'var_export',
 );
 
-$manager->setValidator(new Validator());
-$manager->setConfiguration($configuration);
+$assembler = new Assembler();
+
+$assembler->setExecutable(new Executable());
+$assembler->setValidator(new Validator());
+
+$manager->setConfiguration($assembler->assemble($configuration));
 $manager->run();
