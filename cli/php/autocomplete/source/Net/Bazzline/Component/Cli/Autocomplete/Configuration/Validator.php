@@ -6,6 +6,7 @@
 
 namespace Net\Bazzline\Component\Cli\Autocomplete\Configuration;
 
+use Closure;
 use Net\Bazzline\Component\GenericAgreement\Data\ValidatorInterface;
 use Net\Bazzline\Component\GenericAgreement\Exception\InvalidArgument;
 
@@ -94,9 +95,13 @@ class Validator implements ValidatorInterface
                     $this->validate($arrayOrCallable, $currentPath);
                 }
             } else {
-                throw new InvalidArgument(
-                    'can not handle value "' . var_export($arrayOrCallable, true) . '" in path "' . $currentPath . '"'
-                );
+                $isNotAClosure = !($arrayOrCallable instanceof Closure);
+
+                if ($isNotAClosure) {
+                    throw new InvalidArgument(
+                        'can not handle value "' . var_export($arrayOrCallable, true) . '" in path "' . $currentPath . '"'
+                    );
+                }
             }
         }
     }

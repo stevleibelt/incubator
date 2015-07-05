@@ -34,13 +34,28 @@ class Demo
 
 $demo = new Demo();
 
+$dump = function ($arguments = null) {
+    if (is_null($arguments)) {
+        echo 'called without any arguments' . PHP_EOL;
+    } else {
+        var_dump($arguments);
+    }
+};
+
 $configuration = array(
     'cli' => array(
         'bar' => array($demo, 'bar'),
         'foo' => array($demo, 'foo')
     ),
     'clear' => 'readline_clear_history',
-    'echo'  => 'var_export',
+    'echo'  => function ($arguments = null) {
+        if (is_null($arguments)) {
+            echo 'called without any arguments' . PHP_EOL;
+        } else {
+            echo var_export($arguments, true) . PHP_EOL;
+        }
+    },
+    'dump'  => $dump
 );
 
 $assembler = new Assembler();
@@ -48,8 +63,7 @@ $assembler = new Assembler();
 $assembler->setExecutable(new Executable());
 $assembler->setValidator(new Validator());
 
-$configuration = $assembler->assemble($configuration);
-
+$manager->setAssembler($assembler);
 $manager->setAutocomplete(new Autocomplete());
 $manager->setConfiguration($configuration);
 $manager->run();

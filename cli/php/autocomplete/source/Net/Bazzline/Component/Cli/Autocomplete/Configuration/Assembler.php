@@ -6,6 +6,7 @@
 
 namespace Net\Bazzline\Component\Cli\Autocomplete\Configuration;
 
+use Closure;
 use Net\Bazzline\Component\GenericAgreement\Data\AssemblageInterface;
 use Net\Bazzline\Component\GenericAgreement\Exception\InvalidArgument;
 use Net\Bazzline\Component\GenericAgreement\Process\ExecutableInterface;
@@ -25,21 +26,10 @@ class Assembler implements AssemblageInterface
      */
     public function assemble($data)
     {
-        $configuration  = array();
-        $validator      = $this->validator;
+        $validator = $this->validator;
 
         if ($validator->isValid($data)) {
-            foreach ($data as $index => $arrayOrCallable) {
-                $isCallable = $this->isCallable($arrayOrCallable);
-
-                if ($isCallable) {
-                    $executable = $this->getNewExecutable();
-                    $executable->setExecutable($arrayOrCallable);
-                    $configuration[$index] = $executable;
-                } else {
-                    $configuration[$index] = $this->assemble($arrayOrCallable);
-                }
-            }
+            $configuration = $this->build($data);
         } else {
             throw new InvalidArgument($validator->getMessage() . PHP_EOL . $validator->getTrace());
         }
@@ -70,6 +60,29 @@ class Assembler implements AssemblageInterface
     }
 
     /**
+     * @param array $data
+     * @return array
+     */
+    private function build($data)
+    {
+        $configuration  = array();
+
+        foreach ($data as $index => $arrayOrCallable) {
+            $isCallable = $this->isCallable($arrayOrCallable);
+
+            if ($isCallable) {
+                $executable = $this->getNewExecutable();
+                $executable->setExecutable($arrayOrCallable);
+                $configuration[$index] = $executable;
+            } else {
+                $configuration[$index] = $this->build($arrayOrCallable);
+            }
+        }
+
+        return $configuration;
+    }
+
+    /**
      * @param string|array $arrayOrCallable
      * @return bool
      */
@@ -79,6 +92,8 @@ class Assembler implements AssemblageInterface
 
         if (is_string($arrayOrCallable)) {
             $isCallable = is_callable($arrayOrCallable);
+        } else if ($arrayOrCallable instanceof Closure) {
+            $isCallable = true;
         } else if (is_array($arrayOrCallable)) {
             $object = current($arrayOrCallable);
 

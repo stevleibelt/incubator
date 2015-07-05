@@ -7,11 +7,15 @@
 namespace Net\Bazzline\Component\Cli\Autocomplete;
 
 use InvalidArgumentException;
+use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Assembler;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Executable;
 use RuntimeException;
 
 class Manager
 {
+    /** @var Assembler */
+    private $assembler;
+
     /** @var Autocomplete */
     private $autocomplete;
 
@@ -22,10 +26,18 @@ class Manager
     private $prompt;
 
     /**
+     * @param Assembler $assembler
+     */
+    public function setAssembler(Assembler $assembler)
+    {
+        $this->assembler = $assembler;
+    }
+
+    /**
      * @param Autocomplete $autocomplete
      * @return $this
      */
-    public function setAutocomplete($autocomplete)
+    public function setAutocomplete(Autocomplete $autocomplete)
     {
         $this->autocomplete = $autocomplete;
 
@@ -35,7 +47,6 @@ class Manager
     /**
      * @param array $configuration
      * @return $this
-     * @throws InvalidArgumentException
      */
     public function setConfiguration(array $configuration)
     {
@@ -59,8 +70,9 @@ class Manager
     {
         $this->validateEnvironment();
 
+        $assembler      = $this->assembler;
         $autocomplete   = $this->autocomplete;
-        $configuration  = $this->configuration;
+        $configuration  = $assembler->assemble($this->configuration);
         $prompt         = $this->prompt;
 
         $autocomplete->setConfiguration($configuration);
