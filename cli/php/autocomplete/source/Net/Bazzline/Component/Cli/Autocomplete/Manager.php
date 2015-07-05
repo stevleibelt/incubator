@@ -12,11 +12,25 @@ use RuntimeException;
 
 class Manager
 {
+    /** @var Autocomplete */
+    private $autocomplete;
+
     /** @var array */
     private $configuration;
 
     /** @var string */
     private $prompt;
+
+    /**
+     * @param Autocomplete $autocomplete
+     * @return $this
+     */
+    public function setAutocomplete($autocomplete)
+    {
+        $this->autocomplete = $autocomplete;
+
+        return $this;
+    }
 
     /**
      * @param array $configuration
@@ -44,10 +58,13 @@ class Manager
     public function run()
     {
         $this->validateEnvironment();
-        $this->registerAutocomplete();
 
+        $autocomplete   = $this->autocomplete;
         $configuration  = $this->configuration;
         $prompt         = $this->prompt;
+
+        $autocomplete->setConfiguration($configuration);
+        $this->registerAutocomplete($autocomplete);
 
         while (true) {
             $line   = trim(readline($prompt));
@@ -64,74 +81,11 @@ class Manager
     }
 
     /**
-     * @param string $input
-     * @param int $index
-     * @return false|array
+     * @param Autocomplete $autocomplete
      */
-    private function autocomplete($input, $index)
+    private function registerAutocomplete(Autocomplete $autocomplete)
     {
-        $configuration = $this->configuration;
-
-        if ($index == 0) {
-            $completion = array_keys($configuration);
-        } else {
-            $buffer     = preg_replace('/\s+/', ' ', trim(readline_info('line_buffer')));
-            $tokens     = explode(' ', $buffer);
-            $completion = $this->fetchCompletionFromLevel($configuration, $tokens);
-        }
-
-        return $completion;
-    }
-
-    /**
-     * @param array $configuration
-     * @param array $tokens
-     * @return array|bool
-     */
-    private function fetchCompletionFromLevel(array $configuration, array &$tokens)
-    {
-        $completion = false;
-        $index      = current($tokens);
-
-        if (isset($configuration[$index])) {
-            if (next($tokens) !== false) {
-                $completion = $this->fetchCompletionFromLevel($configuration[$index], $tokens);
-            } else {
-                $arrayOrExecutable = $configuration[$index];
-
-                if (is_array($arrayOrExecutable)) {
-                    $objectOrToken  = current($arrayOrExecutable);
-                    $completion     = (is_object($objectOrToken)) ? false : array_keys($configuration[$index]);
-                } else {
-                    $completion = false;
-                }
-            }
-        } else {
-            $indexLengthIsGreaterZero   = (strlen($index) > 0);
-
-            if ($indexLengthIsGreaterZero) {
-                $position   = strlen($index);
-                $values     = array_keys($configuration);
-                $completion = array();
-
-                foreach ($values as $value) {
-                    if (substr($value, 0, $position) === $index) {
-                        $completion[] = $value;
-                    }
-                }
-
-                if (empty($completion)) {
-                    $completion = false;
-                }
-            }
-        }
-
-        return $completion;
-    }
-
-    private function registerAutocomplete()
-    {
-        readline_completion_function(array($this, 'autocomplete'));
+        readline_completion_function($autocomplete);
     }
 
     /**

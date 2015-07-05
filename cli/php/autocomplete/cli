@@ -5,6 +5,7 @@
  * @since 2015-07-02 
  */
 
+use Net\Bazzline\Component\Cli\Autocomplete\Autocomplete;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Assembler;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Executable;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Validator;
@@ -47,5 +48,8 @@ $assembler = new Assembler();
 $assembler->setExecutable(new Executable());
 $assembler->setValidator(new Validator());
 
-$manager->setConfiguration($assembler->assemble($configuration));
+$configuration = $assembler->assemble($configuration);
+
+$manager->setAutocomplete(new Autocomplete());
+$manager->setConfiguration($configuration);
 $manager->run();
