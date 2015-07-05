@@ -6,9 +6,7 @@
 
 namespace Net\Bazzline\Component\Cli\Autocomplete;
 
-use InvalidArgumentException;
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Assembler;
-use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Executable;
 use RuntimeException;
 
 class Manager

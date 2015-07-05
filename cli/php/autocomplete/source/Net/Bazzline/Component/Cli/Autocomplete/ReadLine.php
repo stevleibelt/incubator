@@ -6,7 +6,6 @@
 
 namespace Net\Bazzline\Component\Cli\Autocomplete;
 
-
 use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Executable;
 
 class ReadLine
