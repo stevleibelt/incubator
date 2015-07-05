@@ -7,6 +7,7 @@
 namespace Net\Bazzline\Component\Cli\Autocomplete;
 
 use InvalidArgumentException;
+use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Validator;
 use RuntimeException;
 
 class Manager
@@ -17,6 +18,9 @@ class Manager
     /** @var string */
     private $prompt;
 
+    /** @var Validator */
+    private $validator;
+
     /**
      * @param array $configuration
      * @return $this
@@ -24,8 +28,24 @@ class Manager
      */
     public function setConfiguration(array $configuration)
     {
-        $this->validateConfiguration($configuration);
-        $this->configuration = $configuration;
+        $validator = $this->validator;
+
+        if ($validator->isValid($configuration)) {
+            $this->configuration = $configuration;
+        } else {
+            throw new InvalidArgumentException($validator->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Validator $validator
+     * @return $this
+     */
+    public function setValidator(Validator $validator)
+    {
+        $this->validator = $validator;
 
         return $this;
     }

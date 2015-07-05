@@ -5,9 +5,12 @@
  * @since 2015-07-02 
  */
 
+use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Validator;
+use Net\Bazzline\Component\Cli\Autocomplete\Manager;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-$manager = new \Net\Bazzline\Component\Cli\Autocomplete\Manager();
+$manager = new Manager();
 
 class Demo
 {
@@ -36,5 +39,6 @@ $configuration = array(
     'clear' => 'readline_clear_history'
 );
 
+$manager->setValidator(new Validator());
 $manager->setConfiguration($configuration);
 $manager->run();

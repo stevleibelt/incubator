@@ -6,6 +6,7 @@
 
 namespace Net\Bazzline\Component\Cli\Autocomplete;
 
+//use reflection instead of extends, add logging before each method call
 class DebugManager extends Manager
 {
     /** @var string */
