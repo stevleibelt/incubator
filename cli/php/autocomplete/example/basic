@@ -5,38 +5,34 @@
  * @since 2015-07-02 
  */
 
-use Net\Bazzline\Component\Cli\Autocomplete\Autocomplete;
-use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Assembler;
-use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Executable;
-use Net\Bazzline\Component\Cli\Autocomplete\Configuration\Validator;
-use Net\Bazzline\Component\Cli\Autocomplete\Manager;
 use Net\Bazzline\Component\Cli\Autocomplete\ManagerFactory;
-use Net\Bazzline\Component\Cli\Autocomplete\ReadLine;
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-$manager = new Manager();
-
-class Demo
+class Basic
 {
     public function bar()
     {
         $this->cli(__METHOD__, func_get_args());
     }
+
     public function foo()
     {
         $this->cli(__METHOD__, func_get_args());
     }
 
+    /**
+     * @param string $identifier
+     * @param array $arguments
+     */
     private function cli($identifier, array $arguments = array())
     {
-        fputs(STDOUT, 'called: ' . $identifier . ' with arguments: ' . var_export($arguments) . PHP_EOL);
+        fputs(STDOUT, 'called: ' . $identifier . ' with arguments: ' . var_export($arguments, true) . PHP_EOL);
     }
 }
 
-$demo = new Demo();
-
-$dump = function ($arguments = null) {
+$basic  = new Basic();
+$dump   = function ($arguments = null) {
     if (is_null($arguments)) {
         echo 'called without any arguments' . PHP_EOL;
     } else {
@@ -45,9 +41,9 @@ $dump = function ($arguments = null) {
 };
 
 $configuration = array(
-    'cli' => array(
-        'bar' => array($demo, 'bar'),
-        'foo' => array($demo, 'foo')
+    'cli'   => array(
+        'bar' => array($basic, 'bar'),
+        'foo' => array($basic, 'foo')
     ),
     'clear' => 'readline_clear_history',
     'echo'  => function ($arguments = null) {
@@ -64,5 +60,5 @@ $factory    = new ManagerFactory();
 $manager    = $factory->create();
 
 $manager->setConfiguration($configuration);
-$manager->setPrompt('example: ');
+$manager->setPrompt('basic: ');
 $manager->run();
