@@ -1,0 +1,25 @@
+<?php
+/**
+ * Put this file in your config/autoload directory by removing the suffix ".dist"
+ * You only have to adapt the $settings array to your needs
+ *
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2015-07-09
+ */
+
+return array(
+    'zf_cli_generator' => array(
+        'cli' => array(
+            'target'    => array(
+                'path'  => __DIR__ . '/..',
+                'name'  => 'zf_cli'
+            )
+        ),
+        'configuration' => array(
+            'target'    => array(
+                'path'  => __DIR__ . '/../config',
+                'name'  => 'zf_cli_configuration'
+            )
+        )
+    )
+);
