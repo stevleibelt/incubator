@@ -4,18 +4,18 @@
  * @since 2015-07-08
  */
 
-namespace Test\ZfCliGenerator\Controller\Console;
+namespace Test\NetBazzlineZfCliGenerator\Controller\Console;
 
-use Test\ZfCliGenerator\ZfCliGeneratorTestCase;
+use Test\NetBazzlineZfCliGenerator\ZfCliGeneratorTestCase;
 use Zend\Console\Request;
 use Zend\Console\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
-use ZfCliGenerator\Controller\Console\GenerateController;
+use NetBazzlineZfCliGenerator\Controller\Console\GenerateController;
 
 /**
  * Class IndexControllerTest
- * @package Test\ZfCliGenerator\Controller\Console
+ * @package Test\NetBazzlineZfCliGenerator\Controller\Console
  */
 class IndexControllerTest extends ZfCliGeneratorTestCase
 {

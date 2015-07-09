@@ -4,7 +4,7 @@
  * @since 2015-07-08
  */
 
-namespace ZfCliGenerator\Controller\Console;
+namespace NetBazzlineZfCliGenerator\Controller\Console;
 
 use Exception;
 use Net\Bazzline\Component\ProcessPipe\PipeInterface;

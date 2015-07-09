@@ -4,6 +4,8 @@
  * @since 2015-07-09
  */
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 function getTextToParse()
 {
     return <<<EOF
@@ -17,7 +19,7 @@ Application
   index.php console index [--verbose]    run index
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ZfLocatorGenerator
+NetBazzlineZfLocatorGenerator
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   index.php net_bazzline locator generate [<locator_name>] [--verbose]    run generation of locator depending on your configuration
@@ -27,40 +29,136 @@ Reason for failure: Invalid arguments or no arguments provided
 EOF;
 }
 
+class FetchIndexFileContentCommand extends  \Net\Bazzline\Component\Command\Command
+{
+    /**
+     * @return array
+     */
+    public function fetch($path)
+    {
+        $command = '/usr/bin/env php ' . $path;
+
+        return $this->execute($command, false); //we know zf application will use exit greater 0
+    }
+}
+
+function fetchTextToParse()
+{
+    $command = new FetchIndexFileContentCommand();
+
+    return $command->fetch(__DIR__ . '/../../../../../bazzline/zf_demo_environment/public/index.php');
+}
+
+function addToArray(array $array, array $path)
+{
+    $section = array_shift($path);
+
+    if (!isset($array[$section])) {
+        $array[$section]= array();
+    }
+
+    if (!empty($path)) {
+        $array[$section] = addToArray($array[$section], $path);
+    }
+
+    return $array;
+}
+
 function startsWith($haystack, $needle)
 {
     return (strncmp($haystack, $needle, strlen($needle)) === 0);
 }
 
+//steps
+//  fetch lines
+//  filter lines
+//  sanitize lines
+//  parse lines
+
+//  fetch lines
+//exec('/usr/bin/env php public/index.php', $lines); //use command component
+/*
 $text   = getTextToParse();
 $lines  = explode(PHP_EOL, $text);
-end($lines);
-$lastIndex = key($lines);
-rewind($lines);
+*/
+$lines   = fetchTextToParse();
 
-$indexToRemove = array(
-    0,
-    1,
-    $lastIndex
-);
+//  filter lines
+//remove first two and last line
+array_shift($lines);
+array_shift($lines);
+array_pop($lines);
 
-foreach ($lines as $index => $line) {
+$moduleHeadlineDetected = false;
+
+$filtered = array();
+
+foreach ($lines as $line) {
+    //remove color codes
+    $line = preg_replace('/\033\[[0-9;]*m/', '', $line);
+    $isValid = true;
     if (startsWith($line, '-')) {
-        $indexToRemove[] = $index;
+        $isValid = false;
+        $moduleHeadlineDetected = ($moduleHeadlineDetected === true) ? false: true;
+    } else if (strlen(trim($line)) === 0) {
+        $isValid = false;
+    }
+
+    if ($moduleHeadlineDetected === true) {
+        $isValid = false;
+    }
+
+    if ($isValid) {
+        $filtered[] = $line;
     }
 }
 
-$lines  = array_filter($lines, function($line){
-    $doesNotStartWithZend   = !startsWith($line, 'Zend');
-    $lengthIsGreaterZero    = (strlen($line) > 0);
-    $doesNotStartWithMinus  = !startsWith($line, '-');
+//  sanitize lines
 
-    return ($lengthIsGreaterZero
-        && $doesNotStartWithZend
-        && $doesNotStartWithMinus);
-});
-$lines  = array_map(function($line) {
-    return trim($line);
-}, $lines);
+$lines = array_map(function ($line) {
+    $line = str_replace(array('public/index.php', 'index.php'), '', $line);
+    $line = trim($line);
 
-echo var_export($lines, true) . PHP_EOL;
+    return $line;
+}, $filtered);
+
+//  parse lines
+//  @see:
+//      http://framework.zend.com/manual/current/en/modules/zend.console.routes.html
+//      http://framework.zend.com/manual/current/en/modules/zend.console.routes.html#console-routes-cheat-sheet
+
+//we won't take care of "--foo", "-f", <foo>, [<foo>] nor [foo]
+
+$configuration = array();
+
+foreach ($lines as $line) {
+    //remove description
+    $breadcrumb                     = array();
+    $positionOfMultipleWhitespaces  = strpos($line, '  ');
+    $line                           = substr($line, 0, $positionOfMultipleWhitespaces);
+    //replace multiple whitespaces with one
+    //$line = preg_replace('/\s+/', ' ',$line);
+    $tokens                         = explode(' ', $line);
+
+    foreach ($tokens as $token) {
+        $isValid = true;
+        foreach (array('-', '<', '[') as $needle) {
+            if (startsWith($token, $needle)) {
+                $isValid = false;
+                break 2;
+            }
+        }
+
+        if ($isValid) {
+            $breadcrumb[] = $token;
+        }
+    }
+    $configuration = addToArray($configuration, $breadcrumb);
+
+    //echo '----------------' . PHP_EOL;
+    echo 'line: ' . $line . PHP_EOL;
+    //echo 'tokens: ' . var_export($tokens, true) . PHP_EOL;
+    //echo 'breadcrumb: ' . var_export($breadcrumb, true) . PHP_EOL;
+}
+echo PHP_EOL;
+echo 'configuration: ' . var_export($configuration, true) . PHP_EOL;

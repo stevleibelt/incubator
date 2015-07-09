@@ -4,7 +4,7 @@
  * @since 2015-07-08
  */
 
-namespace ZfCliGenerator;
+namespace NetBazzlineZfCliGenerator;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;

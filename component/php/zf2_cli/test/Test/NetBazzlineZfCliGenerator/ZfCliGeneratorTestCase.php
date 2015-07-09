@@ -4,7 +4,7 @@
  * @since 2015-07-08
  */
 
-namespace Test\ZfCliGenerator;
+namespace Test\NetBazzlineZfCliGenerator;
 
 use PHPUnit_Framework_TestCase;
 use Mockery;
@@ -12,7 +12,7 @@ use Zend\Stdlib\Parameters;
 
 /**
  * Class ZfCliGeneratorTestCase
- * @package Test\ZfCliGenerator
+ * @package Test\NetBazzlineZfCliGenerator
  */
 class ZfCliGeneratorTestCase extends PHPUnit_Framework_TestCase
 {
@@ -37,7 +37,7 @@ Application
   index.php console index [--verbose]    run index
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ZfLocatorGenerator
+NetBazzlineZfLocatorGenerator
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   index.php net_bazzline locator generate [<locator_name>] [--verbose]    run generation of locator depending on your configuration

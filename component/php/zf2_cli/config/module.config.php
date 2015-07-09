@@ -7,7 +7,7 @@
 return array(
     'controllers' => array(
         'factories' => array(
-            'CliGenerator\Controller\Console\Index' => 'ZfCliGenerator\Controller\Console\IndexControllerFactory'
+            'CliGenerator\Controller\Console\Index' => 'NetBazzlineZfCliGenerator\Controller\Console\IndexControllerFactory'
         )
     ),
     'console' => array(
@@ -36,7 +36,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'NetBazzlineCliGeneratorProcessPipe' => 'ZfCliGenerator\Service\ProcessPipeFactory'
+            'NetBazzlineCliGeneratorProcessPipe' => 'NetBazzlineZfCliGenerator\Service\ProcessPipeFactory'
         )
     )
 );

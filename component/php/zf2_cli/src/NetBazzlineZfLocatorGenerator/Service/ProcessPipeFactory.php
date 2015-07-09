@@ -4,7 +4,7 @@
  * @since 2015-06-04 
  */
 
-namespace ZfCliGenerator\Service;
+namespace NetBazzlineZfCliGenerator\Service;
 
 use Net\Bazzline\Component\Locator\ProcessPipeFactory as InstanceFactory;
 use Zend\ServiceManager\FactoryInterface;
