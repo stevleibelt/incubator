@@ -6,7 +6,7 @@
 
 namespace Test\ZfCliGenerator\Controller\Console;
 
-use Test\ZfCliGenerator\ZfLocatorGeneratorTestCase;
+use Test\ZfCliGenerator\ZfCliGeneratorTestCase;
 use Zend\Console\Request;
 use Zend\Console\Response;
 use Zend\Mvc\MvcEvent;
@@ -17,7 +17,7 @@ use ZfCliGenerator\Controller\Console\GenerateController;
  * Class IndexControllerTest
  * @package Test\ZfCliGenerator\Controller\Console
  */
-class IndexControllerTest extends ZfLocatorGeneratorTestCase
+class IndexControllerTest extends ZfCliGeneratorTestCase
 {
     /** @var GenerateController */
     private $controller;

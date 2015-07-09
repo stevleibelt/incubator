@@ -1,32 +1,12 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2015-07-08
+ * @since 2015-07-09
  */
 
-namespace Test\ZfCliGenerator;
-
-use PHPUnit_Framework_TestCase;
-use Mockery;
-use Zend\Stdlib\Parameters;
-
-/**
- * Class ZfLocatorGeneratorTestCase
- * @package Test\ZfCliGenerator
- */
-class ZfLocatorGeneratorTestCase extends PHPUnit_Framework_TestCase
+function getTextToParse()
 {
-    protected function tearDown()
-    {
-        Mockery::close();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getExampleOutput()
-    {
-        return <<<EOF
+    return <<<EOF
 Zf Index - Version 1.0.0
 Net\Bazzline Zf Locator Generator - Version 1.0.0
 
@@ -45,38 +25,42 @@ ZfLocatorGenerator
 
 Reason for failure: Invalid arguments or no arguments provided
 EOF;
-    }
+}
 
-    /**
-     * @return Mockery\MockInterface|\Zend\Console\Adapter\AdapterInterface
-     */
-    protected function getMockOfConsole()
-    {
-        return Mockery::mock('Zend\Console\Adapter\AdapterInterface');
-    }
+function startsWith($haystack, $needle)
+{
+    return (strncmp($haystack, $needle, strlen($needle)) === 0);
+}
 
-    /**
-     * @return Mockery\MockInterface|\Net\Bazzline\Component\ProcessPipe\PipeInterface
-     */
-    protected function getMockOfProcessPipeInterface()
-    {
-        return Mockery::mock('Net\Bazzline\Component\ProcessPipe\PipeInterface');
-    }
+$text   = getTextToParse();
+$lines  = explode(PHP_EOL, $text);
+end($lines);
+$lastIndex = key($lines);
+rewind($lines);
 
-    /**
-     * @return Mockery\MockInterface|\Zend\ServiceManager\ServiceLocatorInterface
-     */
-    protected function getMockOfServiceLocator()
-    {
-        return Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
-    }
+$indexToRemove = array(
+    0,
+    1,
+    $lastIndex
+);
 
-    /**
-     * @param array $array
-     * @return Parameters
-     */
-    protected function getParameters(array $array = null)
-    {
-        return new Parameters($array);
+foreach ($lines as $index => $line) {
+    if (startsWith($line, '-')) {
+        $indexToRemove[] = $index;
     }
 }
+
+$lines  = array_filter($lines, function($line){
+    $doesNotStartWithZend   = !startsWith($line, 'Zend');
+    $lengthIsGreaterZero    = (strlen($line) > 0);
+    $doesNotStartWithMinus  = !startsWith($line, '-');
+
+    return ($lengthIsGreaterZero
+        && $doesNotStartWithZend
+        && $doesNotStartWithMinus);
+});
+$lines  = array_map(function($line) {
+    return trim($line);
+}, $lines);
+
+echo var_export($lines, true) . PHP_EOL;
