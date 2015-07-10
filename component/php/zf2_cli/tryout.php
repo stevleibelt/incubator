@@ -6,6 +6,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+$pathToApplication = ($argc > 1) ? $argv[1] : __DIR__ . '/../../../../../bazzline/zf_demo_environment/public/index.php';
+
 function getTextToParse()
 {
     return <<<EOF
@@ -42,11 +44,11 @@ class FetchIndexFileContentCommand extends  \Net\Bazzline\Component\Command\Comm
     }
 }
 
-function fetchTextToParse()
+function fetchTextToParse($path)
 {
     $command = new FetchIndexFileContentCommand();
 
-    return $command->fetch(__DIR__ . '/../../../../../bazzline/zf_demo_environment/public/index.php');
+    return $command->fetch($path);
 }
 
 function addToArray(array $array, array $path)
@@ -81,7 +83,7 @@ function startsWith($haystack, $needle)
 $text   = getTextToParse();
 $lines  = explode(PHP_EOL, $text);
 */
-$lines   = fetchTextToParse();
+$lines   = fetchTextToParse($pathToApplication);
 
 //  filter lines
 //remove first two and last line
@@ -135,7 +137,9 @@ foreach ($lines as $line) {
     //remove description
     $breadcrumb                     = array();
     $positionOfMultipleWhitespaces  = strpos($line, '  ');
-    $line                           = substr($line, 0, $positionOfMultipleWhitespaces);
+    if (is_numeric($positionOfMultipleWhitespaces)) {
+        $line = substr($line, 0, $positionOfMultipleWhitespaces);
+    }
     //replace multiple whitespaces with one
     //$line = preg_replace('/\s+/', ' ',$line);
     $tokens                         = explode(' ', $line);
