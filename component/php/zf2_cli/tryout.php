@@ -71,6 +71,24 @@ function startsWith($haystack, $needle)
     return (strncmp($haystack, $needle, strlen($needle)) === 0);
 }
 
+function dumpConfiguration(array $configuration, $closureName, $indention = '    ') {
+    $content = 'return array(' . PHP_EOL;
+
+    foreach ($configuration as $index => $values) {
+        if (empty($values)) {
+            $content .= $indention . '\'' . $index . '\' => $' . $closureName . ', ' . PHP_EOL;
+        } else {
+            $content .= $indention . '\'' . $index . '\' => array(' . PHP_EOL;
+            $content .= dumpConfiguration($values, $closureName, str_repeat($indention, 2));
+            $content .= PHP_EOL . $indention . '),' . PHP_EOL;
+        }
+    }
+
+    $content .= PHP_EOL . ');';
+
+    return $content;
+}
+
 //steps
 //  fetch lines
 //  filter lines
@@ -164,5 +182,8 @@ foreach ($lines as $line) {
     //echo 'tokens: ' . var_export($tokens, true) . PHP_EOL;
     //echo 'breadcrumb: ' . var_export($breadcrumb, true) . PHP_EOL;
 }
+
+//echo 'configuration: ' . var_export($configuration, true) . PHP_EOL;
+$content = dumpConfiguration($configuration, 'closure');
 echo PHP_EOL;
-echo 'configuration: ' . var_export($configuration, true) . PHP_EOL;
+echo 'content: ' . var_export($content, true) . PHP_EOL;
