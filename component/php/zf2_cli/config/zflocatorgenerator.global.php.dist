@@ -9,6 +9,10 @@
 
 return array(
     'zf_cli_generator' => array(
+        'application' => array(
+            'path'  => __DIR__ . '/../../public',
+            'name'  => 'index.php'
+        ),
         'cli' => array(
             'target'    => array(
                 'path'  => __DIR__ . '/..',

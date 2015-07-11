@@ -52,7 +52,7 @@ function fetchTextToParse($path)
     return $command->fetch($path);
 }
 
-function addToArray(array $array, array $path)
+function addToArray(array &$array, array $path)
 {
     $section = array_shift($path);
 

@@ -63,7 +63,7 @@ class IndexControllerTest extends ZfCliGeneratorTestCase
 
         $this->routeMatch->setParam('action', 'generate');
         $this->controller->setConfiguration($configuration);
-        $this->controller->setProcessPipe($processPipe);
+        $this->controller->setGenerateConfigurationProcessPipe($processPipe);
 
         $this->controller->dispatch($this->request);
     }
@@ -87,7 +87,7 @@ class IndexControllerTest extends ZfCliGeneratorTestCase
             ->twice();
 
         $this->controller->setConfiguration($configuration);
-        $this->controller->setProcessPipe($processPipe);
+        $this->controller->setGenerateConfigurationProcessPipe($processPipe);
         $this->routeMatch->setParam('action', 'generate');
 
         $this->controller->dispatch($this->request);
@@ -125,7 +125,7 @@ class IndexControllerTest extends ZfCliGeneratorTestCase
             ->with('/^#0/');
 
         $this->controller->setConfiguration($configuration);
-        $this->controller->setProcessPipe($processPipe);
+        $this->controller->setGenerateConfigurationProcessPipe($processPipe);
         $this->routeMatch->setParam('action', 'generate');
         $this->request->setParams(
             $this->getParameters(
@@ -156,7 +156,7 @@ class IndexControllerTest extends ZfCliGeneratorTestCase
             ->once();
 
         $this->controller->setConfiguration($configuration);
-        $this->controller->setProcessPipe($processPipe);
+        $this->controller->setGenerateConfigurationProcessPipe($processPipe);
         $this->routeMatch->setParam('action', 'generate');
         $this->request->setParams(
             $this->getParameters(
@@ -187,7 +187,7 @@ class IndexControllerTest extends ZfCliGeneratorTestCase
             ->once();
 
         $this->controller->setConfiguration($configuration);
-        $this->controller->setProcessPipe($processPipe);
+        $this->controller->setGenerateConfigurationProcessPipe($processPipe);
         $this->routeMatch->setParam('action', 'generate');
         $this->request->setParams(
             $this->getParameters(

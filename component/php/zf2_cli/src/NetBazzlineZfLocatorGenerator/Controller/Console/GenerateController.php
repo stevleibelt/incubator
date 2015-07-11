@@ -13,56 +13,82 @@ use ZfConsoleHelper\Controller\Console\AbstractConsoleController;
 
 class GenerateController extends AbstractConsoleController
 {
-    /** @var array */
-    private $configuration;
+    /** @var PipeInterface */
+    private $generateCli;
 
     /** @var PipeInterface */
-    private $processPipe;
+    private $generateConfiguration;
+
+    /** @var string */
+    private $pathToApplication;
+
+    /** @var string */
+    private $pathToCli;
+
+    /** @var string */
+    private $pathToConfiguration;
 
     /**
-     * @param array $configuration
+     * @param PipeInterface $processPipe
      */
-    public function setConfiguration(array $configuration)
+    public function setGenerateCliProcessPipe(PipeInterface $processPipe)
     {
-        $this->configuration = $configuration;
+        $this->generateCli = $processPipe;
     }
 
     /**
      * @param PipeInterface $processPipe
      */
-    public function setProcessPipe(PipeInterface $processPipe)
+    public function setGenerateConfigurationProcessPipe(PipeInterface $processPipe)
     {
-        $this->processPipe = $processPipe;
+        $this->generateConfiguration = $processPipe;
     }
 
+    /**
+     * @param string $pathToApplication
+     */
+    public function setPathToApplication($pathToApplication)
+    {
+        $this->pathToApplication = $pathToApplication;
+    }
 
+    /**
+     * @param string $pathToCli
+     */
+    public function setPathToCli($pathToCli)
+    {
+        $this->pathToCli = $pathToCli;
+    }
+
+    /**
+     * @param string $pathToConfiguration
+     */
+    public function setPathToConfiguration($pathToConfiguration)
+    {
+        $this->pathToConfiguration = $pathToConfiguration;
+    }
 
     public function configurationAction()
     {
-        $configuration  = $this->configuration;
-        $console        = $this->getConsole();
-        $processPipe    = $this->processPipe;
+        //begin of dependencies
+        $console                = $this->getConsole();
+        $pathToApplication      = $this->pathToApplication;
+        $pathToConfiguration    = $this->pathToConfiguration;
+        $processPipe            = $this->generateConfiguration;
+        //end of dependencies
 
         try {
             $this->throwExceptionIfNotCalledInsideAnCliEnvironment();
-            $configuration  = $configuration['configuration']['target'];
-            $targetPathName = $configuration['path'] . DIRECTORY_SEPARATOR . $configuration['name'];
 
-            //workflow
-            //  execute php public/index.php
-            //  parse output
-            //  fetch important information
-            //  generate configuration
+            $content                = $processPipe->execute($pathToApplication);
+            $contentCouldBeWritten  = (file_put_contents($pathToConfiguration, $content) !== false);
 
-            try {
-                //$processPipe->execute($arguments);
-                $console->writeLine('generated configuration in path: "' . $targetPathName . '"');
-            } catch (Exception $exception) {
-                $console->setColor(ColorInterface::LIGHT_RED);
-                $console->writeLine('could not generated configuration in path: "' . $targetPathName . '"');
-                $console->writeLine('error: ' . $exception->getMessage());
-                $console->writeLine('trace: ' . $exception->getTraceAsString());
-                $console->resetColor();
+            if ($contentCouldBeWritten) {
+                $console->writeLine('generated configuration in path: "' . $pathToConfiguration . '"');
+            } else {
+                throw new Exception(
+                    'could not write to path "' . $pathToConfiguration . '"'
+                );
             }
         } catch (Exception $exception) {
             $this->handleException($exception);
@@ -71,20 +97,21 @@ class GenerateController extends AbstractConsoleController
 
     public function cliAction()
     {
-        $configuration  = $this->configuration;
-        $console        = $this->getConsole();
+        //begin of dependencies
+        $console                = $this->getConsole();
+        $pathToApplication      = $this->pathToApplication;
+        $pathToConfiguration    = $this->pathToConfiguration;
+        $pathToCli              = $this->pathToCli;
+        $processPipe            = $this->generateConfiguration;
+        //end of dependencies
 
         try {
             $this->throwExceptionIfNotCalledInsideAnCliEnvironment();
 
-            $configuration  = $configuration['cli']['target'];
-            $targetPathName = $configuration['path'] . DIRECTORY_SEPARATOR . $configuration['name'];
-
             //workflow
             //  generate cli file using the template
             //  this file also contains the closure used in the configuration to execute the code
-
-            $console->writeLine('generated cli in path: "' . $targetPathName . '"');
+            $console->writeLine('generated cli in path: "' . $pathToCli . '"');
         } catch (Exception $exception) {
             $this->handleException($exception);
         }

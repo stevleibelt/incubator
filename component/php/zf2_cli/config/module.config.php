@@ -7,7 +7,7 @@
 return array(
     'controllers' => array(
         'factories' => array(
-            'CliGenerator\Controller\Console\Index' => 'NetBazzlineZfCliGenerator\Controller\Console\IndexControllerFactory'
+            'NetBazzlineZfCliGenerator\Controller\Console\Index' => 'NetBazzlineZfCliGenerator\Controller\Console\IndexControllerFactory'
         )
     ),
     'console' => array(
@@ -17,7 +17,7 @@ return array(
                     'options' => array(
                         'route' => 'net_bazzline cli generate-configuration',
                         'defaults' => array(
-                            'controller' => 'CliGenerator\Controller\Console\Generate',
+                            'controller' => 'NetBazzlineZfCliGenerator\Controller\Console\Generate',
                             'action' => 'configuration'
                         )
                     )
@@ -26,7 +26,7 @@ return array(
                     'options' => array(
                         'route' => 'net_bazzline cli generate-cli',
                         'defaults' => array(
-                            'controller' => 'CliGenerator\Controller\Console\Generate',
+                            'controller' => 'NetBazzlineZfCliGenerator\Controller\Console\Generate',
                             'action' => 'cli'
                         )
                     )
@@ -36,7 +36,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'NetBazzlineCliGeneratorProcessPipe' => 'NetBazzlineZfCliGenerator\Service\ProcessPipeFactory'
+            'NetBazzlineCliGenerator_GenerateConfigurationContentProcessPipe' => 'NetBazzlineZfCliGenerator\Service\GenerateConfigurationContentProcessPipeFactory'
         )
     )
 );
