@@ -6,7 +6,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$pathToApplication = ($argc > 1) ? $argv[1] : __DIR__ . '/../../../../../bazzline/zf_demo_environment/public/index.php';
+$pathToApplication      = ($argc > 1) ? $argv[1] : __DIR__ . '/../../../../../bazzline/zf_demo_environment/public/index.php';
+$pathToConfiguration    = ($argc > 2) ? $argv[2] : __DIR__ . '/configuration.php';
 
 function getTextToParse()
 {
@@ -71,20 +72,25 @@ function startsWith($haystack, $needle)
     return (strncmp($haystack, $needle, strlen($needle)) === 0);
 }
 
-function dumpConfiguration(array $configuration, $closureName, $indention = '    ') {
-    $content = 'return array(' . PHP_EOL;
+function dumpConfiguration(array $configuration, $closureName, $indention = '    ', $level = 1) {
+    $content        = '';
+    $localIndention = str_repeat($indention, $level);
+    end($configuration);
+    $lastIndex      = key($configuration);
 
     foreach ($configuration as $index => $values) {
         if (empty($values)) {
-            $content .= $indention . '\'' . $index . '\' => $' . $closureName . ', ' . PHP_EOL;
+            $content .= $localIndention . '\'' . $index . '\' => $' . $closureName;
         } else {
-            $content .= $indention . '\'' . $index . '\' => array(' . PHP_EOL;
-            $content .= dumpConfiguration($values, $closureName, str_repeat($indention, 2));
-            $content .= PHP_EOL . $indention . '),' . PHP_EOL;
+            $content .= $localIndention . '\'' . $index . '\' => array(' . PHP_EOL;
+            $content .= dumpConfiguration($values, $closureName, $indention, $level + 1);
+            $content .= $localIndention . ')';
         }
+        if ($index !== $lastIndex) {
+            $content .= ',';
+        }
+        $content .= PHP_EOL;
     }
-
-    $content .= PHP_EOL . ');';
 
     return $content;
 }
@@ -178,12 +184,19 @@ foreach ($lines as $line) {
     $configuration = addToArray($configuration, $breadcrumb);
 
     //echo '----------------' . PHP_EOL;
-    echo 'line: ' . $line . PHP_EOL;
+    //echo 'line: ' . $line . PHP_EOL;
     //echo 'tokens: ' . var_export($tokens, true) . PHP_EOL;
     //echo 'breadcrumb: ' . var_export($breadcrumb, true) . PHP_EOL;
 }
 
 //echo 'configuration: ' . var_export($configuration, true) . PHP_EOL;
-$content = dumpConfiguration($configuration, 'closure');
-echo PHP_EOL;
-echo 'content: ' . var_export($content, true) . PHP_EOL;
+$content = '<?php' . PHP_EOL;
+$content .= '/**' . PHP_EOL .
+    ' * created at: ' . date('Y-m-d H:i:s') . PHP_EOL .
+    ' * created by: net_bazzline/zf_cli_generator' . PHP_EOL .
+    ' */' . PHP_EOL . PHP_EOL;
+$content .= 'return array(' . PHP_EOL;
+$content .= dumpConfiguration($configuration, 'closure');
+$content .= ');';
+file_put_contents($pathToConfiguration, $content);
+//echo PHP_EOL . var_export($content, true) . PHP_EOL;
