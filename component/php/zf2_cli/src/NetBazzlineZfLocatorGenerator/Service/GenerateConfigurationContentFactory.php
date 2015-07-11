@@ -17,7 +17,7 @@ use NetBazzlineZfCliGenerator\Service\ProcessPipe\Transformer\ParseToConfigurati
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class GenerateConfigurationContentProcessPipeFactory implements FactoryInterface
+class GenerateConfigurationContentFactory implements FactoryInterface
 {
     /**
      * Create service

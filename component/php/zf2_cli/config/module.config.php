@@ -36,7 +36,8 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'NetBazzlineCliGenerator_GenerateConfigurationContentProcessPipe' => 'NetBazzlineZfCliGenerator\Service\GenerateConfigurationContentProcessPipeFactory'
+            'NetBazzlineCliGenerator_GenerateCliContent'            => 'NetBazzlineZfCliGenerator\Service\GenerateCliContentFactory',
+            'NetBazzlineCliGenerator_GenerateConfigurationContent'  => 'NetBazzlineZfCliGenerator\Service\GenerateConfigurationContentFactory'
         )
     )
 );

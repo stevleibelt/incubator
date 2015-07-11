@@ -15,8 +15,9 @@ return array(
         ),
         'cli' => array(
             'target'    => array(
-                'path'  => __DIR__ . '/..',
-                'name'  => 'zf_cli'
+                'path'      => __DIR__ . '/..',
+                'prefix'    => 'zf: ', 'zf: ',
+                'name'      => 'zf_cli'
             )
         ),
         'configuration' => array(

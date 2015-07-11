@@ -35,6 +35,11 @@ class GenerateControllerFactory extends AbstractConsoleControllerFactory
             );
         }
 
+        /** @var PipeInterface $configurationCli */
+        $cliGenerator = $serviceLocator->get('NetBazzlineCliGenerator_GenerateCliContent');
+        /** @var PipeInterface $configurationGenerator */
+        $configurationGenerator = $serviceLocator->get('NetBazzlineCliGenerator_GenerateConfigurationContent');
+
         $configuration          = $configuration[$key];
         $pathToApplication      = $configuration['application']['path'] .
             DIRECTORY_SEPARATOR .
@@ -45,13 +50,12 @@ class GenerateControllerFactory extends AbstractConsoleControllerFactory
         $pathToCli              = $configuration['cli']['path'] .
             DIRECTORY_SEPARATOR .
             $configuration['cli']['name'];
-        /** @var PipeInterface $configurationGenerator */
-        $configurationGenerator = $serviceLocator->get('NetBazzlineCliGenerator_GenerateConfigurationContentProcessPipe');
 
+        $controller->setGenerateConfigurationProcessPipe($configurationGenerator);
+        $controller->setGenerateCliProcessPipe($cliGenerator);
         $controller->setPathToApplication($pathToApplication);
         $controller->setPathToConfiguration($pathToConfiguration);
         $controller->setPathToCli($pathToCli);
-        $controller->setGenerateConfigurationProcessPipe($configurationGenerator);
 
         return $controller;
     }

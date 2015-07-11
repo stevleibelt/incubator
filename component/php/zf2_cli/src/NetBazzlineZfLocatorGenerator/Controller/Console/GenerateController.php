@@ -8,7 +8,7 @@ namespace NetBazzlineZfCliGenerator\Controller\Console;
 
 use Exception;
 use Net\Bazzline\Component\ProcessPipe\PipeInterface;
-use Zend\Console\ColorInterface;
+use NetBazzlineZfCliGenerator\Service\ProcessPipe\Transformer\DumpCliContent;
 use ZfConsoleHelper\Controller\Console\AbstractConsoleController;
 
 class GenerateController extends AbstractConsoleController
@@ -27,6 +27,9 @@ class GenerateController extends AbstractConsoleController
 
     /** @var string */
     private $pathToConfiguration;
+
+    /** @var string */
+    private $prefix;
 
     /**
      * @param PipeInterface $processPipe
@@ -68,6 +71,14 @@ class GenerateController extends AbstractConsoleController
         $this->pathToConfiguration = $pathToConfiguration;
     }
 
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
+
     public function configurationAction()
     {
         //begin of dependencies
@@ -80,6 +91,7 @@ class GenerateController extends AbstractConsoleController
         try {
             $this->throwExceptionIfNotCalledInsideAnCliEnvironment();
 
+            //@todo replace by something form zend
             $content                = $processPipe->execute($pathToApplication);
             $contentCouldBeWritten  = (file_put_contents($pathToConfiguration, $content) !== false);
 
@@ -102,7 +114,8 @@ class GenerateController extends AbstractConsoleController
         $pathToApplication      = $this->pathToApplication;
         $pathToConfiguration    = $this->pathToConfiguration;
         $pathToCli              = $this->pathToCli;
-        $processPipe            = $this->generateConfiguration;
+        $prefix                 = $this->prefix;
+        $processPipe            = $this->generateCli;
         //end of dependencies
 
         try {
@@ -111,7 +124,21 @@ class GenerateController extends AbstractConsoleController
             //workflow
             //  generate cli file using the template
             //  this file also contains the closure used in the configuration to execute the code
-            $console->writeLine('generated cli in path: "' . $pathToCli . '"');
+            $input                  = array(
+                DumpCliContent::INPUT_KEY_PATH_TO_CONFIGURATION => $pathToApplication,
+                DumpCliContent::INPUT_KEY_PATH_TO_APPLICATION   => $pathToConfiguration,
+                DumpCliContent::INPUT_KEY_PREFIX_CLI            => $prefix
+            );
+            $content                = $processPipe->execute($input);
+            $contentCouldBeWritten  = (file_put_contents($pathToCli, $content) !== false);
+
+            if ($contentCouldBeWritten) {
+                $console->writeLine('generated cli in path: "' . $pathToCli . '"');
+            } else {
+                throw new Exception(
+                    'could not write to path "' . $pathToConfiguration . '"'
+                );
+            }
         } catch (Exception $exception) {
             $this->handleException($exception);
         }
