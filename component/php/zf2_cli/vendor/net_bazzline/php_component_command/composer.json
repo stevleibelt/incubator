@@ -1,0 +1,31 @@
+{
+    "description": "free as in freedom php component command is a thin and generic wrapper to easy up using system (shell) command usage",
+    "keywords": ["php", "command", "system command", "component", "shell", "job", "wrapper", "lgpl", "free as in freedom"],
+    "license": "LGPLv3",
+    "name": "net_bazzline/php_component_command",
+    "type": "library",
+    "authors": [
+        {
+            "email": "artodeto@bazzline.net",
+            "homepage": "https://artodeto.bazzline.et",
+            "name": "Stev Leibelt",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.4",
+        "phpmd/phpmd": "2.2.3",
+        "phpunit/phpunit": "4.7.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "Example": "example",
+            "Net\\Bazzline\\Component\\Command": "source/",
+            "Test\\Net\\Bazzline\\Component\\Command": "test/"
+        }
+    }
+}
