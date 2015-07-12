@@ -1,7 +1,0 @@
-.idea
-composer.lock
-.buildpath
-.project
-.settings/
-.DS_Store
-vendor
