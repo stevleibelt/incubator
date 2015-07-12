@@ -1,0 +1,6 @@
+{
+    "require": {
+        "net_bazzline/php_component_csv": "^1.5",
+        "net_bazzline/php_component_cli_arguments": "^1.1"
+    }
+}

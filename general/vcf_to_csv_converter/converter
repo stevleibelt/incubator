@@ -1,0 +1,124 @@
+#!/usr/bin/env php
+<?php
+
+use Net\Bazzline\Component\Cli\Arguments\Arguments;
+use Net\Bazzline\Component\Csv\Writer\WriterFactory;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$arguments  = new Arguments($argv);
+$usage      = 'Usage: ' . basename(__FILE__) . ' <path to vcf> <path to csv>' . PHP_EOL;
+
+$values = $arguments->getValues();
+
+if (count($values) < 2) {
+    echo $usage;
+    exit(1);
+}
+
+function startsWith($haystack, $needle)
+{
+    return (strncmp($haystack, $needle, strlen($needle)) === 0);
+}
+
+$pathToVcf = array_shift($values);
+$pathToCsv = array_shift($values);
+
+$vcf        = new SplFileObject($pathToVcf);
+$factory    = new WriterFactory();
+$writer     = $factory->create();
+$writer->setPath($pathToCsv);
+
+echo 'path to vcf: ' . $pathToVcf . PHP_EOL;
+echo 'path to csv: ' . $pathToCsv . PHP_EOL;
+
+$weAreInOneVCardSection = false;
+
+/*
+BEGIN:VCARD
+VERSION:2.1
+N:Gump;Forrest
+FN:Forrest Gump
+ORG:Bubba Gump Shrimp Co.
+TITLE:Shrimp Man
+PHOTO;GIF:http://www.example.com/dir_photos/my_photo.gif
+TEL;WORK;VOICE:(111) 555-1212
+TEL;HOME;VOICE:(404) 555-1212
+ADR;WORK:;;100 Waters Edge;Baytown;LA;30314;United States of America
+LABEL;WORK;ENCODING=QUOTED-PRINTABLE:100 Waters Edge=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+ADR;HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
+LABEL;HOME;ENCODING=QUOTED-PRINTABLE:42 Plantation St.=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+EMAIL;PREF;INTERNET:forrestgump@example.com
+REV:20080424T195243Z
+END:VCARD
+*/
+
+$headLines = array(
+    'full name',
+    'phone numbers',
+    'address',
+    'email',
+    'names',
+    'birthday',
+    'raw'
+);
+
+$writer->truncate();
+$writer->writeHeadlines($headLines);
+
+$vCardTokenToHeadline = array(
+    'FN:'       => 'full name',
+    'TEL;'      => 'phone numbers',
+    'ADR:'      => 'address',
+    'EMAIL;'    => 'email',
+    'N:'        => 'names',
+    'BDAY:'     => 'birthday'
+
+);
+
+foreach ($vcf as $line) {
+    $line = trim($line);
+
+    if (startsWith($line, 'BEGIN:VCARD')) {
+        $weAreInOneVCardSection = true;
+        $content = array(
+            'full name'     => '',
+            'phone numbers' => '',
+            'address'       => '',
+            'email'         => '',
+            'names'         => '',
+            'birthday'      => '',
+            'raw'           => ''
+        );
+    } else if (startsWith($line, 'END:VCARD')) {
+        foreach ($content as &$value) {
+            $value = substr($value, 0, -3); //-3 = ' | '
+        }
+        $writer->writeOne($content);
+        $weAreInOneVCardSection = false;
+    }
+
+    if ($weAreInOneVCardSection) {
+        foreach ($vCardTokenToHeadline as $token => $headLine) {
+            if (startsWith($line, $token)) {
+                $raw = $line;
+                $line = str_replace(array(
+                    'HOME;',
+                    'WORK;',
+                    'PREF;',
+                    'HOME:',
+                    'CELL:',
+                    'INTERNET:',
+                    'VOICE:',
+                    'X-Privat:',
+                    'X-Mobil:',
+                ),
+                '',
+                $line);
+                $line = str_replace(';', ' ', $line);
+                $content[$headLine] .= trim(substr($line, strlen($token))) . ' | ';
+                $content['raw'] .= $raw . ' | ';
+            }
+        }
+    }
+}

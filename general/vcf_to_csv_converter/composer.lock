@@ -1,0 +1,297 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "407d692722ea4d8ea378da702e8c75f1",
+    "packages": [
+        {
+            "name": "net_bazzline/php_component_cli_arguments",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_cli_arguments.git",
+                "reference": "0915d1568f300a44da2757b516bd56b79ac729ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_cli_arguments/zipball/0915d1568f300a44da2757b516bd56b79ac729ec",
+                "reference": "0915d1568f300a44da2757b516bd56b79ac729ec",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.7.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Cli\\Arguments": "source/",
+                    "Test\\Net\\Bazzline\\Component\\Cli\\Arguments": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom php cli command thin wrapper to easy up usage and validation of command line arguments",
+            "keywords": [
+                "argument",
+                "cli",
+                "flag",
+                "free as in freedom",
+                "getopt",
+                "lgpl",
+                "php",
+                "shell",
+                "trigger"
+            ],
+            "time": "2015-07-02 21:12:08"
+        },
+        {
+            "name": "net_bazzline/php_component_cli_readline",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_cli_readline.git",
+                "reference": "4f5e75d9e4a5c1c33d5f01265f244e73b379267b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_cli_readline/zipball/4f5e75d9e4a5c1c33d5f01265f244e73b379267b",
+                "reference": "4f5e75d9e4a5c1c33d5f01265f244e73b379267b",
+                "shasum": ""
+            },
+            "require": {
+                "net_bazzline/php_component_cli_arguments": "1.1.0",
+                "net_bazzline/php_component_generic_agreement": "1.0.1",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.4",
+                "phpunit/phpunit": "4.7.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Cli\\Readline": "source/",
+                    "Test\\Net\\Bazzline\\Component\\Cli\\Readline": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom php component to easy up usage of php readline implementation in php 5.3 and above",
+            "keywords": [
+                "autocomplete",
+                "cli",
+                "component",
+                "console",
+                "free as in freedom",
+                "lgpl",
+                "php",
+                "readline",
+                "unix"
+            ],
+            "time": "2015-07-06 11:19:47"
+        },
+        {
+            "name": "net_bazzline/php_component_csv",
+            "version": "1.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_csv.git",
+                "reference": "0f506e3322aa079ad0bc712799323f7afa6a5ba8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_csv/zipball/0f506e3322aa079ad0bc712799323f7afa6a5ba8",
+                "reference": "0f506e3322aa079ad0bc712799323f7afa6a5ba8",
+                "shasum": ""
+            },
+            "require": {
+                "net_bazzline/php_component_cli_readline": "1.1.1",
+                "net_bazzline/php_component_generic_agreement": "1.0.1",
+                "net_bazzline/php_component_toolbox": "1.0.0",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.5.0",
+                "mockery/mockery": "0.9.4",
+                "phpunit/phpunit": "4.7.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Csv": "source/",
+                    "Test\\Net\\Bazzline\\Component\\Csv": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom php component to easy up usage (reading and writing) of csv files for php 5.3 and above",
+            "keywords": [
+                "adapter",
+                "component",
+                "csv",
+                "easy",
+                "easycsv",
+                "export",
+                "filesystem",
+                "filter",
+                "free as in freedom",
+                "headline",
+                "import",
+                "invoke",
+                "iterator",
+                "lgpl",
+                "low",
+                "memory",
+                "php",
+                "read",
+                "reusable",
+                "tranversable",
+                "usage",
+                "write"
+            ],
+            "time": "2015-07-06 11:42:52"
+        },
+        {
+            "name": "net_bazzline/php_component_generic_agreement",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_generic_agreement.git",
+                "reference": "2b0c3953dd71abcc0d5a2868690b733a2766cd7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_generic_agreement/zipball/2b0c3953dd71abcc0d5a2868690b733a2766cd7a",
+                "reference": "2b0c3953dd71abcc0d5a2868690b733a2766cd7a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\GenericAgreement": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom php component that includes generic agreements in the Net\\Bazzline code base",
+            "keywords": [
+                "component",
+                "free as in freedom",
+                "generic",
+                "interface",
+                "php",
+                "reusable"
+            ],
+            "time": "2015-07-05 15:20:27"
+        },
+        {
+            "name": "net_bazzline/php_component_toolbox",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_toolbox.git",
+                "reference": "4ce9b63e867a1dc8d8edb226332cac7d36a0cf74"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_toolbox/zipball/4ce9b63e867a1dc8d8edb226332cac7d36a0cf74",
+                "reference": "4ce9b63e867a1dc8d8edb226332cac7d36a0cf74",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Toolbox": "source/",
+                    "Test\\Net\\Bazzline\\Component\\Toolbox": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom free software collection of tools to easy and speed up development with php",
+            "keywords": [
+                "Toolbox",
+                "array",
+                "component",
+                "free as in freedom",
+                "invoke",
+                "php",
+                "reusable",
+                "tools",
+                "utilities"
+            ],
+            "time": "2015-06-26 12:16:02"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
