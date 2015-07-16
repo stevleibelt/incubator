@@ -1,0 +1,6 @@
+{
+    "require": {
+        "predis/predis": "^1.0",
+        "propel/propel1": "^1.7"
+    }
+}
