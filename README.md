@@ -25,6 +25,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Event](https://github.com/stevleibelt/incubator/tree/master/component/php/event)
 * [ZF Module for easy usage of propel 1.x](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel)
 * [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/batch_job)
+* [Database Based Translation For Zend Framework 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_database_translation)
 * [SFTP Module for ZF2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_sftp)
 * [cron job php component](https://github.com/stevleibelt/incubator/tree/master/component/php/cron_job)
 * [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/merge_arrays)
