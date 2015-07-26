@@ -255,3 +255,6 @@ The component will easy up handling of batch job processes.
     * combine them by the naming like "item_validation_data_queue", "item_validation_url_reachable_queue"
     * if you need to deal with status, implement a StatusManager/StateMachine that calculates the right status
 
+# links
+
+* [SlmQueue](https://github.com/juriansluiman/SlmQueue)
