@@ -88,3 +88,5 @@ abstract class AbstractLocatorGeneratorFactory implements FactoryInterface
 
 * https://github.com/evolic/zf2-propel/tree/master/module/PropelORM
 * https://github.com/haizilin/sitework-zf2-refactoring/tree/master/module/Orm/config
+* https://github.com/IMHLabs/zf-propel
+* https://github.com/MarshallHouse/zpropel
