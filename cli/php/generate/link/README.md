@@ -100,4 +100,4 @@ CREATE TABLE `link_to_categorie`
     FOREIGN KEY (`categorie_id`) REFERENCES `categories` (`id`),
     FOREIGN KEY (`link_id`) REFERENCES `links` (`id`)
 ) Engine=InnoDB DEFAULT CHARSET=utf8; 
-```sql
+```
