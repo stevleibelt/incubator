@@ -24,6 +24,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Login Service](https://github.com/stevleibelt/incubator/tree/master/web/service/login)
 * [Autocomplete](https://github.com/stevleibelt/incubator/tree/master/web/general/autocomplete)
 * [Event](https://github.com/stevleibelt/incubator/tree/master/component/php/event)
+* [API Token Authentication for ZF 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf_api_token_authentication)
 * [ZF Module for easy usage of propel 1.x](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel)
 * [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/batch_job)
 * [Database Based Translation For Zend Framework 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_database_translation)
