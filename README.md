@@ -28,7 +28,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/batch_job)
 * [Database Based Translation For Zend Framework 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_database_translation)
 * [SFTP Module for ZF2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_sftp)
-* [Create Entity Behavior for Propel](https://github.com/stevleibelt/incubator/tree/master/component/php/php_propel_behavior_entity_manager)
+* [Create EntityManager for Propel](https://github.com/stevleibelt/incubator/tree/master/component/php/php_propel_behavior_entity_manager)
 * [cron job php component](https://github.com/stevleibelt/incubator/tree/master/component/php/cron_job)
 * [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/merge_arrays)
 * [API Token Authentication for ZF 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_api_token_authentication)
