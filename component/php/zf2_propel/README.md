@@ -2,6 +2,70 @@
 
 ## code idea
 
+### Module.php
+
+```php
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface
+{
+    public function onBootstrap(MvcEvent $event)
+    {
+        StaticManager::setServiceLocator($serviceManager);
+        $event = $serviceManager->get('SharedEventManager');
+        StaticManager::getEventManager()->setSharedManager($event);
+    }
+
+    /**
+    * @return array
+    */
+    public function getAutoloaderConfig()
+    {
+        return array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'ZendLoaderClassMapAutoloader' => array(
+                    __DIR__ . '/autoload_classmap.php', //includes the propel class maps also
+                ),
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * @return array
+    */
+    public function getConfig()
+    {
+        //since this is pretty stable, we do not need to consume speed by loading and merging a module configuration
+        return array(
+            'zpropel' => array(
+                'runtime-conf' => 'data/zpropel/proxy/build/conf/zpropel-conf.php',
+            ),
+            'console' => array(
+                'router' => array(
+                    'routes' => array(
+                        'net_bazzline_propel_generate' => array(
+                            'options' => array(
+                                'route'    => 'net_bazzline propel-generate [convert-conf|insert-sql|sql|om]:script',
+                                'defaults' => array(
+                                    'controller' => 'NetBazzlineZfPropel\Controller\GenerateController',
+                                    'action'     => 'generate'
+                                )
+                            )
+                        ),
+                    ),
+                ),
+            ),
+            'controllers' => array(
+                'factories' => array(
+                '   NetBazzlineZfPropel\Controller\GenerateController' => 'NetBazzlineZfPropel\Controller\GenerateControllerFactory',
+                ),
+            ),
+        );
+    }
+}
+```
+
 ```php
 <?php
 /**
