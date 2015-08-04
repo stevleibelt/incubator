@@ -1,7 +1,7 @@
 {
-    "name": "net_bazzline/php_propel_behavior_create_entity",
-    "description": "free as in freedom CreateEntity propel behvior to easy up entity creation",
-    "keywords": ["propel", "behavior", "create", "entity", "php", "lgpl", "free as in freedom"],
+    "name": "net_bazzline/php_propel_behavior_entity_manager",
+    "description": "free as in freedom CreateEntity propel behavior to easy up entity managing",
+    "keywords": ["propel", "behavior", "entity", "manager", "php", "lgpl", "free as in freedom"],
     "type": "library",
     "minimum-stability": "dev",
     "require": {
