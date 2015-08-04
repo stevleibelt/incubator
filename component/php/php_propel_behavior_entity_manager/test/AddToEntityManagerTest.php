@@ -12,19 +12,22 @@ class AddToEntityManagerTest extends PHPUnit_Framework_TestCase
             || (!class_exists('Post')));
 
         if ($buildIsNeeded) {
+            $path   = __DIR__;
             $schema = <<<EOF
 <database name="create_entity_behavior" defaultIdMethod="native">
     <table name="Author">
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
-
-        <behavior name="add_to_entity_manager" />
     </table>
 
     <table name="Post">
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
-
-        <behavior name="add_to_entity_manager" />
     </table>
+
+    <behavior name="add_to_entity_manager">
+        <parameter name="indention" value="    " />
+        <parameter name="namespace" value="Net\Bazzline\Propel" />
+        <parameter name="path_to_output" value="$path" />
+    </behavior>
 </database>
 EOF;
 
