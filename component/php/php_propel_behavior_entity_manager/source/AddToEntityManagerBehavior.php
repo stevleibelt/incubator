@@ -3,15 +3,18 @@
 /**
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-08-02
+ * @todo make parameters optional (only set them when they are set) - this would enable it to define everything in the database scope and the rest in the table scope without overwriting database scoped things
  */
 class AddToEntityManagerBehavior extends Behavior
 {
+    const PARAMETER_ADD_IT          = 'add_it';
     const PARAMETER_INDENTION       = 'indention';
     const PARAMETER_NAMESPACE       = 'namespace';
     const PARAMETER_PATH_TO_OUTPUT  = 'path_to_output';
 
     /** @var array */
     protected $parameters = array(
+        self::PARAMETER_ADD_IT          => true,
         self::PARAMETER_INDENTION       => '    ',
         self::PARAMETER_NAMESPACE       => '',
         self::PARAMETER_PATH_TO_OUTPUT  => 'data'
@@ -49,14 +52,16 @@ class AddToEntityManagerBehavior extends Behavior
      */
     public function addObjectToEntityManager(DataModelBuilder $builder)
     {
-        $generator = $this->getGenerator();
+        if ($this->addIt() {
+            $generator = $this->getGenerator();
 
-        //add query method
-        $generator->add(
-            $builder->getDatabase()->getName(),
-            $builder->getStubObjectBuilder()->getClassname(),
-            $builder->getStubObjectBuilder()->getFullyQualifiedClassname()
-        );
+            //add query method
+            $generator->add(
+                $builder->getDatabase()->getName(),
+                $builder->getStubObjectBuilder()->getClassname(),
+                $builder->getStubObjectBuilder()->getFullyQualifiedClassname()
+            );
+        }
     }
 
     /**
@@ -64,14 +69,16 @@ class AddToEntityManagerBehavior extends Behavior
      */
     public function addQueryToEntityManager(DataModelBuilder $builder)
     {
-        $generator = $this->getGenerator();
+        if ($this->addIt() {
+            $generator = $this->getGenerator();
 
-        //add query method
-        $generator->add(
-            $builder->getDatabase()->getName(),
-            $builder->getStubQueryBuilder()->getClassname(),
-            $builder->getStubQueryBuilder()->getFullyQualifiedClassname()
-        );
+            //add query method
+            $generator->add(
+                $builder->getDatabase()->getName(),
+                $builder->getStubQueryBuilder()->getClassname(),
+                $builder->getStubQueryBuilder()->getFullyQualifiedClassname()
+            );
+        }
     }
 
     /**
@@ -88,5 +95,15 @@ class AddToEntityManagerBehavior extends Behavior
         }
 
         return $generator;
+    }
+
+    /**
+     * @return bool
+     */
+    private function addIt()
+    {
+        return (isset($this->parameters[self::PARAMETER_ADD_IT]))
+            ? $this->parameters[self::PARAMETER_ADD_IT]
+            : false;
     }
 }
