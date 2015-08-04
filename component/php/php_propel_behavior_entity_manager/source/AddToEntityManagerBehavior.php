@@ -4,7 +4,7 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-08-02
  */
-class AddToEntityManager extends Behavior
+class AddToEntityManagerBehavior extends Behavior
 {
     const PARAMETER_INDENTION       = 'indention';
     const PARAMETER_NAMESPACE       = 'namespace';
@@ -31,12 +31,18 @@ class AddToEntityManager extends Behavior
         return '';
     }
 
+    /**
+     * @param DataModelBuilder $builder
+     * @return string
+     */
+    /**
     public function objectMethods($builder)
     {
         $this->addObjectToEntityManager($builder);
 
         return '';
     }
+     */
 
     /**
      * @param DataModelBuilder $builder

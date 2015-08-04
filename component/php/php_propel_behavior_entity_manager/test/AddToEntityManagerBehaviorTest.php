@@ -1,27 +1,31 @@
 <?php
+use org\bovigo\vfs\vfsStream;
 
 /**
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-08-02
  */
-class AddToEntityManagerTest extends PHPUnit_Framework_TestCase
+class AddToEntityManagerBehaviorTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $buildIsNeeded = ((!class_exists('Author'))
-            || (!class_exists('Post')));
+        $buildIsNeeded = ((!class_exists('CreateEntityBehavior1'))
+            || (!class_exists('CreateEntityBehavior2')));
 
         if ($buildIsNeeded) {
-            $path   = __DIR__;
+            $fileSystem = vfsStream::setup();
+            $path   = $fileSystem->url();
             $schema = <<<EOF
 <database name="create_entity_behavior" defaultIdMethod="native">
-    <table name="Author">
+    <table name="CreateEntityBehavior1">
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
     </table>
 
-    <table name="Post">
+    <!--
+    <table name="CreateEntityBehavior2">
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
     </table>
+    -->
 
     <behavior name="add_to_entity_manager">
         <parameter name="indention" value="    " />
@@ -33,7 +37,7 @@ EOF;
 
             $builder        = new PropelQuickBuilder();
             $configuration  = $builder->getConfig();
-            $configuration->setBuildProperty('behavior.add_to_entity_manager.class', __DIR__ . '/../source/AddToEntityManager');
+            $configuration->setBuildProperty('behavior.add_to_entity_manager.class', __DIR__ . '/../source/AddToEntityManagerBehavior');
             $builder->setConfig($configuration);
             $builder->setSchema($schema);
 

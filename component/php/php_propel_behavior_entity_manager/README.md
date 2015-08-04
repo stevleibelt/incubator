@@ -55,7 +55,7 @@ git clone https://github.com/bazzline/php_propel_behavior_create_entity
 
 * add the following to your propel.ini
 ```
-propel.behavior.create_entity.class = lib.vendor.net_bazzline.php_propel_behavior_create_entity.source.AddToEntityManager
+propel.behavior.create_entity.class = lib.vendor.net_bazzline.php_propel_behavior_create_entity.source.AddToEntityManagerBehavior
 ```
 * add usage in your `schema.xml`
 ```xml
