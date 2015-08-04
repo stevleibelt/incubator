@@ -9,23 +9,22 @@ class AddToEntityManagerBehaviorTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $buildIsNeeded = ((!class_exists('CreateEntityBehavior1'))
-            || (!class_exists('CreateEntityBehavior2')));
+        $buildIsNeeded = ((!class_exists('CreateEntityBehaviorTableOne'))
+            || (!class_exists('CreateEntityBehaviorTableTwo')));
 
         if ($buildIsNeeded) {
             $fileSystem = vfsStream::setup();
-            $path   = $fileSystem->url();
-            $schema = <<<EOF
+            $path       = $fileSystem->url();
+            //$path       = __DIR__;
+            $schema     = <<<EOF
 <database name="create_entity_behavior" defaultIdMethod="native">
-    <table name="CreateEntityBehavior1">
+    <table name="CreateEntityBehaviorTableOne">
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
     </table>
 
-    <!--
-    <table name="CreateEntityBehavior2">
+    <table name="CreateEntityBehaviorTableTwo">
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
     </table>
-    -->
 
     <behavior name="add_to_entity_manager">
         <parameter name="indention" value="    " />

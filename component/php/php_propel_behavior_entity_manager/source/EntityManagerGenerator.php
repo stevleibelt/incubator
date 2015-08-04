@@ -4,6 +4,9 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-08-02
  * @todo make output path configurable
+ * @todo add getOutputPathName
+ * @todo create method to create pathNameForOutput
+ * @todo make class an file name "EntityManager" configurable
  */
 class EntityManagerGenerator
 {
@@ -37,7 +40,7 @@ class EntityManagerGenerator
                 $this->indention = '   ';
             }
             if (is_null($this->pathNameForOutput)) {
-                $this->pathNameForOutput = getcwd() . DIRECTORY_SEPARATOR . 'EntityManager';
+                $this->pathNameForOutput = getcwd() . DIRECTORY_SEPARATOR . 'EntityManager.php';
             }
 
             $this->generate();
@@ -85,7 +88,7 @@ class EntityManagerGenerator
             );
         }
 
-        $this->pathNameForOutput = $path . DIRECTORY_SEPARATOR . 'EntityManager';
+        $this->pathNameForOutput = $path . DIRECTORY_SEPARATOR . 'EntityManager.php';
     }
 
     /**
@@ -96,6 +99,17 @@ class EntityManagerGenerator
      */
     public function add($databaseName, $methodName, $fullQualifiedClassName)
     {
+        //@todo make this step optional|configurable
+        $databaseName = implode(
+            '',
+            array_map(
+                function (&$name) {
+                    return ucfirst($name);
+                },
+                explode('_', $databaseName)
+            )
+        );
+
         if (isset($this->databaseWithMethodNameToClassName[$databaseName][$methodName])) {
             throw new InvalidArgumentException(
                 'you are trying to add "' . $methodName .
@@ -104,6 +118,7 @@ class EntityManagerGenerator
         }
 
         $this->databaseWithMethodNameToClassName[$databaseName][$methodName] = $fullQualifiedClassName;
+        $this->generationDone = false;
 
         return $this;
     }
@@ -132,7 +147,6 @@ class EntityManagerGenerator
 
 $content .= $namespace;
 $content .='
-
 class EntityManager
 {
     /**
@@ -163,7 +177,6 @@ class EntityManager
 
         $content .= '}';
 
-echo var_export($content, true) . PHP_EOL;
         $contentCouldBeNotWritten = (file_put_contents($fileName, $content) === false);
 
         if ($contentCouldBeNotWritten) {
@@ -182,6 +195,6 @@ echo var_export($content, true) . PHP_EOL;
      */
     private function wasNotAlreadyGenerated()
     {
-        return $this->generationDone;
+        return (!$this->generationDone);
     }
 }
