@@ -52,7 +52,7 @@ class AddToEntityManagerBehavior extends Behavior
      */
     public function addObjectToEntityManager(DataModelBuilder $builder)
     {
-        if ($this->addIt() {
+        if ($this->addIt()) {
             $generator = $this->getGenerator();
 
             //add query method
@@ -69,7 +69,7 @@ class AddToEntityManagerBehavior extends Behavior
      */
     public function addQueryToEntityManager(DataModelBuilder $builder)
     {
-        if ($this->addIt() {
+        if ($this->addIt()) {
             $generator = $this->getGenerator();
 
             //add query method
