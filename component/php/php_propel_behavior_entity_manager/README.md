@@ -1,5 +1,9 @@
 # Create EntityManager for Propel
 
+## notes
+
+* `path_to_output` is relative to `vendor/../`
+
 @todo - update following lines
 This free as in freedom behavior should easy up entity creation in your [propel](http://www.propelorm.org) query classes.
 

@@ -1,17 +1,21 @@
 <?php
 
+namespace Net\Bazzline\Propel\Behavior\EntityManager;
+
+use InvalidArgumentException;
+use RuntimeException;
+
 /**
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-08-02
- * @todo make output path configurable
- * @todo add getOutputPathName
- * @todo create method to create pathNameForOutput
- * @todo make class an file name "EntityManager" configurable
  */
 class EntityManagerGenerator
 {
+    /** @var string */
+    private $className;
+
     /** @var array */
-    private $databaseWithMethodNameToClassName;
+    private $databaseWithMethodNameToEntity;
 
     /** @var bool */
     private $generationDone;
@@ -23,7 +27,7 @@ class EntityManagerGenerator
     private $namespace;
 
     /** @var string */
-    private $pathNameForOutput;
+    private $pathNameForOutputFile;
 
     /** @var self */
     private static $instance;
@@ -35,12 +39,12 @@ class EntityManagerGenerator
 
     public function __destruct()
     {
-        if ($this->wasNotAlreadyGenerated()) {
+        if ($this->noGenerationWasDone()) {
             if (is_null($this->indention)) {
                 $this->indention = '   ';
             }
-            if (is_null($this->pathNameForOutput)) {
-                $this->pathNameForOutput = getcwd() . DIRECTORY_SEPARATOR . 'EntityManager.php';
+            if (is_null($this->pathNameForOutputFile)) {
+                $this->pathNameForOutputFile = getcwd() . DIRECTORY_SEPARATOR . 'EntityManager.php';
             }
 
             $this->generate();
@@ -64,40 +68,26 @@ class EntityManagerGenerator
     }
 
     /**
+     * @param string $absolutePathToOutput
+     * @param string $className
      * @param string $indention
+     * @param string $namespace
+     * @throws InvalidArgumentException
      */
-    public function setIndention($indention)
+    public function configure($absolutePathToOutput, $className, $indention, $namespace)
     {
-        $this->indention = $indention;
+        $this->setClassName($className);
+        $this->setIndention($indention);
+        $this->setNamespace($namespace);
+        $this->createPathNameToFileOutput($absolutePathToOutput);
     }
 
     /**
-     * @param string $path
-     */
-    public function setPathToOutput($path)
-    {
-        if (!is_dir($path)) {
-            throw new InvalidArgumentException(
-                'provided path "' . $path . '" is not a directory'
-            );
-        }
-
-        if (!is_writable($path)) {
-            throw new InvalidArgumentException(
-                'provided path "' . $path . '" is not writable'
-            );
-        }
-
-        $this->pathNameForOutput = $path . DIRECTORY_SEPARATOR . 'EntityManager.php';
-    }
-
-    /**
-     * @param string $databaseName
-     * @param string $methodName
-     * @param string $fullQualifiedClassName
+     * @param Entity $entity
      * @return $this
+     * @throws InvalidArgumentException
      */
-    public function add($databaseName, $methodName, $fullQualifiedClassName)
+    public function add(Entity $entity)
     {
         //@todo make this step optional|configurable
         $databaseName = implode(
@@ -106,18 +96,19 @@ class EntityManagerGenerator
                 function (&$name) {
                     return ucfirst($name);
                 },
-                explode('_', $databaseName)
+                explode('_', $entity->databaseName())
             )
         );
+        $methodName = $entity->methodName();
 
-        if (isset($this->databaseWithMethodNameToClassName[$databaseName][$methodName])) {
+        if (isset($this->databaseWithMethodNameToEntity[$databaseName][$methodName])) {
             throw new InvalidArgumentException(
                 'you are trying to add "' . $methodName .
                 '" twice for the database "' . $databaseName . '"'
             );
         }
 
-        $this->databaseWithMethodNameToClassName[$databaseName][$methodName] = $fullQualifiedClassName;
+        $this->databaseWithMethodNameToEntity[$databaseName][$methodName] = $entity;
         $this->generationDone = false;
 
         return $this;
@@ -127,50 +118,50 @@ class EntityManagerGenerator
 
     /**
      * @throws RuntimeException
-     * @todo make indention configurable
      */
     public function generate()
     {
-        $databaseWithMethodNamesToClassName = $this->databaseWithMethodNameToClassName;
-        $fileName                           = $this->pathNameForOutput;
+        $className                          = $this->className;
+        $databaseWithMethodNamesToEntity    = $this->databaseWithMethodNameToEntity;
+        $fileName                           = $this->pathNameForOutputFile;
         $indention                          = $this->indention;
-        $namespace                          = (is_null($this->namespace))
-            ? ''
-            : 'namespace ' . $this->namespace . PHP_EOL;
+        $hasNamespace                       = !(is_null($this->namespace));
 
-        $content = '<?php
-
-/**
- * @author stev leibelt <artodeto@bazzline.net>
- * @since ' . date('Y-m-d') . '
- */';
-
-$content .= $namespace;
+        $content = '<?php';
+        $content .= ($hasNamespace)
+            ? str_repeat(PHP_EOL, 2) . 'namespace ' . $this->namespace . PHP_EOL
+            : PHP_EOL;
 $content .='
-class EntityManager
+/**
+ * Class ' . $className . '
+ *
+ * @author ' . __NAMESPACE__ . __CLASS__ . '
+ * @since ' . date('Y-m-d') . '
+ * @see http://www.bazzline.net
+ */
+class ' . $className . '
 {
-    /**
-     * @return PDO
-     */
-    public function getConnection()
-    {
-        return Propel::getConnection();
-    }
+' . $indention . '/**
+' . $indention . ' * @return PDO
+' . $indention . ' */
+' . $indention . 'public function getConnection()
+' . $indention . '{
+' . (str_repeat($indention, 2)) . 'return Propel::getConnection();
+' . $indention . '}
 ';
 
-        //@todo iterate over $databaseWithMethodNameToClassName and create method, maybe use template?
-        //@todo add getConnection|getPdo
-        foreach ($databaseWithMethodNamesToClassName as $database => $methodNamesToClassName) {
-            $methodPrefix = 'create' .ucfirst($database);
-
-            foreach ($methodNamesToClassName as $methodName => $className) {
+        foreach ($databaseWithMethodNamesToEntity as $database => $methodNamesToEntity) {
+            foreach ($methodNamesToEntity as $methodName => $entity) {
+                /** @var Entity $entity */
+                $methodName     = 'create' . ucfirst($entity->methodNamePrefix() . ucfirst($entity->methodName()));
+                //@todo maybe use template for method generation
                 $content .= PHP_EOL .
                     $indention . '/**' . PHP_EOL .
-                    $indention . ' * @return ' . $className . PHP_EOL .
+                    $indention . ' * @return \\' . $entity->fullQualifiedClassName() . PHP_EOL .
                     $indention . ' */' . PHP_EOL .
-                    $indention . 'public function ' . $methodPrefix .ucfirst($methodName) . '()' . PHP_EOL .
+                    $indention . 'public function ' . $methodName . '()' . PHP_EOL .
                     $indention . '{' . PHP_EOL .
-                    $indention . $indention . 'return new ' . $className . '();' . PHP_EOL .
+                    $indention . $indention . 'return new \\' . $entity->fullQualifiedClassName() . '();' . PHP_EOL .
                     $indention . '}' . PHP_EOL;
             }
         }
@@ -189,11 +180,58 @@ class EntityManager
     }
 
 
+    /**
+     * @param string $className
+     * @todo implement validation
+     */
+    private function setClassName($className)
+    {
+        $this->className = $className;
+    }
+
+    /**
+     * @param string $indention
+     * @todo implement validation
+     */
+    private function setIndention($indention)
+    {
+        $this->indention = $indention;
+    }
+
+    /**
+     * @param string $namespace
+     * @todo implement validation
+     */
+    private function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+    }
+
+    /**
+     * @param string $path
+     * @throws InvalidArgumentException
+     */
+    private function createPathNameToFileOutput($path)
+    {
+        if (!is_dir($path)) {
+            throw new InvalidArgumentException(
+                'provided path "' . $path . '" is not a directory'
+            );
+        }
+
+        if (!is_writable($path)) {
+            throw new InvalidArgumentException(
+                'provided path "' . $path . '" is not writable'
+            );
+        }
+
+        $this->pathNameForOutputFile = $path . DIRECTORY_SEPARATOR . $this->className . '.php';
+    }
 
     /**
      * @return bool
      */
-    private function wasNotAlreadyGenerated()
+    private function noGenerationWasDone()
     {
         return (!$this->generationDone);
     }
