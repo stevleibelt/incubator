@@ -1,6 +1,6 @@
 <?php
 
-namespace Net\Bazzline\Propel\Behavior\EntityManager;
+namespace Net\Bazzline\Propel\Behavior\EntityInstantiator;
 
 /**
  * @author stev leibelt <artodeto@bazzline.net>

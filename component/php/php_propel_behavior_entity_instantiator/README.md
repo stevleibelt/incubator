@@ -1,4 +1,4 @@
-# Create EntityManager for Propel
+# Create EntityInstantiator for Propel
 
 ## notes
 

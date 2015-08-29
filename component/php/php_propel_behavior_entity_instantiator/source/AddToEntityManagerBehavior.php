@@ -1,10 +1,11 @@
 <?php
 
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'Entity.php');
-require_once(__DIR__ . DIRECTORY_SEPARATOR . 'EntityManagerGenerator.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'EntityCollection.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'EntityInstantiatorGenerator.php');
 
-use Net\Bazzline\Propel\Behavior\EntityManager\Entity;
-use Net\Bazzline\Propel\Behavior\EntityManager\EntityManagerGenerator;
+use Net\Bazzline\Propel\Behavior\EntityInstantiator\Entity;
+use Net\Bazzline\Propel\Behavior\EntityInstantiator\EntityInstantiatorGenerator;
 
 /**
  * @author stev leibelt <artodeto@bazzline.net>
@@ -13,25 +14,22 @@ use Net\Bazzline\Propel\Behavior\EntityManager\EntityManagerGenerator;
  */
 class AddToEntityManagerBehavior extends Behavior
 {
-    const PARAMETER_ENTITY_ADD_IT_TO_ENTITY_MANAGER = 'entity_add_to_entity_manager';
-    const PARAMETER_ENTITY_MANAGER_CLASS_NAME       = 'entity_manager_class_name';
-    const PARAMETER_ENTITY_MANAGER_INDENTION        = 'entity_manager_indention';
-    const PARAMETER_ENTITY_MANAGER_NAMESPACE        = 'entity_manager_namespace';
-    const PARAMETER_ENTITY_MANAGER_PATH_TO_OUTPUT   = 'entity_manager_path_to_output';
-    const PARAMETER_ENTITY_METHOD_NAME_PREFIX       = 'entity_method_name_prefix';
+    const PARAMETER_ENTITY_ADD_IT_TO_ENTITY_INSTANTIATOR    = 'entity_add_to_entity_instantiator';
+    const PARAMETER_ENTITY_INSTANTIATOR_CLASS_NAME          = 'entity_instantiator_class_name';
+    const PARAMETER_ENTITY_INSTANTIATOR_INDENTION           = 'entity_instantiator_indention';
+    const PARAMETER_ENTITY_INSTANTIATOR_NAMESPACE           = 'entity_instantiator_namespace';
+    const PARAMETER_ENTITY_INSTANTIATOR_PATH_TO_OUTPUT      = 'entity_instantiator_path_to_output';
+    const PARAMETER_ENTITY_METHOD_NAME_PREFIX               = 'entity_method_name_prefix';
 
     /** @var array */
     protected $parameters = array(
-        self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_MANAGER => true,
-        self::PARAMETER_ENTITY_MANAGER_CLASS_NAME       => 'EntityManager',
-        self::PARAMETER_ENTITY_MANAGER_INDENTION        => '    ',
-        self::PARAMETER_ENTITY_MANAGER_NAMESPACE        => null,
-        self::PARAMETER_ENTITY_MANAGER_PATH_TO_OUTPUT   => 'data',
-        self::PARAMETER_ENTITY_METHOD_NAME_PREFIX       => null
+        self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_INSTANTIATOR    => true,
+        self::PARAMETER_ENTITY_INSTANTIATOR_CLASS_NAME          => 'DatabaseEntityInstantiator',
+        self::PARAMETER_ENTITY_INSTANTIATOR_INDENTION           => '    ',
+        self::PARAMETER_ENTITY_INSTANTIATOR_NAMESPACE           => null,
+        self::PARAMETER_ENTITY_INSTANTIATOR_PATH_TO_OUTPUT      => 'data',
+        self::PARAMETER_ENTITY_METHOD_NAME_PREFIX               => null
     );
-
-    /** @var bool */
-    private $isTheFirstTimeTheGeneratorIsUsed = true;
 
     /**
      * @param DataModelBuilder $builder
@@ -39,7 +37,7 @@ class AddToEntityManagerBehavior extends Behavior
      */
     public function queryMethods($builder)
     {
-        $this->addQueryToEntityManager($builder);
+        $this->addQueryToGenerator($builder);
 
         return '';
     }
@@ -50,7 +48,7 @@ class AddToEntityManagerBehavior extends Behavior
      */
     public function objectMethods($builder)
     {
-        $this->addObjectToEntityManager($builder);
+        $this->addObjectToGenerator($builder);
 
         return '';
     }
@@ -58,7 +56,7 @@ class AddToEntityManagerBehavior extends Behavior
     /**
      * @param DataModelBuilder $builder
      */
-    public function addObjectToEntityManager(DataModelBuilder $builder)
+    public function addObjectToGenerator(DataModelBuilder $builder)
     {
         if ($this->addIt()) {
             $generator  = $this->getGenerator();
@@ -70,7 +68,7 @@ class AddToEntityManagerBehavior extends Behavior
     /**
      * @param DataModelBuilder $builder
      */
-    public function addQueryToEntityManager(DataModelBuilder $builder)
+    public function addQueryToGenerator(DataModelBuilder $builder)
     {
         if ($this->addIt()) {
             $generator  = $this->getGenerator();
@@ -125,23 +123,22 @@ class AddToEntityManagerBehavior extends Behavior
     }
 
     /**
-     * @return EntityManagerGenerator
+     * @return EntityInstantiatorGenerator
      */
     private function getGenerator()
     {
-        $generator = EntityManagerGenerator::getInstance();
+        $generator = EntityInstantiatorGenerator::getInstance();
 
-        if ($this->isTheFirstTimeTheGeneratorIsUsed) {
-            $this->isTheFirstTimeTheGeneratorIsUsed = false;
-            $pathToOutput   = $this->parameters[self::PARAMETER_ENTITY_MANAGER_PATH_TO_OUTPUT];
+        if ($generator->isNotConfigured()) {
+            $pathToOutput   = $this->parameters[self::PARAMETER_ENTITY_INSTANTIATOR_PATH_TO_OUTPUT];
             $isAbsolutePath = (strncmp($pathToOutput, DIRECTORY_SEPARATOR, strlen(DIRECTORY_SEPARATOR)) === 0);
 
             $absolutePathToOutput   = ($isAbsolutePath)
                 ? $pathToOutput
                 : getcwd() . (str_repeat(DIRECTORY_SEPARATOR . '..', 4)) . DIRECTORY_SEPARATOR . $pathToOutput;
-            $className      = $this->parameters[self::PARAMETER_ENTITY_MANAGER_CLASS_NAME];
-            $indention      = $this->parameters[self::PARAMETER_ENTITY_MANAGER_INDENTION];
-            $namespace      = $this->parameters[self::PARAMETER_ENTITY_MANAGER_NAMESPACE];
+            $className      = $this->parameters[self::PARAMETER_ENTITY_INSTANTIATOR_CLASS_NAME];
+            $indention      = $this->parameters[self::PARAMETER_ENTITY_INSTANTIATOR_INDENTION];
+            $namespace      = $this->parameters[self::PARAMETER_ENTITY_INSTANTIATOR_NAMESPACE];
 
             $generator->configure($absolutePathToOutput, $className, $indention, $namespace);
         }
@@ -154,8 +151,8 @@ class AddToEntityManagerBehavior extends Behavior
      */
     private function addIt()
     {
-        return (isset($this->parameters[self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_MANAGER]))
-            ? $this->parameters[self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_MANAGER]
+        return (isset($this->parameters[self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_INSTANTIATOR]))
+            ? $this->parameters[self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_INSTANTIATOR]
             : false;
     }
 }
