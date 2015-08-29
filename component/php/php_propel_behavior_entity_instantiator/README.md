@@ -1,33 +1,44 @@
 # Create EntityInstantiator for Propel
 
-## notes
+This free as in freedom behavior should easy up entity instantiation for your [propel](http://www.propelorm.org) query and object classes.
 
-* `path_to_output` is relative to `vendor/../`
-
-@todo - update following lines
-This free as in freedom behavior should easy up entity creation in your [propel](http://www.propelorm.org) query classes.
-
-Thanks to the [StateMachineBehavior](https://github.com/willdurand/StateMachineBehavior) to act as such a great template.
+Thanks to the [ExtraPropertiesBehavior]https://github.com/Carpe-Hora/ExtraPropertiesBehavior) to act as such a great template.
 
 The build status of the current master branch is tracked by Travis CI: 
-[![Build Status](https://travis-ci.org/bazzline/php_propel_behavior_create_entity.png?branch=master)](http://travis-ci.org/bazzline/php_propel_behavior_create_entity)
-[![Latest stable](https://img.shields.io/packagist/v/net_bazzline/php_propel_behavior_create_entity.svg)](https://packagist.org/packages/net_bazzline/php_propel_behavior_create_entity)
+[![Build Status](https://travis-ci.org/bazzline/php_propel_behavior_entity_instantiator.png?branch=master)](http://travis-ci.org/bazzline/php_propel_behavior_entity_instantiator)
+[![Latest stable](https://img.shields.io/packagist/v/net_bazzline/php_propel_behavior_entity_instantiator.svg)](https://packagist.org/packages/net_bazzline/php_propel_behavior_entity_instantiator)
 
 The scrutinizer status are:
-[![code quality](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_create_entity/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_create_entity/) | [![build status](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_create_entity/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_create_entity/)
+[![code quality](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_entity_instantiator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_entity_instantiator/) | [![build status](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_entity_instantiator/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bazzline/php_propel_behavior_entity_instantiator/)
 
 The versioneye status is:
+@todo - update
 [![dependencies](https://www.versioneye.com/user/projects/55be795c653762002000209a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55be795c653762002000209a)
 
 Downloads:
-[![Downloads this Month](https://img.shields.io/packagist/dm/net_bazzline/php_propel_behavior_create_entity.svg)](https://packagist.org/packages/net_bazzline/php_propel_behavior_create_entity)
+[![Downloads this Month](https://img.shields.io/packagist/dm/net_bazzline/php_propel_behavior_entity_instantiator.svg)](https://packagist.org/packages/net_bazzline/php_propel_behavior_entity_instantiator)
 
-It is available at [openhub.net](https://openhub.net/p/php_propel_behavior_create_entity).
+It is available at [openhub.net](https://openhub.net/p/php_propel_behavior_entity_instantiator).
 
 # Why
 
 * no `new` in your code anymore
-* eases up writing test code (`createEntity` can be mocked)
+* no static `Query::create` call in your code anymore
+* eases up writing test code (`createMyEntity` and `createMyEntityQuery` can be mocked)
+
+# Usage
+
+* make sure you have `extension=pdo_sqlite.so` enabled if you want to run phpunit
+* the behavior creates a instantiator class and file
+    * class name can be defined
+    * namespace can be defined
+    * path can be defined
+
+## notes
+
+* `path_to_output` is relative to `vendor/../`
+
+#### old
 
 # Usage
 

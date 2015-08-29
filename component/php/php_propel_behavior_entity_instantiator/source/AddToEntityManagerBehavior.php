@@ -1,5 +1,6 @@
 <?php
 
+//@todo do we need this if dependencies are managed via composer and composer autoloader?
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'Entity.php');
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'EntityCollection.php');
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'EntityInstantiatorGenerator.php');
