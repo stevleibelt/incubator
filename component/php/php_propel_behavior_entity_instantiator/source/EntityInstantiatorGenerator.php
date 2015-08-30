@@ -13,7 +13,7 @@ class EntityInstantiatorGenerator
     /** @var string */
     private $className;
 
-    /** @var Entity[]|EntityCollection */
+    /** @var AbstractEntity[]|EntityCollection */
     private $collection;
 
     /** @var bool */
@@ -92,11 +92,11 @@ class EntityInstantiatorGenerator
     }
 
     /**
-     * @param Entity $entity
+     * @param AbstractEntity $entity
      * @return $this
      * @throws InvalidArgumentException
      */
-    public function add(Entity $entity)
+    public function add(AbstractEntity $entity)
     {
         $this->collection->add($entity);
         $this->generationDone = false;
@@ -165,9 +165,13 @@ class ' . $className . '
                 $indention . ' * @return \\' . $entity->fullQualifiedClassName() . PHP_EOL .
                 $indention . ' */' . PHP_EOL .
                 $indention . 'public function ' . $methodName . '()' . PHP_EOL .
-                $indention . '{' . PHP_EOL .
-                $indention . $indention . 'return new \\' . $entity->fullQualifiedClassName() . '();' . PHP_EOL .
-                $indention . '}' . PHP_EOL;
+                $indention . '{' . PHP_EOL;
+            if ($entity instanceof ObjectEntity) {
+                $content .= $indention . $indention . 'return new \\' . $entity->fullQualifiedClassName() . '();' . PHP_EOL;
+            } else if ($entity instanceof QueryEntity) {
+                $content .= $indention . $indention . 'return \\' . $entity->fullQualifiedClassName() . '::create();' . PHP_EOL;
+            }
+            $content .= $indention . '}' . PHP_EOL;
         }
 
         $content .= '}';

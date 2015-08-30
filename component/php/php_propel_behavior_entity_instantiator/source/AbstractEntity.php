@@ -6,7 +6,7 @@ namespace Net\Bazzline\Propel\Behavior\EntityInstantiator;
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-08-29
  */
-class Entity
+abstract class AbstractEntity
 {
     /** @var string */
     private $databaseName;

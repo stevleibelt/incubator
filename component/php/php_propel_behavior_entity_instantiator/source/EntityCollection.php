@@ -25,20 +25,20 @@ class EntityCollection implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * @param Entity $entity
+     * @param AbstractEntity $entity
      * @throws InvalidArgumentException
      */
-    public function add(Entity $entity)
+    public function add(AbstractEntity $entity)
     {
         $this->throwInvalidArgumentExceptionIfEntityWasAlreadyAdded($entity);
         $this->entityCollection[] = $entity;
     }
 
     /**
-     * @param Entity $entity
+     * @param AbstractEntity $entity
      * @throws InvalidArgumentException
      */
-    private function throwInvalidArgumentExceptionIfEntityWasAlreadyAdded(Entity $entity)
+    private function throwInvalidArgumentExceptionIfEntityWasAlreadyAdded(AbstractEntity $entity)
     {
         $hash = sha1($entity->databaseName() . '_' . $entity->methodName());
 

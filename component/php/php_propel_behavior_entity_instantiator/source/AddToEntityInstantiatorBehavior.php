@@ -1,19 +1,22 @@
 <?php
 
 //@todo do we need this if dependencies are managed via composer and composer autoloader?
-require_once(__DIR__ . DIRECTORY_SEPARATOR . 'Entity.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'AbstractEntity.php');
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'EntityCollection.php');
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'EntityInstantiatorGenerator.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'ObjectEntity.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'QueryEntity.php');
 
-use Net\Bazzline\Propel\Behavior\EntityInstantiator\Entity;
 use Net\Bazzline\Propel\Behavior\EntityInstantiator\EntityInstantiatorGenerator;
+use Net\Bazzline\Propel\Behavior\EntityInstantiator\ObjectEntity;
+use Net\Bazzline\Propel\Behavior\EntityInstantiator\QueryEntity;
 
 /**
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-08-02
  * @todo make parameters optional (only set them when they are set) - this would enable it to define everything in the database scope and the rest in the table scope without overwriting database scoped things
  */
-class AddToEntityManagerBehavior extends Behavior
+class AddToEntityInstantiatorBehavior extends Behavior
 {
     const PARAMETER_ENTITY_ADD_IT_TO_ENTITY_INSTANTIATOR    = 'entity_add_to_entity_instantiator';
     const PARAMETER_ENTITY_INSTANTIATOR_CLASS_NAME          = 'entity_instantiator_class_name';
@@ -24,7 +27,7 @@ class AddToEntityManagerBehavior extends Behavior
 
     /** @var array */
     protected $parameters = array(
-        self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_INSTANTIATOR    => true,
+        self::PARAMETER_ENTITY_ADD_IT_TO_ENTITY_INSTANTIATOR    => 'true',
         self::PARAMETER_ENTITY_INSTANTIATOR_CLASS_NAME          => 'DatabaseEntityInstantiator',
         self::PARAMETER_ENTITY_INSTANTIATOR_INDENTION           => '    ',
         self::PARAMETER_ENTITY_INSTANTIATOR_NAMESPACE           => null,
@@ -80,13 +83,13 @@ class AddToEntityManagerBehavior extends Behavior
 
     /**
      * @param DataModelBuilder $builder
-     * @return Entity
+     * @return ObjectEntity
      */
     private function buildEntityFromObject(DataModelBuilder $builder)
     {
         $methodNamePrefix = $this->returnDatabaseNameIfMethodNamePrefixIsNotProvided($builder);
 
-        return new Entity(
+        return new ObjectEntity(
             $builder->getDatabase()->getName(),
             $builder->getStubObjectBuilder()->getFullyQualifiedClassname(),
             $builder->getStubObjectBuilder()->getClassname(),
@@ -96,13 +99,13 @@ class AddToEntityManagerBehavior extends Behavior
 
     /**
      * @param DataModelBuilder $builder
-     * @return Entity
+     * @return QueryEntity
      */
     private function buildEntityFromQuery(DataModelBuilder $builder)
     {
         $methodNamePrefix = $this->returnDatabaseNameIfMethodNamePrefixIsNotProvided($builder);
 
-        return new Entity(
+        return new QueryEntity(
             $builder->getDatabase()->getName(),
             $builder->getStubQueryBuilder()->getFullyQualifiedClassname(),
             $builder->getStubQueryBuilder()->getClassname(),
