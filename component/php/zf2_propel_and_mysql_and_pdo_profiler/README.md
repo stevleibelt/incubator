@@ -7,6 +7,7 @@
     * mysqli
 
 * take a look to following available profilers
+    * [stefano-db-profiler](https://github.com/bartko-s/stefano-db-profiler)
     * [BjyProfiler](https://github.com/bjyoungblood/BjyProfiler)
     * [aist-git-tools](https://github.com/ma-si/aist-git-tools)
     * [ZfSnapEventDebugger](https://github.com/snapshotpl/ZfSnapEventDebugger)
