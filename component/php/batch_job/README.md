@@ -258,3 +258,4 @@ The component will easy up handling of batch job processes.
 # links
 
 * [SlmQueue](https://github.com/juriansluiman/SlmQueue)
+* [Leptir](https://github.com/Backplane/Leptir)
