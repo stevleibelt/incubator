@@ -54,6 +54,15 @@ Authorization: <application-id> sha1sum<real+user+password+salt>
 ```
 * [digest](https://github.com/zendframework/zend-authentication/blob/master/src/Adapter/Digest.php) but not with an hard wired file as storage
 
+# Notes
+
+* trying to use [zend-expressive](https://zend-expressive.readthedocs.org/en/latest/)
+
+# Todo
+
+* implement usage of `zendframework/zend-cache`
+* investiage usage of `zendframework/zend-mvc`
+
 # Links
 
 * http://www.django-rest-framework.org/api-guide/authentication/
