@@ -47,7 +47,7 @@ class RepositoryRequest
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function occurredOn()
     {

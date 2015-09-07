@@ -22,6 +22,12 @@ return array(
             'is_shared'     => true,
             'return_value'  => '\Net\Bazzline\Component\Database\FileStorage\Repository'
         ),
+        array(
+            'alias'         => 'UniqueNumberRepository',
+            'class_name'    => '\Net\Bazzline\UniqueNumberRepository\Service\UniqueNumberRepositoryFactory',
+            'is_factory'    => true,
+            'is_shared'     => true,
+        )
         /*
         array(
             'alias'         => 'CliProgressBar',
@@ -32,5 +38,5 @@ return array(
         */
     ),
     'method_prefix' => 'get',
-    'namespace' => 'Net\Bazzline\UniqueNumberRepository\Service',
+    'namespace'     => 'Net\Bazzline\UniqueNumberRepository\Service',
 );

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Net\Bazzline\Component\Locator
- * @since 2015-09-07
+ * @since 2015-09-08
  */
 
 namespace Net\Bazzline\UniqueNumberRepository\Service;
@@ -42,6 +42,23 @@ class ApplicationLocator implements \Net\Bazzline\Component\Locator\LocatorInter
 
         if ($this->isNotInSharedInstancePool($className)) {
             $factoryClassName = '\Net\Bazzline\UniqueNumberRepository\Service\RepositoryRepositoryFactory';
+            $factory = $this->fetchFromFactoryInstancePool($factoryClassName);
+            
+            $this->addToSharedInstancePool($className, $factory->create());
+        }
+
+        return $this->fetchFromSharedInstancePool($className);
+    }
+
+    /**
+     * @return \Net\Bazzline\UniqueNumberRepository\Service\UniqueNumberRepositoryFactory
+     */
+    public function getUniqueNumberRepository()
+    {
+        $className = '\Net\Bazzline\UniqueNumberRepository\Service\UniqueNumberRepositoryFactory';
+
+        if ($this->isNotInSharedInstancePool($className)) {
+            $factoryClassName = '\Net\Bazzline\UniqueNumberRepository\Service\UniqueNumberRepositoryFactory';
             $factory = $this->fetchFromFactoryInstancePool($factoryClassName);
             
             $this->addToSharedInstancePool($className, $factory->create());

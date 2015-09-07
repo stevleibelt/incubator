@@ -52,7 +52,7 @@ class UniqueNumberRequest
     }
 
     /**
-     * @return string
+     * @return Datetime
      */
     public function occurredOn()
     {
