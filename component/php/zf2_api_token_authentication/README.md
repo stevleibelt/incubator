@@ -13,7 +13,7 @@
         * realm()
         * token()
         * ipAddress()
-        * occuredOn()
+        * occurredOn()
         * validUntil()
         * isStillValid()
 * Application\Service
