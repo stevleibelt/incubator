@@ -16,6 +16,7 @@ To easy things up, this project will create a rest based webservice as backend a
         * PUT: creates a new number (mandatory parameters: "applicant_name" and "number")
 * future work
     * implement authentication
+    * multiple repositories (databases) are supported (right now, [file storage](https://github.com/bazzline/php_component_database_file_storage) is supported)
 
 ## Command Line Based Frontend (Client)
 
@@ -25,3 +26,4 @@ To easy things up, this project will create a rest based webservice as backend a
     * list-unique-number <applicant name> <repository name>
 * you can use this as base to implement your own logic 
     * a basic example with "pre_execution_hook" and "post_execution_hook" will be shipped
+* cli will use curl
