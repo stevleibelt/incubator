@@ -3,7 +3,7 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-09-08
  */
-namespace Net\Bazzline\UniqueNumberRepository\Service;
+namespace Net\Bazzline\UniqueNumberRepository\Infrastructure\Storage;
 
 use Net\Bazzline\Component\Database\FileStorage\Repository;
 use Net\Bazzline\Component\Locator\FactoryInterface;

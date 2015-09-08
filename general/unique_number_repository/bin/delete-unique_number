@@ -21,10 +21,10 @@ try {
 
     $host                           = (string) $values[0];
     $invalidHostProvided            = (strlen($host) < 1);
-    $applicantName                  = (string) $values[1];
-    $invalidApplicantNameProvided   = (strlen($applicantName) < 1);
-    $name                           = (string) $values[2];
-    $invalidNameProvided            = (strlen($name) < 1);
+    $repositoryName                 = (string) $values[1];
+    $invalidRepositoryNameProvided  = (strlen($repositoryName) < 1);
+    $number                         = (int) $values[2];
+    $invalidNumberProvided          = ($number < 0);
 
     if ($invalidHostProvided) {
         $message = 'invalid host supplied';
@@ -32,28 +32,29 @@ try {
         throw new RuntimeException($message);
     }
 
-    if ($invalidApplicantNameProvided) {
-        $message = 'invalid applicant name supplied';
+    if ($invalidRepositoryNameProvided) {
+        $message = 'invalid repository name supplied';
 
         throw new RuntimeException($message);
     }
 
-    if ($invalidNameProvided) {
-        $message = 'invalid name supplied';
+    if ($invalidNumberProvided) {
+        $message = 'invalid number supplied';
 
         throw new RuntimeException($message);
     }
 
-    $command = new Command();
-    //@see: http://www.computerhope.com/unix/curl.htm
-    $lines = $command('/bin/env curl -s --ssl-no-revoke -X POST -d applicant_name="' . $applicantName . '" -d name="' . $name . '" ' . $host . '/unique-number-repository');
+    $command                    = new Command();
+    $urlEncodedRepositoryName   = urlencode($repositoryName);
+    //@see: http://blog.scottlowe.org/2014/02/19/using-curl-to-interact-with-a-restful-api/
+    $lines = $command('/bin/env curl -s --ssl-no-revoke -X DELETE ' . $host . '/unique-number-repository/' . $urlEncodedRepositoryName . '/' . $number);
 
     foreach ($lines as $line) {
         echo $line . PHP_EOL;
     }
 } catch (Exception $exception) {
     $usage = 'usage: ' . PHP_EOL .
-        '    ' . basename(__FILE__) . ' <host> <applicant name> <repository name>' . PHP_EOL;
+        '    ' . basename(__FILE__) . ' <host> <repository name> <number>' . PHP_EOL;
 
     echo 'An error occurred' . PHP_EOL;
     echo $exception->getMessage() . PHP_EOL;

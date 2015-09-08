@@ -9,18 +9,19 @@ use Net\Bazzline\Component\Command\Command;
 $arguments = new Arguments($argv);
 
 try {
-    $numberOfArguments          = count($arguments->getArguments());
-    $hasNotAtLeastOneArgument   = ($numberOfArguments < 2);
+    $values                         = $arguments->getValues();
+    $numberOfValues                 = count($values);
+    $invalidNumberOfValuesProvided  = ($numberOfValues < 2);
 
-    if ($hasNotAtLeastOneArgument) {
+    if ($invalidNumberOfValuesProvided) {
         $message = 'invalid number of arguments supplied';
 
         throw new RuntimeException($message);
     }
 
-    $host                   = (string) $arguments->getArguments()[0];
+    $host                   = (string) $values[0];
     $invalidHostProvided    = (strlen($host) < 1);
-    $name                   = (string) $arguments->getArguments()[1];
+    $name                   = (string) $values[1];
     $invalidNameProvided    = (strlen($name) < 1);
 
     if ($invalidHostProvided) {
@@ -35,9 +36,10 @@ try {
         throw new RuntimeException($message);
     }
 
-    $command = new Command();
+    $command        = new Command();
+    $urlEncodedName = urlencode($name);
     //@see: http://blog.scottlowe.org/2014/02/19/using-curl-to-interact-with-a-restful-api/
-    $lines = $command('/bin/env curl -s --ssl-no-revoke -X DELETE ' . $host . '/unique-number-repository/' . urlencode($name));
+    $lines = $command('/bin/env curl -s --ssl-no-revoke -X DELETE ' . $host . '/unique-number-repository/' . $urlEncodedName);
 
     foreach ($lines as $line) {
         echo $line . PHP_EOL;

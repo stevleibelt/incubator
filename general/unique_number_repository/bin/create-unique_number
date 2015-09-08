@@ -23,8 +23,8 @@ try {
     $invalidHostProvided            = (strlen($host) < 1);
     $applicantName                  = (string) $values[1];
     $invalidApplicantNameProvided   = (strlen($applicantName) < 1);
-    $name                           = (string) $values[2];
-    $invalidNameProvided            = (strlen($name) < 1);
+    $repositoryName                 = (string) $values[2];
+    $invalidRepositoryNameProvided  = (strlen($repositoryName) < 1);
 
     if ($invalidHostProvided) {
         $message = 'invalid host supplied';
@@ -38,15 +38,16 @@ try {
         throw new RuntimeException($message);
     }
 
-    if ($invalidNameProvided) {
-        $message = 'invalid name supplied';
+    if ($invalidRepositoryNameProvided) {
+        $message = 'invalid repository name supplied';
 
         throw new RuntimeException($message);
     }
 
-    $command = new Command();
+    $command                    = new Command();
+    $urlEncodedRepositoryName   = urlencode($repositoryName);
     //@see: http://www.computerhope.com/unix/curl.htm
-    $lines = $command('/bin/env curl -s --ssl-no-revoke -X POST -d applicant_name="' . $applicantName . '" -d name="' . $name . '" ' . $host . '/unique-number-repository');
+    $lines = $command('/bin/env curl -s --ssl-no-revoke -X POST -d applicant_name="' . $applicantName . '" ' . $host . '/unique-number-repository/' . $urlEncodedRepositoryName);
 
     foreach ($lines as $line) {
         echo $line . PHP_EOL;

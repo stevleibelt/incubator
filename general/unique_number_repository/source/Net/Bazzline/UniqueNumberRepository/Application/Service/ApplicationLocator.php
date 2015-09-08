@@ -4,14 +4,14 @@
  * @since 2015-09-08
  */
 
-namespace Net\Bazzline\UniqueNumberRepository\Service;
+namespace Net\Bazzline\UniqueNumberRepository\Application\Service;
 
 use Net\Bazzline\Component\Locator\FactoryInterface;
 
 /**
  * Class ApplicationLocator
  *
- * @package Net\Bazzline\UniqueNumberRepository\Service
+ * @package Net\Bazzline\UniqueNumberRepository\Application\Service
  */
 class ApplicationLocator implements \Net\Bazzline\Component\Locator\LocatorInterface
 {
@@ -41,7 +41,7 @@ class ApplicationLocator implements \Net\Bazzline\Component\Locator\LocatorInter
         $className = '\Net\Bazzline\Component\Database\FileStorage\Repository';
 
         if ($this->isNotInSharedInstancePool($className)) {
-            $factoryClassName = '\Net\Bazzline\UniqueNumberRepository\Service\RepositoryRepositoryFactory';
+            $factoryClassName = '\Net\Bazzline\UniqueNumberRepository\Infrastructure\Storage\RepositoryRepositoryFactory';
             $factory = $this->fetchFromFactoryInstancePool($factoryClassName);
             
             $this->addToSharedInstancePool($className, $factory->create());
@@ -51,14 +51,31 @@ class ApplicationLocator implements \Net\Bazzline\Component\Locator\LocatorInter
     }
 
     /**
-     * @return \Net\Bazzline\UniqueNumberRepository\Service\UniqueNumberRepositoryFactory
+     * @return \Net\Bazzline\Component\Database\FileStorage\Repository
      */
     public function getUniqueNumberRepository()
     {
-        $className = '\Net\Bazzline\UniqueNumberRepository\Service\UniqueNumberRepositoryFactory';
+        $className = '\Net\Bazzline\Component\Database\FileStorage\Repository';
 
         if ($this->isNotInSharedInstancePool($className)) {
-            $factoryClassName = '\Net\Bazzline\UniqueNumberRepository\Service\UniqueNumberRepositoryFactory';
+            $factoryClassName = '\Net\Bazzline\UniqueNumberRepository\Infrastructure\Storage\UniqueNumberRepositoryFactory';
+            $factory = $this->fetchFromFactoryInstancePool($factoryClassName);
+            
+            $this->addToSharedInstancePool($className, $factory->create());
+        }
+
+        return $this->fetchFromSharedInstancePool($className);
+    }
+
+    /**
+     * @return \Net\Bazzline\UniqueNumberRepository\Application\Service\NumberEnumerator
+     */
+    public function getUniqueNumberEnumerator()
+    {
+        $className = '\Net\Bazzline\UniqueNumberRepository\Application\Service\NumberEnumerator';
+
+        if ($this->isNotInSharedInstancePool($className)) {
+            $factoryClassName = '\Net\Bazzline\UniqueNumberRepository\Application\Service\UniqueNumberEnumeratorFactory';
             $factory = $this->fetchFromFactoryInstancePool($factoryClassName);
             
             $this->addToSharedInstancePool($className, $factory->create());

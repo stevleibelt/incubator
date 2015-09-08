@@ -3,7 +3,7 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-09-07
  */
-namespace Net\Bazzline\UniqueNumberRepository\Model;
+namespace Net\Bazzline\UniqueNumberRepository\Domain\Model;
 
 use DateTime;
 
@@ -12,7 +12,7 @@ class UniqueNumberRequest
     /** @var string */
     private $applicantName;
 
-    /** @var  int */
+    /** @var  null|int */
     private $number;
 
     /** @var DateTime */
@@ -44,7 +44,7 @@ class UniqueNumberRequest
     }
 
     /**
-     * @return int
+     * @return null|int
      */
     public function number()
     {

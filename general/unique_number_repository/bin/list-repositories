@@ -9,16 +9,17 @@ use Net\Bazzline\Component\Command\Command;
 $arguments = new Arguments($argv);
 
 try {
-    $numberOfArguments          = count($arguments->getArguments());
-    $hasNotAtLeastOneArgument   = ($numberOfArguments < 1);
+    $values                         = $arguments->getValues();
+    $numberOfValues                 = count($values);
+    $invalidNumberOfValuesProvided  = ($numberOfValues < 1);
 
-    if ($hasNotAtLeastOneArgument) {
+    if ($invalidNumberOfValuesProvided) {
         $message = 'invalid number of arguments supplied';
 
         throw new RuntimeException($message);
     }
 
-    $host                           = (string) $arguments->getArguments()[0];
+    $host                           = (string) $values[0];
     $invalidHostProvided            = (strlen($host) < 1);
 
     if ($invalidHostProvided) {
@@ -35,9 +36,9 @@ try {
     if ($repositoriesAvailable) {
         foreach ($lines as $line) {
             $data = json_decode($line);
-            echo '[name]' . "\t\t\t\t\t" . '[created at]' . "\t\t" . '[applicant name]' . PHP_EOL;
+            echo '[name]' . PHP_EOL;
             foreach ($data as $repository) {
-                echo $repository->name . "\t\t" . $repository->created_at . "\t" . $repository->applicant_name . PHP_EOL;
+                echo $repository->name . PHP_EOL;
             }
         }
     } else {

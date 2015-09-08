@@ -3,7 +3,7 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-09-07
  */
-namespace Net\Bazzline\UniqueNumberRepository\Model;
+namespace Net\Bazzline\UniqueNumberRepository\Domain\Model;
 
 use Datetime;
 
