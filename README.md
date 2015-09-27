@@ -23,6 +23,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [System Update](https://github.com/stevleibelt/incubator/tree/master/cli/update/system)
 * [Static Page Generator](https://github.com/stevleibelt/incubator/tree/master/web/blog/static_page_generator)
 * [Login Service](https://github.com/stevleibelt/incubator/tree/master/web/service/login)
+* [Api Authorization Service](https://github.com/stevleibelt/incubator/tree/master/web/service/ApiAuthorization)
 * [Autocomplete](https://github.com/stevleibelt/incubator/tree/master/web/general/autocomplete)
 * [Event](https://github.com/stevleibelt/incubator/tree/master/component/php/event)
 * [ZF Module for easy usage of propel 1.x](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel)
