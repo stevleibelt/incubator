@@ -55,12 +55,24 @@
 * if the user is opening important sections (like "my data", "payment" for e.g.), you should check the validity of the token immediately and ask the user to authroize again if necessary)
 * if user has session cookie from authentication service, there is no need to provide credentials again
 
+# Notes
+
+* use json web token (JWT)
+* rotate api keys
+* authenticate every request
+* uuid's for each id
+* use tls for everything
+
 # Terms
 
 * "client token" is also known as "client secret"
 
 # Links
 
+* [best practices you must apply to secure your apis](http://www.slideshare.net/rnewton/best-practices-you-must-apply-to-secure-your-apis)
+* [secure your rest api the right way](http://www.slideshare.net/stormpath/secure-your-rest-api-the-right-way)
+* [how to implement a secure rest api with node js](https://stackoverflow.com/questions/15496915/how-to-implement-a-secure-rest-api-with-node-js)
+* [PKI](https://de.wikipedia.org/wiki/Public-Key-Infrastruktur)
 * [ApiGuard](https://github.com/FakeHeal/API-Guard)
 * [phpHashAuth](https://github.com/PTKDev/OpenProtocol-phpHashAuth)
 * [social-login](https://github.com/cresjie/social-login)
@@ -71,6 +83,9 @@
 * [beginners guide to oauth](http://hueniverse.com/2007/10/04/beginners-guide-to-oauth-part-i-overview/)
 * [autorisierungsdienst mit oauth](http://www.heise.de/developer/artikel/Autorisierungsdienste-mit-OAuth-845382.html)
 * [api-autorisierung-mit-oauth](http://www.pc-magazin.de/ratgeber/api-autorisierung-mit-oauth-2-1335680.html)
+* [openid](https://github.com/opauth/openid)
+* [php openid](https://github.com/openid/php-openid)
+* [search for openid in section php on github](https://github.com/search?l=PHP&q=openid&type=Repositories&utf8=%E2%9C%93)
 
 # History
 
