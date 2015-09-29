@@ -5,7 +5,7 @@
 * /authenticate/\<application_id>
     * DELETE: removes authorization for given hash 
     * GET: returns a form with css style from the client
-    * POST: creates new hash by provided \<user name>, \<user password> [and \<time of validity>], returns http status, token and authentication session cookie
+    * POST: creates new hash by provided \<user name>, \<user password> [and \<time of validity>], returns http status, the access token and authentication session cookie
     * PUT: updates time of validity
 * /check|test|review|verify/\<application_id>/\<token>
     * GET: returns http status and valid until as unix timestamp
@@ -58,14 +58,24 @@
 # Notes
 
 * use json web token (JWT)
+    * https://github.com/psecio/jwt
+    * https://github.com/lcobucci/jwt
+    * https://github.com/emarref/jwt
+    * https://github.com/firebase/php-jwt
 * rotate api keys
+* rotate access tokens
 * authenticate every request
 * uuid's for each id
 * use tls for everything
+* use password hash
+    * https://secure.php.net/manual/en/function.password-hash.php
+    * https://secure.php.net/manual/en/function.password-verify.php
 
 # Terms
 
 * "client token" is also known as "client secret"
+* "client token" is also known as "api token"
+* there is a "api token" and an "access token"
 
 # Links
 
