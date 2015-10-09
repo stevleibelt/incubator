@@ -1,0 +1,112 @@
+#!/bin/env php
+<?php
+/**
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2015-10-09
+ */
+
+//begin of including composer autoload.php
+$possiblePathsToComposerAutoloadFile = array(
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+);
+$pathToAutoloadFileNotFound = true;
+$pathToAutoloadFile         = null;
+foreach ($possiblePathsToComposerAutoloadFile as $path) {
+    if (file_exists($path)) {
+        $pathToAutoloadFile         = $path;
+        $pathToAutoloadFileNotFound = false;
+        break;
+    }
+}
+if ($pathToAutoloadFileNotFound) {
+    echo 'could not find composer autoload.php, no composer installed?' . PHP_EOL;
+    exit(1);
+}
+
+require_once $pathToAutoloadFile;
+//end of including composer autoload.php
+
+use Net\Bazzline\Component\Command\Command;
+use Net\Bazzline\Component\Cli\Arguments\Arguments;
+
+function echoIfWanted($isWanted, $string)
+{
+    if ($isWanted) {
+        echo $string . PHP_EOL;
+    }
+}
+
+/**
+ * @param string $haystack
+ * @param string $needle
+ * @return bool
+ */
+function contains($haystack, $needle)
+{
+    if (strlen($needle) == 0) {
+        $contains = false;
+    } else {
+        $contains = !(strpos(strtolower($haystack), strtolower($needle)) === false);
+    }
+
+    return $contains;
+}
+
+try {
+    //begin of dependencies
+    $usage      = basename(__FILE__) . ' <unique identifier> [<unique identifier> [...]] [-v|--verbose]';
+    $arguments  = new Arguments($argv);
+    $command    = new Command();
+    //end of dependencies
+
+    //begin of arguments parsing and validation
+    $beVerbose      = ($arguments->hasFlag('verbose') || $arguments->hasFlag('v'));
+    $values         = $arguments->getValues();
+    $valuesAreInvalid = (count($values) < 1);
+
+    if ($valuesAreInvalid) {
+        throw new RuntimeException(
+            'you have to provide at least one unique identifier'
+        );
+    }
+    //end of arguments parsing and validation
+
+    echoIfWanted($beVerbose, 'fetching available remote branches');
+    $command('/bin/env git fetch origin');
+    echoIfWanted($beVerbose, 'reading available remote branches');
+    $branches = $command('/bin/env git branch -r');
+
+    //@todo clean $branches
+    $found = array();   //@todo find better name
+
+    foreach ($values as $identifier) {
+        foreach ($branches as $branch) {
+            if (contains($branch, $identifier)) {
+                if (!isset($found[$identifier])) {
+                    $found[$identifier] = array($branch);
+                } else {
+                    $found[$identifier][] = $branch;
+                }
+            }
+        }
+    }
+
+    $nothingWasFound = (count($found) < 1);
+
+    if ($nothingWasFound) {
+        echo 'no unique identifier found in the available remote branches' . PHP_EOL;
+    }
+echo var_export($branches, true) . PHP_EOL;
+} catch (Exception $exception) {
+    echo 'An error occurred' . PHP_EOL;
+    echo $exception->getMessage() . PHP_EOL;
+    echo PHP_EOL;
+    echo 'Stack Trace' . PHP_EOL;
+    echo $exception->getTraceAsString() . PHP_EOL;
+    echo PHP_EOL;
+    echo $usage;
+    echo PHP_EOL;
+    exit(1);
+}
