@@ -61,6 +61,12 @@ try {
     $branchesToMerge            = $values;
     //end of arguments parsing and validation
 
+    //begin of remembering of current branch
+    $lines          = $command('/bin/env git status');
+    $currentBranch  = substr($lines[0], 10);  // = >>On branch <<
+    //end of remembering of current branch
+
+    //begin of business logic
     echoIfWanted($beVerbose, 'switching to branch "' . $branchToCreateReleaseFrom);
     $command('/bin/env git checkout ' . $branchToCreateReleaseFrom);
     echoIfWanted($beVerbose, 'updating branch');
@@ -71,9 +77,16 @@ try {
     foreach ($branchesToMerge as $branchToMerge) {
         echoIfWanted($beVerbose, 'trying to merge "' . $branchToMerge . '"');
         $command('/bin/env git merge --no-ff ' . $branchToMerge);
+        echoIfWanted($beVerbose, 'committing merge');
+        $command('/bin/env git commit -m "merged ' . $branchToMerge . '"');
     }
 
-    echo 'done, all you have to do is to push the branch "' . $releaseBranchName . '"' . PHP_EOL;
+    echoIfWanted($beVerbose, 'pushing branch "' . $releaseBranchName . '"');
+    $command('/bin/env git push origin ' . $releaseBranchName);
+
+    echoIfWanted($beVerbose, 'switching back to "' . $currentBranch . '"');
+    $command('/bin/env git checkout ' . $currentBranch);
+    //end of business logic
 } catch (Exception $exception) {
     echo 'An error occurred' . PHP_EOL;
     echo $exception->getMessage() . PHP_EOL;
