@@ -64,7 +64,7 @@ try {
     echoIfWanted($beVerbose, 'switching to branch "' . $branchToCreateReleaseFrom);
     $command('/bin/env git checkout ' . $branchToCreateReleaseFrom);
     echoIfWanted($beVerbose, 'updating branch');
-    $command('/bin/env git pull origin ' . $branchToCreateReleaseFrom);
+    $command('/bin/env git pull ' . $branchToCreateReleaseFrom);
     echoIfWanted($beVerbose, 'creating branch "' . $releaseBranchName . '"');
     $command('/bin/env git checkout -b ' . $releaseBranchName);
 
