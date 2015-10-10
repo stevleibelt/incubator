@@ -1,0 +1,108 @@
+#!/bin/env php
+<?php
+/**
+ * @author net_bazzline_create_executable_command_line_file
+ * @since 2015-10-10
+ * @todo
+ */
+
+//begin of including composer autoload.php
+$possiblePathsToComposerAutoloadFile = array(
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+);
+$pathToAutoloadFileNotFound = true;
+$pathToAutoloadFile         = null;
+foreach ($possiblePathsToComposerAutoloadFile as $path) {
+    if (file_exists($path)) {
+        $pathToAutoloadFile         = $path;
+        $pathToAutoloadFileNotFound = false;
+        break;
+    }
+}
+if ($pathToAutoloadFileNotFound) {
+    echo 'could not find composer autoload.php, no composer installed?' . PHP_EOL;
+    exit(1);
+}
+
+require_once $pathToAutoloadFile;
+//end of including composer autoload.php
+
+use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
+use Net\Bazzline\Component\Command\Command;
+
+$environment    = new CommandLineEnvironment($argv);
+$usage			= basename(__FILE__) . ' <branch to create release from> <release branch name> <branch to merge into> [<branch to merge into> [...]] [-v|--verbose] [-c|--continue]';
+
+$environment->execute(
+    function (CommandLineEnvironment $environment) {
+        //begin of dependencies
+        $arguments  = $environment->getArguments();
+        $command    = new Command();
+        //end of dependencies
+
+        //begin of arguments parsing and validation
+        $doNotContinue      = !($arguments->hasFlag('c') || $arguments->hasFlag('continue'));
+        $values             = $arguments->getValues();
+        $valuesAreInvalid   = (count($values) < 3);
+
+        if ($valuesAreInvalid) {
+            throw new InvalidArgumentException(
+                'invalid number of arguments provided'
+            );
+        }
+
+        $branchToCreateReleaseFrom  = array_shift($values);
+        $releaseBranchName          = array_shift($values);
+        $branchesToMerge            = $values;
+        //end of arguments parsing and validation
+
+        //begin of remembering of current branch
+        $lines          = $command('/bin/env git status');
+        $currentBranch  = substr($lines[0], 10);  // 10 = >>On branch <<
+        //end of remembering of current branch
+
+        if ($doNotContinue) {
+            //begin of prepare environment
+            $environment->outputIfVerbosityIsEnabled('switching to branch "' . $branchToCreateReleaseFrom);
+            $command('/bin/env git checkout ' . $branchToCreateReleaseFrom);
+            $environment->outputIfVerbosityIsEnabled('updating branch');
+            $command('/bin/env git pull ' . $branchToCreateReleaseFrom);
+            $environment->outputIfVerbosityIsEnabled('creating branch "' . $releaseBranchName . '"');
+            $command('/bin/env git checkout -b ' . $releaseBranchName);
+            //end of prepare environment
+        }
+
+        //begin of merging branches into release
+        foreach ($branchesToMerge as $branchToMerge) {
+            //@see https://www.git-scm.com/docs/git-merge
+            $environment->outputIfVerbosityIsEnabled('trying to merge "' . $branchToMerge . '"');
+            $command('/bin/env git merge --no-ff --no-edit -commit ' . $branchToMerge);
+        }
+        //end of merging branches into release
+
+        //begin of pushing release to origin
+        $environment->outputIfVerbosityIsEnabled('pushing branch "' . $releaseBranchName . '"');
+        $command('/bin/env git push origin ' . $releaseBranchName);
+        //end of pushing release to origin
+
+        if ($doNotContinue) {
+            //begin of switching back to remembered branch
+            $environment->outputIfVerbosityIsEnabled('switching back to "' . $currentBranch . '"');
+            $command('/bin/env git checkout ' . $currentBranch);
+            //end of switching back to remembered branch
+        }
+
+        //begin of status output
+        $messages = array(
+            'release "' . $releaseBranchName . '" created with following branches merged:',
+        );
+        foreach ($branchesToMerge as $branch) {
+            $messages[] = '    ' . $branch;
+        }
+        $environment->output($messages);
+        //end of status output
+    },
+    $usage
+);

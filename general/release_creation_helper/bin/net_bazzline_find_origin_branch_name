@@ -1,8 +1,8 @@
 #!/bin/env php
 <?php
 /**
- * @author stev leibelt <artodeto@bazzline.net>
- * @since 2015-10-09
+ * @author net_bazzline_create_executable_command_line_file
+ * @since 2015-10-10
  */
 
 //begin of including composer autoload.php
@@ -28,120 +28,93 @@ if ($pathToAutoloadFileNotFound) {
 require_once $pathToAutoloadFile;
 //end of including composer autoload.php
 
+use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
 use Net\Bazzline\Component\Command\Command;
-use Net\Bazzline\Component\Cli\Arguments\Arguments;
 
-function echoIfWanted($isWanted, $string)
-{
-    if ($isWanted) {
-        echo $string . PHP_EOL;
-    }
-}
+$environment    = new CommandLineEnvironment($argv);
+$usage			= basename(__FILE__) . ' <identifier> [<unique identifier> [...]] [-v|--verbose]';
 
-/**
- * @param string $haystack
- * @param string $needle
- * @return bool
- */
-function contains($haystack, $needle)
-{
-    if (strlen($needle) == 0) {
-        $contains = false;
-    } else {
-        $contains = (strpos($haystack, $needle) !== false);
-    }
+$environment->execute(
+    function (CommandLineEnvironment $environment) {
+        //begin of dependencies
+        $arguments  = $environment->getArguments();
+        $command    = new Command();
+        $text       = $environment->getText();
+        //end of dependencies
 
-    return $contains;
-}
+        //begin of arguments parsing and validation
+        $identifiers            = $arguments->getValues();
+        $identifiersAreInvalid  = (count($identifiers) < 1);
 
-try {
-    //begin of dependencies
-    $usage      = basename(__FILE__) . ' <unique identifier> [<unique identifier> [...]] [-v|--verbose]';
-    $arguments  = new Arguments($argv);
-    $command    = new Command();
-    //end of dependencies
-
-    //begin of arguments parsing and validation
-    $beVerbose              = ($arguments->hasFlag('verbose') || $arguments->hasFlag('v'));
-    $identifiers            = $arguments->getValues();
-    $identifiersAreInvalid  = (count($identifiers) < 1);
-
-    if ($identifiersAreInvalid) {
-        throw new RuntimeException(
-            'invalid number of arguments provided'
-        );
-    }
-    //end of arguments parsing and validation
-
-    //begin of branch fetching
-    echoIfWanted($beVerbose, 'fetching available remote lines');
-    $command('/bin/env git fetch origin');
-    echoIfWanted($beVerbose, 'reading available remote lines');
-    $lines      = $command('/bin/env git branch -r');
-    $branches   = array();
-    //end of branch fetching
-
-    //begin of branch streamlining
-    foreach ($lines as $line) {
-        $positionOfOrigin       = strpos($line, 'origin/');
-        $hasOriginInString      = ($positionOfOrigin !== false);
-
-        if ($hasOriginInString) {
-            $positionOfWhitespace   = strpos($line, ' ', $positionOfOrigin);
-            $hasWhitespaceInString  = ($positionOfWhitespace !== false);
-
-            if ($hasWhitespaceInString) {
-                $length = ($positionOfWhitespace - $positionOfOrigin);
-                $branch = substr($line, $positionOfOrigin, $length);
-            } else {
-                $branch = substr($line, $positionOfOrigin);
-            }
-            $branches[] = strtolower(trim($branch));
+        if ($identifiersAreInvalid) {
+            throw new InvalidArgumentException(
+                'invalid number of arguments provided'
+            );
         }
-    }
-    //end of branch streamlining
+        //end of arguments parsing and validation
 
-    //begin of identifier matching
-    $branchesFoundPerIdentifier = array();   //@todo find better name
+        //begin of branch fetching
+        $environment->outputIfVerbosityIsEnabled('fetching available remote lines');
+        $command('/bin/env git fetch origin');
+        $environment->outputIfVerbosityIsEnabled('reading available remote lines');
+        $lines      = $command('/bin/env git branch -r');
+        $branches   = array();
+        //end of branch fetching
 
-    foreach ($identifiers as $identifier) {
-        $identifier = strtolower(trim($identifier));
-        foreach ($branches as $branch) {
-            if (contains($branch, $identifier)) {
-                if (!isset($branchesFoundPerIdentifier[$identifier])) {
-                    $branchesFoundPerIdentifier[$identifier] = array($branch);
+        //begin of branch streamlining
+        foreach ($lines as $line) {
+            $positionOfOrigin       = strpos($line, 'origin/');
+            $hasOriginInString      = ($positionOfOrigin !== false);
+
+            if ($hasOriginInString) {
+                $positionOfWhitespace   = strpos($line, ' ', $positionOfOrigin);
+                $hasWhitespaceInString  = ($positionOfWhitespace !== false);
+
+                if ($hasWhitespaceInString) {
+                    $length = ($positionOfWhitespace - $positionOfOrigin);
+                    $branch = substr($line, $positionOfOrigin, $length);
                 } else {
-                    $branchesFoundPerIdentifier[$identifier][] = $branch;
+                    $branch = substr($line, $positionOfOrigin);
+                }
+                $branches[] = strtolower(trim($branch));
+            }
+        }
+        //end of branch streamlining
+
+        //begin of identifier matching
+        $branchesFoundPerIdentifier = array();   //@todo find better name
+
+        foreach ($identifiers as $identifier) {
+            $identifier = strtolower(trim($identifier));
+            foreach ($branches as $branch) {
+                if ($text->contains($branch, $identifier)) {
+                    if (!isset($branchesFoundPerIdentifier[$identifier])) {
+                        $branchesFoundPerIdentifier[$identifier] = array($branch);
+                    } else {
+                        $branchesFoundPerIdentifier[$identifier][] = $branch;
+                    }
                 }
             }
         }
-    }
-    //end of identifier matching
+        //end of identifier matching
 
-    //begin of result output
-    $nothingWasFound = (count($branchesFoundPerIdentifier) < 1);
+        //begin of result output
+        $nothingWasFound = (count($branchesFoundPerIdentifier) < 1);
 
-    if ($nothingWasFound) {
-        echo 'no matches found for provided identifiers in the available remote branches' . PHP_EOL;
-        echoIfWanted($beVerbose, PHP_EOL . 'available remote branches:' . PHP_EOL . implode(PHP_EOL, $lines));
-    } else {
-        echoIfWanted($beVerbose, '');
-        foreach ($branchesFoundPerIdentifier as $uniqueIdentifier => $branches) {
-            if ($beVerbose) {
-                echo $uniqueIdentifier . ': ' . implode(' ', $branches) . PHP_EOL;
-            } else {
-                echo implode(' ', $branches) . ' ';
+        if ($nothingWasFound) {
+            echo 'no matches found for provided identifiers in the available remote branches' . PHP_EOL;
+            $environment->outputIfVerbosityIsEnabled(PHP_EOL . 'available remote branches:' . PHP_EOL . implode(PHP_EOL, $lines));
+        } else {
+            $environment->outputIfVerbosityIsEnabled('');
+            foreach ($branchesFoundPerIdentifier as $uniqueIdentifier => $branches) {
+                if ($environment->beVerbose()) {
+                    $environment->output($uniqueIdentifier . ': ' . implode(' ', $branches));
+                } else {
+                    $environment->output(implode(' ', $branches) . ' ');
+                }
             }
         }
-    }
-
-    echo PHP_EOL;
-    //end of result output
-} catch (Exception $exception) {
-    echo 'An error occurred' . PHP_EOL;
-    echo $exception->getMessage() . PHP_EOL;
-    echo PHP_EOL;
-    echo $usage;
-    echo PHP_EOL;
-    exit(1);
-}
+        //end of result output
+    },
+    $usage
+);

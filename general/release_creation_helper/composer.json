@@ -6,17 +6,12 @@
     "minimum-stability": "dev",
     "bin": [
         "bin/net_bazzline_find_origin_branch_name",
-        "bin/net_bazzline_release_creation_helper"
+      "bin/net_bazzline_create_release_branch"
     ],
     "require": {
-        "net_bazzline/php_component_cli_arguments": "1.1.1",
+        "net_bazzline/php_component_cli_environment": "0.1.0",
         "net_bazzline/php_component_command": "1.2.0",
-        "php": ">=5.3.3",
-        "vierbergenlars/php-semver": "3.0.1"
-    },
-    "require-dev": {
-        "mikey179/vfsstream": "1.6.0",
-        "phpunit/phpunit": ">=4.8.11"
+        "php": ">=5.3.3"
     },
     "license": "LGPLv3",
     "authors": [
@@ -26,11 +21,5 @@
             "homepage": "https://artodeto.bazzline.net",
             "role": "Developer"
         }
-    ],
-    "autoload": {
-        "psr-0": {
-            "Net\\Bazzline\\ReleaseCreationHelper": "source/",
-            "Test\\Net\\Bazzline\\ReleaseCreationHelper": "test/"
-        }
-    }
+    ]
 }
