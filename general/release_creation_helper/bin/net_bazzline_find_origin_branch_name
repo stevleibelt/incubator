@@ -99,6 +99,7 @@ try {
         echo 'no unique identifier found in the available remote branches' . PHP_EOL;
     }
 echo var_export($branches, true) . PHP_EOL;
+echo date('Y-m-d') . PHP_EOL;
 } catch (Exception $exception) {
     echo 'An error occurred' . PHP_EOL;
     echo $exception->getMessage() . PHP_EOL;
