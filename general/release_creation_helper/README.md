@@ -36,6 +36,8 @@ release "release-0.8.18" created with following branches merged:
     origin/story-S-0815-added_new_default_campaign
 ```
 
+## Continue Merging Branches Into Release Branch
+
 # Hints
 
 ## net_bazzline_create_release_branch
@@ -59,4 +61,6 @@ The argument "<branch to create release from>" is not used.
                 * files
                     * dump_changes ('path/to/important/file' => 'file_name')
         * create "net_bazzline_create_tag_from_release_branch" <release branch> <tag> [<branch to merge release branch> [...]]
+        * make the scripts independend by the current working directory
+            * path_to_repository as optional parameter
 * [0.6.2](https://github.com/bazzline/php_component_database_file_storage/tree/0.6.2) - released at 13.09.2015
