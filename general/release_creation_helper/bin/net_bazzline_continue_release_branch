@@ -31,11 +31,56 @@ require_once $pathToAutoloadFile;
 use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
 
 $environment    = new CommandLineEnvironment($argv);
-$usage			= basename(__FILE__) . ' [-v|--verbose]';
+$usage          = basename(__FILE__) . ' <path to repository> <branch to merge into> [<branch to merge into> [...]] [-v|--verbose]';
 
 $environment->execute(
     function (CommandLineEnvironment $environment) {
-        //put in your business logic
+        //begin of dependencies
+        $arguments  = $environment->getArguments();
+        $command    = new Command();
+        //end of dependencies
+
+        //begin of arguments parsing and validation
+        $values             = $arguments->getValues();
+        $valuesAreInvalid   = (count($values) < 2);
+
+        if ($valuesAreInvalid) {
+            throw new InvalidArgumentException(
+                'invalid number of arguments provided'
+            );
+        }
+
+        $pathToRepository           = array_shift($values);
+        $branchesToMerge            = $values;
+        //end of arguments parsing and validation
+
+        //begin of fetching current release branch name
+        $lines                      = $command('/bin/env git status');
+        $releaseBranchName          = substr($lines[0], 10);  // 10 = >>On branch <<
+        //end of fetching current release branch name
+        
+        //begin of merging branches into release
+        foreach ($branchesToMerge as $branchToMerge) {
+            //@see https://www.git-scm.com/docs/git-merge
+            $environment->outputIfVerbosityIsEnabled('trying to merge "' . $branchToMerge . '"');
+            $command('/bin/env git merge --no-ff --no-edit -commit ' . $branchToMerge);
+        }
+        //end of merging branches into release
+
+        //begin of pushing release to origin
+        $environment->outputIfVerbosityIsEnabled('pushing branch "' . $releaseBranchName . '"');
+        $command('/bin/env git push origin ' . $releaseBranchName);
+        //end of pushing release to origin
+
+        //begin of status output
+        $messages = array(
+            'continued release creation "' . $releaseBranchName . '" with following branches merged:',
+        );
+        foreach ($branchesToMerge as $branch) {
+            $messages[] = '    ' . $branch;
+        }
+        $environment->output($messages);
+        //end of status output
     },
     $usage
 );

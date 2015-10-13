@@ -14,7 +14,7 @@ Also it is assumed that each branch has a unique identifier like a ticket or a t
 ## Find All The Branches You Want To Merge
 
 ```
-#assuming you want to find the branches with unique identifiers:
+#assumed you want to find the branches with unique identifiers:
 #   S-1234 S-0815 S-23 S-42
 ./bin/net_bazzline_find_origin_branch_name S-1234 S-0815 S-2300 S-4200
 #expected result
@@ -24,7 +24,7 @@ origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_def
 ## Create Release Branch And Merge Branches Into It
 
 ```
-#assuming you want to:
+#assumed you want to:
 #   * create new release from branch develop
 #   * new release branch should get the name 'release-0.8.15'
 *   * you want to merge origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_default_campaign
@@ -38,12 +38,20 @@ release "release-0.8.18" created with following branches merged:
 
 ## Continue Merging Branches Into Release Branch
 
-# Hints
 
-## net_bazzline_create_release_branch
+If a merge results in a conflict, use "net_bazzline_continue_release_branch" to continue merging.
 
-If a merge results in a conflict, use "net_bazzline_create_release_branch [...] --continue" to continue merging.
-The argument "<branch to create release from>" is not used.
+```
+#assumed you need to:
+*   * continue to an already local existing branch named "release-0.8.18" you have checked out already
+*   * you have resolved the conflict you have and commited that change already
+*   * you want to merge origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_default_campaign
+./bin/net_bazzline_continue_release_branch origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_default_campaign
+#expected result
+continued release creation "release-0.8.18" with following branches merged:
+    origin/story-S1234-implement_fancy_new_feature
+    origin/story-S-0815-added_new_default_campaign
+```
 
 # Install
 

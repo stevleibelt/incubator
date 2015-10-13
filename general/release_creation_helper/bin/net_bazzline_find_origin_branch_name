@@ -32,7 +32,7 @@ use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
 use Net\Bazzline\Component\Command\Command;
 
 $environment    = new CommandLineEnvironment($argv);
-$usage			= basename(__FILE__) . ' <identifier> [<unique identifier> [...]] [-v|--verbose]';
+$usage			= basename(__FILE__) . ' <path to repository> <identifier> [<unique identifier> [...]] [-v|--verbose]';
 
 $environment->execute(
     function (CommandLineEnvironment $environment) {
@@ -43,14 +43,17 @@ $environment->execute(
         //end of dependencies
 
         //begin of arguments parsing and validation
-        $identifiers            = $arguments->getValues();
-        $identifiersAreInvalid  = (count($identifiers) < 1);
+        $values             = $arguments->getValues();
+        $valuesAreInvalid   = (count($values) < 1);
 
-        if ($identifiersAreInvalid) {
+        if ($valuesAreInvalid) {
             throw new InvalidArgumentException(
                 'invalid number of arguments provided'
             );
         }
+
+        $pathToRepository   = array_shift($values);
+        $identifiers        = $values;
         //end of arguments parsing and validation
 
         //begin of branch fetching

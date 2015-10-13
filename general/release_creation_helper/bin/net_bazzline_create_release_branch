@@ -33,7 +33,7 @@ use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
 use Net\Bazzline\Component\Command\Command;
 
 $environment    = new CommandLineEnvironment($argv);
-$usage			= basename(__FILE__) . ' <branch to create release from> <release branch name> <branch to merge into> [<branch to merge into> [...]] [-v|--verbose] [-c|--continue]';
+$usage          = basename(__FILE__) . ' <path to repository> <branch to create release from> <release branch name> <branch to merge into> [<branch to merge into> [...]] [-v|--verbose]';
 
 $environment->execute(
     function (CommandLineEnvironment $environment) {
@@ -43,7 +43,6 @@ $environment->execute(
         //end of dependencies
 
         //begin of arguments parsing and validation
-        $doNotContinue      = !($arguments->hasFlag('c') || $arguments->hasFlag('continue'));
         $values             = $arguments->getValues();
         $valuesAreInvalid   = (count($values) < 3);
 
@@ -53,9 +52,11 @@ $environment->execute(
             );
         }
 
+        $pathToRepository           = array_shift($values);
         $branchToCreateReleaseFrom  = array_shift($values);
         $releaseBranchName          = array_shift($values);
         $branchesToMerge            = $values;
+        $currentWorkingDirectory    = getcwd();
         //end of arguments parsing and validation
 
         //begin of remembering of current branch
@@ -63,16 +64,14 @@ $environment->execute(
         $currentBranch  = substr($lines[0], 10);  // 10 = >>On branch <<
         //end of remembering of current branch
 
-        if ($doNotContinue) {
-            //begin of prepare environment
-            $environment->outputIfVerbosityIsEnabled('switching to branch "' . $branchToCreateReleaseFrom);
-            $command('/bin/env git checkout ' . $branchToCreateReleaseFrom);
-            $environment->outputIfVerbosityIsEnabled('updating branch');
-            $command('/bin/env git pull ' . $branchToCreateReleaseFrom);
-            $environment->outputIfVerbosityIsEnabled('creating branch "' . $releaseBranchName . '"');
-            $command('/bin/env git checkout -b ' . $releaseBranchName);
-            //end of prepare environment
-        }
+        //begin of prepare environment
+        $environment->outputIfVerbosityIsEnabled('switching to branch "' . $branchToCreateReleaseFrom);
+        $command('/bin/env git checkout ' . $branchToCreateReleaseFrom);
+        $environment->outputIfVerbosityIsEnabled('updating branch');
+        $command('/bin/env git pull ' . $branchToCreateReleaseFrom);
+        $environment->outputIfVerbosityIsEnabled('creating branch "' . $releaseBranchName . '"');
+        $command('/bin/env git checkout -b ' . $releaseBranchName);
+        //end of prepare environment
 
         //begin of merging branches into release
         foreach ($branchesToMerge as $branchToMerge) {
@@ -87,12 +86,10 @@ $environment->execute(
         $command('/bin/env git push origin ' . $releaseBranchName);
         //end of pushing release to origin
 
-        if ($doNotContinue) {
-            //begin of switching back to remembered branch
-            $environment->outputIfVerbosityIsEnabled('switching back to "' . $currentBranch . '"');
-            $command('/bin/env git checkout ' . $currentBranch);
-            //end of switching back to remembered branch
-        }
+        //begin of switching back to remembered branch
+        $environment->outputIfVerbosityIsEnabled('switching back to "' . $currentBranch . '"');
+        $command('/bin/env git checkout ' . $currentBranch);
+        //end of switching back to remembered branch
 
         //begin of status output
         $messages = array(
