@@ -30,6 +30,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/batch_job)
 * [Database Based Translation For Zend Framework 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_database_translation)
 * [SFTP Module for ZF2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_sftp)
+* [Canary for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/canary)
 * [cron job php component](https://github.com/stevleibelt/incubator/tree/master/component/php/cron_job)
 * [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/merge_arrays)
 * [Profiler for Propel, PDO and plain sql](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel_and_mysql_and_pdo_profiler)
