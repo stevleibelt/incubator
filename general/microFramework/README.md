@@ -14,6 +14,8 @@ $application
 
 ## Classes
 
+* based on [PicoRest](https://github.com/dirkwinkhaus/PicoRest)
+
 * Http\GET|POST|PUT|DELETE|... with parameters
     * controller action to call
     * optional additional route information (like "/foo")
