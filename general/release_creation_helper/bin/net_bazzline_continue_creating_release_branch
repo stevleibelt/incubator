@@ -29,6 +29,7 @@ require_once $pathToAutoloadFile;
 //end of including composer autoload.php
 
 use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
+use Net\Bazzline\Component\Command\Command;
 
 $environment    = new CommandLineEnvironment($argv);
 $usage          = basename(__FILE__) . ' <path to repository> <branch to merge into> [<branch to merge into> [...]] [-v|--verbose]';
@@ -52,7 +53,19 @@ $environment->execute(
 
         $pathToRepository           = array_shift($values);
         $branchesToMerge            = $values;
+        $currentWorkingDirectory    = getcwd();
+
+        if (!is_dir($pathToRepository)) {
+            throw new InvalidArgumentException(
+                'invalid repository path provided: ' . $pathToRepository
+            );
+        }
         //end of arguments parsing and validation
+
+        //begin of changing to repository path
+        $environment->outputIfVerbosityIsEnabled('changing to "' . $pathToRepository . '"');
+        chdir($pathToRepository);
+        //end of changing to repository path
 
         //begin of fetching current release branch name
         $lines                      = $command('/bin/env git status');
@@ -63,14 +76,11 @@ $environment->execute(
         foreach ($branchesToMerge as $branchToMerge) {
             //@see https://www.git-scm.com/docs/git-merge
             $environment->outputIfVerbosityIsEnabled('trying to merge "' . $branchToMerge . '"');
-            $command('/bin/env git merge --no-ff --no-edit -commit ' . $branchToMerge);
+            $command('/bin/env git merge --no-ff --no-edit --commit --quiet ' . $branchToMerge);
+            $environment->outputIfVerbosityIsEnabled('pushing branch "' . $releaseBranchName . '"');
+            $command('/bin/env git push origin ' . $releaseBranchName);
         }
         //end of merging branches into release
-
-        //begin of pushing release to origin
-        $environment->outputIfVerbosityIsEnabled('pushing branch "' . $releaseBranchName . '"');
-        $command('/bin/env git push origin ' . $releaseBranchName);
-        //end of pushing release to origin
 
         //begin of status output
         $messages = array(
@@ -81,6 +91,11 @@ $environment->execute(
         }
         $environment->output($messages);
         //end of status output
+
+        //begin of changing back to current working directory
+        $environment->outputIfVerbosityIsEnabled('changing to "' . $currentWorkingDirectory . '"');
+        chdir($currentWorkingDirectory);
+        //end of changing back to current working directory
     },
     $usage
 );

@@ -16,7 +16,7 @@ Also it is assumed that each branch has a unique identifier like a ticket or a t
 ```
 #assumed you want to find the branches with unique identifiers:
 #   S-1234 S-0815 S-23 S-42
-./bin/net_bazzline_find_origin_branch_name S-1234 S-0815 S-2300 S-4200
+./bin/net_bazzline_find_branch_name S-1234 S-0815 S-2300 S-4200
 #expected result
 origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_default_campaign origin/story-S-2300-illuminate_the_planet origin/story-S-4200-the_answere_to_all_questions
 ```
@@ -39,18 +39,28 @@ release "release-0.8.18" created with following branches merged:
 ## Continue Merging Branches Into Release Branch
 
 
-If a merge results in a conflict, use "net_bazzline_continue_release_branch" to continue merging.
+If a merge results in a conflict, use "net_bazzline_continue_creating_release_branch" to continue merging.
 
 ```
 #assumed you need to:
 *   * continue to an already local existing branch named "release-0.8.18" you have checked out already
 *   * you have resolved the conflict you have and commited that change already
 *   * you want to merge origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_default_campaign
-./bin/net_bazzline_continue_release_branch origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_default_campaign
+./bin/net_bazzline_continue_creating_release_branch origin/story-S1234-implement_fancy_new_feature origin/story-S-0815-added_new_default_campaign
 #expected result
 continued release creation "release-0.8.18" with following branches merged:
     origin/story-S1234-implement_fancy_new_feature
     origin/story-S-0815-added_new_default_campaign
+```
+
+## Create Distinction Between Releases
+
+If you have finished creating your release branch, you want to know the differences.
+
+```
+#assumed you:
+./bin/net_bazzline_create_distinction_between_releases <oath to configuration file> <previous release branch name> <upcoming release branch name>
+#expected result
 ```
 
 # Install

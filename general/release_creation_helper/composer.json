@@ -5,7 +5,7 @@
     "type": "library",
     "minimum-stability": "dev",
     "bin": [
-        "bin/net_bazzline_find_origin_branch_name",
+      "bin/net_bazzline_find_branch_name",
       "bin/net_bazzline_create_release_branch"
     ],
     "require": {

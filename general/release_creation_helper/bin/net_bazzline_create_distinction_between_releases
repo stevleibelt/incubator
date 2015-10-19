@@ -1,0 +1,42 @@
+#!/bin/env php
+<?php
+/**
+ * @author net_bazzline_create_executable_command_line_file
+ * @since 2015-10-19
+ */
+
+//begin of including composer autoload.php
+$possiblePathsToComposerAutoloadFile = array(
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+);
+$pathToAutoloadFileNotFound = true;
+$pathToAutoloadFile         = null;
+foreach ($possiblePathsToComposerAutoloadFile as $path) {
+    if (file_exists($path)) {
+        $pathToAutoloadFile         = $path;
+        $pathToAutoloadFileNotFound = false;
+        break;
+    }
+}
+if ($pathToAutoloadFileNotFound) {
+    echo 'could not find composer autoload.php, no composer installed?' . PHP_EOL;
+    exit(1);
+}
+
+require_once $pathToAutoloadFile;
+//end of including composer autoload.php
+
+use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
+
+$environment    = new CommandLineEnvironment($argv);
+$usage			= basename(__FILE__) . ' [-v|--verbose]';
+//./bin/net_bazzline_create_distinction_between_releases <oath to configuration file> <previous release branch name> <upcoming release branch name>
+
+$environment->execute(
+    function (CommandLineEnvironment $environment) {
+        //put in your business logic
+    },
+    $usage
+);

@@ -52,15 +52,27 @@ $environment->execute(
             );
         }
 
-        $pathToRepository   = array_shift($values);
-        $identifiers        = $values;
+        $currentWorkingDirectory    = getcwd();
+        $pathToRepository           = array_shift($values);
+        $identifiers                = $values;
+
+        if (!is_dir($pathToRepository)) {
+            throw new InvalidArgumentException(
+                'invalid repository path provided: ' . $pathToRepository
+            );
+        }
         //end of arguments parsing and validation
+
+        //begin of changing to repository path
+        $environment->outputIfVerbosityIsEnabled('changing to "' . $pathToRepository . '"');
+        chdir($pathToRepository);
+        //end of changing to repository path
 
         //begin of branch fetching
         $environment->outputIfVerbosityIsEnabled('fetching available remote lines');
-        $command('/bin/env git fetch origin');
+        $command('/bin/env git fetch origin --all');
         $environment->outputIfVerbosityIsEnabled('reading available remote lines');
-        $lines      = $command('/bin/env git branch -r');
+        $lines      = $command('/bin/env git branch --all');
         $branches   = array();
         //end of branch fetching
 
@@ -118,6 +130,11 @@ $environment->execute(
             }
         }
         //end of result output
+
+        //begin of changing back to current working directory
+        $environment->outputIfVerbosityIsEnabled('changing to "' . $currentWorkingDirectory . '"');
+        chdir($currentWorkingDirectory);
+        //end of changing back to current working directory
     },
     $usage
 );
