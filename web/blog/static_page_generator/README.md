@@ -114,3 +114,18 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
 * one section page of current month with link to previous[/next] month (link to archive)
 * one tags page with link to each tag page, ordered by usage
 * one tag page with links to each article, ordered by date
+
+## Unordered Ideas
+
+* syntax highlighting like in github
+* cli command to create new entry (creates an file with unique id and put it into a date based directory structure like "2015/10/24/1818-<uuid>.md"
+* "magic" headlines like "## tags" or "## category"
+* static content refresh can be done via cronjob (once|x a day) or by triggering/calling an url (with authentication))
+* static content is available by the following urls
+    * /archive?page=2
+    * /2015?page=2
+    * /2015/10?page=2
+    * /2015/10/24?page=2 (optional)
+    * /<category>?page=2
+    * /<tag>?page=2 (optional or done via dynamic page generation
+* a git repository can be a valid storage engine (for fetching the upcomming/next files or entries)
