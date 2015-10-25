@@ -130,3 +130,11 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
     * /<category>?page=2
     * /<tag>?page=2 (optional or done via dynamic page generation
 * a git repository can be a valid storage engine (for fetching the upcomming/next files or entries)
+
+## Possible Components
+
+* https://github.com/michelf/php-markdown
+* https://github.com/cebe/markdown
+* https://github.com/erusev/parsedown
+* https://github.com/thephpleague/commonmark
+* https://github.com/thephpleague/html-to-markdown
