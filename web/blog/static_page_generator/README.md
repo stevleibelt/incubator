@@ -129,7 +129,7 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
     * /2015/10/24?page=2 (optional)
     * /<category>?page=2
     * /<tag>?page=2 (optional or done via dynamic page generation
-* a git repository can be a valid storage engine (for fetching the upcomming/next files or entries)
+* a git repository can be a valid storage engine (for fetching the upcoming/next files or entries)
 
 ## Possible Components
 

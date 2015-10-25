@@ -1,0 +1,67 @@
+#!/bin/env php
+<?php
+/**
+ * @author net_bazzline_create_executable_command_line_file
+ * @since 2015-10-25
+ */
+
+//begin of including composer autoload.php
+$possiblePathsToComposerAutoloadFile = array(
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+);
+$pathToAutoloadFileNotFound = true;
+$pathToAutoloadFile         = null;
+foreach ($possiblePathsToComposerAutoloadFile as $path) {
+    if (file_exists($path)) {
+        $pathToAutoloadFile         = $path;
+        $pathToAutoloadFileNotFound = false;
+        break;
+    }
+}
+if ($pathToAutoloadFileNotFound) {
+    echo 'could not find composer autoload.php, no composer installed?' . PHP_EOL;
+    exit(1);
+}
+
+require_once $pathToAutoloadFile;
+//end of including composer autoload.php
+
+use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
+
+$environment    = new CommandLineEnvironment($argv);
+$usage			= basename(__FILE__) . ' [-v|--verbose]';
+
+$environment->execute(
+    function (CommandLineEnvironment $environment) {
+        $command        = new Net\Bazzline\Component\Command\Command();
+        $date           = date(
+            'Y' . DIRECTORY_SEPARATOR .
+            'm' . DIRECTORY_SEPARATOR .
+            'd'
+        );
+        $directoryPath  = __DIR__ . '/../data/entries/' . $date;    //@todo: put into configuration file: data/entries
+        $time           = date('Hms');
+        $uuid           = Ramsey\Uuid\Uuid::uuid4()->toString();
+        $fileName       = $time . '_' . $uuid . '.md';
+        $filePath       = $directoryPath . DIRECTORY_SEPARATOR . $fileName;
+
+        $directoryDoesNotExist = (!is_dir($directoryPath));
+
+        if ($directoryDoesNotExist) {
+            $command->execute('/bin/env mkdir -p "' . $directoryPath . '"');
+        }
+        $command->execute('/bin/env touch ' . $directoryPath . '/' . $fileName);
+        $content = '@@header@@' . PHP_EOL .
+            'section:' . PHP_EOL .
+            'author:' . PHP_EOL .   //@todo: put default author into configuration file
+            'tags:' . PHP_EOL .
+            '@@body@@' . PHP_EOL .
+            '<put in your content here>';
+        file_put_contents($filePath, $content);
+
+        $environment->outputIfVerbosityIsEnabled('file created: ' . realpath($filePath));
+    },
+    $usage
+);
