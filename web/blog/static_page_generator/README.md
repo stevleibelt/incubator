@@ -1,16 +1,16 @@
 # Static Page Generator
 
 Tired of blog systems because they are for the web browser users?
-Currently, i am. I do not want to blame the guys who are throwing there time on great open source projects to build a blog system with used by webbrowser. But thinking about myself, all i want is to write something in markdown or similar and upload this entry.
+Currently, i am. I do not want to blame the guys who are throwing there time on great open source projects to build a blog system with used by web browser. But thinking about myself, all i want is to write something in markdown or similar and upload this entry.
 
-## Core Functionalities
+## Core Functions
 
 * one template
 * supports sections and subsections and subsections ...
 * supports tags
 * supports markdown
-* a cronjob/or manually triggerd generation of parts possible (to fetch rss entries by other sites)
-* a cronjob/or manually triggerd generation of articles
+* a cron job/or manually triggered generation of parts possible (to fetch rss entries by other sites)
+* a cron job/or manually triggered generation of articles
 * cli generator
     * hook or event based for easy up extension 
     * generate file/entry/parts based content
@@ -24,7 +24,8 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
 * rest api to simple
     * add an entry (generation done on the server)
     * add media
-    * trigger cronjobs
+    * handle tags (list, add, remove, modify)
+    * trigger cron jobs
 * supports restructured text
 * caching for converted markdown to html snippets
 * meta data for each entry (default by section and tags)
@@ -40,7 +41,7 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
 
 ## Implementation
 
-* each entry generats a unique identifier 
+* each entry generates a unique identifier 
     * easy up human readable url renaming
     * easy up internal and external linking
 
@@ -96,11 +97,11 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
             * [meta data]
             * [author]
         * body
-            * use pre compile statement like ##TEASER_START## to special informations
+            * use pre compile statement like ##TEASER_START## to special information
             * content
 * validate via cli
 * upload file
-* trigger page generation (pages are collections of unique html dom ids, generate contet of dom id and replace content of old id in files)
+* trigger page generation (pages are collections of unique html dom ids, generate content of dom id and replace content of old id in files)
     * convert markdown to html snippet
     * generate content if dom element 
     * update tag page (if new exists, recalculate usage of tags)
