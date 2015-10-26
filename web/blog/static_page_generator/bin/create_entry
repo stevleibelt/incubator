@@ -36,15 +36,17 @@ $usage			= basename(__FILE__) . ' [-v|--verbose]';
 $environment->execute(
     function (CommandLineEnvironment $environment) {
         $command        = new Net\Bazzline\Component\Command\Command();
-        $date           = date(
+        $uuid           = Ramsey\Uuid\Uuid::uuid4()->toString();
+        $relativePath   = date(
             'Y' . DIRECTORY_SEPARATOR .
             'm' . DIRECTORY_SEPARATOR .
-            'd'
-        );
-        $directoryPath  = __DIR__ . '/../data/entries/' . $date;    //@todo: put into configuration file: data/entries
-        $time           = date('Hms');
-        $uuid           = Ramsey\Uuid\Uuid::uuid4()->toString();
-        $fileName       = $time . '_' . $uuid . '.md';
+            'd' . DIRECTORY_SEPARATOR . 
+            'Hms'
+        ) . DIRECTORY_SEPARATOR . 
+        $uuid;
+
+        $fileName       = 'entry.md';
+        $directoryPath  = __DIR__ . '/../data/entries/' . $relativePath;    //@todo: put into configuration file: data/entries
         $filePath       = $directoryPath . DIRECTORY_SEPARATOR . $fileName;
 
         $directoryDoesNotExist = (!is_dir($directoryPath));
@@ -61,7 +63,7 @@ $environment->execute(
             '<put in your content here>';
         file_put_contents($filePath, $content);
 
-        $environment->outputIfVerbosityIsEnabled('file created: ' . realpath($filePath));
+        $environment->outputIfVerbosityIsEnabled('created path: ' . realpath($relativePath));
     },
     $usage
 );

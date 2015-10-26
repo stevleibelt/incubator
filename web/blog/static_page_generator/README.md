@@ -119,7 +119,7 @@ Currently, i am. I do not want to blame the guys who are throwing there time on 
 ## Unordered Ideas
 
 * syntax highlighting like in github
-* cli command to create new entry (creates an file with unique id and put it into a date based directory structure like "2015/10/24/1818-<uuid>.md"
+* cli command to create new entry (creates an file with unique id and put it into a date based directory structure like "2015/10/24/1818/<uuid>.md"
 * "magic" headlines like "## tags" or "## category"
 * static content refresh can be done via cronjob (once|x a day) or by triggering/calling an url (with authentication))
 * static content is available by the following urls
