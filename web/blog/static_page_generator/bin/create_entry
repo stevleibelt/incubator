@@ -25,7 +25,7 @@ if ($pathToAutoloadFileNotFound) {
     exit(1);
 }
 
-require_once $pathToAutoloadFile;
+require_once ($pathToAutoloadFile);
 //end of including composer autoload.php
 
 use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
@@ -35,7 +35,11 @@ $usage			= basename(__FILE__) . ' [-v|--verbose]';
 
 $environment->execute(
     function (CommandLineEnvironment $environment) {
+        //@todo make following things configurable
+        //  * relative path generator
+        //  * entry template
         $command        = new Net\Bazzline\Component\Command\Command();
+        $configuration  = require_once (__DIR__ . '/../configuration/configuration.php');
         $uuid           = Ramsey\Uuid\Uuid::uuid4()->toString();
         $relativePath   = date(
             'Y' . DIRECTORY_SEPARATOR .
@@ -48,6 +52,10 @@ $environment->execute(
         $fileName       = 'entry.md';
         $directoryPath  = __DIR__ . '/../data/entries/' . $relativePath;    //@todo: put into configuration file: data/entries
         $filePath       = $directoryPath . DIRECTORY_SEPARATOR . $fileName;
+        $template       = new \Net\Bazzline\Component\Template\FileBasedTemplate(
+            $configuration['templates']['entry']['variables'],
+            $configuration['templates']['entry']['path']
+        );
 
         $directoryDoesNotExist = (!is_dir($directoryPath));
 
@@ -55,12 +63,7 @@ $environment->execute(
             $command->execute('/bin/env mkdir -p "' . $directoryPath . '"');
         }
         $command->execute('/bin/env touch ' . $directoryPath . '/' . $fileName);
-        $content = '@@header@@' . PHP_EOL .
-            'section:' . PHP_EOL .
-            'author:' . PHP_EOL .   //@todo: put default author into configuration file
-            'tags:' . PHP_EOL .
-            '@@body@@' . PHP_EOL .
-            '<put in your content here>';
+        $content = $template->render();
         file_put_contents($filePath, $content);
 
         $environment->outputIfVerbosityIsEnabled('created path: ' . realpath($relativePath));

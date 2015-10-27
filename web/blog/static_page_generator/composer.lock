@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "694b9dac6b1d23c18cfe45ae6656b6e9",
+    "hash": "2f52b8aa2c59d4fec400912fab724f0f",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -443,6 +443,63 @@
                 "wrapper"
             ],
             "time": "2015-09-18 12:45:48"
+        },
+        {
+            "name": "net_bazzline/php_component_template",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_template.git",
+                "reference": "60c12e123fb1b112e4c8a0d208ebe5404ad8bd22"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_template/zipball/60c12e123fb1b112e4c8a0d208ebe5404ad8bd22",
+                "reference": "60c12e123fb1b112e4c8a0d208ebe5404ad8bd22",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.6.0",
+                "phpunit/phpunit": ">=4.8.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Template": "source/",
+                    "Test\\Net\\Bazzline\\Component\\Template": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom free software template engine for php",
+            "keywords": [
+                "__toString",
+                "component",
+                "easy to use",
+                "engine",
+                "fast",
+                "free as in freedom",
+                "invoke",
+                "no dependency",
+                "php",
+                "reusable",
+                "template",
+                "view"
+            ],
+            "time": "2015-10-09 21:01:56"
         },
         {
             "name": "net_bazzline/php_component_toolbox",

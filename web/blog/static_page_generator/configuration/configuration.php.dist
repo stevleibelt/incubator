@@ -1,0 +1,17 @@
+<?php
+/**
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2015-10-27
+ */
+
+return array(
+    'templates' => array(
+        'entry' => array(
+            'path' => __DIR__ . '/../template/entry.md',
+            'variables' => array(
+                'author' => '<your name>'
+            )
+        )
+    ),
+    'relative_path_generator_class_name' => '\Net\Bazzline\StaticPageGenerator\RelativePathGeneratorFactory'
+);
