@@ -37,7 +37,6 @@ $environment->execute(
     function (CommandLineEnvironment $environment) {
         //@todo make following things configurable
         //  * relative path generator
-        //  * entry template
         $command        = new Net\Bazzline\Component\Command\Command();
         $configuration  = require_once (__DIR__ . '/../configuration/configuration.php');
         $uuid           = Ramsey\Uuid\Uuid::uuid4()->toString();

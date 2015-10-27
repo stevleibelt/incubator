@@ -8,6 +8,7 @@
         "michelf/php-markdown": "^1.5",
         "ramsey/uuid": "^3.0",
         "net_bazzline/php_component_command": "^1.2",
-        "net_bazzline/php_component_template": "^3.0"
+        "net_bazzline/php_component_template": "^3.0",
+        "net_bazzline/php_component_locator_generator": "^2.0"
     }
 }

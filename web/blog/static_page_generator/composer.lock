@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2f52b8aa2c59d4fec400912fab724f0f",
+    "hash": "704d7c67a64e21a3addede5905e904c1",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -390,6 +390,57 @@
             "time": "2015-10-10 21:25:39"
         },
         {
+            "name": "net_bazzline/php_component_code_generator",
+            "version": "1.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_code_generator.git",
+                "reference": "a599f95e4f6dbbc421750e3aaebc4508ff8315ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_code_generator/zipball/a599f95e4f6dbbc421750e3aaebc4508ff8315ae",
+                "reference": "a599f95e4f6dbbc421750e3aaebc4508ff8315ae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\CodeGenerator": "source/",
+                    "Test\\Net\\Bazzline\\Component\\CodeGenerator": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.et",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom component to generate php code for class, file, method, property, constant, documentation",
+            "keywords": [
+                "free as in freedom",
+                "generator",
+                "lgpl",
+                "php",
+                "php code generator",
+                "phpdoc"
+            ],
+            "time": "2015-08-21 10:28:32"
+        },
+        {
             "name": "net_bazzline/php_component_command",
             "version": "1.2.0",
             "source": {
@@ -443,6 +494,121 @@
                 "wrapper"
             ],
             "time": "2015-09-18 12:45:48"
+        },
+        {
+            "name": "net_bazzline/php_component_locator_generator",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_locator_generator.git",
+                "reference": "5ac6ff2beadbadfe3e6893bb0874044fc24893b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_locator_generator/zipball/5ac6ff2beadbadfe3e6893bb0874044fc24893b2",
+                "reference": "5ac6ff2beadbadfe3e6893bb0874044fc24893b2",
+                "shasum": ""
+            },
+            "require": {
+                "net_bazzline/php_component_cli_arguments": "1.1.*",
+                "net_bazzline/php_component_code_generator": "1.1.*",
+                "net_bazzline/php_component_command": "1.2.*",
+                "net_bazzline/php_component_process_pipe": "1.0.*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.5.0",
+                "mockery/mockery": "0.9.4",
+                "phpunit/phpunit": "4.8.*"
+            },
+            "bin": [
+                "bin/net_bazzline_generate_locator"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Locator": "source/",
+                    "Test\\Net\\Bazzline\\Component\\Locator": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.et",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Free as in freedom php component that generates configuration based hard coded locator",
+            "keywords": [
+                "array",
+                "configuration",
+                "free as in freedom",
+                "generator",
+                "lgpl",
+                "locator",
+                "php",
+                "propel",
+                "schema.xml"
+            ],
+            "time": "2015-09-19 09:09:27"
+        },
+        {
+            "name": "net_bazzline/php_component_process_pipe",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_process_pipe.git",
+                "reference": "38b817f08eb8110302bfa67d1e729582084cfe6d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_process_pipe/zipball/38b817f08eb8110302bfa67d1e729582084cfe6d",
+                "reference": "38b817f08eb8110302bfa67d1e729582084cfe6d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.4",
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Example": "example/",
+                    "Net\\Bazzline\\Component\\ProcessPipe": "source/",
+                    "Test\\Net\\Bazzline\\Component\\ProcessPipe": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.et",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom php component process to easy up creation of pipe process in php",
+            "keywords": [
+                "component",
+                "free as in freedom",
+                "lgpl",
+                "php",
+                "pipe",
+                "process",
+                "process pipe"
+            ],
+            "time": "2015-08-28 12:18:43"
         },
         {
             "name": "net_bazzline/php_component_template",
