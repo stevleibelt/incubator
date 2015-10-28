@@ -1,6 +1,8 @@
-@@header@@
+@@metadata@@
 section:
 author: {author}
 tags:
-@@body@@
+@@subject@@
+<put in your headline>
+@@content@@
 <put in your content here>
