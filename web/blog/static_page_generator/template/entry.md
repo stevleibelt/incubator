@@ -2,7 +2,7 @@
 section:
 author: {author}
 tags:
-@@subject@@
+@@subjectt@@
 <put in your headline>
 @@content@@
 <put in your content here>
