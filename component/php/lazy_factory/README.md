@@ -10,10 +10,11 @@
 # links
 
 * https://en.wikipedia.org/wiki/Lazy_initialization
+* https://github.com/Ocramius/ProxyManager
+* https://github.com/Ocramius/LazyMap
 * https://dzone.com/articles/practical-php-patterns/practical-php-patterns-lazy
 * https://github.com/zetis/DP_LazyLoadingFactoryRIP
 * https://github.com/watoki/factory
-* https://github.com/Ocramius/LazyMap
 * https://github.com/lytc/sloths
 * http://www.w3programmers.com/lazy-initialization-design-patterns-in-php/
 * https://stackoverflow.com/questions/15786317/redundant-getters-and-setters-in-lazy-loading-and-dependency-injection-pattern
