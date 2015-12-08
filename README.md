@@ -23,6 +23,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Translation Database](https://github.com/stevleibelt/incubator/tree/master/general/translationDatabase)
 * [My Two Cents for a Microframework](https://github.com/stevleibelt/incubator/tree/master/general/microFramework)
 * [Canary for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/canary)
+* [idea](https://github.com/stevleibelt/incubator/tree/master/component/php/lazy_factory)
 * [ZF Module for easy usage of propel 1.x](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel)
 * [SFTP Module for ZF2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_sftp)
 * [API Token Authentication for ZF 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_api_token_authentication)
