@@ -7,10 +7,10 @@ abstract class AbstractOption
     /**
      * @return int
      */
-    abstract public function identifier()
+    abstract public function identifier();
 
     /**
      * @return mixed
      */
-    abstract protected function value();
+    abstract public function value();
 }

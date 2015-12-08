@@ -11,13 +11,31 @@ The main approach of this component is to create a free as in freedom basic curl
 $factory    = new Net\Bazzline\Component\Curl\RequestFactory();
 $request    = $factory->create();
 
-$response = $request->get('http://www.foo.bar');
+$url        = 'http://www.foo.bar';
+
+//begin of fluent interface draft
+$request->requestAsPost()
+    ->onTheUrl($url)
+    ->withTheData($data)
+    ->withTheHeaderLine($headLine)
+    ->withTheOption($option)
+    ->withResponseModifier($modifier)
+    ->andFetchTheResponse();
+//end of fluent interface draft
+
+$response = $request->get($url);
 
 echo $response->content();
 echo $response->contentType();
 echo $response->errorCode();
 echo $response->statusCode();
 ```
+
+# To do's
+
+* add [dispatcher](https://github.com/jyggen/curl/blob/master/src/Dispatcher.php) or HandlerGenerator/HandlerFactory
+    * https://secure.php.net/manual/en/function.curl-init.php
+    * https://secure.php.net/manual/en/function.curl-multi-init.php
 
 # Links
 
