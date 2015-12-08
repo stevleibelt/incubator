@@ -1,0 +1,25 @@
+<?php
+
+namespace Net\Bazzline\Component\Curl;
+
+class RequestFactory
+{
+    /**
+     * @return Request
+     */
+    public function create()
+    {
+        $request = new Request();
+
+        $request->addHeaderLine('Content-Type: application/x-www-form-urlencoded; charset=UTF-8');
+
+        $request->addOption(CURLOPT_AUTOREFERER, true);
+        $request->addOption(CURLOPT_CONNECTTIMEOUT, 5);
+        $request->addOption(CURLOPT_FOLLOWLOCATION, true);
+        $request->addOption(CURLOPT_MAXREDIRS, 10);
+        $request->addOption(CURLOPT_TIMEOUT, 10);
+        $request->addOption(CURLOPT_USERAGENT, 'net/bazzline curl component for php');
+
+        return $request;
+    }
+}
