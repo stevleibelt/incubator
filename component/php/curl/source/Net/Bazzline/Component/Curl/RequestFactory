@@ -2,6 +2,9 @@
 
 namespace Net\Bazzline\Component\Curl;
 
+use Net\Bazzline\Component\Curl\HeadLine\ContentTypeFormUtf8;
+use Net\Bazzline\Component\Curl\Option\Timeout;
+
 class RequestFactory
 {
     /**
@@ -11,14 +14,17 @@ class RequestFactory
     {
         $request = new Request();
 
-        $request->addHeaderLine('Content-Type: application/x-www-form-urlencoded; charset=UTF-8');
+        $request->addHeaderLine(new ContentTypeFormUtf8());
 
-        $request->addOption(CURLOPT_AUTOREFERER, true);
-        $request->addOption(CURLOPT_CONNECTTIMEOUT, 5);
-        $request->addOption(CURLOPT_FOLLOWLOCATION, true);
-        $request->addOption(CURLOPT_MAXREDIRS, 10);
-        $request->addOption(CURLOPT_TIMEOUT, 10);
-        $request->addOption(CURLOPT_USERAGENT, 'net/bazzline curl component for php');
+        //demonstration of using an object as option
+        $request->addOption(new Timeout(10));
+
+        //demonstration of using predefined constants
+        $request->addRawOption(CURLOPT_AUTOREFERER, true);
+        $request->addRawOption(CURLOPT_CONNECTTIMEOUT, 5);
+        $request->addRawOption(CURLOPT_FOLLOWLOCATION, true);
+        $request->addRawOption(CURLOPT_MAXREDIRS, 10);
+        $request->addRawOption(CURLOPT_USERAGENT, 'net/bazzline curl component for php');
 
         return $request;
     }

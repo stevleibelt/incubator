@@ -2,6 +2,9 @@
 
 namespace Net\Bazzline\Component\Curl;
 
+use Net\Bazzline\Component\Curl\HeadLine\AbstractHeadLine;
+use Net\Bazzline\Component\Curl\Option\AbstractOption;
+
 class Request
 {
     //@see: http://developer.sugarcrm.com/2013/08/30/doing-put-and-delete-with-curl-in-php/
@@ -17,10 +20,26 @@ class Request
     private $options = array();
 
     /**
+     * @param AbstractHeadLine $line
+     */
+    public function addHeaderLine(AbstractHeadLine $line)
+    {
+        $this->headerLines[] = $line->line();
+    }
+
+    /**
+     * @param AbstractOption $option
+     */
+    public function addOption(AbstractOption $option)
+    {
+        $this->options[$option->identifier()] = $option->value();
+    }
+
+    /**
      * @param string $key - CURLOPT_* - see: http://php.net/manual/en/function.curl-setopt.php
      * @param mixed $value
      */
-    public function addOption($key, $value)
+    public function addRawOption($key, $value)
     {
         $this->options[$key] = $value;
     }
@@ -28,17 +47,9 @@ class Request
     /**
      * @param string $key - CURLOPT_* - see: http://php.net/manual/en/function.curl-setopt.php
      */
-    public function addHeaderLine($line)
+    public function addRawHeaderLine($line)
     {
         $this->headerLines[] = $line;
-    }
-
-    /**
-     * @param int $seconds
-     */
-    public function setTimeout($seconds)
-    {
-        $this->options[CURLOPT_TIMEOUT] = (int) $seconds;
     }
 
     /**
