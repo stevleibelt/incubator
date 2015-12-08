@@ -2,9 +2,8 @@
 
 namespace Net\Bazzline\Component\Curl;
 
-use Net\Bazzline\Component\Curl\HeadLine\AbstractHeadLine;
-use Net\Bazzline\Component\Curl\Option\AbstractOption;
-use Net\Bazzline\Component\Curl\ResponseModifier\ResponseModifierInterface;
+use Net\Bazzline\Component\Curl\HeadLine\HeadLineInterface;
+use Net\Bazzline\Component\Curl\Option\OptionInterface;
 
 class Request
 {
@@ -19,9 +18,6 @@ class Request
     private $defaultHeaderLines = array();
 
     /** @var array */
-    private $defaultModifiers = array();
-
-    /** @var array */
     private $defaultOptions = array();
 
     /** @var array */
@@ -30,44 +26,39 @@ class Request
     /** @var array */
     private $options = array();
 
-    /** @var array */
-    private $modifiers = array();
-
     /**
      * @param array $defaultHeaderLines
-     * @param array $defaultModifiers
      * @param array $defaultOptions
      */
-    public function __construct(array $defaultHeaderLines = array(), array $defaultModifiers = array(), array $defaultOptions = array())
+    public function __construct(array $defaultHeaderLines = array(), array $defaultOptions = array())
     {
         $this->defaultHeaderLines   = $defaultHeaderLines;
-        $this->defaultModifiers     = $defaultModifiers;
         $this->defaultOptions       = $defaultOptions;
     }
 
-
-
+    /**
+     * @return Request
+     */
     public function __clone()
     {
         return new self(
             $this->defaultHeaderLines,
-            $this->defaultModifiers,
             $this->defaultOptions
         );
     }
 
     /**
-     * @param AbstractHeadLine $line
+     * @param HeadLineInterface $line
      */
-    public function addHeaderLine(AbstractHeadLine $line)
+    public function addHeaderLine(HeadLineInterface $line)
     {
         $this->headerLines[] = $line->line();
     }
 
     /**
-     * @param AbstractOption $option
+     * @param OptionInterface $option
      */
-    public function addOption(AbstractOption $option)
+    public function addOption(OptionInterface $option)
     {
         $this->options[$option->identifier()] = $option->value();
     }
@@ -176,12 +167,10 @@ class Request
     public function reset($alsoTheDefaults = false)
     {
         $this->headerLines  = array();
-        $this->modifiers    = array();
         $this->options      = array();
 
         if ($alsoTheDefaults) {
             $this->defaultHeaderLines   = array();
-            $this->defaultModifiers     = array();
             $this->defaultOptions       = array();
         }
     }
@@ -195,7 +184,6 @@ class Request
     private function execute($url, $data, $method)
     {
         $headerLines    = array_merge($this->headerLines, $this->defaultHeaderLines);
-        $modifiers      = array_merge($this->modifiers, $this->defaultModifiers);
         $options        = array_merge($this->options, $this->defaultOptions);
 
         $headerLines[]  = 'X-HTTP-Method-Override: ' . $method; //@see: http://tr.php.net/curl_setopt#109634
@@ -204,7 +192,6 @@ class Request
         $options[CURLOPT_HEADER]            = 1;
         $options[CURLOPT_HTTPHEADER]        = $headerLines;
         //@todo needed we want to work with json?
-        //@todo add modifiers or allow hooks for data
         $options[CURLOPT_POSTFIELDS]        = http_build_query($data); //@see: http://www.lornajane.net/posts/2009/putting-data-fields-with-php-curl
         $options[CURLOPT_RETURNTRANSFER]    = true;
 
@@ -217,22 +204,6 @@ class Request
         //@todo investigate if needed http://www.ivangabriele.com/php-how-to-use-4-methods-delete-get-post-put-in-a-restful-api-client-using-curl/
 
         $response       = new Response($content, $contentType, $errorCode, $statusCode);
-        $response       = $this->modifyByModifiers($response, $modifiers);
-
-        return $response;
-    }
-
-    /**
-     * @param Response $response
-     * @param array|ResponseModifierInterface[] $collectionOfModifiers
-     * @return Response
-     */
-    private function modifyByModifiers(Response $response, array $collectionOfModifiers)
-    {
-        foreach ($collectionOfModifiers as $modifier) {
-            /** @var ResponseModifierInterface $modifier */
-            $response = $modifier->modify($response);
-        }
 
         return $response;
     }

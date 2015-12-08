@@ -2,7 +2,7 @@
 
 namespace Net\Bazzline\Component\Curl\Option;
 
-class Timeout extends AbstractOption
+class Timeout implements OptionInterface
 {
     /** @var int $seconds */
     private $seconds;

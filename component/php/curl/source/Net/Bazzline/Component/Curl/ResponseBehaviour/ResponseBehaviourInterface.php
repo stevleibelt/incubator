@@ -3,15 +3,17 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2015-12-08
  */
-namespace Net\Bazzline\Component\Curl\ResponseModifier;
+namespace Net\Bazzline\Component\Curl\ResponseBehaviour;
 
+use Exception;
 use Net\Bazzline\Component\Curl\Response;
 
-interface ResponseModifierInterface
+interface ResponseBehaviourInterface
 {
     /**
      * @param Response $response
      * @return Response
+     * @throws Exception
      */
-    public function modify(Response $response);
+    public function behave(Response $response);
 }

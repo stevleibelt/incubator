@@ -2,7 +2,7 @@
 
 namespace Net\Bazzline\Component\Curl\HeadLine;
 
-abstract class AbstractHeadLine
+abstract class AbstractHeadLine implements HeadLineInterface
 {
     /**
      * @return string

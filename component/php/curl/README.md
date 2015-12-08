@@ -14,7 +14,7 @@ $request    = $factory->create();
 $url        = 'http://www.foo.bar';
 
 //begin of fluent interface draft
-$request->requestAsPost()
+$request->usePost()
     ->onTheUrl($url)
     ->withTheData($data)
     ->withTheHeaderLine($headLine)
@@ -38,6 +38,8 @@ echo $response->statusCode();
     * https://secure.php.net/manual/en/function.curl-multi-init.php
 
 # Links
+
+* http://resttesttest.com/
 
 ## Other Components Available
 
