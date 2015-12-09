@@ -18,14 +18,18 @@ $builder    = $factory->create();
 $url        = 'http://www.foo.bar';
 $timeout    = new Timeout(10);  //set the timeout to 10 seconds
 
-$builder->usePost()
+$response = $builder->usePost()
     ->onTheUrl($url)
     ->withTheData($data)
     //->withTheHeaderLine($headLine)    //add the headline you want
     ->withTheOption($timeout)
     //->withResponseModifier($modifier) //add the response modifier you want
     ->andFetchTheResponse();
-//end of fluent interface draft
+
+echo $response->content();
+echo $response->contentType();
+echo $response->errorCode();
+echo $response->statusCode();
 ```
 
 ## By Using The Request
