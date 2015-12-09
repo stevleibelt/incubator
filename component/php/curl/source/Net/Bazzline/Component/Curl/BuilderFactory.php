@@ -22,7 +22,7 @@ class BuilderFactory implements FactoryInterface
      */
     protected function getRequest()
     {
-        $factory    = new RequestFactory();
+        $factory = new RequestFactory();
 
         return $factory->create();
     }

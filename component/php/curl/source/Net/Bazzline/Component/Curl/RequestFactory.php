@@ -2,7 +2,7 @@
 
 namespace Net\Bazzline\Component\Curl;
 
-use Net\Bazzline\Component\Curl\HeadLine\ContentTypeFormUtf8;
+use Net\Bazzline\Component\Curl\HeadLine\ContentTypeIsFormUtf8;
 use Net\Bazzline\Component\Curl\Option\Timeout;
 
 class RequestFactory implements FactoryInterface
@@ -12,9 +12,9 @@ class RequestFactory implements FactoryInterface
      */
     public function create()
     {
-        $request = new Request();
+        $request = new Request(new Dispatcher());
 
-        $request->addHeaderLine(new ContentTypeFormUtf8());
+        $request->addHeaderLine(new ContentTypeIsFormUtf8());
 
         //demonstration of using an object as option
         $request->addOption(new Timeout(10));

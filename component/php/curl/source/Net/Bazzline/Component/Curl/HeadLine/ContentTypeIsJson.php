@@ -2,7 +2,7 @@
 
 namespace Net\Bazzline\Component\Curl\HeadLine;
 
-class ContentTypeJson extends AbstractContentType
+class ContentTypeIsJson extends AbstractContentType
 {
     /**
      * @return string

@@ -21,6 +21,7 @@ $timeout    = new Timeout(10);  //set the timeout to 10 seconds
 $response = $builder->usePost()
     ->onTheUrl($url)
     ->withTheData($data)
+    ->withTheParameters(array('descendingOrderBy' => 'id')
     //->withTheHeaderLine($headLine)    //add the headline you want
     ->withTheOption($timeout)
     //->withResponseModifier($modifier) //add the response modifier you want
@@ -48,11 +49,23 @@ echo $response->errorCode();
 echo $response->statusCode();
 ```
 
+# Terms
+
+* Dispatcher
+* Request
+    * HeadLine
+    * Options
+* Response
+    * ResponseBehaviour
+* Builder
+
 # To do's
 
 * add [dispatcher](https://github.com/jyggen/curl/blob/master/src/Dispatcher.php) or HandlerGenerator/HandlerFactory
     * https://secure.php.net/manual/en/function.curl-init.php
     * https://secure.php.net/manual/en/function.curl-multi-init.php
+* add RequestModifier
+    * e.g. for adding the JsonModifier which converts the data into a json, adds the fitting ContentType etc.
 
 # Links
 

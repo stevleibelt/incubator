@@ -20,6 +20,9 @@ class Request
     /** @var array */
     private $defaultOptions = array();
 
+    /** @var Dispatcher */
+    private $dispatcher;
+
     /** @var array */
     private $headerLines = array();
 
@@ -27,13 +30,15 @@ class Request
     private $options = array();
 
     /**
+     * @param Dispatcher $dispatcher
      * @param array $defaultHeaderLines
      * @param array $defaultOptions
      */
-    public function __construct(array $defaultHeaderLines = array(), array $defaultOptions = array())
+    public function __construct(Dispatcher $dispatcher, array $defaultHeaderLines = array(), array $defaultOptions = array())
     {
         $this->defaultHeaderLines   = $defaultHeaderLines;
         $this->defaultOptions       = $defaultOptions;
+        $this->dispatcher           = $dispatcher;
     }
 
     /**
@@ -42,6 +47,7 @@ class Request
     public function __clone()
     {
         return new self(
+            $this->dispatcher,
             $this->defaultHeaderLines,
             $this->defaultOptions
         );
@@ -82,27 +88,30 @@ class Request
 
     /**
      * @param string $url
-     * @param array $data
+     * @param array $parameters
      * @return Response
      */
-    public function get($url, array $data)
+    public function get($url, array $parameters = array())
     {
         return $this->execute(
-            $url . '?'. http_build_query($data),
-            null,
+            $url,
+            $parameters,
+            array(),
             self::HTTP_METHOD_GET
         );
     }
 
     /**
      * @param string $url
+     * @param array $parameters
      * @param array $data
      * @return Response
      */
-    public function post($url, array $data)
+    public function post($url, array $parameters = array(), array $data = array())
     {
         return $this->execute(
             $url,
+            $parameters,
             $data,
             self::HTTP_METHOD_POST
         );
@@ -110,13 +119,15 @@ class Request
 
     /**
      * @param string $url
+     * @param array $parameters
      * @param array $data
      * @return Response
      */
-    public function put($url, array $data)
+    public function put($url, array $parameters = array(), array $data = array())
     {
         return $this->execute(
             $url,
+            $parameters,
             $data,
             self::HTTP_METHOD_PUT
         );
@@ -124,13 +135,15 @@ class Request
 
     /**
      * @param string $url
+     * @param array $parameters
      * @param array $data
      * @return Response
      */
-    public function patch($url, array $data)
+    public function patch($url, array $parameters = array(), array $data = array())
     {
         return $this->execute(
             $url,
+            $parameters,
             $data,
             self::HTTP_METHOD_PATCH
         );
@@ -138,13 +151,15 @@ class Request
 
     /**
      * @param string $url
+     * @param array $parameters
      * @return Response
      */
-    public function delete($url)
+    public function delete($url, array $parameters = array())
     {
         return $this->execute(
             $url,
-            null,
+            $parameters,
+            array(),
             self::HTTP_METHOD_DELETE
         );
     }
@@ -178,12 +193,14 @@ class Request
 
     /**
      * @param string $url
+     * @param null|array $parameters
      * @param null|array $data
      * @param string $method
      * @return Response
      */
-    private function execute($url, $data, $method)
+    private function execute($url, array $parameters = null, array $data = null, $method)
     {
+        $dispatcher     = $this->dispatcher;
         $headerLines    = array_merge($this->headerLines, $this->defaultHeaderLines);
         $options        = array_merge($this->options, $this->defaultOptions);
 
@@ -196,15 +213,13 @@ class Request
         $options[CURLOPT_POSTFIELDS]        = http_build_query($data); //@see: http://www.lornajane.net/posts/2009/putting-data-fields-with-php-curl
         $options[CURLOPT_RETURNTRANSFER]    = true;
 
-        $handler        = curl_init($url);
-        curl_setopt_array($handler, $options);
-        $content        = curl_exec($handler);
-        $contentType    = curl_getinfo($handler, CURLINFO_CONTENT_TYPE);
-        $errorCode      = curl_errno($handler);
-        $statusCode     = curl_getinfo($handler, CURLINFO_HTTP_CODE);
-        //@todo investigate if needed http://www.ivangabriele.com/php-how-to-use-4-methods-delete-get-post-put-in-a-restful-api-client-using-curl/
+        if (!is_null($parameters)) {
+            $urlWithParameters = '?'. http_build_query($parameters);
+        } else {
+            $urlWithParameters = $url;
+        }
 
-        $response       = new Response($content, $contentType, $errorCode, $statusCode);
+        $response = $dispatcher->dispatch($urlWithParameters, $options);
 
         return $response;
     }

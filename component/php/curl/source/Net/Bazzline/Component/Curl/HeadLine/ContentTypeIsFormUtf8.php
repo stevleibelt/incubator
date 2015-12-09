@@ -2,7 +2,7 @@
 
 namespace Net\Bazzline\Component\Curl\HeadLine;
 
-class ContentTypeFormUtf8 extends AbstractContentType
+class ContentTypeIsFormUtf8 extends AbstractContentType
 {
     /**
      * @return string

@@ -7,8 +7,9 @@ namespace Net\Bazzline\Component\Curl;
 
 use Exception;
 use Net\Bazzline\Component\Curl\HeadLine\HeadLineInterface;
-use Net\Bazzline\Component\Curl\HeadLine\ContentTypeJson;
+use Net\Bazzline\Component\Curl\HeadLine\ContentTypeIsJson;
 use Net\Bazzline\Component\Curl\Option\OptionInterface;
+use Net\Bazzline\Component\Curl\ResponseBehaviour\ConvertJsonToArrayBehaviour;
 use Net\Bazzline\Component\Curl\ResponseBehaviour\ResponseBehaviourInterface;
 use RuntimeException;
 
@@ -31,6 +32,9 @@ class Builder
 
     /** @var int */
     private $method;
+
+    /** @var array */
+    private $parameters;
 
     /** @var Request */
     private $request;
@@ -59,9 +63,11 @@ class Builder
     public function andFetchTheResponse()
     {
         $asJson     = $this->asJson;
+        /** @var ResponseBehaviourInterface[] $behaviours */
         $behaviours = array_merge($this->responseBehaviours, $this->defaultResponseBehaviours);
         $data       = $this->data;
         $method     = $this->method;
+        $parameters = $this->parameters;
         $request    = $this->request;
         $url        = $this->url;
 
@@ -71,19 +77,19 @@ class Builder
 
         switch ($method) {
             case self::METHOD_DELETE:
-                $response = $request->delete($url);
+                $response = $request->delete($url, $parameters);
                 break;
             case self::METHOD_GET:
-                $response = $request->get($url);
+                $response = $request->get($url, $parameters);
                 break;
             case self::METHOD_PATCH:
-                $response = $request->patch($url, $data);
+                $response = $request->patch($url, $parameters, $data);
                 break;
             case self::METHOD_POST:
-                $response = $request->post($url, $data);
+                $response = $request->post($url, $parameters, $data);
                 break;
             case self::METHOD_PUT:
-                $response = $request->put($url, $data);
+                $response = $request->put($url, $parameters, $data);
                 break;
             default:
                 throw new RuntimeException(
@@ -104,7 +110,8 @@ class Builder
     public function asJson()
     {
         $this->asJson = true;
-        $this->request->addHeaderLine(new ContentTypeJson());
+        $this->request->addHeaderLine(new ContentTypeIsJson());
+        $this->responseBehaviours = new ConvertJsonToArrayBehaviour();
 
         return $this;
     }
@@ -115,10 +122,11 @@ class Builder
      */
     public function reset($alsoTheDefaults = false)
     {
-        $this->asJson   = false;
-        $this->data     = null;
+        $this->asJson       = false;
+        $this->data         = null;
+        $this->parameters   = array();
         $this->request->reset($alsoTheDefaults);
-        $this->url      = null;
+        $this->url          = null;
 
         return $this;
     }
@@ -163,6 +171,17 @@ class Builder
     public function withTheOption(OptionInterface $option)
     {
         $this->request->addOption($option);
+
+        return $this;
+    }
+
+    /**
+     * @param array $parameters
+     * @return $this
+     */
+    public function withTheParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
 
         return $this;
     }
