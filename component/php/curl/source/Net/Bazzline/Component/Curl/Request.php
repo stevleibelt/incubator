@@ -82,12 +82,13 @@ class Request
 
     /**
      * @param string $url
+     * @param array $data
      * @return Response
      */
-    public function get($url)
+    public function get($url, array $data)
     {
         return $this->execute(
-            $url,
+            $url . '?'. http_build_query($data),
             null,
             self::HTTP_METHOD_GET
         );

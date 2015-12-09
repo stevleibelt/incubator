@@ -7,11 +7,12 @@ namespace Net\Bazzline\Component\Curl;
 
 use Exception;
 use Net\Bazzline\Component\Curl\HeadLine\HeadLineInterface;
+use Net\Bazzline\Component\Curl\HeadLine\ContentTypeJson;
 use Net\Bazzline\Component\Curl\Option\OptionInterface;
 use Net\Bazzline\Component\Curl\ResponseBehaviour\ResponseBehaviourInterface;
 use RuntimeException;
 
-class CurlFacade
+class Builder
 {
     const METHOD_DELETE = 0;
     const METHOD_GET    = 1;
@@ -19,11 +20,14 @@ class CurlFacade
     const METHOD_POST   = 3;
     const METHOD_PUT    = 4;
 
-    /** @var array|ResponseBehaviourInterface[] */
-    private $behaviours;
+    /** @var string */
+    private $asJson;
 
     /** @var string */
     private $data;
+
+    /** @var array|ResponseBehaviourInterface[] */
+    private $defaultResponseBehaviours;
 
     /** @var int */
     private $method;
@@ -31,15 +35,21 @@ class CurlFacade
     /** @var Request */
     private $request;
 
+    /** @var array|ResponseBehaviourInterface[] */
+    private $responseBehaviours;
+
     /** @var string */
     private $url;
 
     /**
      * @param Request $request
+     * @param array|ResponseBehaviourInterface[] $defaultResponseBehaviours
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, array $defaultResponseBehaviours = array())
     {
-        $this->request = $request;
+        $this->defaultResponseBehaviours    = $defaultResponseBehaviours;
+        $this->request                      = $request;
+        $this->reset();
     }
 
     /**
@@ -48,11 +58,16 @@ class CurlFacade
      */
     public function andFetchTheResponse()
     {
-        $behaviours = $this->behaviours;
+        $asJson     = $this->asJson;
+        $behaviours = array_merge($this->responseBehaviours, $this->defaultResponseBehaviours);
         $data       = $this->data;
         $method     = $this->method;
         $request    = $this->request;
         $url        = $this->url;
+
+        if ($asJson) {
+            $data = json_encode($data);
+        }
 
         switch ($method) {
             case self::METHOD_DELETE:
@@ -84,12 +99,26 @@ class CurlFacade
     }
 
     /**
+     * @return $this
+     */
+    public function asJson()
+    {
+        $this->asJson = true;
+        $this->request->addHeaderLine(new ContentTypeJson());
+
+        return $this;
+    }
+
+    /**
      * @param bool $alsoTheDefaults
      * @return $this
      */
     public function reset($alsoTheDefaults = false)
     {
+        $this->asJson   = false;
+        $this->data     = null;
         $this->request->reset($alsoTheDefaults);
+        $this->url      = null;
 
         return $this;
     }
@@ -144,7 +173,7 @@ class CurlFacade
      */
     public function withTheResponseBehaviour(ResponseBehaviourInterface $behaviour)
     {
-        $this->behaviours = $behaviour;
+        $this->responseBehaviours = $behaviour;
 
         return $this;
     }

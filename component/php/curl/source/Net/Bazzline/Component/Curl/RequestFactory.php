@@ -5,10 +5,10 @@ namespace Net\Bazzline\Component\Curl;
 use Net\Bazzline\Component\Curl\HeadLine\ContentTypeFormUtf8;
 use Net\Bazzline\Component\Curl\Option\Timeout;
 
-class RequestFactory
+class RequestFactory implements FactoryInterface
 {
     /**
-     * @return Request
+     * @return mixed|Request
      */
     public function create()
     {

@@ -1,27 +1,40 @@
 # Simple Curl Wrapper Component for PHP
 
-This is not a component developed to replace [guzzle]().
+This is not a component developed to replace [guzzle](http://docs.guzzlephp.org/en/latest/).
 
 The main approach of this component is to create a free as in freedom basic curl object oriented component.
 
 # Example
 
+## By Using The Builder
+
+```php
+//it is always good to ship the component with a factory to easy up usage
+use Net\Bazzline\Component\Curl\BuilderFactory;
+use Net\Bazzline\Component\Curl\Option\Timeout;
+
+$factory    = new BuilderFactory();
+$builder    = $factory->create();
+$url        = 'http://www.foo.bar';
+$timeout    = new Timeout(10);  //set the timeout to 10 seconds
+
+$builder->usePost()
+    ->onTheUrl($url)
+    ->withTheData($data)
+    //->withTheHeaderLine($headLine)    //add the headline you want
+    ->withTheOption($timeout)
+    //->withResponseModifier($modifier) //add the response modifier you want
+    ->andFetchTheResponse();
+//end of fluent interface draft
+```
+
+## By Using The Request
+
 ```php
 //it is always good to ship the component with a factory to easy up usage
 $factory    = new Net\Bazzline\Component\Curl\RequestFactory();
 $request    = $factory->create();
-
 $url        = 'http://www.foo.bar';
-
-//begin of fluent interface draft
-$request->usePost()
-    ->onTheUrl($url)
-    ->withTheData($data)
-    ->withTheHeaderLine($headLine)
-    ->withTheOption($option)
-    ->withResponseModifier($modifier)
-    ->andFetchTheResponse();
-//end of fluent interface draft
 
 $response = $request->get($url);
 
