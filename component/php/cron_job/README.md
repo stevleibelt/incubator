@@ -8,57 +8,67 @@
 * observer is asking the subjects if a run is needed and provides information about
     * currently running crons
     * current time
-    * history (?)
+    * repository (?)
+* sobject could either be a
+    * http call
+    * process call
 
 ## general
 
-* one cron job to chance the token every hour
+* one cron job to change the token every hour
 
 ## database tables
 
-### cron
+### cronjobs
 
 * id
 * name
-* parent_id
 * run_at_day
 * run_at_hour
 * run_at_minute
 * run_at_second
 * token / access_key
-* maximum_execution_time
+* maximum_execution_time_in_seconds
+* maximum_memory_usage_in_megabytes
 
-### cron_queue
+### cronjob_queue
 
 * id
-* cron_id
+* cronjob_id
 * next_run_at
 * status (0 offline, 1 running, 2 error)
+
+### cronjob_process_list
+
+* id
+* cronjob_id
+* started_at
 
 ### cron history / log
 
 * id
-* cron_id
+* cronjob_id
+* started_at
 * finished_at
 
 ## implementation / code
 
-* CronAbstract
+* AbstractCronjob
     * calculateNextRunAt()
 
-* CronObserver
-    * getAvailableCronJobsByInterval
-    * checkAvailableCronJobs
+* Observer
+    * getAvailableCronjobsByInterval
+    * checkAvailableCrojJobs
         * has a valid finished_at
-        * parent is not running
         * allowed process time is not reached
-    * call available cron jobs
+        * allowed memory usage is not reached
+    * call available cronjobs
 
-* CronSubject
+* Subject
     * validate if token is valid
     * write log / history
-    * load fitting cron job / factory
-    * execute cron job
+    * load fitting cronjob / factory
+    * execute cronjob
 
 # links
 
