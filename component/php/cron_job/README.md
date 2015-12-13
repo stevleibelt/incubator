@@ -1,5 +1,15 @@
 # cron job php component
 
+## idea
+
+* one observer
+* observer is running each minute (or faster if wished)
+* observer is fetching entries with "next_run_at" <= now()
+* observer is asking the subjects if a run is needed and provides information about
+    * currently running crons
+    * current time
+    * history (?)
+
 ## general
 
 * one cron job to chance the token every hour
