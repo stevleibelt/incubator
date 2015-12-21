@@ -9,6 +9,9 @@ This free as in freedom project delivers you [mbtest](http://www.mbtest.org) imp
 * one restricted endpoint to save a test suite
 * one restricted endpoint to load a test suite
 * support faker or alice configuration
+* create a client with a builder approach to easy up test data creation (credits to [dirk](https://github.com/dirkwinkhaus/)
+    * Builder::create()->theResource('foo/bar')->withTheParameters(array('id' => 3))->shouldBeCalledTwoTimes()->byUsingTheMethodGet()->andReturnTheResponseCode(201)
+* environment (e.g. microservice name and api version) defined via header (with this approach, we can test multiple instances by one mbtest)
 
 # names for "imposter"
 
