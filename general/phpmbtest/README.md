@@ -8,9 +8,11 @@ This free as in freedom project delivers you [mbtest](http://www.mbtest.org) imp
 * one restricted endpoint to create test doubles for a test suite
 * one restricted endpoint to save a test suite
 * one restricted endpoint to load a test suite
+* support faker or alice configuration
 
 # names for "imposter"
 
+* http faker
 * imposter
 * hustler
 * swindler
