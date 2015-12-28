@@ -8,7 +8,7 @@
 ####
 
 LOCAL_ROOT_PATH='/home/<user name>'
-LOCAL_LOG_PATH=$LOCAL_ROOT_PATH'/data/log/crontab/lets_encrypt'
+LOCAL_LOG_PATH=$LOCAL_ROOT_PATH'/<path to your log files>'
 LOCAL_ACCOUNT='<your.domain.tld>'
 
 letsencrypt-renewer --config-dir $LOCAL_ROOT_PATH'/.config/letsencrypt --logs-dir '$LOCAL_ROOT_PATH'/.config/letsencrypt/logs --work-dir '$LOCAL_ROOT_PATH'/tmp/' 1&2>$LOCAL_LOG_PATH
