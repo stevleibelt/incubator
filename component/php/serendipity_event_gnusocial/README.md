@@ -13,6 +13,7 @@
 * use HTTP_Request
 * implement error handling (see [facebook](https://github.com/s9y/additional_plugins/blob/master/serendipity_event_facebook/serendipity_event_facebook.php) plugin)
 * implement url shortener
+    * http://qttr.at/yourls-api.php?format=jsonp&action=shorturl&signature=b6afeec983&url=http%3A%2F%2Ffoo.bar.de%2Fadasdasdasdasdasd
 * implement correct way of building the full qualified link
 
 # links
