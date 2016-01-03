@@ -1,0 +1,6 @@
+{
+    "require": {
+        "swiftmailer/swiftmailer": "^5.4",
+        "net_bazzline/php_component_toolbox": "^1.8"
+    }
+}
