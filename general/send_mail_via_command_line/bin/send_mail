@@ -103,7 +103,7 @@ $environment->execute(
 
         //@see: http://swiftmailer.org/docs/messages.html
         $message    = Swift_Message::newInstance();
-        $transport  = Swift_SmtpTransport::newInstance();
+        $transport  = Swift_SendmailTransport::newInstance('/usr/lib/sendmail -t');
         $mailer     = Swift_Mailer::newInstance($transport);
 
         if ($isHtml) {
