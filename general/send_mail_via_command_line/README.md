@@ -3,5 +3,5 @@
 ## Usage
 
 ```
-send_mail --from="foo@bar" --to="foo@bar" --subject="subject" [--content="foo bar"] [--html-content-from-file="path/to/file.html] [--text-content-from-file="path/to/file.txt"]
+send_mail "<email address of the sender>" "<email address of the recipient>" "<subject>" "<path/to/the/file.txt|html>" [-v|--verbose]
 ```

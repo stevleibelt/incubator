@@ -4,9 +4,116 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3ac3ac59c4ede00e2009e87ec69909c3",
-    "content-hash": "b08176272ba1a304ad9da0d050be4a05",
+    "hash": "7a8ae3a3e4181f9814506647a8cb917a",
+    "content-hash": "05e3195fad341bffcf73a1d6f61e5f5d",
     "packages": [
+        {
+            "name": "net_bazzline/php_component_cli_arguments",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_cli_arguments.git",
+                "reference": "debf4510fa2cf3cb9aaea2f93a4789152e39df16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_cli_arguments/zipball/debf4510fa2cf3cb9aaea2f93a4789152e39df16",
+                "reference": "debf4510fa2cf3cb9aaea2f93a4789152e39df16",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.8.16"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Cli\\Arguments": "source/",
+                    "Test\\Net\\Bazzline\\Component\\Cli\\Arguments": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom php cli command thin wrapper to easy up usage and validation of command line arguments",
+            "keywords": [
+                "argument",
+                "cli",
+                "flag",
+                "free as in freedom",
+                "getopt",
+                "lgpl",
+                "php",
+                "shell",
+                "trigger"
+            ],
+            "time": "2015-12-01 16:14:39"
+        },
+        {
+            "name": "net_bazzline/php_component_cli_environment",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_cli_environment.git",
+                "reference": "91a045b6d04b50645c1d71f763af6bdb5a5b767a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_cli_environment/zipball/91a045b6d04b50645c1d71f763af6bdb5a5b767a",
+                "reference": "91a045b6d04b50645c1d71f763af6bdb5a5b767a",
+                "shasum": ""
+            },
+            "require": {
+                "net_bazzline/php_component_cli_arguments": "1.3.0",
+                "net_bazzline/php_component_toolbox": ">=1.5",
+                "php": ">=5.3.3"
+            },
+            "bin": [
+                "bin/net_bazzline_create_executable_command_line_file"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Net\\Bazzline\\Component\\Cli\\Environment": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "free as in freedom command line environment for php creating lean command line executable files",
+            "keywords": [
+                "cli",
+                "command line",
+                "component",
+                "console",
+                "environment",
+                "free as in freedom",
+                "lean",
+                "lgpl",
+                "php"
+            ],
+            "time": "2015-12-01 16:51:56"
+        },
         {
             "name": "net_bazzline/php_component_toolbox",
             "version": "1.8.0",

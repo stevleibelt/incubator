@@ -1,0 +1,124 @@
+#!/bin/env php
+<?php
+/**
+ * @author net_bazzline_create_executable_command_line_file
+ * @since 2016-01-11
+ */
+
+//begin of including composer autoload.php
+$possiblePathsToComposerAutoloadFile = array(
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+);
+$pathToAutoloadFileNotFound = true;
+$pathToAutoloadFile         = null;
+foreach ($possiblePathsToComposerAutoloadFile as $path) {
+    if (file_exists($path)) {
+        $pathToAutoloadFile         = $path;
+        $pathToAutoloadFileNotFound = false;
+        break;
+    }
+}
+if ($pathToAutoloadFileNotFound) {
+    echo 'could not find composer autoload.php, no composer installed?' . PHP_EOL;
+    exit(1);
+}
+
+require_once $pathToAutoloadFile;
+//end of including composer autoload.php
+
+use Net\Bazzline\Component\Cli\Environment\CommandLineEnvironment;
+
+$environment    = new CommandLineEnvironment($argv);
+//@todo
+//  add attachment
+//  add --bcc list
+//  add --cc list
+$usage          = basename(__FILE__) . ' "<email address of the sender>" "<email address of the recipient>" "<subject>" "<path/to/the/file.txt|html>" [-v|--verbose]';
+
+$environment->execute(
+    function (CommandLineEnvironment $environment) {
+        //begin of input validation
+        $values = $environment->getArguments()->getValues();
+        $invalidNumberOfArgumentsProvided = (count($values) !== 4);
+
+        if ($invalidNumberOfArgumentsProvided) {
+            throw new InvalidArgumentException(
+                'invalid number of arguments provided'
+            );
+        }
+
+        $filePath   = $values[3];
+        $recipient  = $values[1];
+        $sender     = $values[0];
+        $subject    = $values[2];
+
+        $environment->outputIfVerbosityIsEnabled(
+            array(
+                'file path: ' . $filePath,
+                'recipient: ' . $recipient,
+                'sender: ' . $sender,
+                'subject: ' . $subject
+            )
+        );
+
+        $invalidFilePathProvided    = (!is_file($filePath));
+        $invalidRecipientProvided   = (!filter_var($recipient, FILTER_VALIDATE_EMAIL));
+        $invalidSenderProvided      = (!filter_var($sender, FILTER_VALIDATE_EMAIL));
+        $invalidSubjectProvided     = (strlen($subject) < 1);
+
+        if ($invalidFilePathProvided) {
+            throw new InvalidArgumentException(
+                'invalid file path provided'
+            );
+        }
+
+        if ($invalidRecipientProvided) {
+            throw new InvalidArgumentException(
+                'invalid recipient provided'
+            );
+        }
+
+        if ($invalidSenderProvided) {
+            throw new InvalidArgumentException(
+                'invalid sender provided'
+            );
+        }
+
+        if ($invalidSubjectProvided) {
+            throw new InvalidArgumentException(
+                'invalid subject provided'
+            );
+        }
+        //end of input validation
+
+        //begin of business logic
+        $file       = new SplFileObject($filePath);
+        $content    = $file->fread($file->getSize());
+        $isHtml     = (strtolower($file->getExtension()) === 'html');
+
+        $environment->outputIfVerbosityIsEnabled('file content: ' . $content);
+        $environment->outputIfVerbosityIsEnabled(($isHtml ? 'send it as html mail' : 'send it as text mail'));
+
+        //@see: http://swiftmailer.org/docs/messages.html
+        $message    = Swift_Message::newInstance();
+        $transport  = Swift_SmtpTransport::newInstance();
+        $mailer     = Swift_Mailer::newInstance($transport);
+
+        if ($isHtml) {
+            $message->setContentType('text/html');
+        } else {
+            $message->setContentType('text/plain');
+        }
+
+        $message->setBody($content);
+        $message->setTo(array($recipient));
+        $message->setFrom(array($sender));
+        $message->setSubject($subject);
+
+        $mailer->send($message);
+        //end of business logic
+    },
+    $usage
+);
