@@ -35,13 +35,16 @@ $environment    = new CommandLineEnvironment($argv);
 //  add attachment
 //  add --bcc list
 //  add --cc list
-$usage          = basename(__FILE__) . ' "<email address of the sender>" "<email address of the recipient>" "<subject>" "<path/to/the/file.txt|html>" [-v|--verbose]';
+$usage          = basename(__FILE__) . ' "<email address of the sender>" "<email address of the recipient>" "<subject>" "<path/to/the/file.txt|html>" [--bcc="<email address of an blind carbon copy - can be used multiple times>"] [--cc="<email address of a carbon copy - can be used multiple times>"] [-v|--verbose]';
 
 $environment->execute(
     function (CommandLineEnvironment $environment) {
         //begin of input validation
-        $values = $environment->getArguments()->getValues();
-        $invalidNumberOfArgumentsProvided = (count($values) !== 4);
+        $arguments                          = $environment->getArguments();
+        $listOfBlindCarbonCopy              = $arguments->getList('bcc');
+        $listOfCarbonCopy                   = $arguments->getList('cc');
+        $values                             = $arguments->getValues();
+        $invalidNumberOfArgumentsProvided   = (count($values) !== 4);
 
         if ($invalidNumberOfArgumentsProvided) {
             throw new InvalidArgumentException(
@@ -91,6 +94,33 @@ $environment->execute(
                 'invalid subject provided'
             );
         }
+
+        $hasListOfBlindCarbonCopy   = (!is_null($listOfBlindCarbonCopy));
+        $hasListOfCarbonCopy        = (!is_null($listOfCarbonCopy));
+
+        if ($hasListOfBlindCarbonCopy) {
+            foreach ($listOfBlindCarbonCopy as $blindCarbonCopy)  {
+                $invalidCarbonCopyProvided = (!filter_var($carbonCopy, FILTER_VALIDATE_EMAIL));
+
+                if ($invalidCarbonCopyProvided) {
+                    throw new InvalidArgumentException(
+                        'invalid blind carbon copy provided'
+                    );
+                }
+            }
+        }
+
+        if ($hasListOfCarbonCopy) {
+            foreach ($listOfCarbonCopy as $carbonCopy)  {
+                $invalidCarbonCopyProvided = (!filter_var($carbonCopy, FILTER_VALIDATE_EMAIL));
+
+                if ($invalidCarbonCopyProvided) {
+                    throw new InvalidArgumentException(
+                        'invalid carbon copy provided'
+                    );
+                }
+            }
+        }
         //end of input validation
 
         //begin of business logic
@@ -105,6 +135,18 @@ $environment->execute(
         $message    = Swift_Message::newInstance();
         $transport  = Swift_SendmailTransport::newInstance('/usr/lib/sendmail -t');
         $mailer     = Swift_Mailer::newInstance($transport);
+
+        if ($hasListOfBlindCarbonCopy) {
+            foreach ($listOfBlindCarbonCopy as $blindCarbonCopy) {
+                $message->addBcc($blindCarbonCopy);
+            }
+        }
+
+        if ($hasListOfCarbonCopy) {
+            foreach ($listOfCarbonCopy as $carbonCopy) {
+                $message->addCc($carbonCopy);
+            }
+        }
 
         if ($isHtml) {
             $message->setContentType('text/html');
