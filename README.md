@@ -12,7 +12,6 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [VCF to CSV Converter for Android VCS Files](https://github.com/stevleibelt/incubator/tree/master/general/vcf_to_csv_converter)
 * [mbtest for php](https://github.com/stevleibelt/incubator/tree/master/general/phpmbtest)
 * [Release Creation Helper](https://github.com/stevleibelt/incubator/tree/master/general/release_creation_helper)
-* [Sent Mail Via Command Line](https://github.com/stevleibelt/incubator/tree/master/general/send_mail_via_command_line)
 * [My Two Cents for a Microframework](https://github.com/stevleibelt/incubator/tree/master/general/microFramework)
 * [Test Management](https://github.com/stevleibelt/incubator/tree/master/general/testManagement)
 * [Tag Cloud](https://github.com/stevleibelt/incubator/tree/master/general/fileManager)
@@ -41,4 +40,5 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Countdown / Timer Generator via GIF-creation written in PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/gif_image_countdown_creator)
 * [Profiler for Propel, PDO and plain sql](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel_and_mysql_and_pdo_profiler)
 * [API Token Authentication for ZF 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_api_token_authentication)
+* [HTTP Endpoint for php](https://github.com/stevleibelt/incubator/tree/master/component/php/http_endpoint)
 * [Signal Component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/signals)
