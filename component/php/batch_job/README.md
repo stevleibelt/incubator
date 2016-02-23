@@ -11,6 +11,7 @@ The component will easy up handling of batch job processes.
     * split the amount of work into batches
     * start the right amount of jobs
 * everything is stored in queues
+* a "poisoned" queue entry is moved automatically into an *error_queue* after <number of retries>
 * for version 1.2
     * event based to hook easy up extending:
         * implement a support for a "current processor list / process list"
@@ -60,6 +61,7 @@ The component will easy up handling of batch job processes.
     * item_id
     * status_id
     * instance_id
+    * number_of_tries
     * created_at
     * processed_at
 
