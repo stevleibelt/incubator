@@ -29,6 +29,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [SFTP Module for ZF2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_sftp)
 * [API Token Authentication for ZF 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_api_token_authentication)
 * [Event](https://github.com/stevleibelt/incubator/tree/master/component/php/event)
+* [Basic cli standard streams object wrapper for php](https://github.com/stevleibelt/incubator/tree/master/component/php/standard_streams)
 * [Batch Job component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/batch_job)
 * [Database Based Translation For Zend Framework 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_database_translation)
 * [serendipity event plugin to push new entry headline into your gnu social stream](https://github.com/stevleibelt/incubator/tree/master/component/php/serendipity_event_gnusocial)
