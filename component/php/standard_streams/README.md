@@ -48,8 +48,8 @@ if ($lineContainsFoobar) {
 
 ## Executable Examples
 
-* [Delete Request](https://github.com/bazzline/php_component_cli_standard_streams/blob/master/example/error_my_input)
-* [Get Request](https://github.com/bazzline/php_component_cli_standard_streams/blob/master/example/output_my_input)
+* [Error my input](https://github.com/bazzline/php_component_cli_standard_streams/blob/master/example/error_my_input)
+* [Output my input](https://github.com/bazzline/php_component_cli_standard_streams/blob/master/example/output_my_input)
 
 # Install
 
