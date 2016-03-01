@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @author: stev leibelt <artodeto@bazzline.net>
+ * @since: 2016-02-29
+ */
+
+use Net\Bazzline\Component\Cli\StandardStreams\InputOutputFactory;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$factory    = new InputOutputFactory();
+$io         = $factory->createNewInstance();
+
+$io->writeToTheOutput('simple write what you want and hit enter');
+
+$content = $io->readFromTheInput();
+
+$io->writeToTheOutput('read string with length of ' . strlen($content) . ' characters');
+$io->writeToTheError('content was: ', false);
+$io->writeToTheError('"' . $content . '"');

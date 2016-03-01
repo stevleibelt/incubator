@@ -1,0 +1,39 @@
+{
+    "name": "net_bazzline/php_component_cli_standard_streams",
+    "description": "free as in freedom simple object oriented standard stream component (YACSC - yet another command line stream component)",
+    "keywords": [
+        "bazzline",
+        "psr",
+        "psr-4",
+        "stream",
+        "oop",
+        "yet another",
+        "stderr",
+        "stdin",
+        "stdout",
+        "lgpl",
+        "free as in freedom",
+        "yacsc",
+        "php5",
+        "php7"
+    ],
+    "type": "library",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "license": "LGPL-3.0",
+    "authors": [
+        {
+            "name": "Stev Leibelt",
+            "email": "artodeto@bazzline.net",
+            "homepage": "https://artodeto.bazzline.net",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Net\\Bazzline\\Component\\Cli\\StandardStreams\\": "source/"
+        }
+    }
+}

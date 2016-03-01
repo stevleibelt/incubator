@@ -3,7 +3,7 @@
  * @author: stev leibelt <artodeto@bazzline.net>
  * @since: 2016-02-29
  */
-namespace Net\Bazzline\Component\CLI\StandardStreams;
+namespace Net\Bazzline\Component\Cli\StandardStreams\Write;
 
 interface WriterInterface
 {
