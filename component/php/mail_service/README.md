@@ -15,6 +15,14 @@ The used mail library should be layerd by a generic interface design. Either sea
 * /enqueue-mails
     * PUT - adds collection of mails to the queue
 * /mail/<id>
+    * DELETE - removes mail
     * GET - returns status
 * /validate-mail
     * PUT - validates an email address
+
+# Unordered Ideas
+
+* wheneever you add something, you need to get back a unique id
+* if you call an endpoint with that id, you get back a status (success|error)
+* if needed and allowed
+    * 24 tables will be created at 23:00 in the format "yyyy_mm_dd_hh_00_00"
