@@ -61,9 +61,12 @@ The component will easy up handling of batch job processes.
     * item_id
     * status_id
     * instance_id
+    * priority
+    * delay_in_milliseconds
     * number_of_tries
     * created_at
     * processed_at
+    * lable
 
 ### **Enqueuer** / Loader / Stocker / Restocker / Refiller
 
@@ -259,5 +262,7 @@ The component will easy up handling of batch job processes.
 
 # links
 
+* [iron_mq_php](https://github.com/iron-io/iron_mq_php)
+* [iron_worker_php](https://github.com/iron-io/iron_worker_php)
 * [SlmQueue](https://github.com/juriansluiman/SlmQueue)
 * [Leptir](https://github.com/Backplane/Leptir)
