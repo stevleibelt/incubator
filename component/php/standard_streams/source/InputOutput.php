@@ -31,32 +31,44 @@ class InputOutput
     /**
      * @return string
      */
-    public function readFromTheInput()
+    public function readFromInput()
     {
         return $this->input->read();
     }
 
     /**
      * @param string $string
-     * @param boolean $asLine
      * @return int
      */
-    public function writeToTheError($string, $asLine = true)
+    public function writeLineToError($string)
     {
-        return ($asLine)
-            ? $this->error->writeLine($string)
-            : $this->error->write($string);
+        return $this->error->writeLine($string);
     }
 
     /**
      * @param string $string
-     * @param boolean $asLine
      * @return int
      */
-    public function writeToTheOutput($string, $asLine = true)
+    public function writeLineToOutput($string)
     {
-        return ($asLine)
-            ? $this->output->writeLine($string)
-            : $this->output->write($string);
+        return $this->output->writeLine($string);
+    }
+
+    /**
+     * @param string $string
+     * @return int
+     */
+    public function writeToError($string)
+    {
+        return $this->error->write($string);
+    }
+
+    /**
+     * @param string $string
+     * @return int
+     */
+    public function writeToOutput($string)
+    {
+        return $this->output->write($string);
     }
 }

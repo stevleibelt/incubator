@@ -33,16 +33,16 @@ $factory    = new InputOutputFactory();
 $io         = $factory->createNewInstance();
 
 //write a line to the output
-$io->writeToTheOutput('write something and hit enter');
-$io->writeToTheOutput('    "foobar" is not allowed');
+$io->writeLineToOutput('write something and hit enter');
+$io->writeLineToOutput('    "foobar" is not allowed');
 
-$line               = $io->readFromTheInput();
+$line               = $io->readFromInput();
 $lineContainsFoobar = ($line == 'foobar');
 
 if ($lineContainsFoobar) {
-    $io->writeToTheError('invalid content entered');
+    $io->writeLineToError('invalid content entered');
 } else {
-    $io->writeToTheOutput('you entered following content: "' . $content . '"');
+    $io->writeLineToOutput('you entered following content: "' . $content . '"');
 }
 ```
 
@@ -74,7 +74,7 @@ if ($lineContainsFoobar) {
 * upcomming
     * answer the question if a pre- and post- hook system is usefull
         * implement pre- and post- hooks
-* [0.1.0](https://github.com/bazzline/php_component_cli_standard_streams/tree/0.1.0) - released at 02.03.2016
+* [0.1.0](https://github.com/bazzline/php_component_cli_standard_streams/tree/0.1.0) - released at 0x.03.2016
     * initial plumber release
 
 # Final Words

@@ -12,10 +12,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $factory    = new InputOutputFactory();
 $io         = $factory->createNewInstance();
 
-$io->writeToTheOutput('simple write what you want and hit enter');
+$io->writeToOutput('simple write what you want and hit enter');
 
-$content = $io->readFromTheInput();
+$content = $io->readFromInput();
 
-$io->writeToTheOutput('read string with length of ' . strlen($content) . ' characters');
-$io->writeToTheError('content was: ', false);
-$io->writeToTheError('"' . $content . '"');
+$io->writeLineToOutput('read string with length of ' . strlen($content) . ' characters');
+$io->writeToError('content was: ');
+$io->writeLineToError('"' . $content . '"');
