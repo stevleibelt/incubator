@@ -10,14 +10,14 @@ The used mail library should be layerd by a generic interface design. Either sea
 
 # Api
 
-* /enqueue-mail
+* /enqueue-email
     * PUT - adds mail to the queue
-* /enqueue-mails
+* /enqueue-emails
     * PUT - adds collection of mails to the queue
-* /mail/<id>
+* /email/<id>
     * DELETE - removes mail
-    * GET - returns status
-* /validate-mail
+    * GET - returns collection of available mails with their status, ?filterById and filterByStatus could be supported
+* /validate-email-address
     * PUT - validates an email address
 
 # Unordered Ideas
