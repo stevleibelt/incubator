@@ -124,6 +124,10 @@ The component will easy up handling of batch job processes.
 
 ## Unsorted Ideas
 
+* basic rest api like (HTTP METHOD)                                                                                     
+    * /api/batch (GET, PUT, DELETE) - create or delete a new batch, PUT returns a new id, GET returns list with current availabe batches and their current status 
+    * /api/batch/{id} (POST, DELETE) - add items to a batch or delete the whole batch                                   
+    * /api/process-batch (POST) - start a batch processing with mandatory parameters "successful callback url", "error callback url" and "batch id" 
 * use uuid to generate batch ids
     * [uuid - lootils](http://packagist.org/packages/lootils/uuid) (v5, and unit tests)
     * [uuid - laravel](http://packagist.org/packages/webpatser/laravel-uuid) (v5, no unit tests) (v5, no unit tests)
