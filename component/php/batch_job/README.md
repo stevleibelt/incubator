@@ -125,6 +125,14 @@ The component will easy up handling of batch job processes.
 ## Unsorted Ideas
 
 * use rest, message broker or bus system to transfer the data
+    * input validation and process triggering should be independen of the way the data flows into the system
+    * messag broker or bus system are command based with listeners like
+        * create-batch
+        * delete-batch
+        * list-available-batches
+        * add-item-to-batch
+        * delete-item-from-batch
+        * process-batch
     * basic rest api like (HTTP METHOD)                                                                                     
         * /api/batch (GET, PUT, DELETE) - create or delete a new batch, PUT returns a new id, GET returns list with current availabe batches and their current status 
         * /api/batch/{id} (POST, DELETE) - add items to a batch or delete the whole batch                                   
