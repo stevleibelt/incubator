@@ -31,12 +31,12 @@ The used mail library should be layerd by a generic interface design. Either sea
     "attachments": {
         //@todo
     },
-    "blind_carbon_copies": {
+    "blind_carbon_copies": [
         {
             "address": "<address>",
             "name": "<name>"
         }
-    },
+    ],
     "carbon_copies": {
         {
             "address": "<address>",
