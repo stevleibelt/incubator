@@ -31,13 +31,13 @@ The used mail library should be layerd by a generic interface design. Either sea
     "attachments": {
         //@todo
     },
-    "blind_carbon_copy": {
+    "blind_carbon_copies": {
         {
             "address": "<address>",
             "name": "<name>"
         }
     },
-    "carbon_copy": {
+    "carbon_copies": {
         {
             "address": "<address>",
             "name": "<name>"
@@ -98,6 +98,31 @@ class Mail
 
     /** @var Address */
     private $to;
+}
+
+//@todo find better name
+class Address
+{
+    /** @var string */
+    private $eMail;
+
+    /** @var string */
+    private $name;
+}
+
+class Content
+{
+    /** @var string */
+    private $html;
+
+    /** @var string */
+    private $text;
+}
+
+class Subject
+{
+    /** @var string */
+    private $subject;
 }
 ```
 
