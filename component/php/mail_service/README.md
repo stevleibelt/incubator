@@ -45,7 +45,7 @@ The used mail library should be layerd by a generic interface design. Either sea
     },
     "content": {
         "html": "<html>",
-        "text": "<text>",
+        "text": "<text>"
     },
     "error_to": {
         "address": "<address>",
