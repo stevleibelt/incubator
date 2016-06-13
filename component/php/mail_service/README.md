@@ -24,6 +24,51 @@ The used mail library should be layerd by a generic interface design. Either sea
 
 * collection of objects
 
+## As JSON
+
+```javascript
+{
+    "attachments": {
+        //@todo
+    },
+    "blind_carbon_copy": {
+        {
+            "address": "<address>",
+            "name": "<name>"
+        }
+    },
+    "carbon_copy": {
+        {
+            "address": "<address>",
+            "name": "<name>"
+        }
+    },
+    "content": {
+        "html": "<html>",
+        "text": "<text>",
+    },
+    "error_to": {
+        "address": "<address>",
+        "name": "<name>"
+    },
+    "from": {
+        "address": "<address>",
+        "name": "<name>"
+    },
+    "reply_to": {
+        "address": "<address>",
+        "name": "<name>"
+    },
+    "subject": "<subject>",
+    "to": {
+        "address": "<address>",
+        "name": "<name>"
+    }
+}
+```
+
+## As PHP Class
+
 ```php
 class Mail
 {
@@ -31,16 +76,22 @@ class Mail
     private $attachments;
 
     /** @var Address[] */
-    private $bccs;
+    private $blindCarbonCopies;
 
     /** @var Address[] */
-    private $ccs;
+    private $carbonCopies;
 
     /** @var Content */
     private $content;
 
     /** @var Address */
+    private $errorTo;
+
+    /** @var Address */
     private $from;
+
+    /** @var Address */
+    private $replyTo;
 
     /** @var Subject */
     private $subject;
