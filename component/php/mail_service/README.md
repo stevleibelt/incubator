@@ -75,33 +75,33 @@ class Mail
     /** @var Attachment[] */
     private $attachments;
 
-    /** @var Address[] */
+    /** @var Contact[] */
     private $blindCarbonCopies;
 
-    /** @var Address[] */
+    /** @var Contact[] */
     private $carbonCopies;
 
     /** @var Content */
     private $content;
 
-    /** @var Address */
+    /** @var Contact */
     private $errorTo;
 
-    /** @var Address */
+    /** @var Contact */
     private $from;
 
-    /** @var Address */
+    /** @var Contact */
     private $replyTo;
 
     /** @var Subject */
     private $subject;
 
-    /** @var Address */
+    /** @var Contact */
     private $to;
 }
 
 //@todo find better name
-class Address
+class Contact
 {
     /** @var string */
     private $eMail;
