@@ -136,7 +136,10 @@ class Subject
 * support multiple shippers
 * create serializer and deserlializer for a mail (Abstract, JSON, XML)
 * add reactphp or [ppm](https://github.com/marcj/php-pm)
+    * [react2psr7](https://mwop.net/blog/2016-04-17-react2psr7.html)
 * add support for redis or something else to speed up database access
+* [read](https://zendframework.github.io/zend-expressive/cookbook/common-prefix-for-routes/)
+* [use a profiler](https://zendframework.github.io/zend-expressive/cookbook/debug-toolbars/)
 
 # Roadmap
 
