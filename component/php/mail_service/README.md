@@ -128,6 +128,7 @@ class Subject
 
 # Unordered Ideas
 
+* use [programmatic expressive](https://mwop.net/blog/2016-05-16-programmatic-expressive.html) approach
 * wheneever you add something, you need to get back a unique id
 * if you call an endpoint with that id, you get back a status (success|error)
 * if needed and allowed
