@@ -2,6 +2,12 @@
 
 ## idea
 
+* queue based
+* rest based
+* optional server status client if you have multiple servers
+
+# depcrecated
+
 * one observer
 * observer is running each minute (or faster if wished)
 * observer is fetching entries with "next_run_at" <= now()
