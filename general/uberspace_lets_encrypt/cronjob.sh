@@ -24,5 +24,11 @@ LOCAL_KEY_PATH=$LOCAL_ROOT_PATH'/.config/letsencrypt/live/'$LOCAL_ACCOUNT'/privk
 LOCAL_CERTIFICATE_PATH=$LOCAL_ROOT_PATH'/.config/letsencrypt/live/'$LOCAL_ACCOUNT'/cert.pem'
 #end of parameters for uperspace-prepare-certificate
 
-letsencrypt-renewer --config-dir $LOCAL_CONFIGURATION_PATH --logs-dir $LOCAL_LOGGING_PATH --work-dir $LOCAL_WORING_PATH &>$LOCAL_LOG_PATH
-uberspace-prepare-certificate -k $LOCAL_KEY_PATH -c $LOCAL_CERTIFICATE_PATH &>>$LOCAL_LOG_PATH
+#begin of certification renewal
+#letsencrypt-renewer --config-dir $LOCAL_CONFIGURATION_PATH --logs-dir $LOCAL_LOGGING_PATH --work-dir $LOCAL_WORING_PATH &>$LOCAL_LOG_PATH
+letsencrypt certonly
+#end of certification renewal
+#begin of importing certificates
+#uberspace-prepare-certificate -k $LOCAL_KEY_PATH -c $LOCAL_CERTIFICATE_PATH &>>$LOCAL_LOG_PATH
+uberspace-add-certificate -k $LOCAL_KEY_PATH -c $LOCAL_CERTIFICATE_PATH &>>$LOCAL_LOG_PATH
+#begin of importing certificates

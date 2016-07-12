@@ -7,7 +7,7 @@ The component will easy up handling of batch job processes.
 * it is independent how a batch job is executed (url call, process forking, background process, threads or think about something else)
 * the component defines the manager and internal components, all you need to do is to plug in your business logic
 * the manager takes care of:
-    * createNewInstance the amount of work
+    * create the amount of work
     * split the amount of work into batches
     * start the right amount of jobs
 * everything is stored in queues
@@ -61,9 +61,12 @@ The component will easy up handling of batch job processes.
     * item_id
     * status_id
     * instance_id
+    * priority
+    * delay_in_milliseconds
     * number_of_tries
     * created_at
     * processed_at
+    * lable
 
 ### **Enqueuer** / Loader / Stocker / Restocker / Refiller
 
@@ -121,10 +124,19 @@ The component will easy up handling of batch job processes.
 
 ## Unsorted Ideas
 
-* basic rest api like (HTTP METHOD)
-    * /api/batch (GET, PUT, DELETE) - create or delete a new batch, PUT returns a new id, GET returns list with current availabe batches and their current status 
-    * /api/batch/{id} (POST, DELETE) - add items to a batch or delete the whole batch
-    * /api/process-batch (POST) - start a batch processing with mandatory parameters "successful callback url", "error callback url" and "batch id"
+* use rest, message broker or bus system to transfer the data
+    * input validation and process triggering should be independen of the way the data flows into the system
+    * messag broker or bus system are command based with listeners like
+        * create-batch
+        * delete-batch
+        * list-available-batches
+        * add-item-to-batch
+        * delete-item-from-batch
+        * process-batch
+    * basic rest api like (HTTP METHOD)
+        * /api/batch (GET, PUT, DELETE) - create or delete a new batch, PUT returns a new id, GET returns list with current availabe batches and their current status
+        * /api/batch/{id} (POST, DELETE) - add items to a batch or delete the whole batch
+        * /api/process-batch (POST) - start a batch processing with mandatory parameters "successful callback url", "error callback url" and "batch id"
 * use uuid to generate batch ids
     * [uuid - lootils](http://packagist.org/packages/lootils/uuid) (v5, and unit tests)
     * [uuid - laravel](http://packagist.org/packages/webpatser/laravel-uuid) (v5, no unit tests) (v5, no unit tests)
@@ -256,11 +268,13 @@ The component will easy up handling of batch job processes.
 * avoid adding a status column to your queue table
     * this would increase complexity
     * reduced scalability since the dbms has to tackle multiple status (on more index to maintain, increased number of consumers)
-    * createNewInstance a queue table for each new step/task/process
+    * create a queue table for each new step/task/process
     * combine them by the naming like "item_validation_data_queue", "item_validation_url_reachable_queue"
     * if you need to deal with status, implement a StatusManager/StateMachine that calculates the right status
 
 # links
 
+* [iron_mq_php](https://github.com/iron-io/iron_mq_php)
+* [iron_worker_php](https://github.com/iron-io/iron_worker_php)
 * [SlmQueue](https://github.com/juriansluiman/SlmQueue)
 * [Leptir](https://github.com/Backplane/Leptir)

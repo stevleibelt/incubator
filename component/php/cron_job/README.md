@@ -2,6 +2,26 @@
 
 ## idea
 
+* queue based
+* rest or bus based
+* cronjobs with dependencies
+* cronjobs with retry on error
+* optional client library for
+    * client status
+    * dealing with multiple system where cronjob could be executed
+    * dealing with per system based cronjobs
+    * execute scripts via shell
+* optional web ui
+    * CRUD dealing with cronjobs
+    * real time status output
+    * history
+* alerts
+    * email
+    * irc
+    * slack(?)
+
+# depcrecated
+
 * one observer
 * observer is running each minute (or faster if wished)
 * observer is fetching entries with "next_run_at" <= now()
