@@ -23,6 +23,7 @@ The used mail library should be layerd by a generic interface design. Either sea
 # What is a Mail?
 
 * collection of objects
+* see [wikipedia](https://en.wikipedia.org/wiki/Email#Message_header)
 
 ## As JSON
 
@@ -55,6 +56,7 @@ The used mail library should be layerd by a generic interface design. Either sea
         "address": "<address>",
         "name": "<name>"
     },
+    "message_id": "<message id>",
     "reply_to": {
         "address": "<address>",
         "name": "<name>"
@@ -63,7 +65,13 @@ The used mail library should be layerd by a generic interface design. Either sea
     "to": {
         "address": "<address>",
         "name": "<name>"
-    }
+    },
+    "x_headers": [
+        {
+            "name": "<name>",
+            "value": "<value>"
+        }
+    ]
 }
 ```
 
