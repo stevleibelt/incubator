@@ -33,6 +33,32 @@ class Transition
 class State
 {
 }
+
+interface StateNameStepSequenceProcessor
+{
+    /** @return string */
+    public function getInitialStateName();
+
+    /** @return string */
+    public function getCurrentStateName();
+
+    //@todo also an option to but "step back" and "step forward" into interfaces
+    public function goToTheNextStateName();
+
+    public function goToThePreviousStateName();
+
+    /** @return bool */
+    public function thereIsAnUpcomingStateNameAvailable();
+
+    /** @return bool */
+    public function thereIsAPreviousStateNameAvailable();
+
+    /** @return bool */
+    public function weCanGoToTheNextStateName();
+
+    /** @return bool */
+    public function weCanGoToThePreviousStateName();
+}
 ```
 
 ## Links
