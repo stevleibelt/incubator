@@ -61,6 +61,13 @@ interface StateNameStepSequenceProcessor
 }
 ```
 
+## Additional Thoughts
+
+* we are working with descriptive state names instead of integers to ease up debugging.
+* the StateMachine is using a StateNameProcessor internally
+* implement a locking if you need to be sure this state machine exists only once in your system
+* extend from the generic event and build your own immutable event to use expressive methods like `$myEvent->getMyProperty()`
+
 ## Links
 
 * https://en.wikipedia.org/wiki/Finite-state_machine
