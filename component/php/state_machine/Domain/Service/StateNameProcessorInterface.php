@@ -10,15 +10,17 @@ interface StateNameProcessorInterface
     /** @return string */
     public function getCurrentStateName();
 
-    public function moveToTheInitialStateName();
+    public function moveBackward();
 
-    public function moveToTheNextStateName();
+    public function moveForward();
 
-    public function moveToThePreviousStateName();
+    public function moveToTheBeginning();
+
+    public function moveToTheEnd();
 
     /** @return bool */
-    public function weCanGoToTheNextStateName();
+    public function weCanMoveBackward();
 
     /** @return bool */
-    public function weCanGoToThePreviousStateName();
+    public function weCanMoveForward();
 }

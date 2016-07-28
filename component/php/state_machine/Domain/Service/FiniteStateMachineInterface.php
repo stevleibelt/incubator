@@ -8,19 +8,19 @@ namespace Net\Bazzline\StateMachine\Domain\Service;
 interface FiniteStateMachineInterface
 {
     /** @return boolean */
-    public function currentStateIsFinished();
-
-    /** @return boolean */
     public function currentStateIsTheFirstState();
 
     /** @return boolean */
     public function currentStateIsTheLastState();
 
-    public function switchToTheFirstState();
+    /** @return boolean */
+    public function isOnTheMove();
 
-    public function switchToTheLastState();
+    public function moveToTheFirstState();
 
-    public function switchToTheNextState();
+    public function moveToTheLastState();
 
-    public function switchToThePreviousState();
+    public function moveToTheNextState();
+
+    public function moveToThePreviousState();
 }

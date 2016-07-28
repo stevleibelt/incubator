@@ -37,7 +37,7 @@ class State
 interface StateNameStepSequenceProcessor
 {
     /** @return string */
-    public function getInitialStateName();
+    public function fromStateName();
 
     /** @return string */
     public function getCurrentStateName();

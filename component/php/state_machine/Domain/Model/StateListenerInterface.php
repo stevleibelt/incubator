@@ -13,11 +13,11 @@ interface StateListenerInterface
      */
     public function isListenOne(EventInterface $event);
 
-    public function startTransitionPhase(EventInterface $event);
+    public function executeTransition(EventInterface $event);
 
     /** @return boolean */
-    public function transitionPhaseIsFinished();
+    public function isNotInTheTransit();
 
     /** @return boolean */
-    public function transitionPhaseIsStillOngoing();
+    public function isInTheTransit();
 }

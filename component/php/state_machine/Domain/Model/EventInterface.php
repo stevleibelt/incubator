@@ -7,39 +7,28 @@ namespace Net\Bazzline\StateMachine\Domain\Model;
 
 interface EventInterface
 {
-    /** @return null|int */
-    public function getNextStateName();
+    /** @return int */
+    public function fromStateName();
 
-    /** @return null|int */
-    public function getPreviousStateName();
-
-    /** @return boolean */
-    public function hasNextStateName();
-
-    /** @return boolean */
-    public function hasPreviousStateName();
+    /** @return int */
+    public function toStateName();
 
     /**
-     * @param string $firstStateName
+     * @param $fromStateName
+     * @param $toStateName
      * @return self - same class, different object since this is an immutable object
      */
-    public function moveToFirstStateName($firstStateName);
+    public function move($fromStateName, $toStateName);
 
     /**
-     * @param string $lastStateName
+     * @param string $toStateName
      * @return self - same class, different object since this is an immutable object
      */
-    public function moveToLastStateName($lastStateName);
+    public function moveForward($toStateName);
 
     /**
-     * @param string $nextStateName
+     * @param string $toStateName
      * @return self - same class, different object since this is an immutable object
      */
-    public function moveToNextStateName($nextStateName);
-
-    /**
-     * @param string $previousStateName
-     * @return self - same class, different object since this is an immutable object
-     */
-    public function moveToPreviousStateName($previousStateName);
+    public function moveBackward($toStateName);
 }
