@@ -10,9 +10,11 @@ The used mail library should be layerd by a generic interface design. Either sea
 
 # Api
 
-* /enqueue-email
+* /send-a-email
+    * PUT - sends mail a mail
+* /enqueue-a-email
     * PUT - adds mail to the queue
-* /enqueue-emails
+* /enqueue-multiple-emails
     * PUT - adds collection of mails to the queue
 * /email/<id>
     * DELETE - removes mail
