@@ -10,6 +10,8 @@ The used mail library should be layerd by a generic interface design. Either sea
 
 # Api
 
+* /archive-a-email
+    * PUT - archives a mail
 * /send-a-email
     * PUT - sends mail a mail
 * /enqueue-a-email
@@ -19,6 +21,10 @@ The used mail library should be layerd by a generic interface design. Either sea
 * /email/<id>
     * DELETE - removes mail
     * GET - returns collection of available mails with their status, ?filterById and filterByStatus could be supported
+* /render-mail-content
+    * GET - returns a list of available email templates
+* /render-mail-content{/id}
+    * GET - returnes the rendered result (html or text is depends on the template\_id)  variables=[]
 * /validate-email-address
     * PUT - validates an email address
 
@@ -151,6 +157,15 @@ class Subject
 * add support for redis or something else to speed up database access
 * [read](https://zendframework.github.io/zend-expressive/cookbook/common-prefix-for-routes/)
 * [use a profiler](https://zendframework.github.io/zend-expressive/cookbook/debug-toolbars/)
+* archiving and keeping the footprint low
+    * store mail templates in the database
+    * store the variables and the id to the mail template in the database instead of the rendered result
+    * benefit
+        * way less amount of data stored in the database or archive
+    * problem
+        * what if the used rendere technology changes?
+        * what if the used view helper changes? (if one is used)
+        * maybe more complicate to develop
 
 # Roadmap
 
