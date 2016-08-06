@@ -1,3 +1,9 @@
+# Generic Event Trigger Component
+
+This component will help you to implement a generic event trigger in your application.
+
+It either ends up by using a runtime event dispatcher, a REST based event dispatcher or a BUS based event dispatcher.
+
 # features
 
 * generic event transporter (bus, rest, runtime)
