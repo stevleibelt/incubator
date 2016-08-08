@@ -6,6 +6,7 @@ It either ends up by using a runtime event dispatcher, a REST based event dispat
 
 # features
 
+* uses a generic event class to increase interoperability
 * generic event transporter (bus, rest, runtime)
 * priority support
 * event propagation can be stopped
