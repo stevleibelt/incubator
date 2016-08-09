@@ -1,6 +1,8 @@
 # Event
 
+* immutable object
 * event contains
     * event name (string)
     * sender (object)
-    * event arguments (array|Collection)
+    * subject - the event arguments (array|Collection)
+    * status propagation can continued (? - which would violates the immutable object state)
