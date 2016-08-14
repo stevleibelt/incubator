@@ -14,9 +14,11 @@ It either ends up by using a runtime event dispatcher, a REST based event dispat
 * event emitter
 * event loop
 * co-routines
+* logs events in an audit.log or event.log
 
 # links
 
+* http://www.martinfowler.com/eaaDev/DomainEvent.html
 * https://github.com/illuminate/events
 * https://github.com/othercodes/rest
 * https://github.com/positivezero/rest
