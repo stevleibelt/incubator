@@ -12,6 +12,7 @@ It either ends up by using a runtime event dispatcher, a REST based event dispat
 * event propagation can be stopped
 * promises
 * event emitter
+* event dispatcher
 * event loop
 * co-routines
 * logs events in an audit.log or event.log
