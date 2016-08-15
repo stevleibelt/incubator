@@ -42,6 +42,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Simple Cli Standard Streams Object Wrapper for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/standard_streams)
 * [cron job php component](https://github.com/stevleibelt/incubator/tree/master/component/php/cron_job)
 * [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/merge_arrays)
+* [(yet another) PHP static blog system](https://github.com/stevleibelt/incubator/tree/master/component/php/static_blog_system)
 * [Countdown / Timer Generator via GIF-creation written in PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/gif_image_countdown_creator)
 * [Profiler for Propel, PDO and plain sql](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel_and_mysql_and_pdo_profiler)
 * [API Token Authentication for ZF 2](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_api_token_authentication)
