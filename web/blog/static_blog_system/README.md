@@ -84,3 +84,4 @@ Well, this is starting as a php rebuild of the [bashblog](https://github.com/cfe
 
 * wrapp content, headline and tag parts of an entry with comments like "<!-- begin of content section -->/<!-- end of content seciont -->" to ease up cutting and updating
 * do not complicate things, take a look to the smart way how cfenolloasa solves problem (like rss feed generation :-))
+* add a watcher to a git repository to pull each x minutes and publish all entries (even new one from the repository)
