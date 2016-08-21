@@ -30,7 +30,6 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Autocomplete](https://github.com/stevleibelt/incubator/tree/master/web/general/autocomplete)
 * [Babyphone](https://github.com/stevleibelt/incubator/tree/master/device/babyphone)
 * [Countdown / Timer Generator via GIF-creation written in PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/git_count_down)
-* [Event](https://github.com/stevleibelt/incubator/tree/master/component/php/event)
 * [ZF Module for easy usage of propel 1.x](https://github.com/stevleibelt/incubator/tree/master/component/php/zf2_propel)
 * [idea](https://github.com/stevleibelt/incubator/tree/master/component/php/lazy_factory)
 * [serendipity event plugin to push new entry headline into your gnu social stream](https://github.com/stevleibelt/incubator/tree/master/component/php/serendipity_event_gnusocial)
