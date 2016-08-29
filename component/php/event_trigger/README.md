@@ -1,8 +1,8 @@
-# Generic Event Trigger Component
+# Generic Event Handler Component
 
-This component will help you to implement a generic event trigger in your application.
+This component will help you to implement a generic event handler in your application.
 
-It either ends up by using a runtime event dispatcher, a REST based event dispatcher or a BUS based event dispatcher.
+It either ends up by using a runtime event dispatcher, a REST based event dispatcher, a database based event dispatcher or a BUS based event dispatcher.
 
 # features
 
@@ -27,6 +27,11 @@ It either ends up by using a runtime event dispatcher, a REST based event dispat
 * because of no support for stopping the propagation, we do not need priorities while dispatching
 * an event emitter is populating the event
 * an event processor is dispatching the event
+* workflow
+    * build event
+    * EmitterInterface->emit(Event)
+    * ... runtime, rest based, database, bus
+    * DispatcherInterface->dispatch(Event)
 
 ```
 [...]
