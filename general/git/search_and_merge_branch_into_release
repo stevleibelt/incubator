@@ -1,0 +1,147 @@
+#!/bin/bash
+####
+# @author stev leibelt <artodeto@bazzline.net>
+# @since 2016-08-30
+####
+
+####
+# [@param   exit status]
+####
+function print_usage_and_exit ()
+{
+    echo ":: Usage:"
+    echo "   <command> [-h] [-d] <path to the project root>"
+
+    if [[ $# -gt 1 ]];
+    then
+        exit $1
+    else
+        exit 0
+    fi
+}
+
+function setup_runtime_variables ()
+{
+    CURRENT_WORKING_DIRECTORY=$(pwd)
+    IS_DRY_RUN=0
+    declare -a MERGED_BRANCHES=()
+}
+
+function parse_getopts ()
+{
+    while getopts dh CURRENT_OPTION $@;
+    do
+        case ${CURRENT_OPTION} in
+            d )
+                IS_DRY_RUN=1
+                break;;
+            h )
+                print_usage_and_exit
+                break;;
+        esac
+    done
+}
+
+function ask_if_we_want_to_continue_and_break_if_not ()
+{
+    read -p ":: Merge another branch? [y|n] " YES_OR_NO
+
+    if [[ ${YES_OR_NO} != "y" ]];
+    then
+        break
+    fi
+}
+
+parse_getopts $@
+setup_runtime_variables
+
+PATH_TO_THE_PROJECT_ROOT="$1"
+
+if [[ ! -d ${PATH_TO_THE_PROJECT_ROOT} ]];
+then
+    echo ":: Failure"
+    echo ":: No or invalid path to the project root provided"
+    echo ""
+    print_usage_and_exit 1
+fi
+
+#@todo move into dedicated main method
+#@todo implement wrong user input handling
+#@todo add abort option
+
+CURRENT_BRANCH=$(git status | head -n 1 | cut -f 3 -d " ")
+
+git fetch origin
+
+echo ":: We are merging into the branch ${CURRENT_BRANCH}"
+
+while true;
+do
+    echo ":: Please input a term you want to search for"
+    read -p "   " SEARCH_TERM
+
+    FOUND_BRANCHES=($(git branch -r | grep -i ${SEARCH_TERM}))
+    NUMBER_OF_FOUND_BRANCHES=${#FOUND_BRANCHES[@]}
+
+    if [[ ${NUMBER_OF_FOUND_BRANCHES} -eq 0 ]];
+    then
+        echo ":: No fittin branch found"
+
+        ask_if_we_want_to_continue_and_break_if_not
+    else
+        #@todo add 0)  abort
+        #@todo or add abort as HIGHEST_INDEX+1 and 0)   as default if only one branch was found
+        FOUND_BRANCHES_AS_STRING=""
+
+        for FOUND_BRANCH_KEY in ${!FOUND_BRANCHES[@]};
+        do
+            FOUND_BRANCHES_AS_STRING+="   ${FOUND_BRANCH_KEY}) ${FOUND_BRANCHES[${FOUND_BRANCH_KEY}]}"
+        done
+
+        echo ":: Found following branches, please input the one you want to merge"
+        echo "${FOUND_BRANCHES_AS_STRING}"
+
+        read -p "   " SELECTED_BRANCH_KEY
+
+        SELECTED_BRANCH_NAME="${FOUND_BRANCHES[${SELECTED_BRANCH_KEY}]}"
+
+        git merge --no-ff ${SELECTED_BRANCH_NAME}
+
+        echo ""
+        echo ":: Last exit status: $?"
+
+        #if [[ $? -eq 0 ]];
+        #then
+            MERGED_BRANCHES+=("${SELECTED_BRANCH_NAME}")
+            #echo ":: Merge of ${SELECTED_BRANCH_NAME} was successful"
+            read -p ":: Do you want to push this to the origin? [y|n] " YES_OR_NO
+
+            if [[ ${YES_OR_NO} == "y" ]];
+            then
+                git push origin ${CURRENT_BRANCH}
+            fi
+
+            ask_if_we_want_to_continue_and_break_if_not
+        #else
+        #    echo ""
+        #    echo ":: Failure"
+        #    echo ":: Something went wrong when merging ${SELECTED_BRANCH_NAME} into ${CURRENT_BRANCH}"
+        #    echo ":: Dropping out of warp"
+
+        #    exit 1
+        #fi
+    fi
+done
+
+NUMBER_OF_MERGED_BRANCHES=${#MERGED_BRANCHES[@]}
+
+if [[ ${NUMBER_OF_MERGED_BRANCHES} -gt 0 ]];
+then
+    echo ""
+    echo ":: Outputting merged branches"
+    
+    for MERGED_BRANCH in "${MERGED_BRANCHES[@]}";
+    do
+        echo "   ${MERGED_BRANCH}"
+    done
+fi
