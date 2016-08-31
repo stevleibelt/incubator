@@ -29,8 +29,9 @@ It either ends up by using a runtime event dispatcher, a REST based event dispat
 * an event processor is dispatching the event
 * workflow
     * build event
-    * EmitterInterface->emit(Event)
-    * ... runtime, rest based, database, bus
+    * EmitterInterface->emit(Event) (... runtime, rest based, database, bus)
+        * ImmediatelyEmitter (Runtime and Bus)
+        * DeferredEmitter (Rest Based and Database)
     * DispatcherInterface->dispatch(Event)
 
 ```
