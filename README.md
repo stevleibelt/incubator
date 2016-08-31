@@ -41,6 +41,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Simple Configuration for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/merge_arrays)
 * [cron job php component](https://github.com/stevleibelt/incubator/tree/master/component/php/cron_job)
 * [Generic Event Handler Component](https://github.com/stevleibelt/incubator/tree/master/component/php/event_trigger)
+* [Component to move PHP control structures into the OOP world](https://github.com/stevleibelt/incubator/tree/master/component/php/control_structure)
 * [Countdown / Timer Generator via GIF-creation written in PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/gif_image_countdown_creator)
 * [Signal Component for PHP](https://github.com/stevleibelt/incubator/tree/master/component/php/signals)
 * [HTTP Endpoint for php](https://github.com/stevleibelt/incubator/tree/master/component/php/http_endpoint)
