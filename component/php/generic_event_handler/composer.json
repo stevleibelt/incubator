@@ -1,0 +1,5 @@
+{
+    "require": {
+        "net_bazzline/php_component_event": "^0.0.1"
+    }
+}
