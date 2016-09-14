@@ -7,15 +7,16 @@ It either ends up by using a runtime event dispatcher, a REST based event dispat
 # features
 
 * uses a generic event class to increase interoperability
-* generic event transporter (bus, rest, runtime)
-* priority support
-* event propagation can be stopped
-* promises
+* generic event transporter (bus, rest, runtime) (separate packages later one)
 * event emitter
 * event dispatcher
 * event loop
+* promises
 * co-routines
-* logs events in an audit.log or event.log
+* logs events in an audit.log or event.log (separate package)
+* to discuss
+    * priority support (49 is default, 0 is most unimportant, 99 is most important)
+    * event propagation can be stopped
 
 # terms
 

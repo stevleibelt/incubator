@@ -3,8 +3,9 @@
  * @author: stev leibelt <artodeto@bazzline.net>
  * @since: 2016-09-01
  */
-namespace Net\Bazzline\Component\EventHandler;
+namespace Net\Bazzline\Component\EventHandler\Dispatcher;
 
+use Net\Bazzline\Component\EventHandler\EventListener\EventListenerInterface;
 use Net\Bazzline\Component\Event\EventInterface;
 
 interface DispatcherInterface
