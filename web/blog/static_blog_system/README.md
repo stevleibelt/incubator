@@ -82,6 +82,9 @@ Well, this is starting as a php rebuild of the [bashblog](https://github.com/cfe
 
 ## Thoughts
 
+* how to index.html easily?
+    * why not ... simple copy the content of the current month into the index.html?
+    * at the end of the month, you simple add the general links "previous month, full year ..." and thats it.
 * wrapp content, headline and tag parts of an entry with comments like "<!-- begin of content section -->/<!-- end of content seciont -->" to ease up cutting and updating
 * do not complicate things, take a look to the smart way how cfenolloasa solves problem (like rss feed generation :-))
 * add a watcher to a git repository to pull each x minutes and publish all entries (even new one from the repository)
