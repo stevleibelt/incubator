@@ -8,11 +8,52 @@
 #   move stuff into functions pre_deploy, deploy and post_deploy
 ####
 
-CURRENT_DATE_AS_STRING=$(date +'%Y-%m-%d')
-CURRENT_INSTALLED_VERSION_SH512_SUM=current_installation.sha512
-CURRENT_WORKING_DIRECTORY=$(pwd)
-DIRECTORY_NAME_OF_NEW_VERSION="serendipity"
-FILE_NAME_OF_NEW_VERSION="latest.zip"
+function setup()
+{
+    #enable bash job support (fg & bg)
+    set -o monitor
+    CURRENT_DATE_AS_STRING=$(date +'%Y-%m-%d')
+    CURRENT_INSTALLED_VERSION_SH512_SUM=current_installation.sha512
+    CURRENT_WORKING_DIRECTORY=$(pwd)
+    DIRECTORY_NAME_OF_NEW_VERSION="serendipity"
+    FILE_NAME_OF_NEW_VERSION="latest.zip"
+}
+
+function circle_until_last_process_has_finished()
+{
+    ITERATOR=0
+    LAST_STARTED_PROCESS_ID=$!
+
+    echo ""
+    #store current curser position
+    printf "\033[s"
+
+    while ps -p ${LAST_STARTED_PROCESS_ID} | grep -q ${LAST_STARTED_PROCESS_ID};
+    do
+        if [[ ${ITERATOR} -eq 0 ]];
+        then
+            ((++ITERATOR))
+            printf "\033[u[-]"
+        elif [[ ${ITERATOR} -eq 1 ]];
+            ((++ITERATOR))
+            printf "\033[u[\]"
+        then
+        elif [[ ${ITERATOR} -eq 1 ]];
+            ((++ITERATOR))
+            printf "\033[u[|]"
+        then
+        else
+            ((++ITERATOR))
+            printf "\033[u[/]"
+        fi
+
+        sleept 0.5
+    done
+
+    #restore current curser position
+    printf "\033[K"
+    #wait
+}
 
 function output_usage_and_exit()
 {
@@ -32,6 +73,8 @@ function tear_down()
     cd ${CURRENT_WORKING_DIRECTORY}
 }
 
+setup
+
 #ask for path to the installation (if not exist in current_installaton_path)
 
 if [[ $# -lt 1 ]];
@@ -40,11 +83,13 @@ then
     output_usage_and_exit
 fi
 
+#begin of pre deployment
 PATH_TO_THE_SERENDIPITY_INSTALLATION="$1"
 PATH_TO_SWITCH_TO=$(dirname ${PATH_TO_THE_SERENDIPITY_INSTALLATION})
 CONFIGURATION_FILE_NAME="serendipity_config_local.inc.php"
 RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION=$(basename ${PATH_TO_THE_SERENDIPITY_INSTALLATION})
 RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP="${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}.${CURRENT_DATE_AS_STRING}"
+RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE="${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}.tar.gz"
 
 if [[ ! -d "${PATH_TO_THE_SERENDIPITY_INSTALLATION}" ]];
 then
@@ -63,7 +108,9 @@ then
     tear_down
     exit 4
 fi
+#end of pre deployment
 
+#begin of deployment
 cd ${PATH_TO_SWITCH_TO}
 
 #download from http://www.s9y.org/latest
@@ -91,40 +138,37 @@ fi
 touch ${CURRENT_INSTALLED_VERSION_SH512_SUM}
 sha512sum ${FILE_NAME_OF_NEW_VERSION} > ${CURRENT_INSTALLED_VERSION_SH512_SUM}
 
-#backup current installation
-#   mv $public $public.yyyy-mm-dd
-mv ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}
+#create a backup
+echo ":: Creating the backup ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ..."
+tar -zcf ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}
+circle_until_last_process_has_finished
+
+#backup configuration file
+cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${CONFIGURATION_FILE_NAME} .
 
 #   unzip latest.zip
-echo ":: Decompressing latest version."
+echo ":: Decompressing latest version ..."
+circle_until_last_process_has_finished
 unzip -qq ${FILE_NAME_OF_NEW_VERSION}
 chmod -R 755 ${DIRECTORY_NAME_OF_NEW_VERSION}
 rm -fr ${FILE_NAME_OF_NEW_VERSION}
 
 #   mv latest $public
-mv ${DIRECTORY_NAME_OF_NEW_VERSION} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}
+echo ":: Upgrading current installation ..."
+cp -ru ${DIRECTORY_NAME_OF_NEW_VERSION}/* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}
+circle_until_last_process_has_finished
+cp ${CONFIGURATION_FILE_NAME} ${DIRECTORY_NAME_OF_NEW_VERSION}/
+#end of deployment
 
-#   cp serendipity_config_local.inc.php $public/serendipity_config_local.inc.php
-cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}/${CONFIGURATION_FILE_NAME} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/
-cp -ru ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}/plugins/serendipity_* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/plugins/
-
+#begin of post deployment
 #   ask to remove $public.yyyy-mm-dd or make a backup
-echo ":: Do you want to keep the backup? [Y|n]"
+echo ":: Do you want to keep the backup archive? [Y|n]"
 read -p "   " YES_OR_NO
 
-if [[ ${YES_OR_NO} != "n" ]];
+if [[ ${YES_OR_NO} == "n" ]];
 then
-    echo ":: Create a .tar.gz file from the backup? [Y|n]"
-    read -p "   " YES_OR_NO
-
-#       tar -zcf public.2016-09-26.tar.gz $public
-    if [[ ${YES_OR_NO} != "n" ]];
-    then
-        tar -zcf ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}.tar.gz ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}
-        rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}
-    fi
-else
-    rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}
+    rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}
 fi
 
 echo ":: Done"
+#end of post deployment
