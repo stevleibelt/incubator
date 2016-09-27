@@ -71,6 +71,16 @@ function tear_down()
         rm ${FILE_NAME_OF_NEW_VERSION}
     fi
 
+    if [[ -d ${DIRECTORY_NAME_OF_NEW_VERSION} ]];
+    then
+        rm -fr ${DIRECTORY_NAME_OF_NEW_VERSION}
+    fi
+
+    if [[ -f ${CONFIGURATION_FILE_NAME} ]];
+    then
+        rm ${CONFIGURATION_FILE_NAME}
+    fi
+
     cd ${CURRENT_WORKING_DIRECTORY}
 }
 
@@ -177,9 +187,6 @@ if [[ ${YES_OR_NO} == "n" ]];
 then
     rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}
 fi
-
-rm -fr ${DIRECTORY_NAME_OF_NEW_VERSION}
-rm -fr ${CONFIGURATION_FILE_NAME}
 
 echo ":: Done"
 #end of post deployment
