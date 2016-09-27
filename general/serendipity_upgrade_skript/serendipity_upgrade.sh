@@ -53,7 +53,7 @@ function circle_until_last_process_has_finished()
 
     #restore current curser position
     printf "\033[K"
-    wait
+    echo ""
 }
 
 function output_usage_and_exit()
@@ -126,7 +126,9 @@ cd ${PATH_TO_SWITCH_TO}
 
 #download from http://www.s9y.org/latest
 echo ":: Downloading latest version."
-wget --quiet http://www.s9y.org/latest
+wget --quiet http://www.s9y.org/latest &
+circle_until_last_process_has_finished &
+
 if [[ ! -f latest ]];
 then
     echo ":: Warning"
@@ -187,6 +189,4 @@ if [[ ${YES_OR_NO} == "n" ]];
 then
     rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}
 fi
-
-echo ":: Done"
 #end of post deployment
