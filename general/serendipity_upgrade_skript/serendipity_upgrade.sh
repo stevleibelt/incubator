@@ -23,7 +23,7 @@ function setup()
 function circle_until_last_process_has_finished()
 {
     ITERATOR=0
-    LAST_STARTED_PROCESS_ID=$!
+    LAST_STARTED_PROCESS_ID=$1
 
     echo ""
     #store current curser position
@@ -48,7 +48,7 @@ function circle_until_last_process_has_finished()
             printf "\033[u[/]"
         fi
 
-        sleept 0.5
+        sleep 0.5
     done
 
     #restore current curser position
@@ -159,7 +159,7 @@ sha512sum ${FILE_NAME_OF_NEW_VERSION} > ${CURRENT_INSTALLED_VERSION_SH512_SUM}
 #create a backup
 echo ":: Creating the backup ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ..."
 tar -zcf ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
-circle_until_last_process_has_finished
+circle_until_last_process_has_finished $!
 
 #backup configuration file
 cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${CONFIGURATION_FILE_NAME} .
@@ -167,14 +167,14 @@ cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${CONFIGURATION_FILE_NAME} .
 #   unzip latest.zip
 echo ":: Decompressing latest version ..."
 unzip -qq ${FILE_NAME_OF_NEW_VERSION} &
-circle_until_last_process_has_finished
+circle_until_last_process_has_finished $!
 chmod -R 755 ${DIRECTORY_NAME_OF_NEW_VERSION}
 rm -fr ${FILE_NAME_OF_NEW_VERSION}
 
 #   mv latest $public
 echo ":: Upgrading current installation ..."
 cp -ru ${DIRECTORY_NAME_OF_NEW_VERSION}/* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
-circle_until_last_process_has_finished
+circle_until_last_process_has_finished $!
 cp ${CONFIGURATION_FILE_NAME} ${DIRECTORY_NAME_OF_NEW_VERSION}/
 #end of deployment
 
