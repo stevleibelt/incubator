@@ -35,13 +35,13 @@ function circle_until_last_process_has_finished()
             ((++ITERATOR))
             printf "\033[u[-]"
         elif [[ ${ITERATOR} -eq 1 ]];
+        then
             ((++ITERATOR))
             printf "\033[u[\]"
+        elif [[ ${ITERATOR} -eq 2 ]];
         then
-        elif [[ ${ITERATOR} -eq 1 ]];
             ((++ITERATOR))
             printf "\033[u[|]"
-        then
         else
             ((++ITERATOR))
             printf "\033[u[/]"
