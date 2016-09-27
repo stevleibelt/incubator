@@ -200,7 +200,7 @@ function circle_until_last_process_has_finished()
 
 #begin of main
 setup_static_variables
-validate_user_input_and_set_runtime_variables_or_exit
+validate_user_input_and_set_runtime_variables_or_exit $@
 prepare_deployment_or_exit
 deploy
 postprocess_deployment
