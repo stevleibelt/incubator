@@ -6,6 +6,7 @@
 # @todo
 #   ask to make a database backup
 #   move stuff into functions pre_deploy, deploy and post_deploy
+#   move current_installation.sha512 into $HOME/.config/..
 ####
 
 function setup()
@@ -52,7 +53,7 @@ function circle_until_last_process_has_finished()
 
     #restore current curser position
     printf "\033[K"
-    #wait
+    wait
 }
 
 function output_usage_and_exit()
@@ -115,7 +116,14 @@ cd ${PATH_TO_SWITCH_TO}
 
 #download from http://www.s9y.org/latest
 echo ":: Downloading latest version."
-wget --quet http://www.s9y.org/latest
+wget --quiet http://www.s9y.org/latest
+if [[ ! -f latest ]];
+then
+    echo ":: Warning"
+    echo "Could not download latest version."
+    tear_down
+    exit 5
+fi
 #rename latest to latest.zip
 mv latest ${FILE_NAME_OF_NEW_VERSION}
 
@@ -140,7 +148,7 @@ sha512sum ${FILE_NAME_OF_NEW_VERSION} > ${CURRENT_INSTALLED_VERSION_SH512_SUM}
 
 #create a backup
 echo ":: Creating the backup ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ..."
-tar -zcf ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}
+tar -zcf ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
 circle_until_last_process_has_finished
 
 #backup configuration file
@@ -148,14 +156,14 @@ cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${CONFIGURATION_FILE_NAME} .
 
 #   unzip latest.zip
 echo ":: Decompressing latest version ..."
+unzip -qq ${FILE_NAME_OF_NEW_VERSION} &
 circle_until_last_process_has_finished
-unzip -qq ${FILE_NAME_OF_NEW_VERSION}
 chmod -R 755 ${DIRECTORY_NAME_OF_NEW_VERSION}
 rm -fr ${FILE_NAME_OF_NEW_VERSION}
 
 #   mv latest $public
 echo ":: Upgrading current installation ..."
-cp -ru ${DIRECTORY_NAME_OF_NEW_VERSION}/* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}
+cp -ru ${DIRECTORY_NAME_OF_NEW_VERSION}/* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
 circle_until_last_process_has_finished
 cp ${CONFIGURATION_FILE_NAME} ${DIRECTORY_NAME_OF_NEW_VERSION}/
 #end of deployment
@@ -169,6 +177,9 @@ if [[ ${YES_OR_NO} == "n" ]];
 then
     rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}
 fi
+
+rm -fr ${DIRECTORY_NAME_OF_NEW_VERSION}
+rm -fr ${CONFIGURATION_FILE_NAME}
 
 echo ":: Done"
 #end of post deployment
