@@ -14,11 +14,12 @@ function setup_static_variables()
 {
     #enable bash job support (fg & bg)
     set -o monitor
-    CONFIGURATION_FILE_NAME="serendipity_config_local.inc.php"
     CURRENT_DATE_AS_STRING=$(date +'%Y-%m-%d')
     CURRENT_INSTALLED_VERSION_SH512_SUM="current_installation.sha512"
     DIRECTORY_NAME_OF_NEW_VERSION="serendipity"
     FILE_NAME_OF_NEW_VERSION="latest.zip"
+    INITIAL_CURRENT_WORKING_DIRECTORY=$(pwd)
+    SERENDIPITY_CONFIGURATION_FILE_NAME="serendipity_config_local.inc.php"
     URL_TO_LATEST_RELEASE="http://www.s9y.org/latest"
 }
 
@@ -33,9 +34,8 @@ function validate_user_input_and_set_runtime_variables_or_exit()
         exit 1
     fi
 
-    CURRENT_WORKING_DIRECTORY=$(pwd)
     PATH_TO_THE_SERENDIPITY_INSTALLATION="$1"
-    PATH_TO_SWITCH_TO=$(dirname ${PATH_TO_THE_SERENDIPITY_INSTALLATION})
+    CURRENT_WORKING_DIRECTORY=$(dirname ${PATH_TO_THE_SERENDIPITY_INSTALLATION})
     RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION=$(basename ${PATH_TO_THE_SERENDIPITY_INSTALLATION})
     RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP="${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}.${CURRENT_DATE_AS_STRING}"
     RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE="${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}.tar.gz"
@@ -48,7 +48,7 @@ function validate_user_input_and_set_runtime_variables_or_exit()
         exit 3
     fi
 
-    PATH_TO_THE_SERENDIPITY_CONFIGURATION_FILE="${PATH_TO_THE_SERENDIPITY_INSTALLATION}/${CONFIGURATION_FILE_NAME}"
+    PATH_TO_THE_SERENDIPITY_CONFIGURATION_FILE="${PATH_TO_THE_SERENDIPITY_INSTALLATION}/${SERENDIPITY_CONFIGURATION_FILE_NAME}"
 
     if [[ ! -f "${PATH_TO_THE_SERENDIPITY_CONFIGURATION_FILE}" ]];
     then
@@ -61,7 +61,7 @@ function validate_user_input_and_set_runtime_variables_or_exit()
 
 function prepare_deployment_or_exit()
 {
-    cd ${PATH_TO_SWITCH_TO}
+    cd ${CURRENT_WORKING_DIRECTORY}
 
     #download from http://www.s9y.org/latest
     echo ":: Downloading latest version."
@@ -104,7 +104,7 @@ function deploy()
     circle_until_last_process_has_finished $!
 
     #backup configuration file
-    cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${CONFIGURATION_FILE_NAME} .
+    cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${SERENDIPITY_CONFIGURATION_FILE_NAME} .
 
     #   unzip latest.zip
     echo ":: Decompressing latest version ..."
@@ -117,7 +117,7 @@ function deploy()
     echo ":: Upgrading current installation ..."
     cp -ru ${DIRECTORY_NAME_OF_NEW_VERSION}/* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
     circle_until_last_process_has_finished $!
-    cp ${CONFIGURATION_FILE_NAME} ${DIRECTORY_NAME_OF_NEW_VERSION}/
+    cp ${SERENDIPITY_CONFIGURATION_FILE_NAME} ${DIRECTORY_NAME_OF_NEW_VERSION}/
 }
 
 function postprocess_deployment()
@@ -146,12 +146,13 @@ function cleanup()
         rm -fr ${DIRECTORY_NAME_OF_NEW_VERSION}
     fi
 
-    if [[ -f ${CONFIGURATION_FILE_NAME} ]];
+    if [[ -f ${SERENDIPITY_CONFIGURATION_FILE_NAME} ]];
     then
-        rm ${CONFIGURATION_FILE_NAME}
+        rm ${SERENDIPITY_CONFIGURATION_FILE_NAME}
     fi
 
-    cd ${CURRENT_WORKING_DIRECTORY}
+    #restore previous current working directory
+    cd ${INITIAL_CURRENT_WORKING_DIRECTORY}
 }
 #end of logical steps
 
