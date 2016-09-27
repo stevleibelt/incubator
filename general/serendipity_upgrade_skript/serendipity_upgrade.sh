@@ -43,7 +43,7 @@ function validate_user_input_and_set_runtime_variables_or_exit()
     if [[ ! -d "${PATH_TO_THE_SERENDIPITY_INSTALLATION}" ]];
     then
         echo ":: Invalid path to the serendipity installation provided!"
-        echo "The path is not a directory."
+        echo "Provided path is not a directory."
         cleanup
         exit 3
     fi
@@ -53,7 +53,7 @@ function validate_user_input_and_set_runtime_variables_or_exit()
     if [[ ! -f "${PATH_TO_THE_SERENDIPITY_CONFIGURATION_FILE}" ]];
     then
         echo ":: Invalid path to the serendipity installation provided!"
-        echo "No configuration file found."
+        echo "Provided path does not contain a configuration file."
         cleanup
         exit 4
     fi
@@ -71,7 +71,7 @@ function prepare_deployment_or_exit()
     if [[ ! -f latest ]];
     then
         echo ":: Warning"
-        echo "Could not download latest version."
+        echo "Could not download latest version from ${URL_TO_LATEST_RELEASE}."
         cleanup
         exit 5
     fi
@@ -95,6 +95,7 @@ function prepare_deployment_or_exit()
 
 function deploy()
 {
+    #create checksum file
     touch ${CURRENT_INSTALLED_VERSION_SH512_SUM}
     sha512sum ${FILE_NAME_OF_NEW_VERSION} > ${CURRENT_INSTALLED_VERSION_SH512_SUM}
 
@@ -106,24 +107,24 @@ function deploy()
     #backup configuration file
     cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${SERENDIPITY_CONFIGURATION_FILE_NAME} .
 
-    #   unzip latest.zip
+    #unpack latest version file
     echo ":: Decompressing latest version ..."
     unzip -qq ${FILE_NAME_OF_NEW_VERSION} &
     circle_until_last_process_has_finished $!
     chmod -R 755 ${DIRECTORY_NAME_OF_NEW_VERSION}
     rm -fr ${FILE_NAME_OF_NEW_VERSION}
 
-    #   mv latest $public
+    #update installation
     echo ":: Upgrading current installation ..."
     cp -ru ${DIRECTORY_NAME_OF_NEW_VERSION}/* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
     circle_until_last_process_has_finished $!
+
+    #restore configuration file
     cp ${SERENDIPITY_CONFIGURATION_FILE_NAME} ${DIRECTORY_NAME_OF_NEW_VERSION}/
 }
 
 function postprocess_deployment()
 {
-    #begin of post deployment
-    #   ask to remove $public.yyyy-mm-dd or make a backup
     echo ":: Do you want to keep the backup archive? [Y|n]"
     read -p "   " YES_OR_NO
 
@@ -131,7 +132,6 @@ function postprocess_deployment()
     then
         rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}
     fi
-    #end of post deployment
 }
 
 function cleanup()
@@ -159,8 +159,8 @@ function cleanup()
 #begin of helper functions
 function circle_until_last_process_has_finished()
 {
-    ITERATOR=0
-    LAST_STARTED_PROCESS_ID=$1
+    local ITERATOR=0
+    local LAST_STARTED_PROCESS_ID=$1
 
     if [[ ! -z ${LAST_STARTED_PROCESS_ID} ]];
     then
