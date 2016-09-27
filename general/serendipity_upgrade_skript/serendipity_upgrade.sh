@@ -106,6 +106,7 @@ mv ${DIRECTORY_NAME_OF_NEW_VERSION} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLAT
 
 #   cp serendipity_config_local.inc.php $public/serendipity_config_local.inc.php
 cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}/${CONFIGURATION_FILE_NAME} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/
+cp -ru ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}/plugins/serendipity_* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/plugins/
 
 #   ask to remove $public.yyyy-mm-dd or make a backup
 echo ":: Do you want to keep the backup? [Y|n]"
