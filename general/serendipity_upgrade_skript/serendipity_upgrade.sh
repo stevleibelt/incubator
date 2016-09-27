@@ -9,8 +9,8 @@
 CURRENT_DATE_AS_STRING=$(date '%Y-%m-%d')
 CURRENT_INSTALLED_VERSION_SH512_SUM=current_installation.sha512
 CURRENT_WORKING_DIRECTORY=$(pwd)
-DIRECTORY_NAME_OF_NEW_VERSION="latest"
-FILE_NAME_OF_NEW_VERSION="${DIRECTORY_NAME_OF_NEW_VERSION}.zip"
+DIRECTORY_NAME_OF_NEW_VERSION="serendipity"
+FILE_NAME_OF_NEW_VERSION="latest.zip"
 
 function output_usage_and_exit()
 {
@@ -35,7 +35,6 @@ function tear_down()
 if [[ $# -lt 1 ]];
 then
     echo ":: Mandatory parameter is missing!"
-    echo ""
     output_usage_and_exit
 fi
 
@@ -66,7 +65,7 @@ fi
 cd ${PATH_TO_SWITCH_TO}
 
 #download from http://www.s9y.org/latest
-wget http://www.s9y.org/${DIRECTORY_NAME_OF_NEW_VERSION}
+wget http://www.s9y.org/latest
 #rename latest to latest.zip
 mv latest ${FILE_NAME_OF_NEW_VERSION}
 
