@@ -80,6 +80,7 @@ function prepare_deployment_or_exit()
 
     if [[ -f "${CURRENT_INSTALLED_VERSION_SH512_SUM}" ]];
     then
+        echo ":: Checking if upgrade is needed."
         #compare with current_installation.sha256
         #sha256sum latest.zip
         if sha512sum -c --quiet --status "${CURRENT_INSTALLED_VERSION_SH512_SUM}";
