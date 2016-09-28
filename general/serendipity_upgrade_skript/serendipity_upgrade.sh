@@ -35,8 +35,8 @@ function validate_user_input_and_set_runtime_variables_or_exit()
     fi
 
     PATH_TO_THE_SERENDIPITY_INSTALLATION="$1"
-    CURRENT_WORKING_DIRECTORY=$(dirname ${PATH_TO_THE_SERENDIPITY_INSTALLATION})
-    RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION=$(basename ${PATH_TO_THE_SERENDIPITY_INSTALLATION})
+    CURRENT_WORKING_DIRECTORY=$(dirname "${PATH_TO_THE_SERENDIPITY_INSTALLATION}")
+    RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION=$(basename "${PATH_TO_THE_SERENDIPITY_INSTALLATION}")
     RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP="${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}.${CURRENT_DATE_AS_STRING}"
     RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE="${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP}.tar.gz"
 
@@ -61,7 +61,7 @@ function validate_user_input_and_set_runtime_variables_or_exit()
 
 function prepare_deployment_or_exit()
 {
-    cd ${CURRENT_WORKING_DIRECTORY}
+    cd "${CURRENT_WORKING_DIRECTORY}"
 
     #download from http://www.s9y.org/latest
     echo ":: Downloading latest version."
@@ -76,19 +76,19 @@ function prepare_deployment_or_exit()
         exit 5
     fi
     #rename latest to latest.zip
-    mv latest ${FILE_NAME_OF_NEW_VERSION}
+    mv latest "${FILE_NAME_OF_NEW_VERSION}"
 
-    if [[ -f ${CURRENT_INSTALLED_VERSION_SH512_SUM} ]];
+    if [[ -f "${CURRENT_INSTALLED_VERSION_SH512_SUM}" ]];
     then
         #compare with current_installation.sha256
         #sha256sum latest.zip
-        if sha512sum -c --quiet --status ${CURRENT_INSTALLED_VERSION_SH512_SUM};
+        if sha512sum -c --quiet --status "${CURRENT_INSTALLED_VERSION_SH512_SUM}";
         then
             echo ":: Newest version already installed."
             cleanup
             exit 0
         else
-            rm ${CURRENT_INSTALLED_VERSION_SH512_SUM}
+            rm "${CURRENT_INSTALLED_VERSION_SH512_SUM}"
         fi
     fi
 }
@@ -96,31 +96,31 @@ function prepare_deployment_or_exit()
 function deploy()
 {
     #create checksum file
-    touch ${CURRENT_INSTALLED_VERSION_SH512_SUM}
-    sha512sum ${FILE_NAME_OF_NEW_VERSION} > ${CURRENT_INSTALLED_VERSION_SH512_SUM}
+    touch "${CURRENT_INSTALLED_VERSION_SH512_SUM}"
+    sha512sum "${FILE_NAME_OF_NEW_VERSION}" > "${CURRENT_INSTALLED_VERSION_SH512_SUM}"
 
     #create a backup
     echo ":: Creating the backup ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ..."
-    tar -zcf ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE} ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
+    tar -zcf "${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}" "${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}" &
     circle_until_last_process_has_finished $!
 
     #backup configuration file
-    cp ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${SERENDIPITY_CONFIGURATION_FILE_NAME} .
+    cp "${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}/${SERENDIPITY_CONFIGURATION_FILE_NAME}" .
 
     #unpack latest version file
     echo ":: Decompressing latest version ..."
-    unzip -qq ${FILE_NAME_OF_NEW_VERSION} &
+    unzip -qq "${FILE_NAME_OF_NEW_VERSION}" &
     circle_until_last_process_has_finished $!
-    chmod -R 755 ${DIRECTORY_NAME_OF_NEW_VERSION}
-    rm -fr ${FILE_NAME_OF_NEW_VERSION}
+    chmod -R 755 "${DIRECTORY_NAME_OF_NEW_VERSION}"
+    rm -fr "${FILE_NAME_OF_NEW_VERSION}"
 
     #update installation
     echo ":: Upgrading current installation ..."
-    cp -ru ${DIRECTORY_NAME_OF_NEW_VERSION}/* ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION} &
+    cp -ru "${DIRECTORY_NAME_OF_NEW_VERSION}/*" "${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION}" &
     circle_until_last_process_has_finished $!
 
     #restore configuration file
-    cp ${SERENDIPITY_CONFIGURATION_FILE_NAME} ${DIRECTORY_NAME_OF_NEW_VERSION}/
+    cp "${SERENDIPITY_CONFIGURATION_FILE_NAME}" "${DIRECTORY_NAME_OF_NEW_VERSION}/"
 }
 
 function postprocess_deployment()
@@ -128,31 +128,31 @@ function postprocess_deployment()
     echo ":: Do you want to keep the backup archive? [Y|n]"
     read -p "   " YES_OR_NO
 
-    if [[ ${YES_OR_NO} == "n" ]];
+    if [[ "${YES_OR_NO}" == "n" ]];
     then
-        rm -fr ${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}
+        rm -fr "${RELATIVE_PATH_TO_THE_SERENDIPITY_INSTALLATION_BACKUP_ARCHIVE}"
     fi
 }
 
 function cleanup()
 {
-    if [[ -f ${FILE_NAME_OF_NEW_VERSION} ]];
+    if [[ -f "${FILE_NAME_OF_NEW_VERSION}" ]];
     then
-        rm ${FILE_NAME_OF_NEW_VERSION}
+        rm "${FILE_NAME_OF_NEW_VERSION}"
     fi
 
-    if [[ -d ${DIRECTORY_NAME_OF_NEW_VERSION} ]];
+    if [[ -d "${DIRECTORY_NAME_OF_NEW_VERSION}" ]];
     then
-        rm -fr ${DIRECTORY_NAME_OF_NEW_VERSION}
+        rm -fr "${DIRECTORY_NAME_OF_NEW_VERSION}"
     fi
 
-    if [[ -f ${SERENDIPITY_CONFIGURATION_FILE_NAME} ]];
+    if [[ -f "${SERENDIPITY_CONFIGURATION_FILE_NAME}" ]];
     then
-        rm ${SERENDIPITY_CONFIGURATION_FILE_NAME}
+        rm "${SERENDIPITY_CONFIGURATION_FILE_NAME}"
     fi
 
     #restore previous current working directory
-    cd ${INITIAL_CURRENT_WORKING_DIRECTORY}
+    cd "${INITIAL_CURRENT_WORKING_DIRECTORY}"
 }
 #end of logical steps
 
