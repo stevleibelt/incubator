@@ -12,7 +12,6 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [VCF to CSV Converter for Android VCS Files](https://github.com/stevleibelt/incubator/tree/master/general/vcf_to_csv_converter)
 * [mbtest for php](https://github.com/stevleibelt/incubator/tree/master/general/phpmbtest)
 * [Docker Compose Playground](https://github.com/stevleibelt/incubator/tree/master/general/docker_compose)
-* [Simple Serendipity Upgrade Script](https://github.com/stevleibelt/incubator/tree/master/general/serendipity_upgrade_skript)
 * [Time based batch limit](https://github.com/stevleibelt/incubator/tree/master/general/time_based_batch_limiter)
 * [Release Creation Helper](https://github.com/stevleibelt/incubator/tree/master/general/release_creation_helper)
 * [Small collection of git based repository management scripts](https://github.com/stevleibelt/incubator/tree/master/general/git)
