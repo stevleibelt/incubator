@@ -18,6 +18,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [My Two Cents for a Microframework](https://github.com/stevleibelt/incubator/tree/master/general/microFramework)
 * [Test Management](https://github.com/stevleibelt/incubator/tree/master/general/testManagement)
 * [Tag Cloud](https://github.com/stevleibelt/incubator/tree/master/general/fileManager)
+* [Generic Backup Strategy for Home Use](https://github.com/stevleibelt/incubator/tree/master/general/backup_strategy)
 * [zfs manager](https://github.com/stevleibelt/incubator/tree/master/general/zfsManager)
 * [Translation Database](https://github.com/stevleibelt/incubator/tree/master/general/translationDatabase)
 * [Console](https://github.com/stevleibelt/incubator/tree/master/cli/php/console)
