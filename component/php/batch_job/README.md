@@ -22,7 +22,7 @@ The component will easy up handling of batch job processes.
 ### Batch Job
 
 * collection or summary of
-    * aqcuirer
+    * acquirer
     * batch
     * enqueuer
     * processor
