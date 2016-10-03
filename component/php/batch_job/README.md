@@ -26,6 +26,7 @@ The component will easy up handling of batch job processes.
     * batch
     * enqueuer
     * processor
+    * fetcher
     * queue
     * releaser
 * is a container with simple setter and getter methods
