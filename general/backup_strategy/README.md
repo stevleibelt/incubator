@@ -34,3 +34,4 @@ ln -s ${HOME}/.archive/document/financial/2015 2015
 * create a script to restore the backup
 * create a script to generate the make a backup script
 * automate backup and archiving of directories that are created by the year
+* add support for zfs snapshot capability
