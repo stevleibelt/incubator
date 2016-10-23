@@ -21,6 +21,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [Generic Backup Strategy for Home Use](https://github.com/stevleibelt/incubator/tree/master/general/backup_strategy)
 * [zfs manager](https://github.com/stevleibelt/incubator/tree/master/general/zfsManager)
 * [Translation Database](https://github.com/stevleibelt/incubator/tree/master/general/translationDatabase)
+* [Alternativlos automatic fully download script](https://github.com/stevleibelt/incubator/tree/master/cli/alternativlos)
 * [Console](https://github.com/stevleibelt/incubator/tree/master/cli/php/console)
 * [CLI Backup Script](https://github.com/stevleibelt/incubator/tree/master/cli/php/backup)
 * [Database Generator](https://github.com/stevleibelt/incubator/tree/master/cli/php/generate/database)
