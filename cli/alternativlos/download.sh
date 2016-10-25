@@ -33,12 +33,26 @@ download_file ()
     fi
 }
 
-LIST_OF_FILE_NAME_AND_PUBLISHING_DATE=$(curl --silent "http://alternativlos.org/alternativlos.rss" | grep "guid\|pubDate")
+echo ":: Please choose your prefered format."
+echo "   0) mp3   1) ogg   2) opus"
+read SELECTED_FORMAT_INDEX
+
+case ${SELECTED_FORMAT_INDEX} in
+    0)  FEED_URL="http://alternativlos.org/alternativlos.rss"
+        ;;
+    1)  FEED_URL="http://alternativlos.org/ogg.rss"
+        ;;
+    2)  FEED_URL="http://alternativlos.org/opus.rss"
+        ;;
+    *)  echo ":: Invalid input!"
+        exit 1;
+        ;;
+esac
 
 FILE_NAME=""
 PUBLISHING_YEAR=""
 
-for FILE_NAME_OR_PUBLISHING_DATE in $(curl --silent "http://alternativlos.org/alternativlos.rss" | grep "guid\|pubDate")
+for FILE_NAME_OR_PUBLISHING_DATE in $(curl --silent "${FEED_URL}" | grep "guid\|pubDate")
 do
     echo "${FILE_NAME_OR_PUBLISHING_DATE}"
 
@@ -51,3 +65,7 @@ do
 done
 
 #YEAR_OF_RELEASE_DATE=$(ls -l ${FILE_PATH} | awk '{ print $8 }')
+#@see
+#   http://stackoverflow.com/questions/893585/how-to-parse-xml-in-bash
+#   http://stackoverflow.com/questions/17333755/extract-xml-value-in-bash-script
+#   http://unix.stackexchange.com/questions/83385/parse-xml-to-get-node-value-in-bash-script
