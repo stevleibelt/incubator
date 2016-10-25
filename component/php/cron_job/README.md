@@ -1,5 +1,27 @@
 # cron job php component
 
+## data structure
+
+### configuration of a cron job
+
+```
+id: <string>
+job_to_execute_before: <null|string>
+job_to_execute: <string>
+job_to_execute_after: <null|string>
+job_to_execute_on_failure: <null|string>
+repeating_interval_in_seconds: <integer>
+```
+
+### runtime created (tasks list)
+
+```
+id: <string>
+cronjob_id: <string>
+next_run_at: <datetime>
+created_at: <datetime>
+```
+
 ## idea
 
 * queue based
@@ -19,6 +41,13 @@
     * email
     * irc
     * slack(?)
+
+# links
+
+* https://www.freedesktop.org/software/systemd/man/systemd.service.html
+* https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sect-Managing_Services_with_systemd-Unit_Files.html
+* https://wiki.archlinux.org/index.php/Systemd
+* https://wiki.archlinux.org/index.php/Systemd/Timers
 
 # depcrecated
 
