@@ -6,6 +6,7 @@
 
 ```
 id: <string>
+depends_on_successful_executed_id: <null|string>
 job_to_execute_before: <null|string>
 job_to_execute: <string>
 job_to_execute_after: <null|string>
