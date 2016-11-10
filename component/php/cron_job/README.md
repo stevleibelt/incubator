@@ -6,13 +6,15 @@
 
 ```
 id: <string>
-depends_on_successful_executed_id: <null|string>
-job_to_execute_before: <null|string>
-job_to_execute: <string>
-job_to_execute_after: <null|string>
-job_to_execute_on_failure: <null|string>
-repeating_interval_in_seconds: <integer>
+description: <string>
+interval_of_repetition: <string>
+execute_upfront: <null|string>
+execute: <string>
+execute_on_failure: <null|string>
+initial_start_at: <string>
 ```
+
+A scheduler is needed and has to be available inside the pre and post execution as well as the class to be executed.
 
 ### runtime created (tasks list)
 
@@ -45,6 +47,8 @@ created_at: <datetime>
 
 # links
 
+* https://www.archlinux.org/pacman/alpm-hooks.5.html
+* https://wiki.archlinux.org/index.php/User:Allan/Pacman_Hooks
 * https://www.freedesktop.org/software/systemd/man/systemd.service.html
 * https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sect-Managing_Services_with_systemd-Unit_Files.html
 * https://wiki.archlinux.org/index.php/Systemd
