@@ -4,7 +4,7 @@ Free as in freedom and generic approach to cover handling of deployment to does 
 
 # Thoughts
 
-* based a vcs
+* based on a vcs
     * support for multiple branches
     * based on recording and logging "latest commit id"
 * independent from the environment (development, testing, staging or production system)
