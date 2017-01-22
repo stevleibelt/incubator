@@ -12,6 +12,7 @@ Free as in freedom and generic approach to cover handling of deployment to does 
 
 # Workflow
 
+* use post-checkout and post-merge
 * investigate current system status
     * read deployment to do list
     * read current branch name
