@@ -38,15 +38,21 @@ created_at: <YYYY-mm-dd HH:ii:ss>
 ## Deployment To Do Entry
 
 ```
-uuid: <string>
-created_at: <YYYY-mm-dd HH:ii:ss>
-created_by: <name>
-for_development: <true|false>
-for_testing: <true|false>
-for_staging: <true|false>
-for_production: <true|false>
-is_executable: <true|false>
-revertable: <true|false>
-task_to_do: <description or relative path to the executable>
-undo_to_do: <null, description or relative path to the executable>
+#as json
+{
+    "uuid": "<string>",
+    "created_at": "<yyyy-mm-dd hh:ii:ss>",
+    "created_by": "<name or unique identifier>",
+    "list_of_affected_environments": [
+        "development",
+        "testing",
+        "staging",
+        "production"
+    ],
+    "is_executable": true,
+    "is_revertable": true,
+    "task_description": "<description>",
+    "relative_path_to_the_todo_task": "<string>",
+    "relative_path_to_the_undo_task": "<empty|string>"
+}
 ```
