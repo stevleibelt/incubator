@@ -43,16 +43,40 @@ created_at: <YYYY-mm-dd HH:ii:ss>
     "uuid": "<string>",
     "created_at": "<yyyy-mm-dd hh:ii:ss>",
     "created_by": "<name or unique identifier>",
-    "list_of_affected_environments": [
-        "development",
-        "testing",
-        "staging",
-        "production"
-    ],
-    "is_executable": true,
-    "is_revertable": true,
-    "task_description": "<description>",
-    "relative_path_to_the_todo_task": "<string>",
-    "relative_path_to_the_undo_task": "<empty|string>"
+    "list_of_affected_environments": {
+        {
+            "name": "development"
+        },
+        {
+            "name": "production"
+        },
+        {
+            "name": "staging"
+        },
+        {
+            "name": "testing"
+        }
+    },
+    "todo_task": {
+        "description": "<string>",
+        "is_executable": "<boolean>">,
+        "relative_path_to_the_task": "<string>"
+    },
+    "undo_task": {
+        "description": "<string>",
+        "is_executable": "<boolean>">,
+        "relative_path_to_the_task": "<string>"
+    }
+    "version": "<integer>"
 }
 ```
+
+# Unorderd Ideas
+
+## Next Milestone
+
+* environment dependend variables
+
+## Nice To Have Or Just As Example
+
+* configurable formatter to start using this side beside your current project until you have migrated your infrastructure
