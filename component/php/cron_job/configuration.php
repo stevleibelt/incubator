@@ -16,7 +16,7 @@ return [
         'interval_of_repetition'    => '17 days',
         'execute_upfront'           => 'Foo\BarCheckFactory|/my/script',    //either is callable, a script or a class with some implemented interfaces. either returns >0 or throws an exception if something went wrong
         'execute'                   => 'Foo\BarFactory',    //either is callable, a script or a class either returns >0 or throws an exception to tell that something went wrong
-        'execute_on_failure'        => 'Foo\ErrorBarHandlerFactory',    //either is a callable, a script or a class with some implemented interfaces (InjectedScheduler).
+        'execute_on_failure'        => 'Foo\ErrorBarHandlerFactory',    //either is a callable, a script or a class with some implemented interfaces (InjectedScheduler/home/nvb/software/source/com/github/bazzline/php_component_cli_arguments).
         //supported values
         //  HH:MM:SS
         //  YYYY-MM-DD HH:MM:SS
