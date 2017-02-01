@@ -27,7 +27,7 @@ $stateMachine   = new \Net\Bazzline\Component\ApacheServerStatus\StateMachine\Se
 $stringTool     = new \Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool();
 
 $collector  = new \Net\Bazzline\Component\ApacheServerStatus\Collector\FullContentCollector($stringTool);
-$strategy   = new \Net\Bazzline\Component\ApacheServerStatus\CollectContentStrategy\CollectContentStrategy(
+$strategy   = new \Net\Bazzline\Component\ApacheServerStatus\CollectStrategy\CollectStrategy(
     $collector,
     $stateMachine,
     $stringTool
