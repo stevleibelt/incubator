@@ -12,14 +12,16 @@
     "license": "LGPLv3",
     "authors": [
         {
-            "name": "stev leibelt",
-            "email": "artodeto@bazzline.net"
+            "name": "Stev Leibelt",
+            "email": "artodeto@bazzline.net",
+            "homepage": "https://artodeto.bazzline.net",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": {
-            "Net\\Bazzline\\Component\\ApacheServerStatus": "source/"
+        "psr-4": {
+            "Net\\Bazzline\\Component\\ApacheServerStatus\\": "source/"
         }
     }
 }

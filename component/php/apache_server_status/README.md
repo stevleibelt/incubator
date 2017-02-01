@@ -9,6 +9,14 @@ This component is relying on the [apache mod_status](https://httpd.apache.org/do
 * provides simple access to process information (deals with strings)
 * provides detailed access to all information (building a lot of objects)
 
+# Why?
+
+Let me give you an scenario I got on my desk and had to solve it.
+
+## Given
+
+As a maintainer of an infrastructure with multiple apache HTTP servers, I need to know if a given process (identified by its pid, a infrastructure wide unique identifier and its uri) is still running or not.
+
 # Current Status
 
 * scribbling code in tryout.php

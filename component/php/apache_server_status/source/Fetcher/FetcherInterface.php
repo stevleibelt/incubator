@@ -1,19 +1,14 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2017-01-30
+ * @since 2017-02-01
  */
 namespace Net\Bazzline\Component\ApacheServerStatus\Fetcher;
 
-class Fetcher
+interface FetcherInterface
 {
-    public function setUrl()
-    {
-
-    }
-
-    public function fetch()
-    {
-
-    }
+    /**
+     * @return array
+     */
+    public function fetch();
 }

@@ -1,20 +1,35 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2017-01-30
+ * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\Filter;
+namespace Net\Bazzline\Component\ApacheServerStatus\Tool;
 
-abstract class AbstractFilter implements FilterInterface
+class StringTool
 {
+    /**
+     * @param string $string
+     * @param string $search
+     * @return boolean
+     */
+    public function contains($string, $search)
+    {
+        if (strlen($search) == 0) {
+            $contains = false;
+        } else {
+            $contains = !(strpos($string, $search) === false);
+        }
+
+        return $contains;
+    }
+
     /**
      * @param string $string
      * @param string $start
      * @param string $end
      * @return null|string
-     * @todo move into dedicated component/repository
      */
-    protected function sliceSection($string, $start, $end)
+    public function crop($string, $start, $end)
     {
         $positionOfTheStart         = strpos($string, $start);
         $positionOfTheStartIsValid  = ($positionOfTheStart !== false);
@@ -36,8 +51,8 @@ abstract class AbstractFilter implements FilterInterface
      *
      * @return bool
      */
-    protected function startsWith($string, $start)
+    public function startsWith($string, $start)
     {
-        return (strncmp($string, $start, strlen($start)) === 0);
+         return (strncmp($string, $start, strlen($start)) === 0);
     }
 }
