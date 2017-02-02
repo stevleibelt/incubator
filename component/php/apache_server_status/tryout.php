@@ -9,9 +9,11 @@ require __DIR__ . '/vendor/autoload.php';
 function dumpArray(array $array, $prefix = '  ')
 {
     foreach ($array as $item => $value) {
-        if (is_array($value)) {
+        if ($value instanceof \Net\Bazzline\Component\ApacheServerStatus\DomainModel\Worker) {
             echo $prefix . $item . PHP_EOL;
-            //print_r($value);
+            dumpArray($value->toArray(), str_repeat($prefix, 2));
+        } else if (is_array($value)) {
+            echo $prefix . $item . PHP_EOL;
             dumpArray($value, str_repeat($prefix, 2));
         } else {
             echo $prefix . $item . ': ' . $value . PHP_EOL;
@@ -47,9 +49,18 @@ function parseLinesOfDetailIntoAnArray($lines, \Net\Bazzline\Component\ApacheSer
             $parsedLines[] = [
                 'pid'                   => $asArray[2],
                 'status'                => $asArray[4],
+                'ip_address'            => $asArray[15],
                 'http_method'           => $asArray[16],
                 'uri_authority'         => (isset($asArray[19]) ? $asArray[19] : $asArray[18]),
                 'uri_path_with_query'   => $asArray[17],
+                'worker'                => new \Net\Bazzline\Component\ApacheServerStatus\DomainModel\Worker(
+                    $asArray[16],
+                    $asArray[15],
+                    (int) $asArray[2],
+                    $asArray[4],
+                    (isset($asArray[19]) ? $asArray[19] : $asArray[18]),
+                    $asArray[17]
+                ),
                 'line'                  => $line,
                 'size'                  => count($asArray)
             ];
