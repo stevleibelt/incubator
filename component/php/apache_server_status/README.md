@@ -61,3 +61,5 @@ Thanks to:
 * [mod_status_parser](https://github.com/nikos-glikis/mod_status_parser)
 * [determine if an apache process is still running](http://artodeto.bazzline.net/archives/846-determine-if-an-apache-process-is-still-running-via-bash-to-prevent-multiple-instances-running.html)
 * [apache for the cloud]()http://people.apache.org/~jim/presos/ACNA11/Apache_httpd_cloud.pdf
+* [reading apache server status](https://answers.splunk.com/answers/28058/reading-apache-server-status-output.html)
+* [Apache Server Status](https://www.phpclasses.org/browse/file/17516.html)
