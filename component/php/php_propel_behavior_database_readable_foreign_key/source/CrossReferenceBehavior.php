@@ -34,9 +34,48 @@ class CrossReferenceBehavior extends Behavior
 
     public function queryMethods(QueryBuilder $builder)
     {
+        //begin of dependencies
         $script = '';
+        //end of dependencies
 
+        //begin of business logic
         $queryClassName         = $builder->getStubQueryBuilder()->getClassname();
         $createColumnConstant   = $this->getColumnConstant('create_column', $builder);
+
+        return $script;
+        //end of business logic
+    }
+
+    public function objectMethods(ObjectBuilder $builder)
+    {
+        //begin of dependencies
+        $script = ''
+        //end of dependencies
+
+        //begin of business logic
+        //write something like
+        //$script = '
+        ///**
+        // * @return null|$camelCasedObjectName
+        // * @throws \PropelException
+        // */
+        //public function get$camelCasedColumnName()
+        //{
+        //  $id = $this->get$camelCasedColumnName();
+        //
+        //  $idIsSet    = (is_integer($id));
+        //
+        //  if ($idIsSet) {
+        //      $entity = $camelCasedQueryClassName::create()
+        //          ->filterById()
+        //          ->findOne;
+        //  } else {
+        //      $entity = null;
+        //  }
+        //
+        //  return $entity;
+        //}
+        //';
+        //end of business logic
     }
 }
