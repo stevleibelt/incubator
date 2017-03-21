@@ -5,7 +5,10 @@
  */
 
 require __DIR__ . '/vendor/autoload.php';
-
+/**
+ * @param array $array
+ * @param string $prefix
+ */
 function dumpArray(array $array, $prefix = '  ')
 {
     foreach ($array as $item => $value) {
@@ -21,6 +24,10 @@ function dumpArray(array $array, $prefix = '  ')
     }
 }
 
+/**
+ * @param array $lines
+ * @param string $name
+ */
 function dumpSectionIfThereIsSomeContent(array $lines, $name)
 {
     if (!empty($lines)) {
@@ -33,12 +40,21 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
     }
 }
 
-function parseLinesOfDetailIntoAnArray($lines, \Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool $stringTool)
+/**
+ * @param array $lines
+ * @param \JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility $stringUtility
+ *
+ * @return array
+ */
+function parseLinesOfDetailIntoAnArray(
+    array $lines,
+    \JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility $stringUtility
+)
 {
     $parsedLines = [];
 
     foreach ($lines as $line) {
-        if ($stringTool->startsWith($line, 'Server ')) {
+        if ($stringUtility->startsWith($line, 'Server ')) {
             $asArray = explode(' ', $line);
 
             /*
@@ -80,14 +96,13 @@ $pathToTheExampleFile   = __DIR__ . '/example/server-status?notable.html';
 
 $fetcher        = new \Net\Bazzline\Component\ApacheServerStatus\Fetcher\FileFetcher();
 $stateMachine   = new \Net\Bazzline\Component\ApacheServerStatus\StateMachine\SectionStateMachine();
-$stringTool     = new \Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool();
+$stringUtility  = new \JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility();
 
-//$collector  = new \Net\Bazzline\Component\ApacheServerStatus\Collector\FullContentCollector($stringTool);
-$collector  = new \Net\Bazzline\Component\ApacheServerStatus\Collector\DetailOnlyContentCollector($stringTool);
+$collector  = new \Net\Bazzline\Component\ApacheServerStatus\Collector\DetailOnlyContentCollector($stringUtility);
 $strategy   = new \Net\Bazzline\Component\ApacheServerStatus\CollectStrategy\CollectStrategy(
     $collector,
     $stateMachine,
-    $stringTool
+    $stringUtility
 );
 
 //cleanup
@@ -107,7 +122,7 @@ dumpSectionIfThereIsSomeContent($collector->getListOfStatistic(), 'Statistic');
 dumpSectionIfThereIsSomeContent(
     parseLinesOfDetailIntoAnArray(
         $collector->getListOfDetail(),
-        $stringTool
+        $stringUtility
     ),
     'Parsed Detail'
 );

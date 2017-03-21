@@ -5,6 +5,7 @@
  */
 namespace Net\Bazzline\Component\ApacheServerStatus\Collector;
 
+use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
 use Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool;
 
 class FullContentCollector implements ContentCollectorInterface
@@ -24,19 +25,19 @@ class FullContentCollector implements ContentCollectorInterface
     /** @var array */
     private $listOfStatistic;
 
-    /** @var StringTool */
-    private $stringTool;
+    /** @var StringUtility */
+    private $stringUtility;
 
     /**
      * ContentCollection constructor.
      *
-     * @param StringTool $stringTool
+     * @param StringUtility $stringUtility
      */
-    public function __construct(StringTool $stringTool)
+    public function __construct(StringUtility $stringUtility)
     {
         $this->clear();
 
-        $this->stringTool   = $stringTool;
+        $this->stringUtility    = $stringUtility;
     }
 
     /**
@@ -44,7 +45,7 @@ class FullContentCollector implements ContentCollectorInterface
      */
     public function addDetail($line)
     {
-        $stringTool = $this->stringTool;
+        $stringTool = $this->stringUtility;
 
         if (is_null($this->currentIndexKeyForListOfDetail)) {
             ++$this->currentIndexKeyForListOfDetail;

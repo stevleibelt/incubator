@@ -5,6 +5,7 @@
  */
 namespace Net\Bazzline\Component\ApacheServerStatus\CollectStrategy;
 
+use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
 use Net\Bazzline\Component\ApacheServerStatus\Collector\ContentCollectorInterface;
 use Net\Bazzline\Component\ApacheServerStatus\StateMachine\SectionStateMachine;
 use Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool;
@@ -20,22 +21,26 @@ class CollectStrategy
     /** @var SectionStateMachine*/
     private $stateMachine;
 
-    /** @var StringTool */
-    private $stringTool;
+    /** @var StringUtility */
+    private $stringUtility;
 
     /**
      * CollectStrategy constructor.
      *
      * @param ContentCollectorInterface $collector
      * @param SectionStateMachine $stateMachine
-     * @param StringTool $stringTool
+     * @param StringUtility $stringUtility
      */
-    public function __construct(ContentCollectorInterface $collector, SectionStateMachine $stateMachine, StringTool $stringTool)
+    public function __construct(
+        ContentCollectorInterface $collector,
+        SectionStateMachine $stateMachine,
+        StringUtility $stringUtility
+    )
     {
-        $this->collector    = $collector;
-        $this->lines        = [];
-        $this->stateMachine = $stateMachine;
-        $this->stringTool   = $stringTool;
+        $this->collector        = $collector;
+        $this->lines            = [];
+        $this->stateMachine     = $stateMachine;
+        $this->stringUtility    = $stringUtility;
     }
 
     public function collect()
@@ -44,7 +49,7 @@ class CollectStrategy
         $collector      = $this->collector;
         $lines          = $this->lines;
         $stateMachine   = $this->stateMachine;
-        $stringTool     = $this->stringTool;
+        $stringUtility  = $this->stringUtility;
         //end of dependencies
 
         //begin of business logic
@@ -52,11 +57,11 @@ class CollectStrategy
         $stateMachine->reset();
 
         foreach ($lines as $line) {
-            if ($stringTool->startsWith($line, 'Apache Status')) {
+            if ($stringUtility->startsWith($line, 'Apache Status')) {
                 continue;
-            } else if ($stringTool->startsWith($line, 'Current Time:')) {
+            } else if ($stringUtility->startsWith($line, 'Current Time:')) {
                 $stateMachine->setCurrentStateToStatistic();
-            } else if ($stringTool->startsWith($line, 'Server Details')) {
+            } else if ($stringUtility->startsWith($line, 'Server Details')) {
                 $stateMachine->setCurrentStateToDetail();
                 continue;
             }
@@ -71,7 +76,7 @@ class CollectStrategy
                 $collector->addStatistic($line);
             }
 
-            if ($stringTool->contains($line, 'requests currently being processed')) {
+            if ($stringUtility->contains($line, 'requests currently being processed')) {
                 $stateMachine->setCurrentStateToScoreboard();
             }
         }
