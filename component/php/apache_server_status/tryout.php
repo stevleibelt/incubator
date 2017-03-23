@@ -94,12 +94,12 @@ function parseLinesOfDetailIntoAnArray(
 
 $pathToTheExampleFile   = __DIR__ . '/example/server-status?notable.html';
 
-$fetcher        = new \Net\Bazzline\Component\ApacheServerStatus\Fetcher\FileFetcher();
-$stateMachine   = new \Net\Bazzline\Component\ApacheServerStatus\StateMachine\SectionStateMachine();
+$fetcher        = new \Net\Bazzline\Component\ApacheServerStatus\Service\Fetcher\FileFetcher();
+$stateMachine   = new \Net\Bazzline\Component\ApacheServerStatus\Service\StateMachine\SectionStateMachine();
 $stringUtility  = new \JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility();
 
-$collector  = new \Net\Bazzline\Component\ApacheServerStatus\Collector\DetailOnlyContentCollector($stringUtility);
-$strategy   = new \Net\Bazzline\Component\ApacheServerStatus\CollectStrategy\CollectStrategy(
+$collector  = new \Net\Bazzline\Component\ApacheServerStatus\Service\Collector\DetailOnlyContentCollector($stringUtility);
+$strategy   = new \Net\Bazzline\Component\ApacheServerStatus\Service\CollectStrategy\CollectStrategy(
     $collector,
     $stateMachine,
     $stringUtility

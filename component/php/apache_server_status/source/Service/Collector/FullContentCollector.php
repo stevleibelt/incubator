@@ -3,7 +3,7 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\Collector;
+namespace Net\Bazzline\Component\ApacheServerStatus\Service\Collector;
 
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
 use Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool;

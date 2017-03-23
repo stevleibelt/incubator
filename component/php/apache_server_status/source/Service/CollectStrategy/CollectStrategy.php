@@ -3,12 +3,11 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\CollectStrategy;
+namespace Net\Bazzline\Component\ApacheServerStatus\Service\CollectStrategy;
 
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatus\Collector\ContentCollectorInterface;
-use Net\Bazzline\Component\ApacheServerStatus\StateMachine\SectionStateMachine;
-use Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool;
+use Net\Bazzline\Component\ApacheServerStatus\Service\Collector\ContentCollectorInterface;
+use Net\Bazzline\Component\ApacheServerStatus\Service\StateMachine\SectionStateMachine;
 
 class CollectStrategy
 {
