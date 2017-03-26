@@ -3,15 +3,15 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\Service\CollectStrategy;
+namespace Net\Bazzline\Component\ApacheServerStatus\Service\Content\CollectStrategy;
 
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatus\Service\Collector\ContentCollectorInterface;
+use Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage\StorageInterface;
 use Net\Bazzline\Component\ApacheServerStatus\Service\StateMachine\SectionStateMachine;
 
 class CollectStrategy
 {
-    /** @var ContentCollectorInterface */
+    /** @var StorageInterface */
     private $collector;
 
     /** @var array */
@@ -26,12 +26,12 @@ class CollectStrategy
     /**
      * CollectStrategy constructor.
      *
-     * @param ContentCollectorInterface $collector
+     * @param StorageInterface $collector
      * @param SectionStateMachine $stateMachine
      * @param StringUtility $stringUtility
      */
     public function __construct(
-        ContentCollectorInterface $collector,
+        StorageInterface $collector,
         SectionStateMachine $stateMachine,
         StringUtility $stringUtility
     )
@@ -83,7 +83,7 @@ class CollectStrategy
     }
 
     /**
-     * @return ContentCollectorInterface
+     * @return StorageInterface
      */
     public function getCollector()
     {

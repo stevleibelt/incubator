@@ -3,12 +3,11 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\Service\Collector;
+namespace Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage;
 
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatus\Tool\StringTool;
 
-class FullContentCollector implements ContentCollectorInterface
+class FullStorage implements StorageInterface
 {
     /** @var null|int */
     private $currentIndexKeyForListOfDetail;

@@ -3,9 +3,9 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\Service\Collector;
+namespace Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage;
 
-interface ContentCollectorInterface
+interface StorageInterface
 {
     /**
      * @param string $line

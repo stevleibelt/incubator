@@ -98,8 +98,8 @@ $fetcher        = new \Net\Bazzline\Component\ApacheServerStatus\Service\Fetcher
 $stateMachine   = new \Net\Bazzline\Component\ApacheServerStatus\Service\StateMachine\SectionStateMachine();
 $stringUtility  = new \JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility();
 
-$collector  = new \Net\Bazzline\Component\ApacheServerStatus\Service\Collector\DetailOnlyContentCollector($stringUtility);
-$strategy   = new \Net\Bazzline\Component\ApacheServerStatus\Service\CollectStrategy\CollectStrategy(
+$collector  = new \Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage\DetailOnlyStorage($stringUtility);
+$strategy   = new \Net\Bazzline\Component\ApacheServerStatus\Service\Content\CollectStrategy\CollectStrategy(
     $collector,
     $stateMachine,
     $stringUtility
