@@ -1,11 +1,12 @@
 <?php
 /**
  * @author stev leibelt <artodeto@bazzline.net>
- * @since 2017-02-02
+ * @since 2017-03-26
  */
+
 namespace Net\Bazzline\Component\ApacheServerStatus\DomainModel;
 
-class Worker
+class Detail implements ToArrayInterface
 {
     const TO_ARRAY_KEY_HTTP_METHOD          = 'http_method';
     const TO_ARRAY_KEY_IP_ADDRESS           = 'ip_address';
@@ -20,7 +21,7 @@ class Worker
     /** @var string */
     private $ipAddress;
 
-    /** @var int */
+    /** @var string */
     private $pid;
 
     /** @var string */
@@ -33,11 +34,11 @@ class Worker
     private $uriPathWithQuery;
 
     /**
-     * Worker constructor.
+     * Detail constructor.
      *
      * @param string $httpMethod
      * @param string $ipAddress
-     * @param int $pid
+     * @param string $pid
      * @param string $status
      * @param string $uriAuthority
      * @param string $uriPathWithQuery
@@ -76,7 +77,7 @@ class Worker
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function pid()
     {
@@ -113,12 +114,12 @@ class Worker
     public function toArray()
     {
         return [
-            self::TO_ARRAY_KEY_HTTP_METHOD          => $this->httpMethod(),
-            self::TO_ARRAY_KEY_IP_ADDRESS           => $this->ipAddress(),
-            self::TO_ARRAY_KEY_PID                  => $this->pid(),
-            self::TO_ARRAY_KEY_STATUS               => $this->status(),
-            self::TO_ARRAY_KEY_URI_AUTHORITY        => $this->uriAuthority(),
-            self::TO_ARRAY_KEY_URI_PATH_WITH_QUERY  => $this->uriPathWithQuery()
+            self::TO_ARRAY_KEY_HTTP_METHOD          => $this->httpMethod,
+            self::TO_ARRAY_KEY_IP_ADDRESS           => $this->ipAddress,
+            self::TO_ARRAY_KEY_PID                  => $this->pid,
+            self::TO_ARRAY_KEY_STATUS               => $this->status,
+            self::TO_ARRAY_KEY_URI_AUTHORITY        => $this->uriAuthority,
+            self::TO_ARRAY_KEY_URI_PATH_WITH_QUERY  => $this->uriPathWithQuery
         ];
     }
 }
