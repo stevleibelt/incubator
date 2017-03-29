@@ -55,6 +55,18 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
     * getIpAddress
     * getUrl
 
+# To Do
+
+* write unit test
+    * DetailOnly
+    * Processor
+    * SectionStateMachine
+* write parser and create domain object for
+    * information (currently on it)
+    * scoreboard
+    * statistic
+* write example
+
 # Notes
 
 Thanks to:

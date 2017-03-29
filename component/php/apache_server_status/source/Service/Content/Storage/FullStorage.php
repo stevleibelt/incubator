@@ -44,6 +44,7 @@ class FullStorage implements StorageInterface
      */
     public function addDetail($line)
     {
+        //@todo why? - Isn't this a job for the parser?
         $stringTool = $this->stringUtility;
 
         if (is_null($this->currentIndexKeyForListOfDetail)) {

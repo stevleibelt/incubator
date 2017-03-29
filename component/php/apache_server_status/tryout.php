@@ -76,15 +76,15 @@ dumpSectionIfThereIsSomeContent($storage->getListOfScoreboard(), 'Scoreboard');
 dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
 //var_dump($storage->getListOfDetail());
-///*
 $listOfParsedDetailLines  = [];
 
 foreach ($storage->getListOfDetail() as $line) {
     try {
         $listOfParsedDetailLines[]  = $detailLineParser->parse($line);
     } catch (InvalidArgumentException $invalidArgumentException) {
-        echo get_class($detailLineParser) . ' could not parse the following line:' . PHP_EOL;
-        echo '    ' . $line . PHP_EOL;
+        //echo get_class($detailLineParser) . ' could not parse the following line:' . PHP_EOL;
+        //echo '    ' . $line . PHP_EOL;
+        //echo $invalidArgumentException->getMessage() . PHP_EOL;
     }
 }
 
@@ -92,4 +92,3 @@ dumpSectionIfThereIsSomeContent(
     $listOfParsedDetailLines,
     'Parsed Detail'
 );
-//*/

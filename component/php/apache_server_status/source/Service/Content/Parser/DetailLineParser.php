@@ -16,7 +16,7 @@ class DetailLineParser implements LineParserInterface
     private $stringUtility;
 
     /**
-     * DetailLineParser constructor.
+     * DetailLineParserTest constructor.
      *
      * @param StringUtility $stringUtility
      */
@@ -39,11 +39,11 @@ class DetailLineParser implements LineParserInterface
         //begin of business logic
         $lineAsArray = explode(' ', $line);
 
-        $arrayIsInvalid = (count($lineAsArray) <= 18);
+        $arrayIsInvalid = (count($lineAsArray) < 19);
 
         if ($arrayIsInvalid) {
             throw new InvalidArgumentException(
-                self::class . ' can not parse given line'
+                self::class . ' can not parse given line "' . $line . '"'
             );
         }
 
@@ -52,18 +52,38 @@ class DetailLineParser implements LineParserInterface
                 ? substr($lineAsArray[16], 1)
                 : $lineAsArray[16]
         );
+        $pid = filter_var(
+                $lineAsArray[2],
+                FILTER_SANITIZE_NUMBER_INT
+            );
+        $status = str_replace(
+                [
+                    '[',
+                    ']'
+                ],
+                '',
+                $lineAsArray[4]
+            );
+        $uriAuthority = str_replace(
+                [
+                    '[',
+                    ']'
+                ],
+                '',
+                (isset($lineAsArray[19]) ? $lineAsArray[19] : $lineAsArray[18])
+            );
         $uriPathWithQuery   = (
             $stringUtility->endsWith($lineAsArray[17], '}')
-                ? substr($lineAsArray[17], -1)
+                ? substr($lineAsArray[17], 0, -1)
                 : $lineAsArray[17]
         );
 
         return new Detail(
             $httpMethod,
             $lineAsArray[15],
-            $lineAsArray[2],
-            $lineAsArray[4],
-            (isset($lineAsArray[19]) ? $lineAsArray[19] : $lineAsArray[18]),
+            $pid,
+            $status,
+            $uriAuthority,
             $uriPathWithQuery
         );
         //end of business logic
