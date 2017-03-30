@@ -58,7 +58,6 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
 # To Do
 
 * write unit test
-    * DetailOnly
     * Processor
     * SectionStateMachine
 * write parser and create domain object for
@@ -66,6 +65,11 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
     * scoreboard
     * statistic
 * write example
+
+# Done
+
+* write unit test
+    * DetailOnly
 
 # Notes
 
