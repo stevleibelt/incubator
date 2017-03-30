@@ -6,14 +6,14 @@
 
 namespace Net\Bazzline\Component\ApacheServerStatusParser\DomainModel;
 
-class Detail implements ToArrayInterface
+class Detail implements ReduceDataAbleToArrayInterface
 {
-    const TO_ARRAY_KEY_HTTP_METHOD          = 'http_method';
-    const TO_ARRAY_KEY_IP_ADDRESS           = 'ip_address';
-    const TO_ARRAY_KEY_PID                  = 'pid';
-    const TO_ARRAY_KEY_STATUS               = 'status';
-    const TO_ARRAY_KEY_URI_AUTHORITY        = 'uri_authority';
-    const TO_ARRAY_KEY_URI_PATH_WITH_QUERY  = 'uri_path_with_query';
+    const REDUCED_DATA_TO_ARRAY_KEY_HTTP_METHOD         = 'http_method';
+    const REDUCED_DATA_TO_ARRAY_KEY_IP_ADDRESS          = 'ip_address';
+    const REDUCED_DATA_TO_ARRAY_KEY_PID                 = 'pid';
+    const REDUCED_DATA_TO_ARRAY_KEY_STATUS              = 'status';
+    const REDUCED_DATA_TO_ARRAY_KEY_URI_AUTHORITY       = 'uri_authority';
+    const REDUCED_DATA_TO_ARRAY_KEY_URI_PATH_WITH_QUERY = 'uri_path_with_query';
 
     /** @var string */
     private $httpMethod;
@@ -110,16 +110,24 @@ class Detail implements ToArrayInterface
 
     /**
      * @return array
+     *  [
+     *      'http_method'           : string,
+     *      'ip_address'            : string,
+     *      'pid'                   : string,
+     *      'status'                : string,
+     *      'uri_authority'         : string,
+     *      'uri_path_with_query'   : string
+     *  ]
      */
-    public function toArray()
+    public function reduceDataToArray()
     {
         return [
-            self::TO_ARRAY_KEY_HTTP_METHOD          => $this->httpMethod,
-            self::TO_ARRAY_KEY_IP_ADDRESS           => $this->ipAddress,
-            self::TO_ARRAY_KEY_PID                  => $this->pid,
-            self::TO_ARRAY_KEY_STATUS               => $this->status,
-            self::TO_ARRAY_KEY_URI_AUTHORITY        => $this->uriAuthority,
-            self::TO_ARRAY_KEY_URI_PATH_WITH_QUERY  => $this->uriPathWithQuery
+            self::REDUCED_DATA_TO_ARRAY_KEY_HTTP_METHOD          => $this->httpMethod,
+            self::REDUCED_DATA_TO_ARRAY_KEY_IP_ADDRESS           => $this->ipAddress,
+            self::REDUCED_DATA_TO_ARRAY_KEY_PID                  => $this->pid,
+            self::REDUCED_DATA_TO_ARRAY_KEY_STATUS               => $this->status,
+            self::REDUCED_DATA_TO_ARRAY_KEY_URI_AUTHORITY        => $this->uriAuthority,
+            self::REDUCED_DATA_TO_ARRAY_KEY_URI_PATH_WITH_QUERY  => $this->uriPathWithQuery
         ];
     }
 }

@@ -58,7 +58,7 @@ class DetailLineParserTest extends PHPUnit_Framework_TestCase
         //begin of business logic
         $parsedDetail   = $parser->parse($line);
 
-        self::assertEquals($expectedDetail->toArray(), $parsedDetail->toArray());
+        self::assertEquals($expectedDetail->reduceDataToArray(), $parsedDetail->reduceDataToArray());
         //end of business logic
     }
 

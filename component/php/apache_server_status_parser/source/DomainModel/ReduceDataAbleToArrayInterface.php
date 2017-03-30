@@ -6,10 +6,10 @@
 
 namespace Net\Bazzline\Component\ApacheServerStatusParser\DomainModel;
 
-interface ToArrayInterface
+interface ReduceDataAbleToArrayInterface
 {
     /**
      * @return array
      */
-    public function toArray();
+    public function reduceDataToArray();
 }

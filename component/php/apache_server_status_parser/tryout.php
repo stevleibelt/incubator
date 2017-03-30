@@ -4,7 +4,7 @@
  * @since 2017-01-31
  */
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\ToArrayInterface;
+use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\ReduceDataAbleToArrayInterface;
 
 require __DIR__ . '/vendor/autoload.php';
 /**
@@ -14,9 +14,9 @@ require __DIR__ . '/vendor/autoload.php';
 function dumpArray(array $array, $prefix = '  ')
 {
     foreach ($array as $item => $value) {
-        if ($value instanceof ToArrayInterface) {
+        if ($value instanceof ReduceDataAbleToArrayInterface) {
             echo $prefix . $item . PHP_EOL;
-            dumpArray($value->toArray(), str_repeat($prefix, 2));
+            dumpArray($value->reduceDataToArray(), str_repeat($prefix, 2));
         } else if (is_array($value)) {
             echo $prefix . $item . PHP_EOL;
             dumpArray($value, str_repeat($prefix, 2));
@@ -51,9 +51,11 @@ $stateMachine       = new \Net\Bazzline\Component\ApacheServerStatusParser\Servi
 $stringUtility      = new StringUtility();
 
 //$storage    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage($stringUtility);
-$detailLineParser   = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser($stringUtility);
-$storage            = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage($stringUtility);
-$parser             = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor\Processor(
+$detailLineParser               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser($stringUtility);
+$informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
+$storage                        = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage($stringUtility);
+
+$processor  = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor\Processor(
     $stateMachine,
     $stringUtility,
     $storage
@@ -65,18 +67,18 @@ $fetcher->setPath($pathToTheExampleFile);
 $lines = $fetcher->fetch();
 
 foreach ($fetcher->fetch() as $line) {
-    $parser->process($line);
+    $processor->process($line);
 }
 
-$storage = $parser->getStorage();
+$storage = $processor->getStorage();
 
 dumpSectionIfThereIsSomeContent($storage->getListOfInformation(), 'Information');
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');
 dumpSectionIfThereIsSomeContent($storage->getListOfScoreboard(), 'Scoreboard');
 dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
-//var_dump($storage->getListOfDetail());
-$listOfParsedDetailLines  = [];
+$information                = $informationListOfLineParser->parse($storage->getListOfInformation());
+$listOfParsedDetailLines    = [];
 
 foreach ($storage->getListOfDetail() as $line) {
     try {
@@ -87,6 +89,13 @@ foreach ($storage->getListOfDetail() as $line) {
         //echo $invalidArgumentException->getMessage() . PHP_EOL;
     }
 }
+
+dumpSectionIfThereIsSomeContent(
+    [
+        $information
+    ],
+    'Parsed Information'
+);
 
 dumpSectionIfThereIsSomeContent(
     $listOfParsedDetailLines,

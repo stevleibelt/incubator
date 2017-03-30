@@ -69,7 +69,7 @@ class Processor
             $storage->addStatistic($line);
         }
 
-        if($stringUtility->contains($line, 'requests currently being processed')) {
+        if ($stringUtility->contains($line, 'requests currently being processed')) {
             $stateMachine->setCurrentStateToScoreboard();
         }
         //end of business logic

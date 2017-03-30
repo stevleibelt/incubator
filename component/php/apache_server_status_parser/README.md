@@ -61,7 +61,6 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
     * Processor
     * SectionStateMachine
 * write parser and create domain object for
-    * information (currently on it)
     * scoreboard
     * statistic
 * write example
@@ -70,6 +69,8 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
 
 * write unit test
     * DetailOnly
+* write parser and create domain object for
+    * information
 
 # Notes
 
