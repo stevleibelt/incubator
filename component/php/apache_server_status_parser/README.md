@@ -1,4 +1,4 @@
-# Apache Server Status Component for PHP
+# Apache Server Status Parser Component for PHP
 
 This project aims to deliver an easy to use component to read the apache server status for a configured list of hosts and gain information about that.
 
