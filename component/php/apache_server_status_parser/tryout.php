@@ -4,7 +4,7 @@
  * @since 2017-01-31
  */
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatus\DomainModel\ToArrayInterface;
+use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\ToArrayInterface;
 
 require __DIR__ . '/vendor/autoload.php';
 /**
@@ -46,14 +46,14 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 
 $pathToTheExampleFile   = __DIR__ . '/example/server-status?notable.html';
 
-$fetcher            = new \Net\Bazzline\Component\ApacheServerStatus\Service\Fetcher\FileFetcher();
-$stateMachine       = new \Net\Bazzline\Component\ApacheServerStatus\Service\StateMachine\SectionStateMachine();
+$fetcher            = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\FileFetcher();
+$stateMachine       = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
 $stringUtility      = new StringUtility();
 
-//$storage    = new \Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage\DetailOnlyStorage($stringUtility);
-$detailLineParser   = new \Net\Bazzline\Component\ApacheServerStatus\Service\Content\Parser\DetailLineParser($stringUtility);
-$storage            = new \Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage\FullStorage($stringUtility);
-$parser             = new \Net\Bazzline\Component\ApacheServerStatus\Service\Content\Processor\Processor(
+//$storage    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage($stringUtility);
+$detailLineParser   = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser($stringUtility);
+$storage            = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage($stringUtility);
+$parser             = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor\Processor(
     $stateMachine,
     $stringUtility,
     $storage

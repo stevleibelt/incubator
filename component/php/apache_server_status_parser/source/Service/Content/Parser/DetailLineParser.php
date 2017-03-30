@@ -4,11 +4,11 @@
  * @since 2017-03-26
  */
 
-namespace Net\Bazzline\Component\ApacheServerStatus\Service\Content\Parser;
+namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser;
 
 use InvalidArgumentException;
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatus\DomainModel\Detail;
+use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\Detail;
 
 class DetailLineParser implements LineParserInterface
 {

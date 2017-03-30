@@ -1,5 +1,5 @@
 {
-    "name": "net_bazzline/apache_server_status",
+    "name": "net_bazzline/apache_server_status parser",
     "description": "php component to ease up reading and processing the apache server status (mod_status)",
     "type": "library",
     "require": {
@@ -21,12 +21,12 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Net\\Bazzline\\Component\\ApacheServerStatus\\": "source/"
+            "Net\\Bazzline\\Component\\ApacheServerStatusParser\\": "source/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Test\\Net\\Bazzline\\Component\\ApacheServerStatus\\": "test/"
+            "Test\\Net\\Bazzline\\Component\\ApacheServerStatusParser\\": "test/"
         }
     }
 }

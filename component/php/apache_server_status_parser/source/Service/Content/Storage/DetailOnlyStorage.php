@@ -3,7 +3,7 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage;
+namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage;
 
 class DetailOnlyStorage extends FullStorage
 {

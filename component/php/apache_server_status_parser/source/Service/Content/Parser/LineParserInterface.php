@@ -4,7 +4,7 @@
  * @since 2017-03-26
  */
 
-namespace Net\Bazzline\Component\ApacheServerStatus\Service\Content\Parser;
+namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser;
 
 use InvalidArgumentException;
 

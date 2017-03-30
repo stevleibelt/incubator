@@ -4,7 +4,7 @@
  * @since 2017-03-26
  */
 
-namespace Net\Bazzline\Component\ApacheServerStatus\DomainModel;
+namespace Net\Bazzline\Component\ApacheServerStatusParser\DomainModel;
 
 interface ToArrayInterface
 {

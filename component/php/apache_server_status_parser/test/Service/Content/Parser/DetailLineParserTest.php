@@ -8,8 +8,8 @@ namespace Test\Net\Bazzline\Component\ApacheServerStatus\Service\Content\Parser;
 
 use InvalidArgumentException;
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatus\DomainModel\Detail;
-use Net\Bazzline\Component\ApacheServerStatus\Service\Content\Parser\DetailLineParser;
+use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\Detail;
+use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser;
 use PHPUnit_Framework_TestCase;
 
 class DetailLineParserTest extends PHPUnit_Framework_TestCase

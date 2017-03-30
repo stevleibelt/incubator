@@ -3,11 +3,11 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatus\Service\Content\Processor;
+namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor;
 
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
-use Net\Bazzline\Component\ApacheServerStatus\Service\Content\Storage\StorageInterface;
-use Net\Bazzline\Component\ApacheServerStatus\Service\StateMachine\SectionStateMachine;
+use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\StorageInterface;
+use Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine;
 
 class Processor
 {
