@@ -97,7 +97,9 @@ dumpSectionIfThereIsSomeContent(
     'Parsed Information'
 );
 
+/*
 dumpSectionIfThereIsSomeContent(
     $listOfParsedDetailLines,
     'Parsed Detail'
 );
+*/
