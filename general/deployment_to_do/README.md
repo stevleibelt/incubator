@@ -71,6 +71,11 @@ created_at: <YYYY-mm-dd HH:ii:ss>
 }
 ```
 
+## Configurable Settings
+
+* path_to_the_list_of_deployment_to_do: string
+* automatically_execute_deployment_to_do: boolean
+
 # Unorderd Ideas
 
 ## Next Milestone
@@ -80,3 +85,10 @@ created_at: <YYYY-mm-dd HH:ii:ss>
 ## Nice To Have Or Just As Example
 
 * configurable formatter to start using this side beside your current project until you have migrated your infrastructure
+
+# Things To Do
+
+* find fitting cli environment to run with
+* command are
+    * create
+    * list
