@@ -53,6 +53,7 @@ $stringUtility      = new StringUtility();
 //$storage    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage($stringUtility);
 $detailLineParser               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser($stringUtility);
 $informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
+$scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser($stringUtility);
 $statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\StatisticListOfLineParser($stringUtility);
 $storage                        = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage($stringUtility);
 
@@ -79,6 +80,7 @@ dumpSectionIfThereIsSomeContent($storage->getListOfScoreboard(), 'Scoreboard');
 dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
 $information                = $informationListOfLineParser->parse($storage->getListOfInformation());
+$scoreboard                 = $scoreboardListOfLineParser->parse($storage->getListOfScoreboard());
 $statistic                  = $statisticListOfLineParser->parse($storage->getListOfStatistic());
 $listOfParsedDetailLines    = [];
 
@@ -94,12 +96,19 @@ foreach ($storage->getListOfDetail() as $line) {
 
 dumpSectionIfThereIsSomeContent(
     [
+        $scoreboard
+    ],
+    'Parsed Scoreboard'
+);
+
+/*
+dumpSectionIfThereIsSomeContent(
+    [
         $statistic
     ],
     'Parsed Statistic'
 );
 
-/*
 dumpSectionIfThereIsSomeContent(
     [
         $information

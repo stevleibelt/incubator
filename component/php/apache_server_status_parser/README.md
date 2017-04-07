@@ -60,9 +60,6 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
 * write unit test
     * Processor
     * SectionStateMachine
-* write parser and create domain object for
-    * scoreboard
-    * statistic
 * write example
 
 # Done
@@ -71,6 +68,8 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
     * DetailOnly
 * write parser and create domain object for
     * information
+    * scoreboard
+    * statistic
 
 # Notes
 

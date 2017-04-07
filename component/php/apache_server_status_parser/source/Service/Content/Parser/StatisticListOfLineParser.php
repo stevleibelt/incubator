@@ -50,6 +50,7 @@ class StatisticListOfLineParser implements ListOfLineParserInterface
                 'total_accesses'                            => 'Total accesses: '
             ];
             /**
+             * always use numbers if you are dealing with static strings
              * <prefix >: string length
                 Current Time: : 14
                 CPU Usage: : 11
@@ -81,10 +82,7 @@ class StatisticListOfLineParser implements ListOfLineParserInterface
             ];
 
             foreach ($listOfLine as $line) {
-                echo $line . PHP_EOL;
-                //stop repeating yourself, us the $listOfMandatoryPropertyNameToStartsWithPrefix
                 if ($stringUtility->startsWith($line, $listOfMandatoryPropertyNameToStartsWithPrefix['current_timestamp'])) {
-                    //always use numbers if you are dealing with static strings
                     $listOMandatoryProperties['current_time'] = strtotime(
                         substr($line, 14)
                     );

@@ -55,6 +55,7 @@ class InformationListOfLineParser implements ListOfLineParserInterface
 
             foreach ($listOfLine as $line) {
                 //stop repeating yourself, us the $listOfMandatoryPropertyNameToStartsWithPrefix
+                //take a look to the StatisticListOfLineParser
                 if ($stringUtility->startsWith($line, 'Apache Server Status for ')) {
                     $listOMandatoryProperties['identifier'] = substr($line, 25);    //always use numbers if you are dealing with static strings
                 } else if ($stringUtility->startsWith($line, 'Server Version: ')) {
