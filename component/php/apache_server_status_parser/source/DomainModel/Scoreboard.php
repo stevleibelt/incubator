@@ -9,21 +9,35 @@ namespace Net\Bazzline\Component\ApacheServerStatusParser\DomainModel;
 class Scoreboard implements ReduceDataAbleToArrayInterface
 {
     const REDUCED_DATA_TO_ARRAY_KEY_LIST_OF_LEGEND  = 'legend';
-    const REDUCED_DATA_TO_ARRAY_KEY_LIST_OF_PROCESS = 'process';
+    const REDUCED_DATA_TO_ARRAY_KEY_LINE_OF_PROCESS = 'process';
+
+    /** @var string */
+    private $lineOfProcess;
 
     /** @var array */
     private $listOfLegend;
 
-    /** @var array */
-    private $listOfProcess;
-
+    /**
+     * Scoreboard constructor.
+     *
+     * @param string $lineOfProcess
+     * @param array $listOfLegend
+     */
     public function __construct(
-        array $listOfLegend,
-        array $listOfProcess
+        $lineOfProcess,
+        array $listOfLegend
     )
     {
+        $this->lineOfProcess    = $lineOfProcess;
         $this->listOfLegend     = $listOfLegend;
-        $this->listOfProcess    = $listOfProcess;
+    }
+
+    /**
+     * @return string
+     */
+    public function lineOfProcess()
+    {
+        return $this->lineOfProcess;
     }
 
     /**
@@ -36,14 +50,6 @@ class Scoreboard implements ReduceDataAbleToArrayInterface
 
     /**
      * @return array
-     */
-    public function listOfProcess()
-    {
-        return $this->listOfProcess;
-    }
-
-    /**
-     * @return array
      *  [
      *      'legend'    : array,
      *      'process'   : array
@@ -52,8 +58,8 @@ class Scoreboard implements ReduceDataAbleToArrayInterface
     public function reduceDataToArray()
     {
         return [
-            self::REDUCED_DATA_TO_ARRAY_KEY_LIST_OF_LEGEND  => $this->listOfLegend,
-            self::REDUCED_DATA_TO_ARRAY_KEY_LIST_OF_PROCESS => $this->listOfProcess
+            self::REDUCED_DATA_TO_ARRAY_KEY_LINE_OF_PROCESS => $this->lineOfProcess,
+            self::REDUCED_DATA_TO_ARRAY_KEY_LIST_OF_LEGEND  => $this->listOfLegend
         ];
     }
 }

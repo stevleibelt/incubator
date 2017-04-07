@@ -51,9 +51,13 @@ $stateMachine       = new \Net\Bazzline\Component\ApacheServerStatusParser\Servi
 $stringUtility      = new StringUtility();
 
 //$storage    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage($stringUtility);
-$detailLineParser               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser($stringUtility);
+$detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailListOfLineParser(
+    new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser(
+        $stringUtility
+    )
+);
 $informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
-$scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser($stringUtility);
+$scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser();
 $statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\StatisticListOfLineParser($stringUtility);
 $storage                        = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage($stringUtility);
 
@@ -80,19 +84,9 @@ dumpSectionIfThereIsSomeContent($storage->getListOfScoreboard(), 'Scoreboard');
 dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
 $information                = $informationListOfLineParser->parse($storage->getListOfInformation());
+$listOfParsedDetailLines    = $detailListOfLineParser->parse($storage->getListOfDetail());
 $scoreboard                 = $scoreboardListOfLineParser->parse($storage->getListOfScoreboard());
 $statistic                  = $statisticListOfLineParser->parse($storage->getListOfStatistic());
-$listOfParsedDetailLines    = [];
-
-foreach ($storage->getListOfDetail() as $line) {
-    try {
-        $listOfParsedDetailLines[]  = $detailLineParser->parse($line);
-    } catch (InvalidArgumentException $invalidArgumentException) {
-        //echo get_class($detailLineParser) . ' could not parse the following line:' . PHP_EOL;
-        //echo '    ' . $line . PHP_EOL;
-        //echo $invalidArgumentException->getMessage() . PHP_EOL;
-    }
-}
 
 dumpSectionIfThereIsSomeContent(
     [
@@ -101,7 +95,6 @@ dumpSectionIfThereIsSomeContent(
     'Parsed Scoreboard'
 );
 
-/*
 dumpSectionIfThereIsSomeContent(
     [
         $statistic
@@ -120,4 +113,3 @@ dumpSectionIfThereIsSomeContent(
     $listOfParsedDetailLines,
     'Parsed Detail'
 );
-*/

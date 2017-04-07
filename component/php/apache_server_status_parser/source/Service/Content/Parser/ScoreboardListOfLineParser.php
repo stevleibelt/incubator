@@ -12,16 +12,6 @@ use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\Scoreboard;
 
 class ScoreboardListOfLineParser implements ListOfLineParserInterface
 {
-    /** @var StringUtility */
-    private $stringUtility;
-
-    public function __construct(
-        StringUtility $stringUtility
-    )
-    {
-        $this->stringUtility    = $stringUtility;
-    }
-
     /**
      * @param string[] $listOfLine
      *
@@ -30,17 +20,13 @@ class ScoreboardListOfLineParser implements ListOfLineParserInterface
      */
     public function parse(array $listOfLine)
     {
-        //begin of dependencies
-        $stringUtility  = $this->stringUtility;
-        //end of dependencies
-
         //begin of business logic
         $listOfLineHasMinimalSize = (count($listOfLine) > 12);
 
         if ($listOfLineHasMinimalSize) {
             $listOMandatoryProperties   = [
                 'list_of_legend'    => [],
-                'list_of_process'   => []
+                'line_of_process'   => ''
             ];
 
             $collectListOfLegend    = false;
@@ -52,7 +38,7 @@ class ScoreboardListOfLineParser implements ListOfLineParserInterface
                     if ($line === 'Scoreboard Key:') {
                         $collectListOfLegend = true;
                     } else {
-                        $listOMandatoryProperties['list_of_process'][] = $line;
+                        $listOMandatoryProperties['line_of_process'] .= $line;
                     }
                 }
             }
@@ -66,8 +52,8 @@ class ScoreboardListOfLineParser implements ListOfLineParserInterface
             }
 
             $scoreboard = new Scoreboard(
-                $listOMandatoryProperties['list_of_legend'],
-                $listOMandatoryProperties['list_of_process']
+                $listOMandatoryProperties['line_of_process'],
+                $listOMandatoryProperties['list_of_legend']
             );
         } else {
             throw new InvalidArgumentException(
