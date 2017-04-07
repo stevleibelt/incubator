@@ -58,8 +58,11 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
 # To Do
 
 * write unit test
+    * DetailListOfLineParser
     * Processor
     * SectionStateMachine
+    * ScoreboardListOfLineParser
+    * StatisticListOfLineParser
 * write example
 
 # Done
