@@ -6,7 +6,7 @@
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
 use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\ReduceDataAbleToArrayInterface;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 //begin of helper functions
 /**

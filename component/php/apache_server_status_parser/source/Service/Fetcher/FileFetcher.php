@@ -5,6 +5,9 @@
  */
 namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher;
 
+use Net\Bazzline\Component\GenericAgreement\Exception\Runtime;
+use RuntimeException;
+
 class FileFetcher implements FetcherInterface
 {
     /** @var string */
@@ -20,6 +23,7 @@ class FileFetcher implements FetcherInterface
 
     /**
      * @return array
+     * @throws RuntimeException
      */
     public function fetch()
     {
@@ -28,6 +32,12 @@ class FileFetcher implements FetcherInterface
         //end of dependencies
 
         //begin of business logic
+        if (!is_readable($path)) {
+            throw new Runtime(
+                'provided path "' . $path . '" is not readable.'
+            );
+        }
+
         $contentAsString        = strip_tags(file_get_contents($path));
         $contentAsArray         = explode(PHP_EOL, $contentAsString);
 

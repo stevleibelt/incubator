@@ -62,8 +62,11 @@ And finally, it is allowed to use the apache server status but no ssh command ex
 ## Done
 
 * example written
-    * parse all (uses the FullStorage)
-    * parse detail only (uses the DetailOnlyStorage)
+    * local (using FileFetcher)
+        * parse all (uses the FullStorage)
+        * parse detail only (uses the DetailOnlyStorage)
+    * remote (using HttpFetcher)
+        * parse all (uses the FullStorage)
 * unit test written
     * DetailOnly
 * parser and domain object written
