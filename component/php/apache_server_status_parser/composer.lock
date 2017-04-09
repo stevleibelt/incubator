@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "89de305476b64accf32c4eadf6b636fc",
+    "content-hash": "fecc75bcc88c1bebedc095921ad8a56f",
     "packages": [
         {
             "name": "jonasrudolph/php-component-stringutility",
@@ -60,16 +60,16 @@
         },
         {
             "name": "net_bazzline/php_component_curl",
-            "version": "0.15.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bazzline/php_component_curl.git",
-                "reference": "0e7b40c6cdeb3c0946b1a6c5b6c29d53b6bd45f9"
+                "reference": "b205f83ad56647571939c9ca60d4202e6988fe24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bazzline/php_component_curl/zipball/0e7b40c6cdeb3c0946b1a6c5b6c29d53b6bd45f9",
-                "reference": "0e7b40c6cdeb3c0946b1a6c5b6c29d53b6bd45f9",
+                "url": "https://api.github.com/repos/bazzline/php_component_curl/zipball/b205f83ad56647571939c9ca60d4202e6988fe24",
+                "reference": "b205f83ad56647571939c9ca60d4202e6988fe24",
                 "shasum": ""
             },
             "require": {
@@ -78,7 +78,7 @@
             },
             "require-dev": {
                 "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "~4.8||~5.5"
+                "phpunit/phpunit": "~4.8||~5.7"
             },
             "type": "library",
             "autoload": {
@@ -114,7 +114,7 @@
                 "yacc",
                 "yet another"
             ],
-            "time": "2016-10-27T11:58:10+00:00"
+            "time": "2017-03-29 20:54:44"
         },
         {
             "name": "net_bazzline/php_component_toolbox",
@@ -975,7 +975,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-03-07T10:34:43+00:00"
+            "time": "2017-03-07 10:34:43"
         },
         {
             "name": "sebastian/diff",
@@ -1144,7 +1144,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2017-03-07T10:36:49+00:00"
+            "time": "2017-03-07 10:36:49"
         },
         {
             "name": "sebastian/global-state",
@@ -1241,7 +1241,7 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
-            "time": "2017-03-07T10:37:45+00:00"
+            "time": "2017-03-07 10:37:45"
         },
         {
             "name": "sebastian/recursion-context",
@@ -1294,7 +1294,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2017-03-08T08:21:15+00:00"
+            "time": "2017-03-08 08:21:15"
         },
         {
             "name": "sebastian/resource-operations",
@@ -1434,7 +1434,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-22T19:08:11+00:00"
+            "time": "2017-03-22 19:08:11"
         },
         {
             "name": "webmozart/assert",
@@ -1489,7 +1489,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "net_bazzline/php_component_curl": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

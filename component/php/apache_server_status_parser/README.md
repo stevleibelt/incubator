@@ -2,7 +2,7 @@
 
 This project aims to deliver an easy to use component to read the apache server status for a configured list of hosts and gain information about that.
 
-This component is relying on the [apache mod_status](https://httpd.apache.org/docs/2.2/mod/mod_status.html) and the undocumented query [notable](https://www.cyberciti.biz/faq/apache-server-status/) (?auto does not contain information about the pid).
+This component is relying on the [apache mod_status](https://httpd.apache.org/docs/2.2/mod/mod_status.html) and the undocumented query "[?notable](https://www.cyberciti.biz/faq/apache-server-status/)" ("?auto" does not contain information about the pid).
 
 # Project Goals
 
@@ -16,60 +16,57 @@ Let me give you an scenario I got on my desk and had to solve it.
 ## Given
 
 As a maintainer of an infrastructure with multiple apache HTTP servers, I need to know if a given process (identified by its pid, a infrastructure wide unique identifier and its uri) is still running or not.
+Sometimes I know the IP Address of the server where process is running, mostly all I have is a pid, the unique identifier and the uri.
+And finally, it is allowed to use the apache server status but no ssh command execution.
 
 # Current Status
 
-* scribbling code in tryout.php
-* finished first implementation of splitting content
+* finished example
+* finished implementation based on the example data
 
 # Workflow
 
 * fetch content
 * split content into partials (use csplit?)
+    * detail
     * information
-    * statistics
     * scoreboard
-    * details
+    * statistic
 * parse each partial into its fitting format (simple aka array or complex aka object)
 
 # Models
 
-* Server\Information
-    * getBuilt
-    * getMpm
-    * Version
-* Server\Statistic
-    * getCurrentTime
-    * getRestartTime
-    * getUptime
-    * getLoad
-    * getTotalNumberOfRequests
-    * getTotalNumberOfTraffic
-* Server\Scoreboard
-    * getNumberOfRequests
-    * getNumberOf($filter)
-    * asArray
-* Server\Worker
-    * getPid
-    * getHttpMethod
-    * getIpAddress
-    * getUrl
+* DomainModel\Detail
+    * dynamic detail information about each worker
+* DomainModel\Information
+    * general static information about the environment
+* DomainModel\Scoreboard
+    * dynamic and general worker information
+* DomainModel\Statistic
+    * dynamic server statistic
 
-# To Do
+# Future Improvements
 
+## To Do
+
+* add how to section
+* create release history
+* create RemoteFileFetcher
 * write unit test
     * DetailListOfLineParser
     * Processor
     * SectionStateMachine
     * ScoreboardListOfLineParser
     * StatisticListOfLineParser
-* write example
 
-# Done
+## Done
 
-* write unit test
+* example written
+    * parse all (uses the FullStorage)
+    * parse detail only (uses the DetailOnlyStorage)
+* unit test written
     * DetailOnly
-* write parser and create domain object for
+* parser and domain object written
     * information
     * scoreboard
     * statistic

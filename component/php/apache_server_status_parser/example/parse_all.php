@@ -6,7 +6,9 @@
 use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
 use Net\Bazzline\Component\ApacheServerStatusParser\DomainModel\ReduceDataAbleToArrayInterface;
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
+
+//begin of helper functions
 /**
  * @param array $array
  * @param string $prefix
@@ -41,16 +43,15 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
         echo PHP_EOL;
     }
 }
+//end of helper functions
 
-//this file contains my first WIP draft of implementing the simple information parsing
+//begin of dependencies
+$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\FileFetcher();
+$listOfNameToElapsedTime    = [];
+$pathToTheExampleFile       = __DIR__ . '/server-status?notable.html';
+$stateMachine               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
+$stringUtility              = new StringUtility();
 
-$pathToTheExampleFile   = __DIR__ . '/example/server-status?notable.html';
-
-$fetcher            = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\FileFetcher();
-$stateMachine       = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
-$stringUtility      = new StringUtility();
-
-//$storage    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage($stringUtility);
 $detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailListOfLineParser(
     new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser(
         $stringUtility
@@ -66,15 +67,24 @@ $processor  = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Conte
     $stringUtility,
     $storage
 );
+//end of dependencies
 
-//cleanup
+//begin of business logic
 $fetcher->setPath($pathToTheExampleFile);
 
+PHP_Timer::start();
 $lines = $fetcher->fetch();
+$listOfNameToElapsedTime['fetching']    = PHP_Timer::secondsToTimeString(
+    PHP_Timer::stop()
+);
 
+PHP_Timer::start();
 foreach ($fetcher->fetch() as $line) {
     $processor->process($line);
 }
+$listOfNameToElapsedTime['processing']    = PHP_Timer::secondsToTimeString(
+    PHP_Timer::stop()
+);
 
 $storage = $processor->getStorage();
 
@@ -83,10 +93,26 @@ dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');
 dumpSectionIfThereIsSomeContent($storage->getListOfScoreboard(), 'Scoreboard');
 dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
+PHP_Timer::start();
 $information                = $informationListOfLineParser->parse($storage->getListOfInformation());
 $listOfParsedDetailLines    = $detailListOfLineParser->parse($storage->getListOfDetail());
 $scoreboard                 = $scoreboardListOfLineParser->parse($storage->getListOfScoreboard());
 $statistic                  = $statisticListOfLineParser->parse($storage->getListOfStatistic());
+$listOfNameToElapsedTime['parsing']    = PHP_Timer::secondsToTimeString(
+    PHP_Timer::stop()
+);
+
+dumpSectionIfThereIsSomeContent(
+    $listOfParsedDetailLines,
+    'Parsed Detail'
+);
+
+dumpSectionIfThereIsSomeContent(
+    [
+        $information
+    ],
+    'Parsed Information'
+);
 
 dumpSectionIfThereIsSomeContent(
     [
@@ -102,14 +128,7 @@ dumpSectionIfThereIsSomeContent(
     'Parsed Statistic'
 );
 
-dumpSectionIfThereIsSomeContent(
-    [
-        $information
-    ],
-    'Parsed Information'
-);
-
-dumpSectionIfThereIsSomeContent(
-    $listOfParsedDetailLines,
-    'Parsed Detail'
-);
+foreach ($listOfNameToElapsedTime as $name => $elapsedTime) {
+    echo $name . ' took: ' . $elapsedTime . PHP_EOL;
+}
+//end of business logic
