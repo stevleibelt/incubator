@@ -46,12 +46,11 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\FileFetcher();
+$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\LocalBuilder();
 $listOfNameToElapsedTime    = [];
 $pathToTheExampleFile       = ($argc > 1)
     ? $argv[1]
     : __DIR__ . '/server-status?notable.html';
-$stateMachine               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
 $stringUtility              = new StringUtility();
 
 $detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailListOfLineParser(
@@ -62,33 +61,13 @@ $detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatus
 $informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
 $scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser();
 $statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\StatisticListOfLineParser($stringUtility);
-$storage                        = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage($stringUtility);
-
-$processor  = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor\Processor(
-    $stateMachine,
-    $stringUtility,
-    $storage
-);
 //end of dependencies
 
 //begin of business logic
-$fetcher->setPath($pathToTheExampleFile);
+$builder->setPathToTheApacheStatusFileToParse($pathToTheExampleFile);
+$builder->build();
 
-PHP_Timer::start();
-$lines = $fetcher->fetch();
-$listOfNameToElapsedTime['fetching']    = PHP_Timer::secondsToTimeString(
-    PHP_Timer::stop()
-);
-
-PHP_Timer::start();
-foreach ($fetcher->fetch() as $line) {
-    $processor->process($line);
-}
-$listOfNameToElapsedTime['processing']    = PHP_Timer::secondsToTimeString(
-    PHP_Timer::stop()
-);
-
-$storage = $processor->getStorage();
+$storage = $builder->getStorage();
 
 dumpSectionIfThereIsSomeContent($storage->getListOfInformation(), 'Information');
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');
@@ -100,7 +79,8 @@ $information                = $informationListOfLineParser->parse($storage->getL
 $listOfParsedDetailLines    = $detailListOfLineParser->parse($storage->getListOfDetail());
 $scoreboard                 = $scoreboardListOfLineParser->parse($storage->getListOfScoreboard());
 $statistic                  = $statisticListOfLineParser->parse($storage->getListOfStatistic());
-$listOfNameToElapsedTime['parsing']    = PHP_Timer::secondsToTimeString(
+
+$listOfNameToElapsedTime['parsing'] = PHP_Timer::secondsToTimeString(
     PHP_Timer::stop()
 );
 
