@@ -19,6 +19,20 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
 Sometimes I know the IP Address of the server where process is running, mostly all I have is a pid, the unique identifier and the uri.
 And finally, it is allowed to use the apache server status but no ssh command execution.
 
+# Example
+
+Examples are placed in the path <project root>/example. Because of the two implemented content fetchers, they are devide into the two categories "local" and "remote".
+
+## Example Using Local File
+
+```
+#if no file path is provided, the shipped with example file will be used
+#parse all
+<project root>/example/local/parse_all.php [<path to the apache status file to parse>]
+#parse detail only
+<project root>/example/local/parse_detail_only.php [<path to the apache status file to parse>]
+```
+
 # Current Status
 
 * finished example

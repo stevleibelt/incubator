@@ -48,7 +48,9 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //begin of dependencies
 $fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\FileFetcher();
 $listOfNameToElapsedTime    = [];
-$pathToTheExampleFile       = __DIR__ . '/server-status?notable.html';
+$pathToTheExampleFile       = ($argc > 1)
+    ? $argv[1]
+    :__DIR__ . '/server-status?notable.html';
 $stateMachine               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
 $stringUtility              = new StringUtility();
 
