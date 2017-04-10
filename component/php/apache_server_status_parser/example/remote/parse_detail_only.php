@@ -46,11 +46,15 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\FileFetcher();
+$factory    = new \Net\Bazzline\Component\Curl\Builder\BuilderFactory();
+
+$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\HttpFetcher(
+    $factory->create()
+);
 $listOfNameToElapsedTime    = [];
-$pathToTheExampleFile       = ($argc > 1)
+$urlToTheExampleFile        = ($argc > 1)
     ? $argv[1]
-    : __DIR__ . '/server-status?notable.html';
+    : 'http://testdata.bazzline.net/apache_server_status/index.html';
 $stateMachine               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
 $stringUtility              = new StringUtility();
 
@@ -62,7 +66,7 @@ $detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatus
 $informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
 $scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser();
 $statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\StatisticListOfLineParser($stringUtility);
-$storage                        = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage($stringUtility);
+$storage                        = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage($stringUtility);
 
 $processor  = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor\Processor(
     $stateMachine,
@@ -72,7 +76,7 @@ $processor  = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Conte
 //end of dependencies
 
 //begin of business logic
-$fetcher->setPath($pathToTheExampleFile);
+$fetcher->setUrl($urlToTheExampleFile);
 
 PHP_Timer::start();
 $lines = $fetcher->fetch();
@@ -90,44 +94,17 @@ $listOfNameToElapsedTime['processing']    = PHP_Timer::secondsToTimeString(
 
 $storage = $processor->getStorage();
 
-dumpSectionIfThereIsSomeContent($storage->getListOfInformation(), 'Information');
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');
-dumpSectionIfThereIsSomeContent($storage->getListOfScoreboard(), 'Scoreboard');
-dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
 PHP_Timer::start();
-$information                = $informationListOfLineParser->parse($storage->getListOfInformation());
 $listOfParsedDetailLines    = $detailListOfLineParser->parse($storage->getListOfDetail());
-$scoreboard                 = $scoreboardListOfLineParser->parse($storage->getListOfScoreboard());
-$statistic                  = $statisticListOfLineParser->parse($storage->getListOfStatistic());
-$listOfNameToElapsedTime['parsing']    = PHP_Timer::secondsToTimeString(
+$listOfNameToElapsedTime['parsing'] = PHP_Timer::secondsToTimeString(
     PHP_Timer::stop()
 );
 
 dumpSectionIfThereIsSomeContent(
     $listOfParsedDetailLines,
     'Parsed Detail'
-);
-
-dumpSectionIfThereIsSomeContent(
-    [
-        $information
-    ],
-    'Parsed Information'
-);
-
-dumpSectionIfThereIsSomeContent(
-    [
-        $scoreboard
-    ],
-    'Parsed Scoreboard'
-);
-
-dumpSectionIfThereIsSomeContent(
-    [
-        $statistic
-    ],
-    'Parsed Statistic'
 );
 
 foreach ($listOfNameToElapsedTime as $name => $elapsedTime) {

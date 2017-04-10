@@ -50,7 +50,7 @@ $fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusPars
 $listOfNameToElapsedTime    = [];
 $pathToTheExampleFile       = ($argc > 1)
     ? $argv[1]
-    :__DIR__ . '/server-status?notable.html';
+    : __DIR__ . '/server-status?notable.html';
 $stateMachine               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
 $stringUtility              = new StringUtility();
 

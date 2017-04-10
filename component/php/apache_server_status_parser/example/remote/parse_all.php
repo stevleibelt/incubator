@@ -52,7 +52,9 @@ $fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusPars
     $factory->create()
 );
 $listOfNameToElapsedTime    = [];
-$pathToTheExampleFile       = __DIR__ . '/server-status?notable.html';
+$urlToTheExampleFile        = ($argc > 1)
+    ? $argv[1]
+    : 'http://testdata.bazzline.net/apache_server_status/index.html';
 $stateMachine               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
 $stringUtility              = new StringUtility();
 
@@ -74,7 +76,7 @@ $processor  = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Conte
 //end of dependencies
 
 //begin of business logic
-$fetcher->setUrl('http://testdata.bazzline.net/apache_server_status/index.html');
+$fetcher->setUrl($urlToTheExampleFile);
 
 PHP_Timer::start();
 $lines = $fetcher->fetch();

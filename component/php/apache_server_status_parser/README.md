@@ -33,6 +33,16 @@ Examples are placed in the path <project root>/example. Because of the two imple
 <project root>/example/local/parse_detail_only.php [<path to the apache status file to parse>]
 ```
 
+## Example Using Remote File
+
+```
+#if no file path is provided, the build in example url will be used
+#parse all
+<project root>/example/remote/parse_all.php [<url to the apache status page>]
+#parse detail only
+<project root>/example/remote/parse_detail_only.php [<url to the apache status page>]
+```
+
 # Current Status
 
 * finished example
