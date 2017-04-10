@@ -4,7 +4,7 @@
  * @since 2017-04-09
  */
 
-namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher;
+namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher;
 
 use Net\Bazzline\Component\Curl\Builder\Builder;
 use RuntimeException;

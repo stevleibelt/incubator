@@ -46,7 +46,7 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\FileFetcher();
+$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\FileFetcher();
 $listOfNameToElapsedTime    = [];
 $pathToTheExampleFile       = ($argc > 1)
     ? $argv[1]

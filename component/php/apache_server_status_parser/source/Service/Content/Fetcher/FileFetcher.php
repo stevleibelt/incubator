@@ -3,7 +3,7 @@
  * @author stev leibelt <artodeto@bazzline.net>
  * @since 2017-02-01
  */
-namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher;
+namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher;
 
 use Net\Bazzline\Component\GenericAgreement\Exception\Runtime;
 use RuntimeException;

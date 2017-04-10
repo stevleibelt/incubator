@@ -48,7 +48,7 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //begin of dependencies
 $factory    = new \Net\Bazzline\Component\Curl\Builder\BuilderFactory();
 
-$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Fetcher\HttpFetcher(
+$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\HttpFetcher(
     $factory->create()
 );
 $listOfNameToElapsedTime    = [];
