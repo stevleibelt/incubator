@@ -64,10 +64,11 @@ $statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatus
 //end of dependencies
 
 //begin of business logic
-$builder->setPathToTheApacheStatusFileToParse($pathToTheExampleFile);
+$builder->setPathToTheApacheStatusFileToParseUpfront($pathToTheExampleFile);
+$builder->selectParseModeAllUpfront();
 $builder->build();
 
-$storage = $builder->getStorage();
+$storage = $builder->andGetStorage();
 
 dumpSectionIfThereIsSomeContent($storage->getListOfInformation(), 'Information');
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');

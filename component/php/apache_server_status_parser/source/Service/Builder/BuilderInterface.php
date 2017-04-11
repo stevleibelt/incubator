@@ -20,5 +20,5 @@ interface BuilderInterface
     /**
      * @return StorageInterface
      */
-    public function getStorage();
+    public function andGetStorage();
 }
