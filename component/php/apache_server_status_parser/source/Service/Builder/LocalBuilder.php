@@ -6,47 +6,22 @@
 
 namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder;
 
-use JonasRudolph\PHPComponents\StringUtility\Implementation\StringUtility;
+use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\FetcherInterface;
 use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\FileFetcher;
-use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor\Processor;
-use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage;
-use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\FullStorage;
-use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\StorageInterface;
-use Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine;
-use RuntimeException;
 
-class LocalBuilder implements BuilderInterface
+class LocalBuilder extends AbstractBuilder
 {
-    const PARSE_MODE_ALL            = 'all';
-    const PARSE_MODE_DETAIL_ONLY    = 'detail_only';
-
     /** @var FileFetcher */
     private $fetcher;
 
     /** @var string */
     private $filePath;
 
-    /** @var string */
-    private $selectedParseMode;
-
-    /** @var Processor */
-    private $processor;
-
     public function __construct()
     {
         //begin of dependencies
-        $this->fetcher  = new FileFetcher();
+        $this->fetcher = new FileFetcher();
         //end of dependencies
-    }
-
-    public function selectParseModeAllUpfront()
-    {
-        $this->selectedParseMode = self::PARSE_MODE_ALL;
-    }
-
-    public function selectParseModeDetailOnlyUpfront()
-    {
-        $this->selectedParseMode = self::PARSE_MODE_DETAIL_ONLY;
     }
 
     /**
@@ -58,70 +33,19 @@ class LocalBuilder implements BuilderInterface
     }
 
     /**
-     * @throws RuntimeException
+     * @return FetcherInterface
      */
-    public function build()
+    protected function buildFetcher()
     {
         //begin of dependencies
-        $fetcher        = $this->fetcher;
-        $filePath       = $this->filePath;
-
-        $stateMachine   = new SectionStateMachine();
-        $stringUtility  = new StringUtility();
+        $fetcher    = $this->fetcher;
+        $filePath   = $this->filePath;
         //end of dependencies
 
         //begin of business logic
-        if ($this->isParseModeAllSelected()) {
-            $storage    = new FullStorage(
-                $stringUtility
-            );
-        } else if ($this->isParseModeDetailOnly()) {
-            $storage    = new DetailOnlyStorage(
-                $stringUtility
-            );
-        } else {
-            throw new RuntimeException(
-                'no parse mode set'
-            );
-        }
-
-        $processor      = new Processor(
-            $stateMachine,
-            $stringUtility,
-            $storage
-        );
-
         $fetcher->setPath($filePath);
 
-        foreach ($fetcher->fetch() as $line) {
-            $processor->process($line);
-        }
-
-        $this->processor = $processor;
+        return $fetcher;
         //end of business logic
-    }
-
-    /**
-     * @return StorageInterface
-     */
-    public function andGetStorage()
-    {
-        return $this->processor->getStorage();
-    }
-
-    /**
-     * @return bool
-     */
-    private function isParseModeAllSelected()
-    {
-        return ($this->selectedParseMode === self::PARSE_MODE_ALL);
-    }
-
-    /**
-     * @return bool
-     */
-    private function isParseModeDetailOnly()
-    {
-        return ($this->selectedParseMode === self::PARSE_MODE_DETAIL_ONLY);
     }
 }
