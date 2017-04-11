@@ -46,37 +46,43 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteStorageBuilder();
 $listOfNameToElapsedTime    = [];
+$parserBuilderFactory       = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\ParserBuilderFactory();
+$storageBuilder             = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteStorageBuilder();
 $urlToTheExampleFile        = ($argc > 1)
     ? $argv[1]
     : 'http://testdata.bazzline.net/apache_server_status/index.html';
 $stringUtility              = new StringUtility();
 
-$detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailListOfLineParser(
-    new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser(
-        $stringUtility
-    )
-);
+$parserBuilder  = $parserBuilderFactory->create();
 //end of dependencies
 
 //begin of business logic
-$builder->setUrlToTheApacheStatusFileToParseUpfront($urlToTheExampleFile);
-$builder->selectParseModeDetailOnlyUpfront();
-$builder->build();
+PHP_Timer::start();
 
-$storage    = $builder->andGetStorageAfterTheBuild();
+$storageBuilder->setUrlToTheApacheStatusFileToParseUpfront($urlToTheExampleFile);
+$storageBuilder->selectParseModeDetailOnlyUpfront();
+$storageBuilder->build();
+
+$listOfNameToElapsedTime['fetching']    = PHP_Timer::secondsToTimeString(
+    PHP_Timer::stop()
+);
+
+$storage    = $storageBuilder->andGetStorageAfterTheBuild();
 
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');
 
 PHP_Timer::start();
-$listOfParsedDetailLines    = $detailListOfLineParser->parse($storage->getListOfDetail());
+
+$parserBuilder->setStorageUpfront($storage);
+$parserBuilder->build();
+
 $listOfNameToElapsedTime['parsing'] = PHP_Timer::secondsToTimeString(
     PHP_Timer::stop()
 );
 
 dumpSectionIfThereIsSomeContent(
-    $listOfParsedDetailLines,
+    $parserBuilder->andGetListOfDetailAfterwards(),
     'Parsed Detail'
 );
 

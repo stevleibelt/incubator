@@ -19,6 +19,8 @@ As a maintainer of an infrastructure with multiple apache HTTP servers, I need t
 Sometimes I know the IP Address of the server where process is running, mostly all I have is a pid, the unique identifier and the uri.
 And finally, it is allowed to use the apache server status but no ssh command execution.
 
+# How To Use
+
 # Example
 
 Examples are placed in the path <project root>/example. Because of the two implemented content fetchers, they are devide into the two categories "local" and "remote".
@@ -75,7 +77,6 @@ Examples are placed in the path <project root>/example. Because of the two imple
 
 * add how to section
 * create release history
-* create RemoteFileFetcher
 * write unit test
     * DetailListOfLineParser
     * Processor
@@ -85,6 +86,9 @@ Examples are placed in the path <project root>/example. Because of the two imple
 
 ## Done
 
+* created
+    * HttpFileFetcher
+    * Service/Builder section
 * example written
     * local (using FileFetcher)
         * parse all (uses the FullStorage)

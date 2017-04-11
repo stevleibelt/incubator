@@ -48,9 +48,9 @@ abstract class AbstractStorageBuilder implements BuilderInterface
         //end of dependencies
 
         //begin of business logic
-        if($this->isParseModeAllSelected()) {
+        if ($this->isParseModeAllSelected()) {
             $storage = new FullStorage($stringUtility);
-        } else if($this->isParseModeDetailOnly()) {
+        } else if ($this->isParseModeDetailOnly()) {
             $storage = new DetailOnlyStorage($stringUtility);
         } else {
             throw new RuntimeException('no parse mode set');
@@ -62,7 +62,7 @@ abstract class AbstractStorageBuilder implements BuilderInterface
             $storage
         );
 
-        foreach($fetcher->fetch() as $line) {
+        foreach ($fetcher->fetch() as $line) {
             $processor->process($line);
         }
 

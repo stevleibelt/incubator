@@ -46,18 +46,19 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$storageBuilder             = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteStorageBuilder();
-$factory                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\ParserBuilderFactory();
 $listOfNameToElapsedTime    = [];
+$parserBuilderFactory       = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\ParserBuilderFactory();
+$storageBuilder             = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteStorageBuilder();
 $urlToTheExampleFile        = ($argc > 1)
     ? $argv[1]
     : 'http://testdata.bazzline.net/apache_server_status/index.html';
 
-$parseBuilder   = $factory->create();
+$parserBuilder  = $parserBuilderFactory->create();
 //end of dependencies
 
 //begin of business logic
 PHP_Timer::start();
+
 $storageBuilder->setUrlToTheApacheStatusFileToParseUpfront($urlToTheExampleFile);
 $storageBuilder->selectParseModeAllUpfront();
 $storageBuilder->build();
@@ -75,35 +76,35 @@ dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
 PHP_Timer::start();
 
-$parseBuilder->setStorageUpfront($storage);
-$parseBuilder->build();
+$parserBuilder->setStorageUpfront($storage);
+$parserBuilder->build();
 
 $listOfNameToElapsedTime['parsing']    = PHP_Timer::secondsToTimeString(
     PHP_Timer::stop()
 );
 
 dumpSectionIfThereIsSomeContent(
-    $parseBuilder->andGetListOfDetailAfterwards(),
+    $parserBuilder->andGetListOfDetailAfterwards(),
     'Parsed Detail'
 );
 
 dumpSectionIfThereIsSomeContent(
     [
-        $parseBuilder->andGetInformationOrNullAfterwards()
+        $parserBuilder->andGetInformationOrNullAfterwards()
     ],
     'Parsed Information'
 );
 
 dumpSectionIfThereIsSomeContent(
     [
-        $parseBuilder->andGetScoreboardOrNullAfterwards()
+        $parserBuilder->andGetScoreboardOrNullAfterwards()
     ],
     'Parsed Scoreboard'
 );
 
 dumpSectionIfThereIsSomeContent(
     [
-        $parseBuilder->andGetStatisticOrNullAfterwards()
+        $parserBuilder->andGetStatisticOrNullAfterwards()
     ],
     'Parsed Statistic'
 );
