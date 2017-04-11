@@ -15,7 +15,7 @@ use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\Stor
 use Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine;
 use Net\Bazzline\Component\Csv\RuntimeException;
 
-abstract class AbstractBuilder implements BuilderInterface
+abstract class AbstractStorageBuilder implements BuilderInterface
 {
     const PARSE_MODE_ALL            = 'all';
     const PARSE_MODE_DETAIL_ONLY    = 'detail_only';

@@ -9,7 +9,7 @@ namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder;
 use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\FetcherInterface;
 use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\FileFetcher;
 
-class LocalBuilder extends AbstractBuilder
+class LocalStorageBuilder extends AbstractStorageBuilder
 {
     /** @var FileFetcher */
     private $fetcher;

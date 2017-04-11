@@ -46,7 +46,7 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\LocalBuilder();
+$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\LocalStorageBuilder();
 $listOfNameToElapsedTime    = [];
 $pathToTheExampleFile       = ($argc > 1)
     ? $argv[1]

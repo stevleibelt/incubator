@@ -46,29 +46,27 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteBuilder();
+$storageBuilder             = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteStorageBuilder();
+$factory                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\ParserBuilderFactory();
 $listOfNameToElapsedTime    = [];
 $urlToTheExampleFile        = ($argc > 1)
     ? $argv[1]
     : 'http://testdata.bazzline.net/apache_server_status/index.html';
-$stringUtility              = new StringUtility();
 
-$detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailListOfLineParser(
-    new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailLineParser(
-        $stringUtility
-    )
-);
-$informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
-$scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser();
-$statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\StatisticListOfLineParser($stringUtility);
+$parseBuilder   = $factory->create();
 //end of dependencies
 
 //begin of business logic
-$builder->setUrlToTheApacheStatusFileToParseUpfront($urlToTheExampleFile);
-$builder->selectParseModeAllUpfront();
-$builder->build();
+PHP_Timer::start();
+$storageBuilder->setUrlToTheApacheStatusFileToParseUpfront($urlToTheExampleFile);
+$storageBuilder->selectParseModeAllUpfront();
+$storageBuilder->build();
 
-$storage    = $builder->andGetStorageAfterTheBuild();
+$listOfNameToElapsedTime['fetching']    = PHP_Timer::secondsToTimeString(
+    PHP_Timer::stop()
+);
+
+$storage    = $storageBuilder->andGetStorageAfterTheBuild();
 
 dumpSectionIfThereIsSomeContent($storage->getListOfInformation(), 'Information');
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');
@@ -76,36 +74,36 @@ dumpSectionIfThereIsSomeContent($storage->getListOfScoreboard(), 'Scoreboard');
 dumpSectionIfThereIsSomeContent($storage->getListOfStatistic(), 'Statistic');
 
 PHP_Timer::start();
-$information                = $informationListOfLineParser->parse($storage->getListOfInformation());
-$listOfParsedDetailLines    = $detailListOfLineParser->parse($storage->getListOfDetail());
-$scoreboard                 = $scoreboardListOfLineParser->parse($storage->getListOfScoreboard());
-$statistic                  = $statisticListOfLineParser->parse($storage->getListOfStatistic());
+
+$parseBuilder->setStorageUpfront($storage);
+$parseBuilder->build();
+
 $listOfNameToElapsedTime['parsing']    = PHP_Timer::secondsToTimeString(
     PHP_Timer::stop()
 );
 
 dumpSectionIfThereIsSomeContent(
-    $listOfParsedDetailLines,
+    $parseBuilder->andGetListOfDetailAfterwards(),
     'Parsed Detail'
 );
 
 dumpSectionIfThereIsSomeContent(
     [
-        $information
+        $parseBuilder->andGetInformationOrNullAfterwards()
     ],
     'Parsed Information'
 );
 
 dumpSectionIfThereIsSomeContent(
     [
-        $scoreboard
+        $parseBuilder->andGetScoreboardOrNullAfterwards()
     ],
     'Parsed Scoreboard'
 );
 
 dumpSectionIfThereIsSomeContent(
     [
-        $statistic
+        $parseBuilder->andGetStatisticOrNullAfterwards()
     ],
     'Parsed Statistic'
 );

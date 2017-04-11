@@ -46,7 +46,7 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteBuilder();
+$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteStorageBuilder();
 $listOfNameToElapsedTime    = [];
 $urlToTheExampleFile        = ($argc > 1)
     ? $argv[1]
@@ -58,9 +58,6 @@ $detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatus
         $stringUtility
     )
 );
-$informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
-$scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser();
-$statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\StatisticListOfLineParser($stringUtility);
 //end of dependencies
 
 //begin of business logic

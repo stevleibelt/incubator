@@ -10,7 +10,7 @@ use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\Fetc
 use Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\HttpFetcher;
 use Net\Bazzline\Component\Curl\Builder\BuilderFactory;
 
-class RemoteBuilder extends AbstractBuilder
+class RemoteStorageBuilder extends AbstractStorageBuilder
 {
     /** @var HttpFetcher */
     private $fetcher;
