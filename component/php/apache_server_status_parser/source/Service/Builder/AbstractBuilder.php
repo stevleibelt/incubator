@@ -73,7 +73,7 @@ abstract class AbstractBuilder implements BuilderInterface
     /**
      * @return StorageInterface
      */
-    public function andGetStorage()
+    public function andGetStorageAfterTheBuild()
     {
         return $this->processor->getStorage();
     }

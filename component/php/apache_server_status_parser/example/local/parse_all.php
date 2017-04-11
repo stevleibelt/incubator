@@ -68,7 +68,7 @@ $builder->setPathToTheApacheStatusFileToParseUpfront($pathToTheExampleFile);
 $builder->selectParseModeAllUpfront();
 $builder->build();
 
-$storage = $builder->andGetStorage();
+$storage = $builder->andGetStorageAfterTheBuild();
 
 dumpSectionIfThereIsSomeContent($storage->getListOfInformation(), 'Information');
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');

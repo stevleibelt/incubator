@@ -46,16 +46,11 @@ function dumpSectionIfThereIsSomeContent(array $lines, $name)
 //end of helper functions
 
 //begin of dependencies
-$factory    = new \Net\Bazzline\Component\Curl\Builder\BuilderFactory();
-
-$fetcher                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetcher\HttpFetcher(
-    $factory->create()
-);
+$builder                    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteBuilder();
 $listOfNameToElapsedTime    = [];
 $urlToTheExampleFile        = ($argc > 1)
     ? $argv[1]
     : 'http://testdata.bazzline.net/apache_server_status/index.html';
-$stateMachine               = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\StateMachine\SectionStateMachine();
 $stringUtility              = new StringUtility();
 
 $detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\DetailListOfLineParser(
@@ -66,33 +61,14 @@ $detailListOfLineParser         = new \Net\Bazzline\Component\ApacheServerStatus
 $informationListOfLineParser    = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\InformationListOfLineParser($stringUtility);
 $scoreboardListOfLineParser     = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\ScoreboardListOfLineParser();
 $statisticListOfLineParser      = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Parser\StatisticListOfLineParser($stringUtility);
-$storage                        = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Storage\DetailOnlyStorage($stringUtility);
-
-$processor  = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Processor\Processor(
-    $stateMachine,
-    $stringUtility,
-    $storage
-);
 //end of dependencies
 
 //begin of business logic
-$fetcher->setUrl($urlToTheExampleFile);
+$builder->setUrlToTheApacheStatusFileToParseUpfront($urlToTheExampleFile);
+$builder->selectParseModeDetailOnlyUpfront();
+$builder->build();
 
-PHP_Timer::start();
-$lines = $fetcher->fetch();
-$listOfNameToElapsedTime['fetching']    = PHP_Timer::secondsToTimeString(
-    PHP_Timer::stop()
-);
-
-PHP_Timer::start();
-foreach ($fetcher->fetch() as $line) {
-    $processor->process($line);
-}
-$listOfNameToElapsedTime['processing']    = PHP_Timer::secondsToTimeString(
-    PHP_Timer::stop()
-);
-
-$storage = $processor->getStorage();
+$storage    = $builder->andGetStorageAfterTheBuild();
 
 dumpSectionIfThereIsSomeContent($storage->getListOfDetail(), 'Detail');
 

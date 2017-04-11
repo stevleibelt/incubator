@@ -19,9 +19,7 @@ class LocalBuilder extends AbstractBuilder
 
     public function __construct()
     {
-        //begin of dependencies
         $this->fetcher = new FileFetcher();
-        //end of dependencies
     }
 
     /**
