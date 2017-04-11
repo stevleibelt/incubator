@@ -48,4 +48,24 @@ interface StorageInterface
      * @return array
      */
     public function getListOfStatistic();
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfDetail();
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfInformation();
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfScoreboard();
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfStatistic();
 }

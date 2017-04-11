@@ -21,4 +21,28 @@ class DetailOnlyStorage extends FullStorage
      * @param string $line
      */
     public function addStatistic($line) {}
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfInformation()
+    {
+        return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfScoreboard()
+    {
+        return false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfStatistic()
+    {
+        return false;
+    }
 }

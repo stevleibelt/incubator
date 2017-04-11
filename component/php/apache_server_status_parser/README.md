@@ -21,6 +21,51 @@ And finally, it is allowed to use the apache server status but no ssh command ex
 
 # How To Use
 
+Because of the shipped with builders, it is really easy to getting started with.
+If you want to use your application instance pooling, use the builders as manual how to plumper things together.
+
+There are two different kind of builders, one (AbstractStorageBuilder) gives you the control over where to fetch and how much to fetch information.
+The second one (ParserBuilder) simple uses the result from the first one to parse the information into domain objects.
+
+```php
+//If you want to parse the whole apache server status
+//  and create domain objects out of the information.
+
+//begin of dependencies
+$parserBuilderFactory       = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\ParserBuilderFactory();
+$storageBuilder             = new \Net\Bazzline\Component\ApacheServerStatusParser\Service\Builder\RemoteStorageBuilder();
+
+$parserBuilder  = $parserBuilderFactory->create();
+//end of dependencies
+
+//begin of business logic
+//  the following five logical lines are doing the trick
+$storageBuilder->setUrlToTheApacheStatusFileToParseUpfront('<the url to your apache server status>');
+$storageBuilder->selectParseModeAllUpfront();
+
+$storageBuilder->build();
+
+$parserBuilder->setStorageUpfront(
+    $storageBuilder->andGetStorageAfterTheBuild();
+);
+$parserBuilder->build();
+
+//  and now, do something with the result
+var_dump(
+    $parserBuilder->andGetListOfDetailOrNullAfterwards()
+);
+var_dump(
+    $parserBuilder->andGetInformationOrNullAfterwards()
+);
+var_dump(
+    $parserBuilder->andGetScoreboardOrNullAfterwards()
+);
+var_dump(
+    $parserBuilder->andGetStatisticOrNullAfterwards()
+);
+//end of business logic
+```
+
 # Example
 
 Examples are placed in the path <project root>/example. Because of the two implemented content fetchers, they are devide into the two categories "local" and "remote".
@@ -45,22 +90,17 @@ Examples are placed in the path <project root>/example. Because of the two imple
 <project root>/example/remote/parse_detail_only.php [<url to the apache status page>]
 ```
 
-# Current Status
-
-* finished example
-* finished implementation based on the example data
-
 # Workflow
 
-* fetch content
-* split content into partials (use csplit?)
+* get content
+* split content into dedicated sections
     * detail
     * information
     * scoreboard
     * statistic
-* parse each partial into its fitting format (simple aka array or complex aka object)
+* parse each section into its fitting domain object
 
-# Models
+# List Of Domain Model
 
 * DomainModel\Detail
     * dynamic detail information about each worker
@@ -71,21 +111,38 @@ Examples are placed in the path <project root>/example. Because of the two imple
 * DomainModel\Statistic
     * dynamic server statistic
 
+# List Of Service
+
+* Service\Builder
+    * contains builder classes to kickstart the usage of this component
+* Service\Content\Fetcher
+    * contains classes to get the apache status content from somewhere
+* Service\Content\Parser
+    * contains classes to create domain objects out of the content
+* Service\Content\Processor
+    * contains the class to split the content into logical parts (does the heavy lifting)
+* Service\Content\Storage
+    * contains classes to share the logical content parts
+* Service\StateMachine
+    * contains a class to ease up splitting the content into logical parts
+
 # Future Improvements
 
 ## To Do
 
-* add how to section
+* create dedicated repository
 * create release history
 * write unit test
     * DetailListOfLineParser
     * Processor
-    * SectionStateMachine
     * ScoreboardListOfLineParser
+    * SectionStateMachine
     * StatisticListOfLineParser
+    * Storage
 
 ## Done
 
+* added how to section
 * created
     * HttpFileFetcher
     * Service/Builder section

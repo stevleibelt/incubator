@@ -81,7 +81,7 @@ $listOfNameToElapsedTime['parsing'] = PHP_Timer::secondsToTimeString(
 );
 
 dumpSectionIfThereIsSomeContent(
-    $parserBuilder->andGetListOfDetailAfterwards(),
+    $parserBuilder->andGetListOfDetailOrNullAfterwards(),
     'Parsed Detail'
 );
 

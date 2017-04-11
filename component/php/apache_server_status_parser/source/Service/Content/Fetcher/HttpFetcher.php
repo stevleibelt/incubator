@@ -9,7 +9,7 @@ namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetche
 use Net\Bazzline\Component\Curl\Builder\Builder;
 use RuntimeException;
 
-class HttpFetcher implements FetcherInterface
+class HttpFetcher extends AbstractFetcher
 {
     /** @var Builder */
     private $requestBuilder;
@@ -17,6 +17,11 @@ class HttpFetcher implements FetcherInterface
     /** @var string */
     private $url;
 
+    /**
+     * HttpFetcher constructor.
+     *
+     * @param Builder $builder
+     */
     public function __construct(
         Builder $builder
     )
@@ -33,10 +38,10 @@ class HttpFetcher implements FetcherInterface
     }
 
     /**
-     * @return array
-     * @throws RuntimeException
+     * @return string
+     * @throws \Net\Bazzline\Component\Csv\RuntimeException
      */
-    public function fetch()
+    protected function fetchContentAsStringOrThrowRuntimeException()
     {
         //begin of dependencies
         $requestBuilder = $this->requestBuilder;
@@ -56,17 +61,7 @@ class HttpFetcher implements FetcherInterface
             );
         }
 
-        $contentAsString        = strip_tags($response->content());
-        $contentAsArray = explode(PHP_EOL, $contentAsString);
-
-        $lines = array_filter(
-            $contentAsArray,
-            function ($item) {
-                return (strlen(trim($item)) > 0);
-            }
-        );
-
-        return $lines;
+        return $response->content();
         //end of business logic
     }
 }

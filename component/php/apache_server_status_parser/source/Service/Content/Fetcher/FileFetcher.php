@@ -8,7 +8,7 @@ namespace Net\Bazzline\Component\ApacheServerStatusParser\Service\Content\Fetche
 use Net\Bazzline\Component\GenericAgreement\Exception\Runtime;
 use RuntimeException;
 
-class FileFetcher implements FetcherInterface
+class FileFetcher extends AbstractFetcher
 {
     /** @var string */
     private $path;
@@ -22,10 +22,10 @@ class FileFetcher implements FetcherInterface
     }
 
     /**
-     * @return array
-     * @throws RuntimeException
+     * @return string
+     * @throws \Net\Bazzline\Component\Csv\RuntimeException
      */
-    public function fetch()
+    protected function fetchContentAsStringOrThrowRuntimeException()
     {
         //begin of dependencies
         $path   = $this->path;
@@ -38,17 +38,7 @@ class FileFetcher implements FetcherInterface
             );
         }
 
-        $contentAsString        = strip_tags(file_get_contents($path));
-        $contentAsArray         = explode(PHP_EOL, $contentAsString);
-
-        $lines = array_filter(
-            $contentAsArray,
-            function ($item) {
-                return (strlen(trim($item)) > 0);
-            }
-        );
-
-        return $lines;
-        //end of business logic
+        return file_get_contents($path);
+        //begin of business logic
     }
 }

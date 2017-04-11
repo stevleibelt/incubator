@@ -127,4 +127,36 @@ class FullStorage implements StorageInterface
     {
         return $this->listOfStatistic;
     }
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfDetail()
+    {
+        return (!empty($this->listOfDetail));
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfInformation()
+    {
+        return (!empty($this->listOfInformation));
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfScoreboard()
+    {
+        return (!empty($this->listOfScoreboard));
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasListOfStatistic()
+    {
+        return (!empty($this->listOfStatistic));
+    }
 }
