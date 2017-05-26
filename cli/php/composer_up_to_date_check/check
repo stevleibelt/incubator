@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @author stev leibelt <artodeto@bazzline.net>
+ * @since 2017-05-26
+ */
+
+if ($argc < 2) {
+    fwrite(STDERR, 'Invalid number of arguments provided' . PHP_EOL);
+    fwrite(STDERR, '   ' . basename(__FILE__) . ' <path to the directory with the composer.json file> [<path to the directory with the composer.json file> [...]]' . PHP_EOL);
+
+    exit(1);
+}
+
+$listOfPath = $argv;
+array_shift($listOfPath);
+
+foreach ($listOfPath as $path) {
+    $pathToTheComposerJsonFile = $path . DIRECTORY_SEPARATOR . 'composer.json';
+
+    if (is_file($pathToTheComposerJsonFile)) {
+        //check if there is a composer.json
+        //check if there is a composer.lock
+        //parse composer.lock //v2
+        //parse composer.json
+        //check if there is a require
+        //check if there is a require_dev
+        //foreach component
+        //  ask packagist for version list
+        //  check if new bugfix|minor or major version is available (output require part for major versions)
+        $content = file_get_contents($pathToTheComposerJsonFile);
+
+        $decodedContent = json_decode($content);
+        $decodedContentAsArray = (array) $decodedContent;
+
+        var_dump($decodedContentAsArray);
+    } else {
+        fwrite(STDERR, 'No composer.json file found in "' . $path . '"' . PHP_EOL);
+    }
+}
