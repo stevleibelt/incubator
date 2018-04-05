@@ -275,8 +275,14 @@ The component will easy up handling of batch job processes.
 
 # links
 
+* [queue-interop](https://github.com/queue-interop/queue-interop)
+* [php-enqueue](https://github.com/php-enqueue/enqueue)
+* [jobflow](https://github.com/rezzza/jobflow)
+* [bernard](https://github.com/bernardphp/bernard)
 * [anacron](https://en.wikipedia.org/wiki/Anacron)
 * [iron_mq_php](https://github.com/iron-io/iron_mq_php)
 * [iron_worker_php](https://github.com/iron-io/iron_worker_php)
 * [SlmQueue](https://github.com/juriansluiman/SlmQueue)
 * [Leptir](https://github.com/Backplane/Leptir)
+* [bunny](https://github.com/jakubkulhan/bunny)
+* [illuminate queue](https://github.com/illuminate/queue)
