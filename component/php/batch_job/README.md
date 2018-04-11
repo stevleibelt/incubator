@@ -278,6 +278,7 @@ The component will easy up handling of batch job processes.
 * [queue-interop](https://github.com/queue-interop/queue-interop)
 * [php-enqueue](https://github.com/php-enqueue/enqueue)
 * [jobflow](https://github.com/rezzza/jobflow)
+* [celery](https://github.com/celery/celery)
 * [bernard](https://github.com/bernardphp/bernard)
 * [anacron](https://en.wikipedia.org/wiki/Anacron)
 * [iron_mq_php](https://github.com/iron-io/iron_mq_php)
