@@ -121,6 +121,13 @@ try {
     echo '----' . PHP_EOL;
 
     if ($client instanceof Redis) {
+        if (!is_null($data)) {
+            $client->rPush(
+                $queue,
+                $data
+            );
+        }
+
         $client->disconnect();
     }
 }
