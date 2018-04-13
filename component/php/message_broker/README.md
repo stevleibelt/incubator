@@ -1,6 +1,8 @@
 # Message Broker
 
-This repository is comparing different message brokers and libraries for the following usecase.
+This repository is comparing different message brokers and libraries for the following requirements.
+
+# Requirements
 
 * disaster save (no single point of failure)
 * multiple creator and multiple consumer
@@ -9,8 +11,11 @@ This repository is comparing different message brokers and libraries for the fol
 * ack on both sides if a message was processed
 * nothing gets lost when there is a blackout (resilience functionality)
 * transparent (see what is inside a queue)
+* fetch the size of a queue
+* usable with grafana
 * easy to use
 * fast, fucking fast
+* load balanced
 
 # List of Criteria
 

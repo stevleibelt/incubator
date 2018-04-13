@@ -10,7 +10,7 @@ require_once(__DIR__ . '/../../Data.php');
 if ($argc < 3) {
     echo ':: Invalid number of arguments provided!' . PHP_EOL;
     echo PHP_EOL;
-    echo '   usage: ' . basename(__FILE__) . ' <int: chunk_size> <string: fast|medium|slow>' . PHP_EOL;
+    echo '   usage: ' . basename(__FILE__) . ' <int: chunk_size> <string: fast|medium|slow> [<int: dry-run 1|0>]' . PHP_EOL;
 
     exit(0);
 }
@@ -42,6 +42,11 @@ try {
     $chunkSize  = (int) $argv[1];
     $speed      =  (string) $argv[2];
     $queue      = 'rabbitmq_stomp-php';
+    $isDryRun   = (
+        ($argc > 3)
+            ? ($argv[3] == 1)
+            : false
+    );
 
     switch ($speed) {
         case 'slow':
@@ -87,13 +92,17 @@ try {
                 echo '   ' . var_export($frame, true) . PHP_EOL;
                 echo PHP_EOL;
             } else {
-                $data = (string) $frame->getBody();
-                $success = handleMessage($data);
-
-                if ($success) {
-                    $stomp->ack($frame);
+                if ($isDryRun) {
+                    echo ':: nack the frame.' . PHP_EOL;
                 } else {
-                    $stomp->nack($frame);
+                    $data = (string) $frame->getBody();
+                    $success = handleMessage($data);
+
+                    if ($success) {
+                        $stomp->ack($frame);
+                    } else {
+                        $stomp->nack($frame);
+                    }
                 }
             }
         }

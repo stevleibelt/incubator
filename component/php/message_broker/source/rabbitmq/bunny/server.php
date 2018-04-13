@@ -30,7 +30,11 @@ try {
     echo ':: Connected to the rabbitmq.' . PHP_EOL;
 
     $channel = $client->channel();
-    $channel->queueDeclare($queue);
+    $channel->queueDeclare(
+        $queue,
+        false,
+        true
+    );
 
     echo ':: ' . $name . ' Setup done.' . PHP_EOL;
     echo ':: ' . $name . ' Start adding messages to the queue.' . PHP_EOL;
