@@ -72,7 +72,7 @@ class Data
     {
         $data = (array) json_decode($json);
 
-        foreach (['created_at', 'payload', 'served_by'] as $key) {
+        foreach (['created_at', 'id', 'payload'] as $key) {
             if (!isset($data[$key])) {
                 throw new InvalidArgumentException(
                     'json in unexpected format. ' . $key . ' is missing.'

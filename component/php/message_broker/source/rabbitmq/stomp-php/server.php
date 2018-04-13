@@ -1,6 +1,8 @@
 <?php
-
-use Bunny\Client;
+/**
+ * @author: stev leibelt <stev.leibelt@jobleads.de>
+ * @since: 2018-04-13
+ */
 
 require_once(__DIR__ . '/../../../vendor/autoload.php');
 require_once(__DIR__ . '/../../Data.php');
@@ -22,15 +24,23 @@ try {
     ];
     $idIterator = 0;
     $name       = (string) $argv[1];
-    $queue      = 'rabbitmq_bunny';
+    $queue      = 'rabbitmq_stomp-php';
 
-    $client = new Client($connection);
+    $client = new Stomp\Client(
+        new \Stomp\Network\Connection(
+            'tcp://localhost:61613'
+        )
+    );
+    $client->setLogin('guest', 'guest');
+    $client->setVhostname('/');
+    $client->setSync(false);
     $client->connect();
 
-    echo ':: Connected to the rabbitmq.' . PHP_EOL;
+    $stomp = new \Stomp\SimpleStomp(
+        $client
+    );
 
-    $channel = $client->channel();
-    $channel->queueDeclare($queue);
+    echo ':: Connected to the rabbitmq.' . PHP_EOL;
 
     echo ':: ' . $name . ' Setup done.' . PHP_EOL;
     echo ':: ' . $name . ' Start adding messages to the queue.' . PHP_EOL;
@@ -39,6 +49,8 @@ try {
         $randomNumberOfEntriesToCreate  = rand(5, 500);
         $randomNumberOfSecondsToSleep   = rand(1, 4);
 
+        $stomp->begin($name);
+
         for ($dataIterator = 0; $dataIterator < $randomNumberOfEntriesToCreate; ++$dataIterator) {
             $data = new Data(
                 date('Y-m-d H:i:s'),
@@ -46,14 +58,15 @@ try {
                 $dataIterator
             );
 
-            $channel->publish(
-                $data->toJSON(),
-                [],
-                '',
-                $queue
+            $stomp->send(
+                $queue,
+                new \Stomp\Transport\Message(
+                    $data->toJSON()
+                )
             );
         }
 
+        $stomp->commit($name);
         echo ':: ' . $name . ' Created ' . $randomNumberOfEntriesToCreate . ' messages.' . PHP_EOL;
         echo ':: ' . $name . ' Sleeping for ' . $randomNumberOfSecondsToSleep . ' seconds.' . PHP_EOL;
 
@@ -71,7 +84,7 @@ try {
     echo $throwable->getTraceAsString() . PHP_EOL;
     echo '----' . PHP_EOL;
 
-    if ($client instanceof Client) {
+    if ($client instanceof \Stomp\Client) {
         $client->disconnect();
     }
 }
