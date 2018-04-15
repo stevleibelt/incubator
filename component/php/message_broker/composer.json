@@ -1,4 +1,9 @@
 {
+    "autoload": {
+        "psr-4": {
+            "Net\\Bazzline\\Component\\MessageQueue\\": "source/"
+        }
+    },
     "require": {
         "bunny/bunny": "^0.4.0",
         "stomp-php/stomp-php": "^4.4"
