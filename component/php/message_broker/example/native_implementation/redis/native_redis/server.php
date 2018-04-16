@@ -1,8 +1,10 @@
 <?php
+/**
+ * @author: stev leibelt <stev.leibelt@jobleads.de>
+ * @since: 2018-04-13
+ */
 
-use Bunny\Client;
-
-require_once(__DIR__ . '/../../../vendor/autoload.php');
+require_once(__DIR__ . '/../../../../vendor/autoload.php');
 require_once(__DIR__ . '/../../Data.php');
 
 if ($argc < 2) {
@@ -14,27 +16,18 @@ if ($argc < 2) {
 }
 
 try {
-    $connection = [
-        'host'      => 'localhost',
-        'vhost'     => '/',
-        'user'      => 'guest',
-        'password'  => 'guest'
-    ];
+    $client     = new Redis();
     $idIterator = 0;
     $name       = (string) $argv[1];
-    $queue      = 'rabbitmq_bunny';
+    $queue      = 'native_redis';
 
-    $client = new Client($connection);
-    $client->connect();
-
-    echo ':: Connected to the rabbitmq.' . PHP_EOL;
-
-    $channel = $client->channel();
-    $channel->queueDeclare(
-        $queue,
-        false,
-        true
+    $client->connect(
+        '127.0.0.1',
+        6379,
+        0
     );
+
+    echo ':: Connected to the reddis.' . PHP_EOL;
 
     echo ':: ' . $name . ' Setup done.' . PHP_EOL;
     echo ':: ' . $name . ' Start adding messages to the queue.' . PHP_EOL;
@@ -50,11 +43,9 @@ try {
                 $dataIterator
             );
 
-            $channel->publish(
-                $data->toJSON(),
-                [],
-                '',
-                $queue
+            $client->rPush(
+                $queue,
+                $data->toJSON()
             );
         }
 
@@ -75,7 +66,7 @@ try {
     echo $throwable->getTraceAsString() . PHP_EOL;
     echo '----' . PHP_EOL;
 
-    if ($client instanceof Client) {
+    if ($client instanceof Redis) {
         $client->disconnect();
     }
 }

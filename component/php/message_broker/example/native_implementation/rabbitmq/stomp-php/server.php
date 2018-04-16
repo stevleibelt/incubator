@@ -4,7 +4,7 @@
  * @since: 2018-04-13
  */
 
-require_once(__DIR__ . '/../../../vendor/autoload.php');
+require_once(__DIR__ . '/../../../../vendor/autoload.php');
 require_once(__DIR__ . '/../../Data.php');
 
 if ($argc < 2) {

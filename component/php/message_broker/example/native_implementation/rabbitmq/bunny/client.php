@@ -1,10 +1,14 @@
 <?php
 /**
  * @author: stev leibelt <stev.leibelt@jobleads.de>
- * @since: 2018-04-13
+ * @since: 2018-04-12
  */
 
-require_once(__DIR__ . '/../../../vendor/autoload.php');
+use Bunny\Channel;
+use Bunny\Client;
+use Bunny\Message;
+
+require_once(__DIR__ . '/../../../../vendor/autoload.php');
 require_once(__DIR__ . '/../../Data.php');
 
 if ($argc < 3) {
@@ -39,9 +43,15 @@ function handleMessage(
 }
 
 try {
+    $connection = [
+        'host'      => 'localhost',
+        'vhost'     => '/',
+        'user'      => 'guest',
+        'password'  => 'guest'
+    ];
     $chunkSize  = (int) $argv[1];
     $speed      =  (string) $argv[2];
-    $queue      = 'rabbitmq_stomp-php';
+    $queue      = 'rabbitmq_bunny';
     $isDryRun   = (
         ($argc > 3)
             ? ($argv[3] == 1)
@@ -63,52 +73,52 @@ try {
             break;
     }
 
-    $client = new Redis();
-    $queue  = 'native_redis';
+    $client = new Client($connection);
+    $client->connect();
 
-    $client->connect(
-        '127.0.0.1',
-        6379,
-        0
+    echo ':: Connected to the rabbitmq.' . PHP_EOL;
+
+    $channel = $client->channel();
+    $channel->queueDeclare(
+        $queue,
+        false,
+        true
     );
-
-    echo ':: Connected to the reddis.' . PHP_EOL;
+    $channel->qos(
+        0,
+        $chunkSize
+    );
 
     echo ':: Setup done.' . PHP_EOL;
     echo ':: Chunk size is ' . $chunkSize . PHP_EOL;
 
-    while (true) {
-        for ($numberOfProcessedChunks = 0; $numberOfProcessedChunks < $chunkSize; ++$numberOfProcessedChunks) {
-            $message = $client->blPop(
-                [
-                    $queue
-                ],
-                0
-            );
-            $data = $message[1];    //[0] => queue name, [1] => data
+    $channel->run(
+        function (Message $message, Channel $channel, Client $client) use ($speed, $sleepForSeconds, $isDryRun) {
+            $data = (string) $message->content;
 
             if ($isDryRun) {
                 echo ':: nack the message.' . PHP_EOL;
-                $client->rPush(
-                    $queue,
-                    $data
-                );
+                echo '   ' . $data . PHP_EOL;
+                $channel->nack($message);
             } else {
+                if ($message->redelivered) {
+                    echo ':: Dealing with redelivered message.' . PHP_EOL;
+                }
                 $success = handleMessage($data);
 
-                if (!$success) {
-                    $client->rPush(
-                        $queue,
-                        $data
-                    );
+                if ($success) {
+                    $channel->ack($message);
+                } else {
+                    $channel->nack($message);
                 }
             }
-        }
 
-        echo ':: Sleeping for ' . $sleepForSeconds . ' seconds.' . PHP_EOL;
-        sleep($sleepForSeconds);
-        echo PHP_EOL;
-    }
+            echo ':: Sleeping for ' . $sleepForSeconds . ' seconds.' . PHP_EOL;
+            sleep($sleepForSeconds);
+            echo PHP_EOL;
+        },
+       $queue
+    );
 } catch (Throwable $throwable) {
     echo '----' . PHP_EOL;
     echo 'The client made a boh boh.' . PHP_EOL;
@@ -120,14 +130,8 @@ try {
     echo $throwable->getTraceAsString() . PHP_EOL;
     echo '----' . PHP_EOL;
 
-    if ($client instanceof Redis) {
-        if (!is_null($data)) {
-            $client->rPush(
-                $queue,
-                $data
-            );
-        }
-
+    if ($client instanceof Client) {
         $client->disconnect();
     }
 }
+

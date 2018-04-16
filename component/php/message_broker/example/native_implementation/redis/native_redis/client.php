@@ -4,7 +4,7 @@
  * @since: 2018-04-13
  */
 
-require_once(__DIR__ . '/../../../vendor/autoload.php');
+require_once(__DIR__ . '/../../../../vendor/autoload.php');
 require_once(__DIR__ . '/../../Data.php');
 
 if ($argc < 3) {
@@ -41,7 +41,7 @@ function handleMessage(
 try {
     $chunkSize  = (int) $argv[1];
     $speed      =  (string) $argv[2];
-    $queue      = 'rabbitmq_stomp-php';
+    $queue      = 'native_redis';
     $isDryRun   = (
         ($argc > 3)
             ? ($argv[3] == 1)
@@ -63,46 +63,44 @@ try {
             break;
     }
 
-    $client = new Stomp\Client(
-        new \Stomp\Network\Connection(
-            'tcp://localhost:61613'
-        )
-    );
-    $client->setLogin('guest', 'guest');
-    $client->setVhostname('/');
-    $client->setSync(false);
-    $client->connect();
+    $client = new Redis();
+    $queue  = 'native_redis';
 
-    $stomp = new \Stomp\SimpleStomp(
-        $client
+    $client->connect(
+        '127.0.0.1',
+        6379,
+        0
     );
-    $stomp->subscribe($queue);
 
-    echo ':: Connected to the rabbitmq.' . PHP_EOL;
+    echo ':: Connected to the reddis.' . PHP_EOL;
 
     echo ':: Setup done.' . PHP_EOL;
     echo ':: Chunk size is ' . $chunkSize . PHP_EOL;
 
     while (true) {
         for ($numberOfProcessedChunks = 0; $numberOfProcessedChunks < $chunkSize; ++$numberOfProcessedChunks) {
-            $frame = $stomp->read();
+            $message = $client->blPop(
+                [
+                    $queue
+                ],
+                0
+            );
+            $data = $message[1];    //[0] => queue name, [1] => data
 
-            if ($frame->isErrorFrame()) {
-                echo ':: Something is wrong!' . PHP_EOL;
-                echo '   ' . var_export($frame, true) . PHP_EOL;
-                echo PHP_EOL;
+            if ($isDryRun) {
+                echo ':: nack the message.' . PHP_EOL;
+                $client->rPush(
+                    $queue,
+                    $data
+                );
             } else {
-                if ($isDryRun) {
-                    echo ':: nack the frame.' . PHP_EOL;
-                } else {
-                    $data = (string) $frame->getBody();
-                    $success = handleMessage($data);
+                $success = handleMessage($data);
 
-                    if ($success) {
-                        $stomp->ack($frame);
-                    } else {
-                        $stomp->nack($frame);
-                    }
+                if (!$success) {
+                    $client->rPush(
+                        $queue,
+                        $data
+                    );
                 }
             }
         }
@@ -122,7 +120,14 @@ try {
     echo $throwable->getTraceAsString() . PHP_EOL;
     echo '----' . PHP_EOL;
 
-    if ($client instanceof \Stomp\Client) {
+    if ($client instanceof Redis) {
+        if (!is_null($data)) {
+            $client->rPush(
+                $queue,
+                $data
+            );
+        }
+
         $client->disconnect();
     }
 }
