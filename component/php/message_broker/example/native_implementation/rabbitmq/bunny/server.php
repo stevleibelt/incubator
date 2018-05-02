@@ -40,7 +40,7 @@ try {
     echo ':: ' . $name . ' Start adding messages to the queue.' . PHP_EOL;
 
     while (true) {
-        $randomNumberOfEntriesToCreate  = rand(5, 500);
+        $randomNumberOfEntriesToCreate  = rand(5, 50);
         $randomNumberOfSecondsToSleep   = rand(1, 4);
 
         for ($dataIterator = 0; $dataIterator < $randomNumberOfEntriesToCreate; ++$dataIterator) {

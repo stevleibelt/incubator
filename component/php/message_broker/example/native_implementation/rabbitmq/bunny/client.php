@@ -33,11 +33,13 @@ function handleMessage(
         $canHandleTheMessage = false;
     }
 
+    /*
     if ($canHandleTheMessage) {
         echo ':: Message created at ' . $data->getCreatedAt() . '.' . PHP_EOL;
         echo ':: Payload is ' . $data->getPayload() . PHP_EOL;
         echo ':: Id ' . $data->getId() . PHP_EOL;
     }
+    */
 
     return $canHandleTheMessage;
 }
@@ -107,8 +109,12 @@ try {
                 $success = handleMessage($data);
 
                 if ($success) {
+                    echo ':: ack the message.' . PHP_EOL;
+                    echo '   ' . $data . PHP_EOL;
                     $channel->ack($message);
                 } else {
+                    echo ':: nack the message.' . PHP_EOL;
+                    echo '   ' . $data . PHP_EOL;
                     $channel->nack($message);
                 }
             }

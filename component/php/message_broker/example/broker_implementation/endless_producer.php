@@ -21,12 +21,14 @@ if ($argc < 4) {
 
 function createAndPublishMessage(
     BrokerInterface $broker,
-    string $identifier
+    string $identifier,
+    int $messageId
 ) {
     $broker->publish(
         json_encode(
             [
                 'created_at'    => date('Y-m-d H:i:s'),
+                'message_id'    => $messageId,
                 'producer'      => $identifier
             ]
         )
@@ -71,11 +73,16 @@ try {
     if (is_null($numberOfMessagesToCreate)) {
         echo ':: Creating endless amount of messages.' . PHP_EOL;
 
+        $numberOfCreatedMessage = 0;
+
         while (true) {
             createAndPublishMessage(
                 $broker,
-                $identifier
+                $identifier,
+                $numberOfCreatedMessage
             );
+
+            ++$numberOfCreatedMessage;
         }
     } else {
         echo ':: Creating ' . $numberOfMessagesToCreate . ' messages.' . PHP_EOL;
@@ -83,7 +90,8 @@ try {
         for ($numberOfMessagesToCreateIterator = 0; $numberOfMessagesToCreateIterator < $numberOfMessagesToCreate; ++$numberOfMessagesToCreateIterator) {
             createAndPublishMessage(
                 $broker,
-                $identifier
+                $identifier,
+                $numberOfMessagesToCreateIterator
             );
         }
     }
