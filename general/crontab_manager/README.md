@@ -28,17 +28,8 @@ After the audit, an update is done which is doing the same as audit except that 
 * Rendering the [template](data/template.tpl) and creating a rendered [file](data/section.rendered)
 * If [rendered section](data/section.rendered) and [dumped section](data/section-crontab.dump) differ, create an updated [file](data/updated-crontab.dump) that can be loaded into the crontab
 
-## What Is Missing?
-
-```php
-CrontabManager::deleteCronTab();
-CrontabManager::disableSection();
-CrontabManager::enableSection();
-```
-
 ## Next Steps?
 
-* add the missing methods mentioned in "What Is Missing".
 * create a zend framework 3 module out of it with following command line calls
     * crontab-manager disable-crontab-section
     * crontab-manager disable-full-crontab

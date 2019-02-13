@@ -107,6 +107,39 @@ class CrontabManager
         }
     }
 
+    public function deleteFullCronTab()
+    {
+        $command = '/usr/bin/env crontab -r';
+
+        $this->executeCommand(
+            $command
+        );
+    }
+
+    public function disableFullCronTab()
+    {
+        $this->dumpFullCronTab();
+        $this->deleteFullCronTab();
+    }
+
+    public function disableSectionCronTab()
+    {
+        $this->dumpFullCronTab();
+        $this->createSectionCronTag();
+        $listOfUpdatedLine = $this->replaceSectionContent(
+            $this->readFileAsArray($this->filePathFullDump),
+            [],
+            $this->sectionUniqueIdentifier
+        );
+
+        $this->writeToFileFromArray(
+            $this->filePathUpdatedDump,
+            $listOfUpdatedLine
+        );
+
+        $this->loadUpdatedCronTab();
+    }
+
     /**
      * @throws RuntimeException
      */
@@ -122,6 +155,17 @@ class CrontabManager
             $this->filePathFullDump,
             $listOfLine
         );
+    }
+
+    public function enableFullCronTab()
+    {
+        $this->loadFullCronTab();
+    }
+
+    public function enableSectionCronTab()
+    {
+        $this->update();
+        $this->loadUpdatedCronTab();
     }
 
     /**
