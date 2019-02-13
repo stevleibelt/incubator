@@ -24,9 +24,9 @@ After the audit, an update is done which is doing the same as audit except that 
 ## How It Is Working?
 
 * Dumping the whole crontab into a [file](data/full-crontab.dump)
-* Reading the file and slicing out stuff between configured tags (>>#begin of <something><< and >>#end of <something><<) and creating a [partial file](data/section-crontab.dump)
+* Reading the file and slicing out stuff between configured tags (>>#begin of \<something><< and >>#end of \<something><<) and creating a [partial dump file](data/section-crontab.dump)
 * Rendering the [template](data/template.tpl) and creating a rendered [file](data/section.rendered)
-* Creating if [rendered section](data/section.rendered) and [dumped section](data/section-crontab.dump) differ, create an updated [file](data/updated-crontab.dump)
+* If [rendered section](data/section.rendered) and [dumped section](data/section-crontab.dump) differ, create an updated [file](data/updated-crontab.dump) that can be loaded into the crontab
 
 ## What Is Missing?
 
@@ -46,3 +46,8 @@ CrontabManager::enableSection();
     * crontab-manager enable-full-crontab
     * crontab-manager audit-section
     * crontab-manager update-section
+
+## Not Tackled Pitfalls
+
+* two applications trying to alter the crontab at the same time
+* no tag configured in the crontab
