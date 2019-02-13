@@ -21,11 +21,20 @@ If will print the differences.
 
 After the audit, an update is done which is doing the same as audit except that it is not printing the differences.
 
+## How It Is Working?
+
+* Dumping the whole crontab into a [file](data/full-crontab.dump)
+* Reading the file and slicing out stuff between configured tags (>>#begin of <something><< and >>#end of <something><<) and creating a [partial file](data/section-crontab.dump)
+* Rendering the [template](data/template.tpl) and creating a rendered [file](data/section.rendered)
+* Creating if [rendered section](data/section.rendered) and [dumped section](data/section-crontab.dump) differ, create an updated [file](data/updated-crontab.dump)
+
 ## What Is Missing?
 
+```php
 CrontabManager::deleteCronTab();
 CrontabManager::disableSection();
 CrontabManager::enableSection();
+```
 
 ## Next Steps?
 
