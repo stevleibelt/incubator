@@ -1,0 +1,3 @@
+*/2 0-22 * * * /usr/bin/php /var/www/bazzline.net/my_example_bazzline_net_application/public/index.php i-am-the-new-guy >> /var/www/bazzline.net/my_example_bazzline_net_application/data/log/cronjob.log
+*/5 * * * * /usr/bin/php /var/www/bazzline.net/my_example_bazzline_net_application/public/index.php i-will-stay >> /var/www/bazzline.net/my_example_bazzline_net_application/data/log/cronjob.log
+*/30 * * * * /usr/bin/php /var/www/bazzline.net/my_example_bazzline_net_application/public/index.php i-will-be-updated >> /var/www/bazzline.net/my_example_bazzline_net_application/data/log/cronjob.log
