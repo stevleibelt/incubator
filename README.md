@@ -36,6 +36,7 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 * [(yet another) PHP static blog system](https://github.com/stevleibelt/incubator/tree/master/web/blog/static_blog_system)
 * [Static Page Generator](https://github.com/stevleibelt/incubator/tree/master/web/blog/static_page_generator)
 * [Login Service](https://github.com/stevleibelt/incubator/tree/master/web/service/login)
+* [PHP Worker](https://github.com/stevleibelt/incubator/tree/master/web/service/worker)
 * [Autocomplete](https://github.com/stevleibelt/incubator/tree/master/web/general/autocomplete)
 * [Y.A.I.G. (yet another image gallery)](https://github.com/stevleibelt/incubator/tree/master/web/general/image_gallery)
 * [Babyphone](https://github.com/stevleibelt/incubator/tree/master/device/babyphone)
