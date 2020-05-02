@@ -4,11 +4,14 @@ Major issue is how to solve the problem to backup data from a pc (with less stor
 
 # Unorderd thoughts
 
-* separate between current and archived data
-* current data can be changed (r/w)
-* archived data can ne read only
-* use softlinks to point to archived data
-* rsync -a --safe-links <source>/ <destination> (add --delete if you want to be the single point of truth)
+* possible solution
+    * use nextcloud and select only the things you want to sync on each client
+* possible solution
+    * separate between current and archived data
+    * current data can be changed (r/w)
+    * archived data can ne read only
+    * use softlinks to point to archived data
+    * rsync -a --safe-links <source>/ <destination> (add --delete if you want to be the single point of truth)
 
 # Benefit
 

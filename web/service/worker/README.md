@@ -37,6 +37,33 @@ If the server system is starting, the worker manager is checking the queue by re
 ## Technical description
 
 * Use [mezzio](https://github.com/mezzio/mezzio) for the client and the server part
+* multiple small services
+    * rest process is handling the REST calls
+        * data structure:
+            * <shared>/data/request/<uuid>
+                * request.json
+                * <file_name>
+    * queue process is handling the workload
+        * the rest process is telling the queue process that a new request is available
+        * the converting processes is asking the queue process for work
+        * queue process is file based since it is single threaded
+        * data structure:
+            * <shared>data/pending/<uuid>
+                * request.json
+                * <file_name>
+    * converting process is handling the conversion
+        * data structure:
+            * <shared>data/in_progress/<uuid>
+                * request.json
+                * <file_name>
+    * callback process is handling the response when work is done
+        * callback process gets notified by the converting process
+        * data structure:
+            * <shared>data/done/<uuid>
+                * request.json
+                * <file_name>
+    * init process is handling the start up (including cleanup) and shutdown (including cleanup) step
+        * cleanup -> remove temporary converted files since we can not continue conversion and have to start over again
 * KISS until all is working
 * Provide systemd files at the beginning
 * Start with one task type called "convert_video_to_libx265"
