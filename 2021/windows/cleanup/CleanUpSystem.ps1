@@ -13,6 +13,78 @@ Function Test-IsAdministrator {
     return $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 }
 
+Function Create-TruncableObject {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $false)]
+        [int]$daysToKeepOldFiles = 1,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$checkForDuplicates = $false,
+
+        [Parameter(Mandatory = $false)]
+        [int]$checkForDuplicatesGreaterThanMegabyte = 64
+    )
+
+    $properties = @{
+        path = $path
+        days_to_keep_old_file = $daysToKeepOldFiles
+        check_for_duplicates = $checkForDuplicates
+        check_for_duplicates_greater_than_megabyte = $checkForDuplicatesGreaterThanMegabyte
+    }
+    $object = New-Object psobject -Property $properties
+    
+
+    return $object
+}
+
+Function Add-TruncableObject {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [System.Collections.ArrayList]$collection,
+
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $false)]
+        [int]$daysToKeepOldFiles = 1,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$checkForDuplicates = $false,
+
+        [Parameter(Mandatory = $false)]
+        [int]$checkForDuplicatesGreaterThanMegabyte = 64
+    )
+
+    $properties = @{
+        path = $path
+        days_to_keep_old_file = $daysToKeepOldFiles
+        check_for_duplicates = $checkForDuplicates
+        check_for_duplicates_greater_than_megabyte = $checkForDuplicatesGreaterThanMegabyte
+    }
+    $object = New-Object psobject -Property $properties
+
+    $collection.Add($object) | Out-Null
+
+    return $collection
+}
+
+Function Load-FileIfExists {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path
+    )
+
+    If ((Test-Path $path)) {
+        . $path
+    }
+}
+
 Function CleanUpSystem {
     If (Test-IsAdministrator -eq $false) {
         Write-Host ":: You have to run this script as administrator."
@@ -23,7 +95,29 @@ Function CleanUpSystem {
     #todo
     #bo: variable definition
     ##@todo -> move into dedicated file
-    $logFilePath = "c:\net.bazzline\CleanUpSystem\log"
+    $currentDate = Get-Date -Format "yyyyMMdd"
+    $collectionOfTruncableObjects = New-Object System.Collections.ArrayList
+    $globalConfigurationFilePath = ($PSScriptRoot + "\data\globalConfiguration.ps1")
+    $localConfigurationFilePath = ($PSScriptRoot + "\data\localConfiguration.ps1")
+    $logFilePath = ($PSScriptRoot + "\log")
+    $lockFilePath = ($PSScriptRoot + "\data\CleanUpSystem.lock")
+    $logFilePath = ($PSScriptRoot + "\log\\" + $currentDate + ".log")
+
+    Load-FileIfExists $globalConfigurationFilePath
+    Load-FileIfExists $localConfigurationFilePath
+    
+    ForEach ($object In $collectionOfTruncableObjects) {
+        Write-Host $("Path: " + $object.path)
+
+        If ($object.days_to_keep) {
+            Write-Host $("Days to keep: " + $object.days_to_keep)
+        }
+    }
+
+    #check if we can create a function for this to be called like
+    #create lock file
+    #Add-TruncableObjectToCollection $collection "C:\Users\$user" 7 $true 64
+
     #eo: variable definition
     #define variables
     #   <string:> log file path
