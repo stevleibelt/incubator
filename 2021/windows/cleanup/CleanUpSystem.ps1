@@ -51,6 +51,7 @@ Function Create-LockFileOrExit {
     If (Test-Path $path) {
         Write-Error ":: Error"
         Write-Error "   Could not aquire lock, lock file >>${path}<< exists."
+        Log-Error "Could not aquire lock. Lock file >>${path}<< exists."
 
         Exit 1
     }
@@ -59,7 +60,7 @@ Function Create-LockFileOrExit {
     Set-Content -Path $path -Value "${PID}"
 }
 
-Function Remove-LockFile {
+Function Release-LockFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -74,13 +75,105 @@ Function Remove-LockFile {
         } Else {
             Write-Error ":: Error"
             Write-Error "   Lockfile in path >>${path}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<."
+            Log-Error "Lockfile in path >>${path}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<."
         }
 
         Exit 1
     } Else {
         Write-Error ":: Error"
-        Write-Error "   No lockfile found in path >>${path}<<."
+        Write-Error "   Could not release lock. Lock file >>${path}<< does not exists."
+        Log-Error "Could not release lock. Lock file >>${path}<< does not exists."
+
+        Exit 2
     }
+}
+
+
+Function Get-LogFilePath {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path
+    )
+
+    If (!(Test-Path $path)) {
+        New-Item -ItemType Directory -Force -Path $path
+    }
+
+    $dateTime = Get-Date -Format "yyyyMMdd-HHmmss"
+    $pathToTheLogFile = '{0}\{1}_{2}.log' -f $path,$env:computername,$dateTime
+
+    return $pathToTheLogFile
+}
+
+Function Log-Message {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $true)]
+        [string]$message,
+
+        [Parameter(Mandatory = $true)]
+        [int]$logLevel = 3
+    )
+
+    If ($logLevel -ge $globalLogLevel) {
+        Switch ($logLevel) {
+            0 { $prefix = "[Trace]" }
+            1 { $prefix = "[Debug]" }
+            2 { $prefix = "[Information]" }
+            3 { $prefix = "[Warning]" }
+            4 { $prefix = "[Error]" }
+            5 { $prefix = "[Critical]" }
+            default { $prefix = "[None]" }
+        }
+        $dateTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+        $logLine = '{0}: {1} - {2}' -f $dateTime,$prefix,$message
+
+        Set-Content -Path $path -Value $logLine
+    }
+}
+
+Function Log-Debug {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $true)]
+        [string]$message
+    )
+
+    Log-Message $path $message 1
+}
+
+Function Log-Info {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $true)]
+        [string]$message
+    )
+
+    Log-Message $path $message 2
+}
+
+Function Log-Error {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $true)]
+        [string]$message
+    )
+
+    Log-Message $path $message 4
 }
 
 Function CleanUpSystem {
@@ -105,6 +198,8 @@ Function CleanUpSystem {
     If ((Test-Path $localConfigurationFilePath)) {
         . $localConfigurationFilePath
     }
+
+    $logFilePath = Get-LogFilePath $logDirectoryPath
     #eo: variable definition
 
     #bo: clean up
@@ -117,19 +212,10 @@ Function CleanUpSystem {
             Write-Host $("Days to keep: " + $object.days_to_keep)
         }
     }
-    #define variables
-    #   <string:> log file path
-    #   <structur:> list of paths in a configurable way like, maybe put into a dedicated config.ps1 file
-    #       {
-    #           "C:\My\Path",   #path, should support wildcard $user
-    #           7,  #optional: days to keep older files
-    #           $true, #optional: check for duplicated files
-    #           64, #optional: minimum file size to check for duplicated files
-    #       }
-    #   <int:> number of log files to keep
-    #   <array:> $users
-    #define functions
+
     #Log-Line
+    Log-Message $logFilePath "Debug test" 1
+    Log-Message $logFilePath "Error test" 4
     #Log-DiskSpace  #to log disk space before and after the run
     #CleanUp-LogFiles   #keeps only the last x log files, plus checks if log file path exists
     #Truncate-Paths #iterates over structur, if path contains `$user`, iterate over content of `$users`
@@ -140,7 +226,7 @@ Function CleanUpSystem {
     #Truncate-Paths
     #Log-DiskSpace
 
-    Remove-LockFile $lockFilePath
+    Release-LockFile $lockFilePath
     #eo: clean up
 }
 

@@ -9,8 +9,10 @@
 ####
 
 #bo: general variable section
+$beVerbose = $false
+$globalLogLevel = 3  #@see: https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel?view=dotnet-plat-ext-5.0
 $lockFilePath = ($PSScriptRoot + "\CleanUpSystem.lock")
-$logFilePath = ($PSScriptRoot + "\log\" + $currentDate + ".log")
+$logDirectoryPath = ($PSScriptRoot + "\log\")
 #eo: general variable section
 
 #bo: path section
