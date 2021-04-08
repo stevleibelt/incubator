@@ -9,7 +9,7 @@
 ####
 
 #bo: general variable section
-$beVerbose = $true
+$beVerbose = $false
 $globalLogLevel = 0  #@see: https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel?view=dotnet-plat-ext-5.0
 $lockFilePath = ($PSScriptRoot + "\CleanUpSystem.lock")
 $logDirectoryPath = ($PSScriptRoot + "\log\")
@@ -17,5 +17,7 @@ $logDirectoryPath = ($PSScriptRoot + "\log\")
 
 #bo: path section
 $collectionOfTruncableObjects.Add((Create-TruncableObject $logDirectoryPath 28)) | Out-Null
-#$collectionOfTruncableObjects.Add((Create-TruncableObject 'C:\Users\$user\...' 7 $true 32)) | Out-Null
+
+$collectionOfTruncableObjects.Add((Create-TruncableObject 'c:\Users\$user\AppData\Local\Mozilla\Firefox\Profiles\*.default\cache\*' 0)) | Out-Null
+$collectionOfTruncableObjects.Add((Create-TruncableObject 'c:\Users\$user\Downloads' 30 $true 32)) | Out-Null
 #eo: path section

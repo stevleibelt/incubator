@@ -266,6 +266,66 @@ Function CleanUpSystem {
     #eo: clean up
 }
 
+Function Truncate-Path {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $true)]
+        [int]$daysToKeepOldFile,
+
+        [Parameter(Mandatory = $true)]
+        [bool]$checkForDuplicates,
+
+        [Parameter(Mandatory = $true)]
+        [int]$checkForDuplicatesGreaterThanMegabyte,
+
+        [Parameter(Mandatory = $true)]
+        [string]$logFilePath,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
+    )
+    $beVerbose = $true
+
+    Log-Info $logFilePath "Truncating path >>${path}<<" $beVerbose
+
+    $lastPossibleDate = (Get-Date).AddDays(-$daysToKeepOldFile)
+    Log-Info $logFilePath "   Removing entries older than >>${lastPossibleDate}<<" $beVerbose
+
+    $matchingItems = Get-ChildItem -Path "$path" -Recurse -File -ErrorAction SilentlyContinue | Where-Object LastWriteTime -LT $lastPossibleDate
+
+    ForEach ($matchingItem In $matchingItems) {
+        Log-Debug $logFilePath "   Removing item >>${matchingItem}<<."
+        #Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+    }
+
+    If ($checkForDuplicates) {
+        $listOfFileHashToFilePath = @{}
+        $matchingFileSizeInByte = $checkForDuplicatesGreaterThanMegabyte * 1048576 #1048576 = 1024*1024
+
+        Log-Debug $logFilePath "Checking for duplicates with file size greater than >>${matchingFileSizeInByte}<< bytes." $beVerbose
+
+        $matchingItems = Get-ChildItem -Path "$path" -Recurse -File -ErrorAction SilentlyContinue | Where-Object Length -ge $matchingFileSizeInByte
+
+        ForEach ($matchingItem In $matchingItems) {
+            $fileHashObject = Get-FileHash -Path "$path\$matchingItem" -Algorithm MD5
+
+            $fileHash = $fileHashObject.Hash
+
+            If ($listOfFileHashToFilePath.ContainsKey($fileHash)) {
+                Log-Debug $logFilePath "   Found duplicated hash >>${fileHash}<<, removing >>${path}\${matchingItem}<<." $beVerbose
+
+                #Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+            } Else {
+                Log-Debug $logFilePath "   Adding key >>${fileHash}<< with value >>${matchingItem}<<." $beVerbose
+                $listOfFileHashToFilePath.Add($fileHash, $matchingItem)
+            }
+        }
+    }
+}
+
 Function Truncate-Paths {
     [CmdletBinding()]
     param(
@@ -278,18 +338,22 @@ Function Truncate-Paths {
         [Parameter(Mandatory = $false)]
         [bool]$beVerbose
     )
-    
-    ForEach ($object In $collectionOfTruncableObjects) {
-        #check if path ends with a wildcard
-        Log-Debug $logFilePath "Processing path >>${object.path}<<"
 
-        If ($object.path -contains '$user') {
-            Write-Host "Is a user path"
+    $listOfUserPaths = Get-ChildItem "C:\Users" | Select-Object Name
+    $listOfUserNames = $listOfUserPaths.Name
+
+    ForEach ($currentObject In $collectionOfTruncableObjects) {
+        #check if path ends with a wildcard
+        If ($currentObject.path -match '\$user') {
+            ForEach ($currentUserName In $listOfUserNames) {
+                $currentUserDirectryPath = $currentObject.path -replace '\$user', $currentUserName
+               
+                Truncate-Path $currentUserDirectryPath $currentObject.days_to_keep_old_file $currentObject.check_for_duplicates $currentObject.check_for_duplicates_greater_than_megabyte $logFilePath $beVerbose
+            }
         } Else {
-            Write-Host "Is not a user path"
+            Truncate-Path $currentObject.path $currentObject.days_to_keep_old_file $currentObject.check_for_duplicates $currentObject.check_for_duplicates_greater_than_megabyte $logFilePath $beVerbose
         }
     }
-
 }
 
 CleanUpSystem
