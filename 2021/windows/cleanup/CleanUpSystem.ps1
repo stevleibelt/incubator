@@ -41,47 +41,45 @@ Function Create-TruncableObject {
     return $object
 }
 
-Function Add-TruncableObject {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $true)]
-        [System.Collections.ArrayList]$collection,
-
-        [Parameter(Mandatory = $true)]
-        [string]$path,
-
-        [Parameter(Mandatory = $false)]
-        [int]$daysToKeepOldFiles = 1,
-
-        [Parameter(Mandatory = $false)]
-        [bool]$checkForDuplicates = $false,
-
-        [Parameter(Mandatory = $false)]
-        [int]$checkForDuplicatesGreaterThanMegabyte = 64
-    )
-
-    $properties = @{
-        path = $path
-        days_to_keep_old_file = $daysToKeepOldFiles
-        check_for_duplicates = $checkForDuplicates
-        check_for_duplicates_greater_than_megabyte = $checkForDuplicatesGreaterThanMegabyte
-    }
-    $object = New-Object psobject -Property $properties
-
-    $collection.Add($object) | Out-Null
-
-    return $collection
-}
-
-Function Load-FileIfExists {
+Function Create-LockFileOrExit {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [string]$path
     )
 
-    If ((Test-Path $path)) {
-        . $path
+    If (Test-Path $path) {
+        Write-Error ":: Error"
+        Write-Error "   Could not aquire lock, lock file >>${path}<< exists."
+
+        Exit 1
+    }
+
+    New-Item -ItemType File $path
+    Set-Content -Path $path -Value "${PID}"
+}
+
+Function Remove-LockFile {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path
+    )
+
+    If (Test-Path $path) {
+        $lockFilePID = Get-Content -Path $path
+
+        If ($lockFilePID -eq $PID ){
+            Remove-Item -Path $path
+        } Else {
+            Write-Error ":: Error"
+            Write-Error "   Lockfile in path >>${path}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<."
+        }
+
+        Exit 1
+    } Else {
+        Write-Error ":: Error"
+        Write-Error "   No lockfile found in path >>${path}<<."
     }
 }
 
@@ -92,19 +90,25 @@ Function CleanUpSystem {
         Exit
     }
 
-    #todo
     #bo: variable definition
-    ##@todo -> move into dedicated file
     $currentDate = Get-Date -Format "yyyyMMdd"
     $collectionOfTruncableObjects = New-Object System.Collections.ArrayList
     $globalConfigurationFilePath = ($PSScriptRoot + "\data\globalConfiguration.ps1")
     $localConfigurationFilePath = ($PSScriptRoot + "\data\localConfiguration.ps1")
-    $logFilePath = ($PSScriptRoot + "\log")
-    $lockFilePath = ($PSScriptRoot + "\data\CleanUpSystem.lock")
-    $logFilePath = ($PSScriptRoot + "\log\\" + $currentDate + ".log")
 
-    Load-FileIfExists $globalConfigurationFilePath
-    Load-FileIfExists $localConfigurationFilePath
+    #We have to source the files here and not via a function.
+    #  If we would source the files via a function, the sourced in variables would exist in the scope of the function only.
+    If ((Test-Path $globalConfigurationFilePath)) {
+        . $globalConfigurationFilePath
+    }
+
+    If ((Test-Path $localConfigurationFilePath)) {
+        . $localConfigurationFilePath
+    }
+    #eo: variable definition
+
+    #bo: clean up
+    Create-LockFileOrExit $lockFilePath
     
     ForEach ($object In $collectionOfTruncableObjects) {
         Write-Host $("Path: " + $object.path)
@@ -113,12 +117,6 @@ Function CleanUpSystem {
             Write-Host $("Days to keep: " + $object.days_to_keep)
         }
     }
-
-    #check if we can create a function for this to be called like
-    #create lock file
-    #Add-TruncableObjectToCollection $collection "C:\Users\$user" 7 $true 64
-
-    #eo: variable definition
     #define variables
     #   <string:> log file path
     #   <structur:> list of paths in a configurable way like, maybe put into a dedicated config.ps1 file
@@ -141,6 +139,9 @@ Function CleanUpSystem {
     #CleanUp-LogFiles
     #Truncate-Paths
     #Log-DiskSpace
+
+    Remove-LockFile $lockFilePath
+    #eo: clean up
 }
 
 CleanUpSystem
