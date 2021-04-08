@@ -290,45 +290,60 @@ Function Truncate-Path {
         [Parameter(Mandatory = $false)]
         [bool]$isDryRun = $false
     )
-    $beVerbose = $true
 
-    Log-Info $logFilePath "Truncating path >>${path}<<" $beVerbose
+    #if path ends with >>\*<<
+    $processPath = $true
+    If ($path -match '\\\*$') {
+        $pathWithoutWildCard = $path.Substring(0,$path.Length-1)
 
-    $lastPossibleDate = (Get-Date).AddDays(-$daysToKeepOldFile)
-    Log-Info $logFilePath "   Removing entries older than >>${lastPossibleDate}<<" $beVerbose
-
-    $matchingItems = Get-ChildItem -Path "$path" -Recurse -File -ErrorAction SilentlyContinue | Where-Object LastWriteTime -LT $lastPossibleDate
-
-    ForEach ($matchingItem In $matchingItems) {
-        Log-Debug $logFilePath "   Removing item >>${matchingItem}<<."
-
-        If (!$isDryRun) {
-            Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+        #if path does not contain another wild card
+        If (!$pathWithoutWildCard.Contains('*')) {
+            If (!(Test-Path $pathWithoutWildCard)) {
+                Log-Info $logFilePath "Path does not exist >>${path}<<. Skipping it." $beVerbose
+                $processPath = $false
+            }
         }
     }
 
-    If ($checkForDuplicates) {
-        $listOfFileHashToFilePath = @{}
-        $matchingFileSizeInByte = $checkForDuplicatesGreaterThanMegabyte * 1048576 #1048576 = 1024*1024
+    If ($processPath) {
+        Log-Info $logFilePath "Truncating path >>${path}<<" $beVerbose
 
-        Log-Debug $logFilePath "Checking for duplicates with file size greater than >>${matchingFileSizeInByte}<< bytes." $beVerbose
+        $lastPossibleDate = (Get-Date).AddDays(-$daysToKeepOldFile)
+        Log-Info $logFilePath "   Removing entries older than >>${lastPossibleDate}<<" $beVerbose
 
-        $matchingItems = Get-ChildItem -Path "$path" -Recurse -File -ErrorAction SilentlyContinue | Where-Object Length -ge $matchingFileSizeInByte
+        $matchingItems = Get-ChildItem -Path "$path" -Recurse -File -ErrorAction SilentlyContinue | Where-Object LastWriteTime -LT $lastPossibleDate
 
         ForEach ($matchingItem In $matchingItems) {
-            $fileHashObject = Get-FileHash -Path "$path\$matchingItem" -Algorithm MD5
+            Log-Debug $logFilePath "   Removing item >>${matchingItem}<<."
 
-            $fileHash = $fileHashObject.Hash
+            If (!$isDryRun) {
+                Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+            }
+        }
 
-            If ($listOfFileHashToFilePath.ContainsKey($fileHash)) {
-                Log-Debug $logFilePath "   Found duplicated hash >>${fileHash}<<, removing >>${path}\${matchingItem}<<." $beVerbose
+        If ($checkForDuplicates) {
+            $listOfFileHashToFilePath = @{}
+            $matchingFileSizeInByte = $checkForDuplicatesGreaterThanMegabyte * 1048576 #1048576 = 1024*1024
 
-                If (!$isDryRun) {
-                    Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+            Log-Debug $logFilePath "Checking for duplicates with file size greater than >>${matchingFileSizeInByte}<< bytes." $beVerbose
+
+            $matchingItems = Get-ChildItem -Path "$path" -Recurse -File -ErrorAction SilentlyContinue | Where-Object Length -ge $matchingFileSizeInByte
+
+            ForEach ($matchingItem In $matchingItems) {
+                $fileHashObject = Get-FileHash -Path "$path\$matchingItem" -Algorithm MD5
+
+                $fileHash = $fileHashObject.Hash
+
+                If ($listOfFileHashToFilePath.ContainsKey($fileHash)) {
+                    Log-Debug $logFilePath "   Found duplicated hash >>${fileHash}<<, removing >>${path}\${matchingItem}<<." $beVerbose
+
+                    If (!$isDryRun) {
+                        Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+                    }
+                } Else {
+                    Log-Debug $logFilePath "   Adding key >>${fileHash}<< with value >>${matchingItem}<<." $beVerbose
+                    $listOfFileHashToFilePath.Add($fileHash, $matchingItem)
                 }
-            } Else {
-                Log-Debug $logFilePath "   Adding key >>${fileHash}<< with value >>${matchingItem}<<." $beVerbose
-                $listOfFileHashToFilePath.Add($fileHash, $matchingItem)
             }
         }
     }

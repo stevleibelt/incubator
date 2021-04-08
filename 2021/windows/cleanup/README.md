@@ -1,36 +1,27 @@
 # Cleanup temporary or cached files
 
+Free as in freedom microsoft windows terminal server cleanup script.
+
+## Configuration and using it
+
+This script comes out of the box in a "ready to execute" way.
+You can run the [start_clean_up_system.bat](start_clean_up_system.bat) right away as administrator and the script will clean up stuff.
+
+If you want to configure anything, you should copy the [localConfiguration.ps1.dist](data/localConfiguration.ps1.dist) as `localConfiguration.ps1` in the [data](data) path.
+You can enable verbosity or log level in the local configuration. And of course, you can add more paths for the clean up system itself.
+
+For each path, you can configure if you want to keep files older than x days. Furthermore, you can run a duplicate check, based on file hashs, and restrict to only bigger files.
+This script comes with a bit of magic. If you put it `$user` in a path, the script will replace this with all available users it can find below `C:\Users\`.
+
 ## General Idea
 
-In general, it is easy to do.
-You have to clean up system and user cache and temporary files.
+This script helps you to clean up a multi user window system, like a terminalserver, with just one click.
+The script is logging what it does, depending on your log level more or less.
+The script comes with a collection of paths pointing to temporary or cache files.
+
+You should run this script when no user is using the system, like at night.
 
 At the end, you iterate over a big list of locations and delete the content of it.
-
-```
-#as example
-Set-Location "C:\Users"
-Remove-Item ".\*\Appdata\Local\Temp\*" -Force -Recurse -EA SilentlyContinue -Verbose
-
-#or put all in a variable and do it at once
-$ListOfPathsToCleanUp = @("C:\Windows\Temp\*", "C:\Users\*\Appdata\Local\Temp\*")
-Remove-Item $ListOfPathsToCleanUp -Force -Recurse -EA SilentlyContinue -Verbose
-```
-
-You could even add a "age" of files you want to keep, e.g. "only keep files not older than 30 days in the download path".
-You cold even add a "only keep one copy" of a file, e.g. calculate the checksum of big files to delete the duplicates (happens when a file is downloaded more than once).
-
-Since you are running it in verbose mode, you can log the output and keep it for one week.
-
-## Paths to clean up
-
-You should clean files in the following user paths:
-
-* `%appdata%MicrosoftTeams`
-* Take a look to [Powershell/Clear_Browser_Caches](https://github.com/lemtek/Powershell/blob/master/Clear_Browser_Caches)
-* `PS C:\Windows\system32>$tempfolders = @("C:\Windows\Temp\*", "C:\Windows\Prefetch\*", "C:\Documents and Settings\*\Local Settings\temp\*", "C:\Users\*\Appdata\Local\Temp\*")`
-* `PS C:\Windows\system32>Remove-Item $tempfolders -force -recurse`
-* Check [TempFileCleanup.bat](https://github.com/bmrf/tron/blob/master/resources/stage_1_tempclean/tempfilecleanup/TempFileCleanup.bat)
 
 # Links
 
