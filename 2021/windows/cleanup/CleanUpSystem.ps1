@@ -285,7 +285,10 @@ Function Truncate-Path {
         [string]$logFilePath,
 
         [Parameter(Mandatory = $false)]
-        [bool]$beVerbose
+        [bool]$beVerbose,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$isDryRun = $false
     )
     $beVerbose = $true
 
@@ -298,7 +301,10 @@ Function Truncate-Path {
 
     ForEach ($matchingItem In $matchingItems) {
         Log-Debug $logFilePath "   Removing item >>${matchingItem}<<."
-        #Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+
+        If (!$isDryRun) {
+            Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+        }
     }
 
     If ($checkForDuplicates) {
@@ -317,7 +323,9 @@ Function Truncate-Path {
             If ($listOfFileHashToFilePath.ContainsKey($fileHash)) {
                 Log-Debug $logFilePath "   Found duplicated hash >>${fileHash}<<, removing >>${path}\${matchingItem}<<." $beVerbose
 
-                #Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+                If (!$isDryRun) {
+                    Remove-Item -Path "$path\$matchingItem" -Force -ErrorAction SilentlyContinue
+                }
             } Else {
                 Log-Debug $logFilePath "   Adding key >>${fileHash}<< with value >>${matchingItem}<<." $beVerbose
                 $listOfFileHashToFilePath.Add($fileHash, $matchingItem)
@@ -348,10 +356,10 @@ Function Truncate-Paths {
             ForEach ($currentUserName In $listOfUserNames) {
                 $currentUserDirectryPath = $currentObject.path -replace '\$user', $currentUserName
                
-                Truncate-Path $currentUserDirectryPath $currentObject.days_to_keep_old_file $currentObject.check_for_duplicates $currentObject.check_for_duplicates_greater_than_megabyte $logFilePath $beVerbose
+                Truncate-Path $currentUserDirectryPath $currentObject.days_to_keep_old_file $currentObject.check_for_duplicates $currentObject.check_for_duplicates_greater_than_megabyte $logFilePath $beVerbose $isDryRun
             }
         } Else {
-            Truncate-Path $currentObject.path $currentObject.days_to_keep_old_file $currentObject.check_for_duplicates $currentObject.check_for_duplicates_greater_than_megabyte $logFilePath $beVerbose
+            Truncate-Path $currentObject.path $currentObject.days_to_keep_old_file $currentObject.check_for_duplicates $currentObject.check_for_duplicates_greater_than_megabyte $logFilePath $beVerbose $isDryRun
         }
     }
 }
