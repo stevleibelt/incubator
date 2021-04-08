@@ -45,54 +45,60 @@ Function Create-LockFileOrExit {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$path,
+        [string]$lockFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$logFilePath,
 
         [Parameter(Mandatory = $false)]
         [bool]$beVerbose
     )
 
-    If (Test-Path $path) {
+    If (Test-Path $lockFilePath) {
         Write-Error ":: Error"
-        Write-Error "   Could not aquire lock, lock file >>${path}<< exists."
-        Log-Error "Could not aquire lock. Lock file >>${path}<< exists." $beVerbose
+        Write-Error "   Could not aquire lock, lock file >>${lockFilePath}<< exists."
+        Log-Error $logFilePath "Could not aquire lock. Lock file >>${lockFilePath}<< exists." $beVerbose
 
         Exit 1
     }
 
-    New-Item -ItemType File $path
-    Set-Content -Path $path -Value "${PID}"
+    New-Item -ItemType File $lockFilePath
+    Set-Content -Path $lockFilePath -Value "${PID}"
 
-    Log-Debug "Lock file create, path >>${path}<<, content >>${PID}<<" $beVerbose
+    Log-Debug $logFilePath "Lock file create, path >>${lockFilePath}<<, content >>${PID}<<" $beVerbose
 }
 
 Function Release-LockFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$path,
+        [string]$lockFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$logFilePath,
 
         [Parameter(Mandatory = $false)]
         [bool]$beVerbose
     )
 
-    If (Test-Path $path) {
-        $lockFilePID = Get-Content -Path $path
+    If (Test-Path $lockFilePath) {
+        $lockFilePID = Get-Content -Path $lockFilePath
 
         If ($lockFilePID -eq $PID ){
-            Remove-Item -Path $path
+            Remove-Item -Path $lockFilePath
 
-            Log-Debug "Lock file removed, path >>${path}<<" $beVerbose
+            Log-Debug $logFilePath "Lock file removed, path >>${lockFilePath}<<" $beVerbose
         } Else {
             Write-Error ":: Error"
-            Write-Error "   Lockfile in path >>${path}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<."
-            Log-Error "Lockfile in path >>${path}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<."
+            Write-Error "   Lockfile in path >>${lockFilePath}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<."
+            Log-Error $logfilePath  "Lockfile in path >>${lockFilePath}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<." $beVerbose
         }
 
         Exit 1
     } Else {
         Write-Error ":: Error"
-        Write-Error "   Could not release lock. Lock file >>${path}<< does not exists."
-        Log-Error "Could not release lock. Lock file >>${path}<< does not exists."
+        Write-Error "   Could not release lock. Lock file >>${lockFilePath}<< does not exists."
+        Log-Error $logfilePath "Could not release lock. Lock file >>${lockFilePath}<< does not exists." $beVerbose
 
         Exit 2
     }
@@ -248,7 +254,7 @@ Function CleanUpSystem {
     #eo: variable definition
 
     #bo: clean up
-    Create-LockFileOrExit $lockFilePath $beVerbose
+    Create-LockFileOrExit $lockFilePath $logFilePath $beVerbose
 
     Log-DiskSpace $logFilePath $beVerbose
 
@@ -256,17 +262,31 @@ Function CleanUpSystem {
 
     Log-DiskSpace $logFilePath $beVerbose
 
-    Release-LockFile $lockFilePath $beVerbose
+    Release-LockFile $lockFilePath $logFilePath $beVerbose
     #eo: clean up
 }
 
 Function Truncate-Paths {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [System.Collections.ArrayList]$collectionOfTruncableObjects,
+
+        [Parameter(Mandatory = $true)]
+        [string]$logFilePath,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
+    )
     
     ForEach ($object In $collectionOfTruncableObjects) {
-        Write-Host $("Path: " + $object.path)
+        #check if path ends with a wildcard
+        Log-Debug $logFilePath "Processing path >>${object.path}<<"
 
-        If ($object.days_to_keep) {
-            Write-Host $("Days to keep: " + $object.days_to_keep)
+        If ($object.path -contains '$user') {
+            Write-Host "Is a user path"
+        } Else {
+            Write-Host "Is not a user path"
         }
     }
 
