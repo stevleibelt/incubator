@@ -8,11 +8,6 @@
 # @author stev leibelt <artodeto@bazzline.net>
 ####
 
-Function Test-IsAdministrator {
-    $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
-    return $currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
-}
-
 Function Create-TruncableObject {
     [CmdletBinding()]
     param(
@@ -228,12 +223,6 @@ Function Log-Diskspace {
 }
 
 Function CleanUpSystem {
-    If (Test-IsAdministrator -eq $false) {
-        Write-Host ":: You have to run this script as administrator."
-
-        Exit
-    }
-
     #bo: variable definition
     $currentDate = Get-Date -Format "yyyyMMdd"
     $collectionOfTruncableObjects = New-Object System.Collections.ArrayList

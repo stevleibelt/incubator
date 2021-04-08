@@ -13,6 +13,11 @@ You can enable verbosity or log level in the local configuration. And of course,
 For each path, you can configure if you want to keep files older than x days. Furthermore, you can run a duplicate check, based on file hashs, and restrict to only bigger files.
 This script comes with a bit of magic. If you put it `$user` in a path, the script will replace this with all available users it can find below `C:\Users\`.
 
+The skript is shipped with a lock mechanism to prevent executing the same script in parallel.
+
+The skript can log! In fact, if you run it with `$logLevel = 0`, you get a lot of information.
+The skript is silent by default. Even under windows, the unix way is the right one, be silent until I set `$beVerbose = $true`.
+
 ## General Idea
 
 This script helps you to clean up a multi user window system, like a terminalserver, with just one click.
