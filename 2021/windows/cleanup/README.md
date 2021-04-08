@@ -36,3 +36,4 @@ You should clean files in the following user paths:
 
 * [Clean Browser Cache and Recycle Bin](https://github.com/Bromeego/Clean-Temp-Files) - 20210406
 * [How to clear your Microsoft Teams cache on Windows 10](https://www.onmsft.com/how-to/how-to-clear-your-microsoft-teams-cache-on-windows-10) - 20200428
+* [How to Create and Manage Scheduled Tasks with PowerShell?](http://woshub.com/how-to-create-scheduled-task-using-powershell/) - 20210408
