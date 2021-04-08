@@ -45,26 +45,34 @@ Function Create-LockFileOrExit {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$path
+        [string]$path,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
     )
 
     If (Test-Path $path) {
         Write-Error ":: Error"
         Write-Error "   Could not aquire lock, lock file >>${path}<< exists."
-        Log-Error "Could not aquire lock. Lock file >>${path}<< exists."
+        Log-Error "Could not aquire lock. Lock file >>${path}<< exists." $beVerbose
 
         Exit 1
     }
 
     New-Item -ItemType File $path
     Set-Content -Path $path -Value "${PID}"
+
+    Log-Debug "Lock file create, path >>${path}<<, content >>${PID}<<" $beVerbose
 }
 
 Function Release-LockFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [string]$path
+        [string]$path,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
     )
 
     If (Test-Path $path) {
@@ -72,6 +80,8 @@ Function Release-LockFile {
 
         If ($lockFilePID -eq $PID ){
             Remove-Item -Path $path
+
+            Log-Debug "Lock file removed, path >>${path}<<" $beVerbose
         } Else {
             Write-Error ":: Error"
             Write-Error "   Lockfile in path >>${path}<< contains different PID. Expected >>${PID}<<, Actual >>${lockFilePID}<<."
@@ -100,8 +110,8 @@ Function Get-LogFilePath {
         New-Item -ItemType Directory -Force -Path $path
     }
 
-    $dateTime = Get-Date -Format "yyyyMMdd-HHmmss"
-    $pathToTheLogFile = '{0}\{1}_{2}.log' -f $path,$env:computername,$dateTime
+    $date = Get-Date -Format "yyyyMMdd"
+    $pathToTheLogFile = '{0}\{1}_{2}.log' -f $path,$env:computername,$date
 
     return $pathToTheLogFile
 }
@@ -116,7 +126,10 @@ Function Log-Message {
         [string]$message,
 
         [Parameter(Mandatory = $true)]
-        [int]$logLevel = 3
+        [int]$logLevel = 3,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
     )
 
     If ($logLevel -ge $globalLogLevel) {
@@ -133,7 +146,11 @@ Function Log-Message {
 
         $logLine = '{0}: {1} - {2}' -f $dateTime,$prefix,$message
 
-        Set-Content -Path $path -Value $logLine
+        Add-Content -Path $path -Value $logLine
+
+        If ($beVerbose) {
+            Write-Host $logLine -ForegroundColor DarkGray
+        }
     }
 }
 
@@ -144,10 +161,13 @@ Function Log-Debug {
         [string]$path,
 
         [Parameter(Mandatory = $true)]
-        [string]$message
+        [string]$message,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
     )
 
-    Log-Message $path $message 1
+    Log-Message $path $message 1 $beVerbose
 }
 
 Function Log-Info {
@@ -157,10 +177,13 @@ Function Log-Info {
         [string]$path,
 
         [Parameter(Mandatory = $true)]
-        [string]$message
+        [string]$message,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
     )
 
-    Log-Message $path $message 2
+    Log-Message $path $message 2 $beVerbose
 }
 
 Function Log-Error {
@@ -170,10 +193,32 @@ Function Log-Error {
         [string]$path,
 
         [Parameter(Mandatory = $true)]
-        [string]$message
+        [string]$message,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
     )
 
-    Log-Message $path $message 4
+    Log-Message $path $message 4 $beVerbose
+}
+
+Function Log-Diskspace {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$beVerbose
+    )
+
+    $logicalDisk = Get-WmiObject Win32_LogicalDisk | Where-Object { $_.DriveType -eq "3" }
+
+    $totalSizeInGB = "{0:N1}" -f ( $logicalDisk.Size / 1gb)
+    $freeSizeInGB = "{0:N1}" -f ( $logicalDisk.Freespace / 1gb )
+    $freeSizeInPercentage = "{0:P1}" -f ( $logicalDisk.FreeSpace / $logicalDisk.Size )
+
+    Log-Info $path "Drive: ${logicalDisk.DeviceID}, Total Size (GB) ${totalSizeInGB}, Free Size (GB} ${freeSizeInGB}, Free size in percentage ${freeSizeInPercentage}" $beVerbose
 }
 
 Function CleanUpSystem {
@@ -203,7 +248,19 @@ Function CleanUpSystem {
     #eo: variable definition
 
     #bo: clean up
-    Create-LockFileOrExit $lockFilePath
+    Create-LockFileOrExit $lockFilePath $beVerbose
+
+    Log-DiskSpace $logFilePath $beVerbose
+
+    Truncate-Paths $collectionOfTruncableObjects $logFilePath $beVerbose
+
+    Log-DiskSpace $logFilePath $beVerbose
+
+    Release-LockFile $lockFilePath $beVerbose
+    #eo: clean up
+}
+
+Function Truncate-Paths {
     
     ForEach ($object In $collectionOfTruncableObjects) {
         Write-Host $("Path: " + $object.path)
@@ -213,21 +270,6 @@ Function CleanUpSystem {
         }
     }
 
-    #Log-Line
-    Log-Message $logFilePath "Debug test" 1
-    Log-Message $logFilePath "Error test" 4
-    #Log-DiskSpace  #to log disk space before and after the run
-    #CleanUp-LogFiles   #keeps only the last x log files, plus checks if log file path exists
-    #Truncate-Paths #iterates over structur, if path contains `$user`, iterate over content of `$users`
-
-    #function to call
-    #Log-DiskSpace
-    #CleanUp-LogFiles
-    #Truncate-Paths
-    #Log-DiskSpace
-
-    Release-LockFile $lockFilePath
-    #eo: clean up
 }
 
 CleanUpSystem
