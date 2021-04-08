@@ -15,7 +15,7 @@ This script comes with a bit of magic. If you put it `$user` in a path, the scri
 
 The skript is shipped with a lock mechanism to prevent executing the same script in parallel.
 
-The skript can log! In fact, if you run it with `$logLevel = 0`, you get a lot of information.
+The skript can log! In fact, if you run it with `$globalLogLevel = 0`, you get a lot of information.
 The skript is silent by default. Even under windows, the unix way is the right one, be silent until I set `$beVerbose = $true`.
 
 ## General Idea
