@@ -1,5 +1,9 @@
 # Backup strategy
 
+Free as in freedom backup strategy supporting multiple clients and multiple hosts.
+
+Changelog can be found [here](CHANGELOG.md).
+
 # Problem to solve
 
 Given are multiple clients that are not always online.
