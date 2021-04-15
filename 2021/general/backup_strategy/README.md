@@ -8,20 +8,25 @@ Changelog can be found [here](CHANGELOG.md).
 
 ## Problem to solve
 
-Given are multiple clients that are not always online.
-Given are clients where the backup have to be triggered manually (like mobilephones) or automatically (like linux systems).
-Given is, that there is an always on machine that provices the destination for the clients and acts as a cache.
-Given is, that there is a not always on machine that is the single source of truth (zfs mirror, ecc memory etc.).
+* Given are multiple clients that are not always online.
+* Given are clients where the backup have to be triggered manually (like mobilephones) or automatically (like linux systems).
+* Given is, that there is an always on machine that provices the destination for the clients and acts as a cache.
+* Given is, that there is a not always on machine that is the single source of truth (zfs mirror, ecc memory etc.).
 
 ## Idea to solve the problem
 
-Each client has an ssh key.
-The always on machine offeres a place via `smb` for each client.
-The always on machine moves the uploaded files into a special "cached" directory, readable but not writeable by the clients.
-The always on machine checks every x minutes if real backup machine is online. If this happens, the cached files will be transfered to the machine and a sync to the readable mirror is done.
-The always on machine has a weekly backup on an offline medium.
-The always on server has a weekly backup on an offline medium.
-The real backup server has a monthly backup on an offline medium located in a different location.
+* Each client has an ssh key.
+* The always on machine offeres a place via `smb` for each client.
+* The always on machine moves the uploaded files into a special "cached" directory, readable but not writeable by the clients.
+* The always on machine checks every x minutes if real backup machine is online. If this happens, the cached files will be transfered to the machine and a sync to the readable mirror is done.
+* The always on machine has a weekly backup on an offline medium.
+* The always on server has a weekly backup on an offline medium.
+* The real backup server has a monthly backup on an offline medium located in a different location.
+* Systemd service triggers the "backup if host available" task
+* Systemd timer triggers the timer every 15 minutes
+    * Problems to solve
+        * Create a timer and/or service that supports the `%i` to configure multiple hosts/backups
+        * Only check if a host is available if you are in the right network (wifi, ip address?)
 
 ## Problem to solved
 
