@@ -4,14 +4,16 @@ Free as in freedom backup strategy supporting multiple clients and multiple host
 
 Changelog can be found [here](CHANGELOG.md).
 
-# Problem to solve
+# The man with the plan
+
+## Problem to solve
 
 Given are multiple clients that are not always online.
 Given are clients where the backup have to be triggered manually (like mobilephones) or automatically (like linux systems).
 Given is, that there is an always on machine that provices the destination for the clients and acts as a cache.
 Given is, that there is a not always on machine that is the single source of truth (zfs mirror, ecc memory etc.).
 
-# Idea to solve the problem
+## Idea to solve the problem
 
 Each client has an ssh key.
 The always on machine offeres a place via `smb` for each client.
@@ -20,6 +22,10 @@ The always on machine checks every x minutes if real backup machine is online. I
 The always on machine has a weekly backup on an offline medium.
 The always on server has a weekly backup on an offline medium.
 The real backup server has a monthly backup on an offline medium located in a different location.
+
+## Problem to solved
+
+* [detect if host/ip is online](bin/example/detect_if_host_is_online.sh)
 
 # Example
 

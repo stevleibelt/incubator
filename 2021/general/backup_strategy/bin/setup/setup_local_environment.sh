@@ -13,6 +13,9 @@ then
     exit 1
 fi
 
+#@todo
+#   move into configuration file (dist?)
+#   create script to create configuration file
 GROUP_NAME_RO="bazzlinebackupro"
 GROUP_NAME_RW="bazzlinebackuprw"
 SSHKEY_FILE_NAME="bazzlinebackup_${hostname}"
@@ -47,6 +50,7 @@ function setup_groups ()
 # @param: string <primary_group_name>
 # @param: string <secondary_group_name>
 # @param: string <ssh_key_file_name>
+####
 function setup_user ()
 {
     if [[ $# -ne 4 ]];
@@ -79,3 +83,4 @@ function setup_user ()
 
 setup_groups ${GROUP_NAME_RO} ${GROUP_NAME_RW}
 setup_user ${USER_NAME} ${GROUP_NAME_RO} ${GROUP_NAME_RW} ${SSHKEY_FILE_NAME}
+setup_paths
