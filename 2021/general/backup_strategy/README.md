@@ -16,6 +16,7 @@ Changelog can be found [here](CHANGELOG.md).
 ## Idea to solve the problem
 
 * Each client has an ssh key.
+    * Read about how to check if the client behind the ip has the expected ssh know publc key
 * The always on machine offeres a place via `smb` for each client.
 * The always on machine moves the uploaded files into a special "cached" directory, readable but not writeable by the clients.
 * The always on machine checks every x minutes if real backup machine is online. If this happens, the cached files will be transfered to the machine and a sync to the readable mirror is done.
@@ -27,6 +28,9 @@ Changelog can be found [here](CHANGELOG.md).
     * Problems to solve
         * Create a timer and/or service that supports the `%i` to configure multiple hosts/backups
         * Only check if a host is available if you are in the right network (wifi, ip address?)
+* Use a more mature language to write this instead of batch?
+    * maybe powershell/python/rust?
+    * what about plattform independency?
 
 ## Problem to solved
 
