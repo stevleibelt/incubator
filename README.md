@@ -8,7 +8,9 @@ This time, it is a GPL-V3. If you love to start a project based on my thoughts, 
 
 ## Sections And Ideas
 
-* [Backup strategy](https://github.com/stevleibelt/incubator/tree/master/2021/general/backup_strategy)
+* [Change Log](https://github.com/stevleibelt/incubator/tree/master/2021/general/backup_strategy)
+* [Secure /etc with git](https://github.com/stevleibelt/incubator/tree/master/2022/etc_git)
+* [Systemd timer based rsync on a zfs system](https://github.com/stevleibelt/incubator/tree/master/2022/systemd_rsync)
 * [Batchjob Process Manager](https://github.com/stevleibelt/incubator/tree/master/2020/component/php/batchjob_process_manager)
 * [Countdown / Timer Generator via GIF-creation written in PHP](https://github.com/stevleibelt/incubator/tree/master/2020/component/php/git_count_down)
 * [ZF Module for easy usage of propel 1.x](https://github.com/stevleibelt/incubator/tree/master/2020/component/php/zf2_propel)
