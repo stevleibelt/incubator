@@ -80,6 +80,15 @@ function _main ()
     then
         _echo_if_be_verbose ":: Would have executed >>${RSYNC_COMMAND} \"${RSYNC_SOURCE_PATH}\" \"${RSYNC_DESTINATION}\"<<."
     else
+        if [[ ! -d "${RSYNC_SOURCE_PATH}" ]];
+        then
+            echo ":: Invalid RSYNC_SOURCE_PATH."
+            echo "   >>${RSYNC_SOURCE_PATH}<< is not a directory."
+            echo ""
+
+            exit 11
+        fi
+
         if ${RSYNC_COMMAND} "${RSYNC_SOURCE_PATH}" "${RSYNC_DESTINATION}"
         then
             _echo_if_be_verbose ":: Could finish >>${RSYNC_COMMAND} ${RSYNC_SOURCE_PATH} ${RSYNC_DESTINATION}<<."
