@@ -3,7 +3,7 @@
         "net_bazzline/php_component_cli_environment": "^0.1.0",
         "league/html-to-markdown": "^4.0",
         "league/commonmark": "^0.11.3",
-        "erusev/parsedown": "^1.6",
+        "erusev/parsedown": "^1.7",
         "cebe/markdown": "^1.1",
         "michelf/php-markdown": "^1.5",
         "ramsey/uuid": "^3.0",
