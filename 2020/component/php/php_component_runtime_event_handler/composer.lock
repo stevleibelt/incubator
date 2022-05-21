@@ -1,0 +1,123 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "655ec0f6ea2bbbb40273e2dd926fef18",
+    "content-hash": "f8fe0da2fa2505abd81a51bdb49400ca",
+    "packages": [
+        {
+            "name": "net_bazzline/php_component_event",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_event.git",
+                "reference": "695c40515ee9cac861730ef5880ee4beb0aa97e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_event/zipball/695c40515ee9cac861730ef5880ee4beb0aa97e9",
+                "reference": "695c40515ee9cac861730ef5880ee4beb0aa97e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Net\\Bazzline\\Component\\Event\\": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This free as in freedom project aims to deliver a generic, clean and immutable php event component.",
+            "keywords": [
+                "PSR-4",
+                "event",
+                "free as in freedom",
+                "immutable",
+                "lgpl",
+                "php",
+                "psr"
+            ],
+            "time": "2016-08-21 20:49:24"
+        },
+        {
+            "name": "net_bazzline/php_component_event_handler",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bazzline/php_component_event_handler.git",
+                "reference": "28962a0314515efbfca39437a33b0147240c4a2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bazzline/php_component_event_handler/zipball/28962a0314515efbfca39437a33b0147240c4a2f",
+                "reference": "28962a0314515efbfca39437a33b0147240c4a2f",
+                "shasum": ""
+            },
+            "require": {
+                "net_bazzline/php_component_event": "^0.0.1",
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Net\\Bazzline\\Component\\EventHandler\\": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Stev Leibelt",
+                    "email": "artodeto@bazzline.net",
+                    "homepage": "https://artodeto.bazzline.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This free as in freedom project aims to deliver a generic and clean php event handler component.",
+            "keywords": [
+                "PSR-4",
+                "bus",
+                "database",
+                "dispatch",
+                "emit",
+                "event",
+                "free as in freedom",
+                "handler",
+                "lgpl",
+                "listener",
+                "php",
+                "psr",
+                "rest",
+                "runtime"
+            ],
+            "time": "2016-09-15 20:26:02"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": []
+}
