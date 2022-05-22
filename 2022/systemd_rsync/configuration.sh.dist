@@ -10,7 +10,15 @@ local ZFS_DATASET="<string: zfs_dataset>"
 local ZFS_MOUNT_POINT="/mnt/net_bazzline_rsync_backup"
 #this default is fine
 local ZFS_SNAPSHOT_NAME="net_bazzline_rsync_backup"
-local RSYNC_COMMAND="/usr/bin/rsync --delete -avL --exclude={'.cache', '.composer'}"
+#@see: https://techgoeasy.com/rsync-command/
+#-a - archive
+#-v - verbose
+#-P - progress
+#-L - transform symlink into referent file/dir
+#-z - compress
+#--stats - give some file-transfer stats
+#--ignore-errors - delete even if there are I/O errors
+local RSYNC_COMMAND="/usr/bin/rsync --delete -avPLz --stats --ignore-errors --exclude=.cache --exclude=.composer --exclude=.docker --exclude=.jd --exclude=.local"
 local RSYNC_DESTINATION="<string: user>@<string: hostname or ip address>::<string: module_name>"
 local RSYNC_HOST="<string: hostname or ip address>"
 local RSYNC_SOURCE_PATH="/home/<string: user>/"

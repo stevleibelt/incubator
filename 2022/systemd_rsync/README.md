@@ -15,4 +15,5 @@ cp configuration.sh.dist configuration.sh
   * or support multi section configuration so we use the right section
 * `if [[ ${SECTION} -eq "foo" ]];`
 * `./backup configuration.sh foo`
+* add logging
 

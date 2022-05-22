@@ -20,7 +20,7 @@ function _main ()
     if [[ ${#} -lt 1 ]];
     then
         echo ":: Invalid amount of arguments provided."
-        echo "   ${0} <string: path to the configuration file>"
+        echo "   ${0} <string: path to the configuration file> <string configuration section>"
         echo ""
 
         exit 1
@@ -29,6 +29,7 @@ function _main ()
 
     #bo: variables
     local CURRENT_WORKING_DIRECTORY=$(pwd)
+    local CONFIGURATION_SECTION="${2:default}"
     local PATH_TO_THE_CONFIGURATION="${1:-}"
 
     if [[ -f "${PATH_TO_THE_CONFIGURATION}" ]];
@@ -67,6 +68,7 @@ function _main ()
     #bo: snapshot creation
     if [[ ${ZFS_IS_AVAILABLE} -eq 0 ]];
     then
+        _umount_zfs_snapshot_if_needed
         _delete_zfs_snapshot_if_exists
         _create_zfs_snapshot
         _mount_zfs_snapshot
@@ -173,12 +175,7 @@ function _mount_zfs_snapshot ()
         fi
     fi
 
-    if mount | grep -q "${ZFS_MOUNT_POINT}";
-    then
-        _echo_if_be_verbose ":: >>${ZFS_MOUNT_POINT}<< is already mounted."
-
-        _umount_zfs_snapshot
-    fi
+    _umount_zfs_snapshot_if_needed
 
     if [[ ${IS_DRY_RUN} -eq 1 ]];
     then
@@ -211,6 +208,16 @@ function _umount_zfs_snapshot ()
 
             exit 9
         fi
+    fi
+}
+
+function _umount_zfs_snapshot_if_needed ()
+{
+    if mount | grep -q "${ZFS_MOUNT_POINT}";
+    then
+        _echo_if_be_verbose ":: >>${ZFS_MOUNT_POINT}<< is already mounted."
+
+        _umount_zfs_snapshot
     fi
 }
 
