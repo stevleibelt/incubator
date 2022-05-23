@@ -7,6 +7,13 @@ cp configuration.sh.dist configuration.sh
 #adapt configuration.sh
 ```
 
+## Usage
+
+```
+#assuming your configuration.sh contains a section for the user >>foo<<
+./backup configuration.sh foo
+```
+
 ## Done
 
 * Added logging
@@ -16,5 +23,8 @@ cp configuration.sh.dist configuration.sh
 
 * add systemd service
 * add systemd timer
-* `./backup configuration.sh foo`
+  * Let the user choose
+    * [every 15 minutes](https://unix.stackexchange.com/questions/126786/systemd-timer-every-15-minutes)
+    * every hour
+    * once per day (15 minute after boot?)
 
