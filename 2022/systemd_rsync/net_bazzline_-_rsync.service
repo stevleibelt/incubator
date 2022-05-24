@@ -1,0 +1,10 @@
+[Unit]
+Description=net_bazzline rsync service
+ConditionACPower=true
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/net_bazzline/rsync/run.sh
+KillMode=process
+TimeoutStopSec=21600
