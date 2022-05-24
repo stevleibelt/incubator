@@ -10,12 +10,7 @@ $baseUrl                        = 'https://github.com/stevleibelt/incubator/tree
 $filePath                       = __DIR__ . '/README.md';
 $identifierOfSectionsAndIdeas   = '## Sections And Ideas';
 
-//begin of update logic
-/**
- * @param string $identifier
- * @param string $filePath
- * @return array
- */
+//bo: update logic
 function fetchContentThatShouldNotBeUpdated($identifier, $filePath)
 {
     $contentOfReadme = explode("\n", file_get_contents($filePath));
@@ -32,15 +27,9 @@ function fetchContentThatShouldNotBeUpdated($identifier, $filePath)
     return $contentBeforeIdentifier;
 }
 
-/**
- * @param string $identifier
- * @param string $basePath
- * @param string $baseUrl
- * @return array
- */
-function createContentThatShouldBeUpdated($identifier, $basePath, $baseUrl)
+function createContentThatShouldBeUpdated(string $identifier, string $basePath, string $baseUrl) : array
 {
-    $content = array();
+    $content = [];
 
     $content[] = $identifier;
     $content[] = '';
@@ -54,7 +43,7 @@ function createContentThatShouldBeUpdated($identifier, $basePath, $baseUrl)
     return $content;
 }
 
-function addGeneratedContent(&$content, array $data, $baseUrl)
+function addGeneratedContent(&$content, array $data, string $baseUrl)
 {
     foreach ($data as $path => $fileName) {
         $lines = getLinesFromFile($path . DIRECTORY_SEPARATOR . $fileName, 1);
@@ -62,7 +51,7 @@ function addGeneratedContent(&$content, array $data, $baseUrl)
     }
 }
 
-function convertDirectoryWalkerResult($basePath, array $array)
+function convertDirectoryWalkerResult(string $basePath, array $array) : array
 {
     $convertedArray = array();
     $lengthOfBasePath = strlen($basePath) + 1; //+1 for trailing directory slash
@@ -75,11 +64,7 @@ function convertDirectoryWalkerResult($basePath, array $array)
     return $convertedArray;
 }
 
-/**
- * @param string $basePath
- * @param array $array
- */
-function directoryWalker($basePath, array &$array)
+function directoryWalker(string $basePath, array &$array)
 {
     $matchingSuffix = '.md';
 
@@ -108,10 +93,10 @@ function directoryWalker($basePath, array &$array)
         directoryWalker($pathToSearchIn, $array);
     }
 }
-//end of update logic
+//eo: update logic
 
-//begin of file system utility
-function getLinesFromFile($filePath, $numberOfLines)
+//bo: file system utility
+function getLinesFromFile(string $filePath, int $numberOfLines) : array
 {
     $content = explode("\n", file_get_contents($filePath));
     $lines = array_slice($content, 0, $numberOfLines);
@@ -119,13 +104,9 @@ function getLinesFromFile($filePath, $numberOfLines)
     return $lines;
 }
 
-/**
- * @param string $basePath
- * @return array
- */
-function getFileNames($basePath)
+function getFileNames(string $basePath) : array
 {
-    $names = array();
+    $names = [];
 
     if ($directoryHandle = opendir($basePath)) {
         while (false !== ($fileSystemIdentifier = readdir($directoryHandle))) {
@@ -139,23 +120,19 @@ function getFileNames($basePath)
     return $names;
 }
 
-/**
- * @param string $basePath
- * @return array
- */
-function getDirectoryNames($basePath)
+function getDirectoryNames(string $basePath) : array
 {
-    $names = array();
+    $names = [];
 
     if ($directoryHandle = opendir($basePath)) {
-        $blacklistedDirectoryNames = array(
+        $blacklistedDirectoryNames = [
             '.',
             '..',
             '.svn',
             '.git',
             '.idea',
             'vendor'
-        );
+        ];
         while (false !== ($fileSystemIdentifier = readdir($directoryHandle))) {
             if (is_dir($basePath . DIRECTORY_SEPARATOR . $fileSystemIdentifier)) {
                 if (!in_array($fileSystemIdentifier, $blacklistedDirectoryNames)) {
@@ -169,22 +146,16 @@ function getDirectoryNames($basePath)
 
     return $names;
 }
-//end of file system utility
+//eo: file system utility
 
-//begin of string utility
-/**
- * @param string $haystack
- * @param string $needle
- * @return bool
- */
-function stringEndsWith($haystack, $needle)
+//bo: string utility
+function stringEndsWith(string $haystack, string $needle) : bool
 {
     return (substr($haystack, -(strlen($needle))) === $needle);
 }
-//end of string utility
+//eo: string utility
 
-//starting generation
-
+//bo: generation
 $content = array_merge(
     fetchContentThatShouldNotBeUpdated(
         $identifierOfSectionsAndIdeas,
@@ -198,3 +169,4 @@ $content = array_merge(
 );
 
 file_put_contents($filePath, implode("\n", $content));
+//eo: generation

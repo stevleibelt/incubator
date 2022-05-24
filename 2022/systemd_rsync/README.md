@@ -21,10 +21,12 @@ cp configuration.sh.dist configuration.sh
 
 ## To do
 
-* add systemd service
 * add systemd timer
   * Let the user choose
     * [every 15 minutes](https://unix.stackexchange.com/questions/126786/systemd-timer-every-15-minutes)
     * every hour
     * once per day (15 minute after boot?)
+* [Hardening](https://www.opensourcerers.org/2022/04/25/optimizing-a-systemd-service-for-security/) the systemd files
+* write install.sh
+* write uninstall.sh
 

@@ -1,0 +1,11 @@
+[Unit]
+Description=Starts net_bazzline_-_rsync.service every 15 minutes
+
+[Timer]
+OnCalendar=*:0/15
+RandomizedDelaySec=42
+Persistent=true
+Unit=net_bazzline_-_rsync.service
+
+[Install]
+WantedBy=timers.target
