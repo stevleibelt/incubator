@@ -101,6 +101,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "dramatiq", extra = ["gevent", "redis", "watch"] },
     { name = "eventsourcing" },
+    { name = "eventsourcing-sqlalchemy" },
     { name = "ldap3" },
     { name = "pydantic" },
     { name = "python-dotenv" },
@@ -119,6 +120,7 @@ dev = [
 requires-dist = [
     { name = "dramatiq", extras = ["gevent", "redis", "watch"], specifier = ">=1.18.0" },
     { name = "eventsourcing", specifier = ">=9.4.6" },
+    { name = "eventsourcing-sqlalchemy", specifier = ">=0.12" },
     { name = "ldap3", specifier = ">=2.9.1" },
     { name = "pydantic", specifier = ">=2.12.4" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
@@ -143,6 +145,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6e/04/a8ff940a01ce65a985b94355fff581b18456564a943f36f3f9dbd5ba7166/eventsourcing-9.4.6.tar.gz", hash = "sha256:093742d5c2e4fcbe835c4b38c8d2193e1c38810c9d27eb76516f55947b096baa", size = 87446, upload-time = "2025-05-15T20:31:20.963Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/15/9b/05a74c4c0d979c79aee83835e5be9cb7f5016e3844f14a148c7ec416e28f/eventsourcing-9.4.6-py3-none-any.whl", hash = "sha256:5663f940156f55133eb407bb962349a631942fddb69064ab1040c2010cd6a761", size = 93791, upload-time = "2025-05-15T20:31:19.372Z" },
+]
+
+[[package]]
+name = "eventsourcing-sqlalchemy"
+version = "0.12"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "eventsourcing" },
+    { name = "sqlalchemy" },
+    { name = "sqlalchemy-utils" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/20/35/e0ee218d756711eb4b899e0704c2548702db742e52343f18235bdefeac3e/eventsourcing_sqlalchemy-0.12.tar.gz", hash = "sha256:b9b557ac7c967d52c7d25431cadf909c1ef099fada818f54b291a84738fab772", size = 15615, upload-time = "2025-07-08T01:26:46.033Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d0/76/0d1adb113192b76580f5f11a6da7fe033c127a8d834c6b14b6d39209abcb/eventsourcing_sqlalchemy-0.12-py3-none-any.whl", hash = "sha256:64ff014264ccb0ca677bc491657bfc927a40dcb22f430eeb996efb3cda85e458", size = 14118, upload-time = "2025-07-08T01:26:44.844Z" },
 ]
 
 [[package]]
@@ -530,6 +546,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/32/d5/0e66097fc64fa266f29a7963296b40a80d6a997b7ac13806183700676f86/sqlalchemy-2.0.44-cp313-cp313-win32.whl", hash = "sha256:ee51625c2d51f8baadf2829fae817ad0b66b140573939dd69284d2ba3553ae73", size = 2101275, upload-time = "2025-10-10T15:03:26.096Z" },
     { url = "https://files.pythonhosted.org/packages/03/51/665617fe4f8c6450f42a6d8d69243f9420f5677395572c2fe9d21b493b7b/sqlalchemy-2.0.44-cp313-cp313-win_amd64.whl", hash = "sha256:c1c80faaee1a6c3428cecf40d16a2365bcf56c424c92c2b6f0f9ad204b899e9e", size = 2127901, upload-time = "2025-10-10T15:03:27.548Z" },
     { url = "https://files.pythonhosted.org/packages/9c/5e/6a29fa884d9fb7ddadf6b69490a9d45fded3b38541713010dad16b77d015/sqlalchemy-2.0.44-py3-none-any.whl", hash = "sha256:19de7ca1246fbef9f9d1bff8f1ab25641569df226364a0e40457dc5457c54b05", size = 1928718, upload-time = "2025-10-10T15:29:45.32Z" },
+]
+
+[[package]]
+name = "sqlalchemy-utils"
+version = "0.42.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sqlalchemy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/63/80/4e15fdcfc25a2226122bf316f0ebac86d840ab3fb38b38ca4cabc395865e/sqlalchemy_utils-0.42.0.tar.gz", hash = "sha256:6d1ecd3eed8b941f0faf8a531f5d5cee7cffa2598fcf8163de8c31c7a417a5e0", size = 130531, upload-time = "2025-08-30T18:43:41.904Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/52/86/21e97809b017a4ebc88971eea335130782421851b0ed8dc3ab6126b479f1/sqlalchemy_utils-0.42.0-py3-none-any.whl", hash = "sha256:c8c0b7f00f4734f6f20e9a4d06b39d79d58c8629cba50924fcaeb20e28eb4f48", size = 91744, upload-time = "2025-08-30T18:43:40.199Z" },
 ]
 
 [[package]]
