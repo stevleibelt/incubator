@@ -171,4 +171,5 @@ if __name__ == "__main__":
 
 ### Links
 
++ [Aufbau hoch skalbierbarer Geschäftssysteme mit CQRS in Pythn](https://de.leapcell.io/blog/aufbau-hoch-skalierbarer-geschaeftssysteme-mit-cqrs-in-python) - 20251107
 * [eventsourcing_sqlalchemy](https://github.com/pyeventsourcing/eventsourcing-sqlalchemy) - 20251107
