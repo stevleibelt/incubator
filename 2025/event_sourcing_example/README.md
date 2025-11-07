@@ -168,3 +168,7 @@ if __name__ == "__main__":
 - **SQLAlchemy** manages the database interactions.
 - **Dramatiq** processes tasks asynchronously, allowing the fetching of user and contract data in parallel.
 - **Eventsourcing** can be expanded to manage state changes and persistence to an event store.
+
+### Links
+
+* [eventsourcing_sqlalchemy](https://github.com/pyeventsourcing/eventsourcing-sqlalchemy) - 20251107
