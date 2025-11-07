@@ -1,0 +1,22 @@
+[project]
+name = "event-sourcing-example"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dramatiq[gevent,redis,watch]>=1.18.0",
+    "eventsourcing>=9.4.6",
+    "ldap3>=2.9.1",
+    "pydantic>=2.12.4",
+    "python-dotenv>=1.2.1",
+    "sqlalchemy>=2.0.44",
+    "typer>=0.20.0",
+    "valkey>=6.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+]

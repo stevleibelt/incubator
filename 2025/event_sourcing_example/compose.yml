@@ -1,0 +1,81 @@
+services:
+  app:
+    # replace with docker file and pure debian
+    # also update config for openldap
+    image: python:3.11-slim
+    container_name: app
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: >
+      sh -c "python -m pip install --no-cache-dir uv && \
+      uv install uvicorn dramatiq[valkey] valkey-client && \
+      uv run uvicorn main:app --host 0.0.0.0 --port 8000"
+    depends_on:
+      - valkey
+      - broker
+    networks:
+      - backend
+
+  broker:
+    environment:
+      - VALKEY_PASSWORD=parola-valkey
+      - TZ: "Europe/Berlin"
+    image: valkey/valkey:7-alpine
+    container_name: broker
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    volumes:
+      - ./service/valkey/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    user: "${UID?}:${GID?}"
+
+  worker:
+    image: python:3.11-slim
+    container_name: dramatiq_worker
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - VALKEY_URL=valkey://broker:6379
+    command: >
+      sh -c "python -m pip install --no-cache-dir uv && \
+      uv install dramatiq[redis] valkey-client && \
+      uv run dramatiq app.tasks --processes 1 --watch"
+    depends_on:
+      - broker
+    networks:
+      - backend
+
+  ldap:
+    # ref: https://hub.docker.com/r/bitnami/openldap
+    image: bitnami/openldap:latest
+    container_name: ldap
+    environment:
+      - LDAP_ORGANISATION=Bazzline
+      - LDAP_DOMAIN=bazzline.local
+      - LDAP_ADMIN_PASSWORD=parola-ldap
+      - LDAP_REMOVE_CONFIG=yes
+    volumes:
+      - ./service/ldap/config:/etc/ldap/slapd.d
+      - ./service/ldap/data:/var/lib/ldap
+      - ./service/ldap/ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom
+    ports:
+      - "389:389"
+      - "636:636"
+    networks:
+      - backend
+
+volumes:
+  ldap-data:
+
+networks:
+  backend:
+    driver: bridge
+
