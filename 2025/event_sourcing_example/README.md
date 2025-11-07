@@ -174,3 +174,4 @@ if __name__ == "__main__":
 * [Aufbau hoch skalbierbarer Geschäftssysteme mit CQRS in Python: leapcell.io](https://de.leapcell.io/blog/aufbau-hoch-skalierbarer-geschaeftssysteme-mit-cqrs-in-python) - 20251107
 * [Python package `eventsourcing_sqlalchemy`: github.com](https://github.com/pyeventsourcing/eventsourcing-sqlalchemy) - 20251107
 * [Implementing CQRS in Python: dev.to](https://dev.to/akhundmurad/implementing-cqrs-in-python-41aj) - 20251107
+* [Python CQRS pattern implementation with Transaction Outbox supporting: github.com](https://github.com/vadikko2/python-cqrs/tree/master) - 20251107
